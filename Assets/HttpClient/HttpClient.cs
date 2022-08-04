@@ -69,9 +69,9 @@ public class HttpClient : MonoBehaviour
         var url = _options.api + getArgs.Url;
         StartCoroutine(GetNumerator<T>(url, onSuccess, error));
     }
-    public void Get(IGetRequest getArgs, Action<object> onSuccess = null)
+    public void Get(IGetRequest getArgs, Action<object> onSuccess = null, Action<UnityWebRequest> error = null)
     {
-        Get<string>(getArgs, onSuccess);
+        Get<string>(getArgs, onSuccess, error);
     }
     #endregion
 
