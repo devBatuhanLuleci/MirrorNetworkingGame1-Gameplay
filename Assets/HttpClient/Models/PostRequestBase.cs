@@ -1,4 +1,4 @@
-﻿using ProtoBuf;
+﻿using Assets.HttpClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,10 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets.HttpClient
-{
-    public interface IHttpRequest
+
+    public abstract class PostRequestBase : IPostRequest
     {
         public abstract string Url { get; }
+        public abstract WWWForm ToForm();
     }
-}
+

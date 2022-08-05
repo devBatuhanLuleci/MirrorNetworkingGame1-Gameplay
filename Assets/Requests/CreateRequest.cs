@@ -6,26 +6,27 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class CreateRequest : IPostRequest
+public class CreateRequest : PostRequest
 {
-    public string Url => "Auth/create";
 
-    public string moralisId;
-    public string email;
+    public override string Url => "Auth/create";
+
+    #region FormFields
+    [FormField]
+    public string MoralisId;
+    [FormField]
+    public string Email;
+    #endregion
+
+
+    #region Properites
+    public string Yeni = "test";
+    #endregion
 
     public CreateRequest(string moralisId, string email)
     {
-        this.moralisId = moralisId;
-        this.email = email;
-    }
-
-    public WWWForm ToForm()
-    {
-        WWWForm form = new WWWForm();
-        form.AddField("moralisId", moralisId);
-        form.AddField("email", email);
-
-        return form;
+        this.MoralisId = moralisId;
+        this.Email = email;
     }
 }
 

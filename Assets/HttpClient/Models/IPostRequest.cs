@@ -9,6 +9,6 @@ namespace Assets.HttpClient
 {
     public interface IPostRequest:IHttpRequest
     {
-        public WWWForm ToForm();
+        public abstract WWWForm ToForm();
     }
 }

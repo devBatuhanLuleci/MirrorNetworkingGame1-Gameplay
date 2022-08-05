@@ -20,13 +20,15 @@ public class LoginPanel : MonoBehaviour
 
     public void OnClickLogin()
     {
-        HttpClient.Instance.Get<User>(new LoginRequest(m_MoralisIdInput.text), OnLoginSuccess, OnLoginFail);
+        var loginReq = new LoginRequest(m_MoralisIdInput.text);
+        HttpClient.Instance.Get<User>(loginReq, OnLoginSuccess, OnLoginFail);
     }
 
 
     public void OnClickRegister()
     {
-        HttpClient.Instance.Post<User>(new CreateRequest(m_MoralisIdInput.text, m_EmailInput.text), OnCreateSuccess);
+        var createReq= new CreateRequest(m_MoralisIdInput.text, m_EmailInput.text);
+        HttpClient.Instance.Post<User>(createReq, OnCreateSuccess);
 
     }
 
