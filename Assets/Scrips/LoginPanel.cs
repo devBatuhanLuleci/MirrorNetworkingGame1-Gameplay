@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using Assets.HttpClient;
 using System;
+using MoralisUnity.Kits.AuthenticationKit;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
@@ -16,7 +17,11 @@ public class LoginPanel : MonoBehaviour
     public Button loginButton;
     public Button registerButton;
 
-
+    private void Start()
+    {
+        m_MoralisIdInput.text = AuthenticationKit.Instance.moralisID;
+        m_MoralisIdInput.enabled = false;
+    }
 
     public void OnClickLogin()
     {
