@@ -19,7 +19,7 @@ public class LoginPanel : MonoBehaviour
 
     private void Start()
     {
-        m_MoralisIdInput.text = AuthenticationKit.Instance.moralisID;
+        m_MoralisIdInput.text = AuthenticationKit.Instance.user.username;
         m_MoralisIdInput.enabled = false;
     }
 

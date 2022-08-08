@@ -31,6 +31,7 @@ namespace MoralisUnity.Kits.AuthenticationKit
         public GameObject loginPanel;
         public string moralisID;
         public string walletAddr;
+        public MoralisUser user;
         
         //  Properties ------------------------------------
         public bool WillInitializeOnStart
@@ -122,16 +123,6 @@ namespace MoralisUnity.Kits.AuthenticationKit
             if (_willInitializeOnStart)
             {
                 await InitializeAsync();
-                MoralisUser user = await Moralis.GetUserAsync();
-                if (user != null)
-                {
-                    moralisID = user.username;
-                    walletAddr = user.ethAddress;
-                    this.gameObject.SetActive(false);
-                    loginPanel.SetActive(true);
-                    
-                }
-  
             }
         }
 
@@ -146,7 +137,7 @@ namespace MoralisUnity.Kits.AuthenticationKit
             Moralis.Start();
             State = AuthenticationKitState.Initialized;
 
-            MoralisUser user = await Moralis.GetUserAsync();
+            user = await Moralis.GetUserAsync();
   
             // If user is logged in where are connected
             if (user != null)
@@ -276,6 +267,8 @@ namespace MoralisUnity.Kits.AuthenticationKit
             if (await Moralis.GetUserAsync() != null)
             {
                 State = AuthenticationKitState.Connected;
+                this.gameObject.SetActive(false);
+                loginPanel.SetActive(true);
                 return;
             }
 
