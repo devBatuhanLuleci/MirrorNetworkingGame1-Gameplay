@@ -1,0 +1,17 @@
+{
+    "name": "HttpClient",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6df3ae937432e0d4ca65594675c16d19",
+        "GUID:5f62148cd960fe54f9ed87b29030c9ba"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
