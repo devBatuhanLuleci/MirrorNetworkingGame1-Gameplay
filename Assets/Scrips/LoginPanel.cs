@@ -27,7 +27,7 @@ public class LoginPanel : MonoBehaviour
 
     public void OnClickRegister()
     {
-        var createReq= new CreateRequest(m_MoralisIdInput.text, m_EmailInput.text);
+        var createReq= new CreateRequest(m_MoralisIdInput.text, m_EmailInput.text,"admin-wallet");
         HttpClient.Instance.Post<User>(createReq, OnCreateSuccess);
 
     }
