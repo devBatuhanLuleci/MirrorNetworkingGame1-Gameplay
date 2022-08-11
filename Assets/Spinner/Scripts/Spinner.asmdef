@@ -1,0 +1,16 @@
+{
+    "name": "Spinner",
+    "rootNamespace": "",
+    "references": [
+        "GUID:9153c49917884cd4694578ec8a5dfe15"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
