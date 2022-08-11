@@ -33,18 +33,25 @@ namespace MoralisUnity.Kits.AuthenticationKit
         public static AuthenticationKit Instance;
         private void Awake()
         {
-            Instance = this;
+            if (Instance != null)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                Instance = this;
+            }
         }
         #endregion
-        
-        public string moralisID,walletAddr;
+
+        public string moralisID, walletAddr;
         //  Properties ------------------------------------
         public bool WillInitializeOnStart
         {
             get { return _willInitializeOnStart; }
         }
 
-        [Header("Settings")] [SerializeField] private bool _willInitializeOnStart = true;
+        [Header("Settings")][SerializeField] private bool _willInitializeOnStart = true;
         [SerializeField] private bool _signAndLoginToMoralis = true;
 
         //  Events ----------------------------------------
@@ -76,7 +83,7 @@ namespace MoralisUnity.Kits.AuthenticationKit
         private AuthenticationKitStateObservable _stateObservable = new AuthenticationKitStateObservable();
 
         //  Fields ----------------------------------------
-        [Header("3rd Party")] [SerializeField] private WalletConnect _walletConnect;
+        [Header("3rd Party")][SerializeField] private WalletConnect _walletConnect;
 
         //  Properties ------------------------------------
         /// <summary>
@@ -131,7 +138,7 @@ namespace MoralisUnity.Kits.AuthenticationKit
 
             // Initialize Moralis
             Moralis.Start();
-            
+
             // Log out any old users so we do a full authentication cycle
             await Moralis.LogOutAsync();
 
@@ -312,16 +319,16 @@ namespace MoralisUnity.Kits.AuthenticationKit
         {
             // CLear out the session so it is re-establish on sign-in.
             _walletConnect.CLearSession();
-            
+
             // Enable auto save to remember the session for future use 
             _walletConnect.autoSaveAndResume = true;
-            
+
             // Don't start a new session on disconnect automatically
             _walletConnect.createNewSessionOnSessionDisconnect = false;
-            
+
             // Warning the _walletConnect.Connect() won't finish until a user approved Wallet connection has been established
             await _walletConnect.Connect();
-            
+
             // If WalletConnect is connected set the state to WalletConnected or Disconnect and start over
             if (_walletConnect.Connected)
             {
@@ -394,8 +401,8 @@ namespace MoralisUnity.Kits.AuthenticationKit
 
             // Attempt to login user.
             MoralisUser user = await Moralis.LogInAsync(authData, session.ChainId);
-            
-            
+
+
             if (user != null)
             {
                 State = AuthenticationKitState.MoralisLoggedIn;
@@ -404,7 +411,7 @@ namespace MoralisUnity.Kits.AuthenticationKit
                 Debug.Log(moralisID);
             }
         }
-        
+
         // If the user cancels the connect Disconnect and start over
         public async void WalletConnect_OnDisconnectedEvent(WalletConnectUnitySession session)
         {
@@ -451,7 +458,7 @@ namespace MoralisUnity.Kits.AuthenticationKit
             {
                 // Close the WalletConnect Transport Session
                 await _walletConnect.Session.Transport.Close();
-                
+
                 // Disconnect the WalletConnect session
                 await _walletConnect.Session.Disconnect();
             }
@@ -503,7 +510,7 @@ namespace MoralisUnity.Kits.AuthenticationKit
                                     // Only works if a users has a app installed that handles "wc:" links
                                     _walletConnect.OpenDeepLink();
                                 }
-                                
+
                                 // TODO check if the app is paused with OnApplicationPause to see if the link working  
                             }
                             catch (OperationCanceledException ex)
@@ -528,7 +535,7 @@ namespace MoralisUnity.Kits.AuthenticationKit
                                 // Check if WalletConnect is ready in 15 seconds or else disconnect and start over
                                 await UniTask.WaitUntil(() => _walletConnect.Session.ReadyForUserPrompt || _walletConnect.Connected,
                                     PlayerLoopTiming.Update, cancellationTokenSourceIOS.Token);
-                                
+
                                 // TODO check if the app is paused with OnApplicationPause to see if the link working  
                             }
                             catch (OperationCanceledException ex)
@@ -543,14 +550,14 @@ namespace MoralisUnity.Kits.AuthenticationKit
                         case AuthenticationKitPlatform.WalletConnect:
                             // Connect to the WalletConnect server
                             WalletConnect_Connect();
-                            
+
                             break;
                         case AuthenticationKitPlatform.WebGL:
                             if (!Application.isEditor)
                             {
                                 await LoginWithWeb3();
                             }
-                            
+
                             break;
                         default:
                             SwitchDefaultException.Throw(AuthenticationKitPlatform);
@@ -566,10 +573,10 @@ namespace MoralisUnity.Kits.AuthenticationKit
                         case AuthenticationKitPlatform.Android:
                         case AuthenticationKitPlatform.iOS:
                         case AuthenticationKitPlatform.WalletConnect:
-                            
+
                             // If the Wallet connection has been accepted first Setup Web3
                             await Moralis.SetupWeb3();
-                            
+
                             // If there is a Wallet connected and we got a session
                             // try to Sign and Login to Moralis or else Disconnect and start over
                             if (_walletConnect.Session != null)

@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using MoralisUnity.Kits.AuthenticationKit;
 using UnityEngine.UI;
 
-public class ACG_LoginPanelManager : MonoBehaviour
+public class ACG_LoginPanelManager : Panel
 {
     public enum Panels
     {

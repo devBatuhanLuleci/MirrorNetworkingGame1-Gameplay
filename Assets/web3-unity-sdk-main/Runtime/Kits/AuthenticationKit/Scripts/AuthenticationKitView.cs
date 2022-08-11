@@ -24,36 +24,33 @@ namespace MoralisUnity.Kits.AuthenticationKit
         //  Properties ------------------------------------
 
         //  Fields ----------------------------------------
-        [Header("Kit")]
-        [SerializeField] 
-        private AuthenticationKit _authenticationKit = null;
-        
+
+        private AuthenticationKit _authenticationKit { get { return AuthenticationKit.Instance; } }
+
+
         [Header("Platforms")]
-        [SerializeField] 
+        [SerializeField]
         private GameObject _iosPlatform = null;
-        
-        [SerializeField] 
+
+        [SerializeField]
         private GameObject _walletConnectPlatform = null;
 
         [Header("Buttons")]
-        [SerializeField] 
-        private Button _connectButton = null;
 
-        [SerializeField] 
-        private Button _disconnectButton = null;
-        
-        [SerializeField] 
+
+
+        [SerializeField]
         private Button _retryButton = null;
-        
+
         [Header("Other")]
-        [SerializeField] 
+        [SerializeField]
         private Text _statusText = null;
-        
+
         // [SerializeField] 
         // private Image _backgroundImage = null;
         //
-        [Header("Styling")] 
-        [SerializeField] 
+        [Header("Styling")]
+        [SerializeField]
         private Color _backgroundImageColor = new Color(0, 0, 0, 0.5f);
 
         //  Unity Methods ---------------------------------
@@ -64,8 +61,6 @@ namespace MoralisUnity.Kits.AuthenticationKit
             // Local scope is 'late', so rebroadcast the state
             AuthenticationKit_OnStateChanged(_authenticationKit.State);
 
-            _connectButton.onClick.AddListener(ConnectButton_OnClicked);
-            _disconnectButton.onClick.AddListener(DisconnectButton_OnClicked);
             _retryButton.onClick.AddListener(RetryButton_OnClicked);
         }
 
@@ -140,8 +135,6 @@ namespace MoralisUnity.Kits.AuthenticationKit
             SetActiveUIJustPlatforms(isActive);
 
             // Buttons
-            _connectButton.gameObject.SetActive(isActive);
-            _disconnectButton.gameObject.SetActive(isActive);
             _retryButton.gameObject.SetActive(isActive);
 
             // Texts
@@ -153,16 +146,15 @@ namespace MoralisUnity.Kits.AuthenticationKit
 
 
         //  Event Handlers --------------------------------
-        private void ConnectButton_OnClicked()
+        private async void Connect()
         {
+            // You have to wait or Unity will crash
+            await UniTask.DelayFrame(1);
             _authenticationKit.Connect();
         }
 
 
-        private void DisconnectButton_OnClicked()
-        {
-            _authenticationKit.Disconnect();
-        }
+
 
 
         private void RetryButton_OnClicked()
@@ -190,8 +182,9 @@ namespace MoralisUnity.Kits.AuthenticationKit
 
                     // Show Button "Connect"
                     SetActiveUIAllParts(false);
-                    _connectButton.gameObject.SetActive(true);
-                  //  _backgroundImage.gameObject.SetActive(true);
+
+                    Connect();
+                    //  _backgroundImage.gameObject.SetActive(true);
 
                     break;
                 case AuthenticationKitState.WalletConnecting:

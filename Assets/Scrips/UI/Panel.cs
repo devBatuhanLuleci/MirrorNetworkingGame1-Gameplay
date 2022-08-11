@@ -7,17 +7,21 @@ public class Panel : MonoBehaviour, IPanel
 
     public virtual void Close()
     {
+        // if panel already close dont make anything
+        if (!gameObject.activeSelf) return;
+
         OnPanelClose();
         gameObject.SetActive(false);
     }
 
     public virtual void Show()
     {
-        OnPanelShow();
         gameObject.SetActive(true);
+        OnPanelShow();
     }
 
     protected virtual void OnPanelShow() { }
     protected virtual void OnPanelClose() { }
 
+ 
 }
