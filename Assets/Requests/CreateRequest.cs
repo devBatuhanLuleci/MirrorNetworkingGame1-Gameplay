@@ -16,6 +16,8 @@ public class CreateRequest : PostRequest
     public string MoralisId;
     [FormField]
     public string Email;
+    [FormField]
+    public string WalletId;
     #endregion
 
 
@@ -23,10 +25,11 @@ public class CreateRequest : PostRequest
     public string Yeni = "test";
     #endregion
 
-    public CreateRequest(string moralisId, string email)
+    public CreateRequest(string moralisId, string email, string walletId)
     {
         this.MoralisId = moralisId;
         this.Email = email;
+        WalletId = walletId;    
     }
 }
 
