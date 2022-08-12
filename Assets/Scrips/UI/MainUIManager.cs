@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainUIManager : Singleton<MainUIManager>
 {
@@ -13,6 +14,8 @@ public class MainUIManager : Singleton<MainUIManager>
     private Panel loginPanel;
     [SerializeField]
     private Panel registerPanel;
+    [SerializeField]
+    private Panel nftBuyPanel;
 
     [Space]
     [SerializeField]
@@ -29,21 +32,18 @@ public class MainUIManager : Singleton<MainUIManager>
         Initialize();
         CheckServer();
     }
-    private void OnDestroy()
-    {
-        AuthenticationKit.Instance.OnConnected.RemoveListener(OnConnected);
-        AuthenticationManager.Instance.OnUserUnregister.RemoveListener(OnUserUnregister);
-    }
+   
+
     #endregion
 
     private void Initialize()
     {
+        AddListeners();
         // if statPnael not null set startpanel or set LadingPanel
         currentPanel = startPanel ?? loadingPanel;
-        AuthenticationKit.Instance.OnConnected.AddListener(OnConnected);
-        AuthenticationManager.Instance.OnUserUnregister.AddListener(OnUserUnregister);
         ShowPanel(currentPanel);
     }
+
 
     /// <summary>
     /// Check Server update
@@ -57,7 +57,29 @@ public class MainUIManager : Singleton<MainUIManager>
         ShowPanel(loginPanel);
     }
 
+    private void ShowPanel(Panel panel)
+    {
+        currentPanel.Close();
+        panel.Show();
+        currentPanel = panel;
+    }
+    #region Listeners
 
+    private void AddListeners()
+    {
+        AuthenticationKit.Instance.OnConnected.AddListener(OnConnected);
+        AuthenticationManager.Instance.OnUserUnregister.AddListener(OnUserUnregister);
+        AuthenticationManager.Instance.OnUserLogged.AddListener(OnUserLogged);
+
+    }
+    private void RemoveListeners()
+    {
+        AuthenticationKit.Instance.OnConnected.RemoveListener(OnConnected);
+        AuthenticationManager.Instance.OnUserUnregister.RemoveListener(OnUserUnregister);
+        AuthenticationManager.Instance.OnUserLogged.RemoveListener(OnUserLogged);
+    }
+
+    #endregion
 
     #region Moralis Event Handler
     private void OnConnected()
@@ -68,16 +90,17 @@ public class MainUIManager : Singleton<MainUIManager>
     #endregion
 
     #region Authentication Event Handler
+
+    private void OnUserLogged()
+    {
+        // TODO check user have any nft character 
+        // ?f not  open Nft buy panel
+        ShowPanel(nftBuyPanel);
+    }
     private void OnUserUnregister()
     {
         ShowPanel(registerPanel);
     }
     #endregion
 
-    private void ShowPanel(Panel panel)
-    {
-        currentPanel.Close();
-        panel.Show();
-        currentPanel = panel;
-    }
 }

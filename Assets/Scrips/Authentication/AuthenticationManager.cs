@@ -21,9 +21,11 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
 
     #region Events
     public UnityEvent OnUserUnregister;
+    public UnityEvent OnUserLogged;
     #endregion
     #region Login Methods
 
+ 
     public async void LoginWebAPI()
     {
         var moralisUser = await Moralis.GetUserAsync();
@@ -34,18 +36,21 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
     {
         var moralisUser = await Moralis.GetUserAsync();
         var createRequest = new CreateRequest(moralisUser.username, email, moralisUser.ethAddress);
-        HttpClient.Instance.Post<User>(createRequest, LoginSuccess, LoginFail);
+        HttpClient.Instance.Post<User>(createRequest, CreateUserSuccess, CreateUserFail);
 
     }
 
     private void LoginSuccess(User user)
     {
         User = user;
+        OnUserLogged.Invoke();
     }
 
     private void CreateUserSuccess(User user)
     {
         User = user;
+        OnUserLogged.Invoke();
+
     }
     private void LoginFail(UnityWebRequest errorRespons)
     {
