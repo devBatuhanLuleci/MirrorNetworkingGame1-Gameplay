@@ -12,7 +12,10 @@ using WalletConnectSharp.Core.Models;
 public class AuthenticationManager : Singleton<AuthenticationManager>
 {
     #region Public Variables
-    public User User { get; private set; }
+    [SerializeField]
+    private User _user;
+    public User User { get { return _user; } private set { _user = value; } }
+
 
     #endregion
 
@@ -27,7 +30,23 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
         var loginRequest = new LoginRequest(moralisUser.username);
         HttpClient.Instance.Get<User>(loginRequest, LoginSuccess, LoginFail);
     }
+    public async void CreateUserWithMoralis(string email)
+    {
+        var moralisUser = await Moralis.GetUserAsync();
+        var createRequest = new CreateRequest(moralisUser.username, email, moralisUser.ethAddress);
+        HttpClient.Instance.Post<User>(createRequest, LoginSuccess, LoginFail);
 
+    }
+
+    private void LoginSuccess(User user)
+    {
+        User = user;
+    }
+
+    private void CreateUserSuccess(User user)
+    {
+        User = user;
+    }
     private void LoginFail(UnityWebRequest errorRespons)
     {
         var msg = $"<color=red> Login Fail </color> " + errorRespons.error;
@@ -40,11 +59,12 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
         }
     }
 
-    private void LoginSuccess(User user)
+    private void CreateUserFail(UnityWebRequest errorRespons)
     {
-        User = user;
-    }
+        var msg = $"<color=red> Login Fail </color> " + errorRespons.error;
+        Debug.Log(msg);
 
+    }
     #endregion
 
 

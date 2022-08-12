@@ -8,17 +8,21 @@ public class MainUIManager : Singleton<MainUIManager>
 {
     [Header("Setup")]
     [SerializeField]
-    private Panel LoadingPanel;
+    private Panel loadingPanel;
     [SerializeField]
-    private Panel LoginPanel;
+    private Panel loginPanel;
     [SerializeField]
-    private Panel RegisterPanel;
+    private Panel registerPanel;
 
-
+    [Space]
+    [SerializeField]
+    private Panel startPanel = null;
 
     private Panel currentPanel;
 
     #region MonoBehavior Methods
+
+
 
     private void Start()
     {
@@ -34,9 +38,11 @@ public class MainUIManager : Singleton<MainUIManager>
 
     private void Initialize()
     {
+        // if statPnael not null set startpanel or set LadingPanel
+        currentPanel = startPanel ?? loadingPanel;
         AuthenticationKit.Instance.OnConnected.AddListener(OnConnected);
         AuthenticationManager.Instance.OnUserUnregister.AddListener(OnUserUnregister);
-        currentPanel = LoadingPanel;
+        ShowPanel(currentPanel);
     }
 
     /// <summary>
@@ -44,30 +50,19 @@ public class MainUIManager : Singleton<MainUIManager>
     /// </summary>
     private void CheckServer()
     {
-        StartCoroutine(FakeWait(1, MoralisLogin));
     }
 
-    private void MoralisLogin()
+    public void MoralisLogin()
     {
-
-
-        ShowPanel(LoginPanel);
+        ShowPanel(loginPanel);
     }
 
-    #region FakeArea
-    IEnumerator FakeWait(float time, Action callBack)
-    {
-        yield return new WaitForSeconds(1);
-        if (callBack != null)
-            callBack();
-    }
-    #endregion
 
 
     #region Moralis Event Handler
     private void OnConnected()
     {
-        LoginPanel.Close();
+        loginPanel.Close();
         Debug.Log("User successfully logged so time to connect to the game server. :)");
     }
     #endregion
@@ -75,7 +70,7 @@ public class MainUIManager : Singleton<MainUIManager>
     #region Authentication Event Handler
     private void OnUserUnregister()
     {
-        ShowPanel(RegisterPanel);
+        ShowPanel(registerPanel);
     }
     #endregion
 
