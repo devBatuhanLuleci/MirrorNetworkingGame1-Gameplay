@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 public class ACG_LoginPanelManager : Panel
 {
+
+    public static ACG_LoginPanelManager Instance;
     public enum Panels
     {
         Login,
@@ -25,7 +27,7 @@ public class ACG_LoginPanelManager : Panel
     public GameObject LoadingPanel;
     public GameObject RegisterPanel;
     public GameObject PickCharacterPanel;
-
+    public GameObject CharacterNFTMintPanel;
 
     #region RegisterFields
 
@@ -53,14 +55,22 @@ public class ACG_LoginPanelManager : Panel
 
     [SerializeField] private TMP_InputField walletAdressField;
     [SerializeField] private TMP_InputField moralisIDField;
+
+    #endregion
+
+    #endregion
+
+    #region CharacterPickField
+    
+    
+    
+    
     
     #endregion
-
-    #endregion
-
     private void Awake()
     {
         KVKKToggle.onValueChanged.AddListener(delegate { ToggleValueChanged(KVKKToggle); });
+        Instance = this;
     }
 
     void ToggleValueChanged(Toggle change)
@@ -179,6 +189,7 @@ public class ACG_LoginPanelManager : Panel
         TryRegister();
     }
 
+  
     public bool IsKVKKAccepted()
     {
         return KVKKToggle.isOn;
@@ -203,5 +214,18 @@ public class ACG_LoginPanelManager : Panel
             Debug.Log("Input is EMAÝL");
             Switch_To_PickCharacter_Panel();
         }
+    }
+
+    public void Switch_To_Character_NFTMint_Panel()
+    {
+        PickCharacterPanel.SetActive(false);
+        CharacterNFTMintPanel.SetActive(true);
+
+    }
+    public void Switch_To_Pick_Character_Panel_From_NFTMint()
+    {
+        CharacterNFTMintPanel.SetActive(false);
+        PickCharacterPanel.SetActive(true);
+
     }
 }
