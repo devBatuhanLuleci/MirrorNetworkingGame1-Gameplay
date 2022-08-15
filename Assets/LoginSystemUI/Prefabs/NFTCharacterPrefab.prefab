@@ -702,7 +702,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7326790471368820348}
-  - component: {fileID: 685180470}
+  - component: {fileID: 4527263232703295350}
   m_Layer: 5
   m_Name: NFTCharacterPrefab
   m_TagString: Untagged
@@ -735,7 +735,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &685180470
+--- !u!114 &4527263232703295350
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

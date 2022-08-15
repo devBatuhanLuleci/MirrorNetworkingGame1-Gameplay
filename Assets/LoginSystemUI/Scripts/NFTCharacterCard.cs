@@ -4,7 +4,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public class NFTCharacter : MonoBehaviour
+using static NFTCharacterDatabase;
+using System;
+
+public class NFTCharacterCard : MonoBehaviour
 {
     // Start is called before the first frame update
     public Image AvatarImage;
@@ -17,30 +20,38 @@ public class NFTCharacter : MonoBehaviour
 
     public Button GetCharacterNFTButton;
     public TMP_Text OwnedText;
+
+    private NFTCharacter _nftCharacter;
     void Awake()
 
     {
         GetCharacterNFTButton.onClick.AddListener(GetNFTCharacter);
     }
-    public void SetCharacterInfo(string charName, string charPrice=null)
+    public void Initialize(NFTCharacter nftCharacter)
+    {
+        _nftCharacter = nftCharacter;   
+        SetMyAvatar(nftCharacter.AvatarSprite);
+        SetCharacterInfo(nftCharacter.name, nftCharacter.price);
+        CheckOwnedThisCharacter();
+    }
+    public void SetCharacterInfo(string charName, string charPrice = null)
     {
         NFTAvatarName = charName;
         NFTCharacterPrice = charPrice;
 
         NFTCharacterNameText.text = NFTAvatarName;
-        if(charPrice!=null)
-        NFTCharacterPriceText.text = NFTCharacterPrice;
+        if (charPrice != null)
+            NFTCharacterPriceText.text = NFTCharacterPrice;
 
     }
     public void GetNFTCharacter()
     {
-        PlayerPrefs.SetString(NFTAvatarName, "owned");
-        NFTCharacter pickableCharacter = Instantiate(this, ACG_LoginPanelManager.Instance.PickCharacterPanel.GetComponent<CharacterPanelManager>().CharactersGrid) ;
-        pickableCharacter.transform.SetAsFirstSibling();
-        pickableCharacter.NFTCharacterPriceText.gameObject.SetActive(false);
-        pickableCharacter.GetCharacterNFTButton.gameObject.SetActive(false);
-
-
+        if (_nftCharacter == null)
+        {
+            Debug.LogError("_nftCharacter is null!");
+            return; 
+        }
+        _nftCharacter.owned = true;
         InitilizeStatus();
     }
     public void CheckOwnedThisCharacter()
@@ -86,5 +97,6 @@ public class NFTCharacter : MonoBehaviour
         AvatarImage.sprite = avatarSprite;
 
     }
+
 
 }

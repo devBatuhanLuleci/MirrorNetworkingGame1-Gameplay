@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NFTCharacterMintManager : MonoBehaviour
+public class CharacterNFTMintPanel : Panel
 {
     public Transform MintedCharactersGrid;
     public GameObject MintedNFTCharacterPrefab;
@@ -19,7 +19,7 @@ public class NFTCharacterMintManager : MonoBehaviour
     }
     public void OnClick_BackToPickCharacterPanelButton()
     {
-        ACG_LoginPanelManager.Instance.Switch_To_Pick_Character_Panel_From_NFTMint();
+        MainUIManager.Instance.PickCharacterPanelShow();
     }
     private void OnEnable()
     {
@@ -27,7 +27,7 @@ public class NFTCharacterMintManager : MonoBehaviour
     private void Start()
     {
         FillMintedCharacters();
-        
+
     }
     public void FillMintedCharacters()
     {
@@ -40,14 +40,12 @@ public class NFTCharacterMintManager : MonoBehaviour
     }
     public void MintCharacter(int index)
     {
-       GameObject mintedCharacterNFT= Instantiate(MintedNFTCharacterPrefab, MintedNFTCharacterPrefab.transform.position, MintedNFTCharacterPrefab.transform.rotation, MintedCharactersGrid);
-        mintedCharacterNFT.GetComponent<NFTCharacterCard>().SetMyAvatar(NFTCharacterDatabase.chars.ElementAt(index).AvatarSprite);
-        mintedCharacterNFT.GetComponent<NFTCharacterCard>().SetCharacterInfo(NFTCharacterDatabase.chars.ElementAt(index).name, NFTCharacterDatabase.chars.ElementAt(index).price);
-        mintedCharacterNFT.GetComponent<NFTCharacterCard>().CheckOwnedThisCharacter();
-    }
-    
-   
+        var mintedCharacterNFT = Instantiate(MintedNFTCharacterPrefab, MintedNFTCharacterPrefab.transform.position, MintedNFTCharacterPrefab.transform.rotation, MintedCharactersGrid)
+            .GetComponent<NFTCharacterCard>();
+        var nftCharacter = NFTCharacterDatabase.chars.ElementAt(index);
+        mintedCharacterNFT.Initialize(nftCharacter);
 
+    }
 
 
 }

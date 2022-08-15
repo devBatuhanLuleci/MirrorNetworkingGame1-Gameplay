@@ -15,7 +15,9 @@ public class MainUIManager : Singleton<MainUIManager>
     [SerializeField]
     private Panel registerPanel;
     [SerializeField]
-    private Panel nftBuyPanel;
+    private Panel PickCharacterPanel;
+    [SerializeField]
+    private Panel CharacterNFTMintPanel;
 
     [Space]
     [SerializeField]
@@ -57,6 +59,11 @@ public class MainUIManager : Singleton<MainUIManager>
         ShowPanel(loginPanel);
     }
 
+    public void PickCharacterPanelShow()
+    {
+        ShowPanel(PickCharacterPanel);
+    }
+
     private void ShowPanel(Panel panel)
     {
         currentPanel.Close();
@@ -95,7 +102,7 @@ public class MainUIManager : Singleton<MainUIManager>
     {
         // TODO check user have any nft character 
         // ?f not  open Nft buy panel
-        ShowPanel(nftBuyPanel);
+        ShowPanel(PickCharacterPanel);
     }
     private void OnUserUnregister()
     {
