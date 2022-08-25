@@ -17,7 +17,7 @@ public class LoadingPanel : Panel
     IEnumerator FakeWait(float time)
     {
         yield return new WaitForSeconds(1);
-        MainUIManager.Instance.MoralisLogin();
+        MainUIManager.Instance.Login();
     }
     #endregion
 }

@@ -108,6 +108,26 @@ public class MainUIManager : Singleton<MainUIManager>
     {
         ShowPanel(registerPanel);
     }
+
+    internal void Login()
+    {
+       var loginType = AuthenticationManager.Instance.LoginType;
+
+        switch (loginType)
+        {
+            case LoginType.Moralis:
+                MoralisLogin();
+                break;
+            case LoginType.User:
+                Debug.Log("login with custom user");
+                break;
+            case LoginType.Admin:
+                Debug.Log("login with Admin");
+                break;
+            default:
+                break;
+        }
+    }
     #endregion
 
 }

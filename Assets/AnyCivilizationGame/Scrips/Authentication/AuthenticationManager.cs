@@ -1,6 +1,8 @@
+
 using Cysharp.Threading.Tasks;
 using MoralisUnity;
 using MoralisUnity.Kits.AuthenticationKit;
+using MoralisUnity.Platform.Objects;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,25 +13,54 @@ using WalletConnectSharp.Core.Models;
 
 public class AuthenticationManager : Singleton<AuthenticationManager>
 {
+    #region Configurations
+    [SerializeField]
+    private LoginType loginType = LoginType.Moralis;
+
+
+    [SerializeField] private string userID="admin";
+    #endregion
     #region Public Variables
     [SerializeField]
     private User _user;
     public User User { get { return _user; } private set { _user = value; } }
-
+    public LoginType LoginType => loginType;
 
     #endregion
-
     #region Events
     public UnityEvent OnUserUnregister;
     public UnityEvent OnUserLogged;
     #endregion
+
+    #region MonoBehaviour Call  Back
+    private void Start()
+    {
+        Login();
+    }
+    #endregion
+    #region Public Methods
+
+
     #region Login Methods
 
- 
-    public async void LoginWebAPI()
+    public async void Login()
     {
-        var moralisUser = await Moralis.GetUserAsync();
-        var loginRequest = new LoginRequest(moralisUser.username);
+        switch (loginType)
+        {
+            case LoginType.Moralis:
+                await AuthenticationKit.Instance.InitializeAsync();
+                break;
+            case LoginType.User:
+                LoginWebAPI(userID);
+                break;
+            case LoginType.Admin:
+                LoginWebAPI("admin");
+                break;
+        }
+    }
+    public void LoginWebAPI(string moralisId = "")
+    {
+        var loginRequest = new LoginRequest(moralisId);
         HttpClient.Instance.Get<User>(loginRequest, LoginSuccess, LoginFail);
     }
     public async void CreateUserWithMoralis(string email)
@@ -71,8 +102,7 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
 
     }
     #endregion
-
-
+    #endregion
 
     #region Moralis State Handling
     public void MoralisOnConnected()
@@ -84,7 +114,7 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
         Debug.Log("AuthenticationManager moralis disconnected.");
 
     }
-    public void MoralisOnStateChanged(AuthenticationKitState state)
+    public async void MoralisOnStateChanged(AuthenticationKitState state)
     {
         Debug.Log($"AuthenticationManager moralis state changed. {state}");
         switch (state)
@@ -112,8 +142,8 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
             case AuthenticationKitState.MoralisLoggingIn:
                 break;
             case AuthenticationKitState.MoralisLoggedIn:
-                LoginWebAPI();
-
+                var moralisUser = await Moralis.GetUserAsync();
+                LoginWebAPI(moralisUser.username);
                 break;
             case AuthenticationKitState.Disconnecting:
                 break;
@@ -125,7 +155,4 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
 
     }
     #endregion
-
-
-
 }

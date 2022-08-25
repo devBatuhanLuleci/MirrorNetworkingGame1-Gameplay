@@ -122,10 +122,10 @@ namespace MoralisUnity.Kits.AuthenticationKit
                 var eventSystem = new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
             }
 
-            if (_willInitializeOnStart)
-            {
-                await InitializeAsync();
-            }
+            //if (_willInitializeOnStart)
+            //{
+            //    await InitializeAsync();
+            //}
         }
 
         /// <summary>
