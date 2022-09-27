@@ -1,8 +1,10 @@
 
 using Cysharp.Threading.Tasks;
+using kcp2k;
 using MoralisUnity;
 using MoralisUnity.Kits.AuthenticationKit;
 using MoralisUnity.Platform.Objects;
+using Oddworm.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +20,7 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
     private LoginType loginType = LoginType.Moralis;
 
 
-    [SerializeField] private string userID="admin";
+    [SerializeField] private string userID = "admin";
     #endregion
     #region Public Variables
     [SerializeField]
@@ -26,6 +28,12 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
     public User User { get { return _user; } private set { _user = value; } }
     public LoginType LoginType => loginType;
 
+    #endregion
+
+    #region Private Variables
+    private bool isServer = false;
+    public bool IsServer => isServer;
+    public int Port { get; private set; }
     #endregion
     #region Events
     public UnityEvent OnUserUnregister;
@@ -35,16 +43,51 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
     #region MonoBehaviour Call  Back
     private void Start()
     {
-        Login();
+        HandleCommands();
     }
     #endregion
     #region Public Methods
 
+    #region CommandLine
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
+    static void LoadCommandLine()
+    {
+        // Use commandline options passed to the application
+        var text = System.Environment.CommandLine + "\n";
 
+        // Initialize the CommandLine
+        Oddworm.Framework.CommandLine.Init(text);
+    }
+    private void HandleCommands()
+    {
+        isServer = CommandLine.HasKey("-server");
+        Debug.LogFormat("isServer: {0}", isServer);
+        MainUIManager.Instance.GetPanel<LoadingPanel>().Info("Connecting...");
+        if (!isServer)
+        {
+            Login();
+        }
+        else
+        {
+            // TODO:
+            // Setup server.
+            Port = CommandLine.GetInt("-port", -1);
+            MainUIManager.Instance.GetPanel<LoadingPanel>().Info($"listining on {Port}");
+            Invoke("ServerReady", 1);
+        }
+    }
+
+    public void ServerReady()
+    {
+        LoadBalancer.Instance.GetEventHandler<SpawnServer>(LoadBalancerEvent.SpawnServer).SendClientRequestToServer(new OnReadyEvent(Port));     
+        ACGNetworkManager.Instance.InitServer((ushort)Port);
+    }
+    #endregion
     #region Login Methods
 
     public async void Login()
     {
+        Debug.Log($"Login Type: {loginType}");
         switch (loginType)
         {
             case LoginType.Moralis:
@@ -55,6 +98,9 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
                 break;
             case LoginType.Admin:
                 LoginWebAPI("admin");
+                break;
+            case LoginType.None:
+                OnUserLogged.Invoke();
                 break;
         }
     }

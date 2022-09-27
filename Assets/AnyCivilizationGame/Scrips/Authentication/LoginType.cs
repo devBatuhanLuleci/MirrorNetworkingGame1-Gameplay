@@ -2,5 +2,6 @@ public enum LoginType
 {
     Moralis,
     User,
-    Admin
+    Admin,
+    None
 }

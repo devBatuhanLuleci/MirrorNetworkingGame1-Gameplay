@@ -6,7 +6,7 @@ using UnityEngine;
 public class HttpClientOptions : ScriptableObject, ISerializationCallbackReceiver
 {
     [TextArea]
-    public string info = "Web sunucusuan istek atmak için kullanýlacak ayaralrý içerir.";
+    public string info = "Web sunucusuan istek atmak için kullan?lacak ayarlar? içerir.";
 
     public string api = "localhost";
 

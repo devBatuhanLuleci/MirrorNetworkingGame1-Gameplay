@@ -1,27 +1,22 @@
 using MoralisUnity.Kits.AuthenticationKit;
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MainUIManager : Singleton<MainUIManager>
 {
     [Header("Setup")]
-    [SerializeField]
-    private Panel loadingPanel;
-    [SerializeField]
-    private Panel loginPanel;
-    [SerializeField]
-    private Panel registerPanel;
-    [SerializeField]
-    private Panel PickCharacterPanel;
-    [SerializeField]
-    private Panel CharacterNFTMintPanel;
+    public Panel loadingPanel;
+    public Panel loginPanel;
+    public Panel registerPanel;
+    public Panel PickCharacterPanel;
+    public Panel CharacterNFTMintPanel;
+    public Panel lobbyPanel;
 
     [Space]
     [SerializeField]
-    private Panel startPanel = null;
+    public Panel startPanel = null;
+
 
     private Panel currentPanel;
 
@@ -34,25 +29,20 @@ public class MainUIManager : Singleton<MainUIManager>
         Initialize();
         CheckServer();
     }
-   
+
 
     #endregion
+    #region Methods
 
     private void Initialize()
     {
         AddListeners();
-        // if statPnael not null set startpanel or set LadingPanel
+        // if statPnael not null set startpanel else set LadingPanel
         currentPanel = startPanel ?? loadingPanel;
         ShowPanel(currentPanel);
     }
 
 
-    /// <summary>
-    /// Check Server update
-    /// </summary>
-    private void CheckServer()
-    {
-    }
 
     public void MoralisLogin()
     {
@@ -64,12 +54,32 @@ public class MainUIManager : Singleton<MainUIManager>
         ShowPanel(PickCharacterPanel);
     }
 
+    public T GetPanel<T>() where T : Panel
+    {
+        var props = this.GetType().GetFields();
+        for (int i = 0; i < props.Length; i++)
+        {
+            var item = props[i].GetValue(this);
+            if (item is T) return item as T;
+
+        }
+        return null;
+    }
+    /// <summary>
+    /// Check Server update
+    /// </summary>
+    private void CheckServer()
+    {
+    }
     private void ShowPanel(Panel panel)
     {
         currentPanel.Close();
         panel.Show();
         currentPanel = panel;
     }
+
+    #endregion
+
     #region Listeners
 
     private void AddListeners()
@@ -102,7 +112,8 @@ public class MainUIManager : Singleton<MainUIManager>
     {
         // TODO check user have any nft character 
         // ?f not  open Nft buy panel
-        ShowPanel(PickCharacterPanel);
+        ShowPanel(lobbyPanel);
+
     }
     private void OnUserUnregister()
     {
@@ -111,8 +122,10 @@ public class MainUIManager : Singleton<MainUIManager>
 
     internal void Login()
     {
-       var loginType = AuthenticationManager.Instance.LoginType;
 
+        var loginType = AuthenticationManager.Instance.LoginType;
+        var isServer = AuthenticationManager.Instance.IsServer;
+        if (isServer) return;
         switch (loginType)
         {
             case LoginType.Moralis:
@@ -123,6 +136,9 @@ public class MainUIManager : Singleton<MainUIManager>
                 break;
             case LoginType.Admin:
                 Debug.Log("login with Admin");
+                break;
+            case LoginType.None:
+                ShowPanel(lobbyPanel);
                 break;
             default:
                 break;

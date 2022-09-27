@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 870d9e85eb8111145ada40d978db9519, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parent: NetworkManagers
 --- !u!114 &7931173257796277121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57,3 +58,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0324d6a1cb639a4f897ea7ce66db971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loginType: 2
+  userID: admin
+  _user:
+    moralisId: 
+    email: 
+    walletId: 
+  OnUserUnregister:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUserLogged:
+    m_PersistentCalls:
+      m_Calls: []

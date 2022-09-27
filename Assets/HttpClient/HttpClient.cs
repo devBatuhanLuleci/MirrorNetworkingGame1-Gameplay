@@ -42,7 +42,7 @@ public class HttpClient : MonoBehaviour
         _options = Resources.Load<HttpClientOptions>(path);
         if (_options == null)
         {
-            LogError("HttpClientOptions is nod found in Resources/Environments/");
+            LogError("HttpClientOptions is not found in Resources/Environments/");
             Destroy(gameObject);
             return;
         }
