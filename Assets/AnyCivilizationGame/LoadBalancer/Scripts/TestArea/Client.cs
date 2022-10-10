@@ -16,7 +16,7 @@ public class Client : MonoBehaviour
 
     public void StartMatch()
     {
-        var ev = new StartMatchEvent();
+        var ev = new CreateLobbyRoom();
         LoadBalancer.Instance.LobbyManager.SendClientRequestToServer(ev);
     }
 }

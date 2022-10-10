@@ -56,7 +56,7 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
         var text = System.Environment.CommandLine + "\n";
 
         // Initialize the CommandLine
-        Oddworm.Framework.CommandLine.Init(text);
+        CommandLine.Init(text);
     }
     private void HandleCommands()
     {
@@ -79,8 +79,7 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
 
     public void ServerReady()
     {
-        LoadBalancer.Instance.GetEventHandler<SpawnServer>(LoadBalancerEvent.SpawnServer).SendClientRequestToServer(new OnReadyEvent(Port));     
-        ACGNetworkManager.Instance.InitServer((ushort)Port);
+        ACGNetworkManager.Instance.StartServer((ushort)Port);
     }
     #endregion
     #region Login Methods

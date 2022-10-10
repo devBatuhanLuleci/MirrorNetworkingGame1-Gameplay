@@ -7,6 +7,7 @@ public class LobbyPlayer
     public bool IsLeader { get; private set; } = false;
     public bool IsReady { get; set; } = false;
     public string UserName { get; private set; }
+    public int RoomId { get; set; }
 
     public LobbyPlayer(string userName)
     {

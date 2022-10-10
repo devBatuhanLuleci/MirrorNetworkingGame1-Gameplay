@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CreateLobbyRoom : IResponseEvent
+public class LobbyRoomCreated : IResponseEvent
 {
     public LobbyPlayer LobbyPlayer;
     public int RoomCode { get; private set; }
 
-    public CreateLobbyRoom(int roomCode, LobbyPlayer lobbyPlayer)
+    public LobbyRoomCreated(int roomCode, LobbyPlayer lobbyPlayer)
     {
         RoomCode = roomCode;
         LobbyPlayer = lobbyPlayer;

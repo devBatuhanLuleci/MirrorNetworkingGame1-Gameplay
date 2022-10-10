@@ -22,7 +22,7 @@ public class LoadBalancer : Singleton<LoadBalancer>
 
     #region Managers
     public ACGAuthenticationManager AuthenticationManager { get; private set; }
-    public SpawnServer spawnServer { get; private set; }
+    public SpawnServer SpawnServer { get; private set; }
     public LobbyManager LobbyManager { get; private set; }
     #endregion
 
@@ -52,7 +52,7 @@ public class LoadBalancer : Singleton<LoadBalancer>
     private void SetupManagers()
     {
         AuthenticationManager = new ACGAuthenticationManager(this);
-        spawnServer = new SpawnServer(this);
+        SpawnServer = new SpawnServer(this);
         LobbyManager = new LobbyManager(this);
     }
 
@@ -198,14 +198,5 @@ public class LoadBalancer : Singleton<LoadBalancer>
             eventHandlers.Remove((byte)eventKey);
         }
     }
-    public T GetEventHandler<T>(LoadBalancerEvent eventKey) where T : EventManagerBase
-    {
-        if (eventHandlers.TryGetValue((byte)eventKey, out var eventManagerBase))
-        {
-            return eventManagerBase as T;
-        }
-        return null;
-    }
-
     #endregion
 }

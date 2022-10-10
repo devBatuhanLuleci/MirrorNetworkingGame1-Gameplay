@@ -21,14 +21,20 @@ public class LobbyManager : EventManagerBase
     internal override Dictionary<byte, Type> initResponseTypes()
     {
         var responseTypes = new Dictionary<byte, Type>();
-        responsesByType.Add((byte)LobbyEvent.StartMatnch, typeof(StartMatchEvent));
+        responsesByType.Add((byte)LobbyEvent.StartMatnch, typeof(CreateLobbyRoom));
         responsesByType.Add((byte)LobbyEvent.GetPlayers, typeof(GetPlayersEvent));
-        responsesByType.Add((byte)LobbyEvent.CreateLobbyRoom, typeof(CreateLobbyRoom));
+        responsesByType.Add((byte)LobbyEvent.CreateLobbyRoom, typeof(LobbyRoomCreated));
         responsesByType.Add((byte)LobbyEvent.JoinLobbyRoom, typeof(JoinLobbyRoom));
         responsesByType.Add((byte)LobbyEvent.NewJoinedToLobbyRoom, typeof(NewPlayerJoinedToLobbyRoom));
         responsesByType.Add((byte)LobbyEvent.JoinedToLobbyRoom, typeof(PlayerJoinedToLobbyRoom));
         responsesByType.Add((byte)LobbyEvent.MaxPlayerError, typeof(MaxPlayerError));
-        responsesByType.Add((byte)LobbyEvent.OnDisconnectedLobbyRoom, typeof(OnDisconnectedLobbyRoom));
+        responsesByType.Add((byte)LobbyEvent.OnLeaveLobbyRoom, typeof(OnLeaveLobbyRoom));
+        responsesByType.Add((byte)LobbyEvent.ReadyStateChange, typeof(ReadyStateChange));
+        responsesByType.Add((byte)LobbyEvent.ReadyStateChanged, typeof(ReadyStateChanged));
+        responsesByType.Add((byte)LobbyEvent.LeaveRoom, typeof(LeaveRoom));
+        responsesByType.Add((byte)LobbyEvent.ThereIsNoRoom, typeof(ThereIsNoRoom));
+        responsesByType.Add((byte)LobbyEvent.StartLobbyRoom, typeof(StartLobbyRoom));
+
 
         return responsesByType;
     }

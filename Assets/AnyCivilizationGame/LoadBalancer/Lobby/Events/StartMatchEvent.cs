@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using WalletConnectSharp.Core.Events;
 
-public class StartMatchEvent : IEvent
+public class CreateLobbyRoom : IEvent
 {
   
-    public StartMatchEvent() { }
+    public CreateLobbyRoom() { }
 
-    
+
 }

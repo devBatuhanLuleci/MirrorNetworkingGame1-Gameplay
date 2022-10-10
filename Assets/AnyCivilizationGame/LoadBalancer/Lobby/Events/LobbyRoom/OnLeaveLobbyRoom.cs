@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OnDisconnectedLobbyRoom : IResponseEvent
+public class OnLeaveLobbyRoom : IResponseEvent
 {
     public LobbyPlayer LobbyPlayer { get; private set; }
-    public OnDisconnectedLobbyRoom(LobbyPlayer lobbyPlayer)
+    public OnLeaveLobbyRoom(LobbyPlayer lobbyPlayer)
     {
         this.LobbyPlayer = lobbyPlayer;
     }
@@ -15,6 +15,10 @@ public class OnDisconnectedLobbyRoom : IResponseEvent
     {
 
         var lobbyManager = eventManagerBase as LobbyManager;
-        MainUIManager.Instance.GetPanel<LobbyPanel>().RemoveRoom(LobbyPlayer.UserName);
+        MainUIManager.Instance.GetPanel<LobbyPanel>().LeaveRoom(LobbyPlayer.UserName);
+        if (lobbyManager.LobbyPlayer.UserName == LobbyPlayer.UserName)
+        {
+            lobbyManager.LobbyPlayer = null;
+        }
     }
 }

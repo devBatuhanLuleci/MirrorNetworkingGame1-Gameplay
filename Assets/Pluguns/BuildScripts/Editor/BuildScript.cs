@@ -14,7 +14,7 @@ public class BuildScript
     public static void BuildWindowsGameServer()
     {
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
-        buildPlayerOptions.scenes = new[] { "Assets/AnyCivilizationGame/Scenes/Lobby.unity" };
+        buildPlayerOptions.scenes = new[] { "Assets/AnyCivilizationGame/Scenes/Lobby.unity", "Assets/AnyCivilizationGame/Scenes/Game.unity" };
         buildPlayerOptions.locationPathName = "../mobil_loadbalancer/Builds/Windows/GameServer/GameServer.exe";
         buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
         buildPlayerOptions.options = BuildOptions.CompressWithLz4HC | BuildOptions.EnableHeadlessMode;

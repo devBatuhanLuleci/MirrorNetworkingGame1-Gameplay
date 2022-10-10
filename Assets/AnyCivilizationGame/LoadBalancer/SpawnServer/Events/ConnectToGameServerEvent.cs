@@ -18,5 +18,6 @@ public class ConnectToGameServerEvent : IResponseEvent
     public void Invoke(EventManagerBase authenticationManager)
     {
         Debug.Log($"Start game on {Host}:{Port}");
+        ACGNetworkManager.Instance.StartClient(Host, Port);
     }
 }

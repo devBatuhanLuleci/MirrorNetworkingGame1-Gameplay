@@ -22,7 +22,7 @@ public class PlayerJoinedToLobbyRoom : IResponseEvent
         Debug.Log("PlayerJoinedToLobbyRoom " + LobbyPlayer.UserName);
 
         lobbyManager.LobbyPlayer = LobbyPlayer;
-        MainUIManager.Instance.GetPanel<LobbyPanel>().CreateRoom(RoomCode, LobbyPlayer.UserName);
+        MainUIManager.Instance.GetPanel<LobbyPanel>().JoinedRoom(RoomCode, LobbyPlayer.UserName);
         for (int i = 0; i < LobbyPlayers.Length; i++)
         {
             var player = LobbyPlayers[i];
