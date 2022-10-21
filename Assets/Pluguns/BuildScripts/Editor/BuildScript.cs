@@ -17,10 +17,10 @@ public class BuildScript
         buildPlayerOptions.scenes = new[] { "Assets/AnyCivilizationGame/Scenes/Lobby.unity", "Assets/AnyCivilizationGame/Scenes/Game.unity" };
         buildPlayerOptions.locationPathName = "../mobil_loadbalancer/Builds/Windows/GameServer/GameServer.exe";
         buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
-        buildPlayerOptions.options = BuildOptions.CompressWithLz4HC | BuildOptions.EnableHeadlessMode;
-
+        buildPlayerOptions.options = BuildOptions.CompressWithLz4HC | BuildOptions.EnableHeadlessMode | BuildOptions.Development;
         Console.WriteLine("Build Windows GameServer (Windows)...");
-        BuildPipeline.BuildPlayer(buildPlayerOptions);        
+
+        BuildPipeline.BuildPlayer(buildPlayerOptions);
         Console.WriteLine("Builded Succesfully Windows GameServer (Windows).");
     }
 

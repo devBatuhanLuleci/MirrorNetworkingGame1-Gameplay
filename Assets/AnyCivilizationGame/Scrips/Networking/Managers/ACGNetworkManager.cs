@@ -37,8 +37,6 @@ public class ACGNetworkManager : MonoBehaviour
         //var transport = GetComponent<KcpTransport>();
         //transport.Port = port;
         //StartServer();
-        string msg = $" <color=green> Server listining on </color> localhost:{port}";
-        Debug.LogError(msg);
         SceneManager.LoadScene("Game");
     }
 
