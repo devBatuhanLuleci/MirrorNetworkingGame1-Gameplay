@@ -1,0 +1,88 @@
+using kcp2k;
+using Mirror;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.VFX;
+
+[System.Serializable]
+public class MatchNetworkManager : NetworkManager
+{
+
+    #region Fields
+    public static MatchNetworkManager Instance { get { return instance; } }
+
+    #endregion
+
+    #region Private Fields
+
+    private static MatchNetworkManager instance;
+    private Dictionary<int, NetworkConnectionToClient> players;
+    #endregion
+    public override void Awake()
+    {
+        base.Awake();
+        instance = this;
+    }
+
+    public override void Start()
+    {
+        base.Start();
+        if (ACGNetworkManager.Instance.IsServer)
+        {
+            StartServerNetwork();
+        }
+        else
+        {
+            StartClientNetwork();
+        }
+    }
+    private void StartClientNetwork()
+    {
+        networkAddress = ACGNetworkManager.Instance.NetworkAddress;
+        GetComponent<KcpTransport>().Port = ACGNetworkManager.Instance.Port;
+        StartClient();
+
+    }
+    private void StartServerNetwork()
+    {
+
+        if (!TryGetComponent<KcpTransport>(out var transport))
+        {
+            Debug.LogError("when starting the server KcpTransport is not found!");
+            return;
+        }
+        transport.Port = ACGNetworkManager.Instance.Port;
+        StartServer();
+
+        var prefab = Resources.Load<NetworkedGameManager>(nameof(NetworkedGameManager));
+        var networkedGameManager = Instantiate(prefab);
+        NetworkServer.Spawn(networkedGameManager.gameObject);
+        
+        NetworkedGameManager.Instance.ServerStarted();
+        players = new Dictionary<int, NetworkConnectionToClient>();
+
+        LoadBalancer.Instance.SpawnServer.SendClientRequestToServer(new OnReadyEvent(ACGNetworkManager.Instance.Port));
+        NetworkedGameManager.Instance.Info("OnReadyEvent msg sended to master server.");
+    }
+    public override void OnServerConnect(NetworkConnectionToClient conn)
+    {
+        base.OnServerConnect(conn);
+        //players.Add(conn.connectionId, conn);
+        //NetworkedGameManager.Instance.Info("OnServerConnect players count:" + players.Count);
+        //if (players.Count > 2)
+        //{
+        //    //Invoke("StartGame", 3);
+        //}
+    }
+
+    public void StartGame()
+    {
+        NetworkedGameManager.Instance.Info("game is starting...");
+        NetworkedGameManager.Instance.RpcStartGame();
+    }
+
+
+
+}

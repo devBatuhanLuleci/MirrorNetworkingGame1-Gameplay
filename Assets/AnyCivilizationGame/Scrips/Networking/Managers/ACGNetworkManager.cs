@@ -7,10 +7,11 @@ public class ACGNetworkManager : MonoBehaviour
 {
     private static ACGNetworkManager instance;
     public static ACGNetworkManager Instance { get { return instance; } }
-
-    public ushort Port { get;private set; }
+    [SerializeField]
+    private string gameSceneName = "GameScene";
+    public ushort Port { get; private set; }
     public string NetworkAddress { get; private set; }
-    public bool  IsServer{ get; private set; }
+    public bool IsServer { get; private set; }
 
     public void Awake()
     {
@@ -37,7 +38,7 @@ public class ACGNetworkManager : MonoBehaviour
         //var transport = GetComponent<KcpTransport>();
         //transport.Port = port;
         //StartServer();
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene(gameSceneName);
     }
 
     public void StartClient(string netAddress, ushort port)
@@ -52,7 +53,7 @@ public class ACGNetworkManager : MonoBehaviour
         //transport.Port = port;
         //transport.enabled = true;
         //StartClient();
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene(gameSceneName);
 
     }
 
