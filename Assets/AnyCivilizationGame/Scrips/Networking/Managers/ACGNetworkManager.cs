@@ -56,7 +56,21 @@ public class ACGNetworkManager : MonoBehaviour
         SceneManager.LoadScene(gameSceneName);
 
     }
+    //public void StartClient( ushort port)
+    //{
+    //    IsServer = false;
+    //    Port = port;
+    //    Debug.LogError("ben clientim:");
 
+    //    //var transport = GetComponent<KcpTransport>();
+
+    //    //networkAddress = netAddress;
+    //    //transport.Port = port;
+    //    //transport.enabled = true;
+    //    //StartClient();
+    //    SceneManager.LoadScene(gameSceneName);
+
+    //}
 
 
 

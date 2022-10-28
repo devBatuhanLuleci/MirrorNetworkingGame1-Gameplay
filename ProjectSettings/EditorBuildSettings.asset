@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/AnyCivilizationGame/Scenes/Lobby.unity
     guid: 73f54674197734f46a9e55ba4876a02a
   - enabled: 1
-    path: Assets/AnyCivilizationGame/Scenes/Game.unity
-    guid: 127c16dc1eb72954d8dad9204f7b63dd
+    path: Assets/AnyCivilizationGame/Scenes/GameScene/GameScene.unity
+    guid: a85d851277738db4d9842ab54a3e2410
   m_configObjects: {}
