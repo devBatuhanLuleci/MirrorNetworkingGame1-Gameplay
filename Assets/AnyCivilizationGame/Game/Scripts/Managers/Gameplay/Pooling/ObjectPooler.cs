@@ -40,6 +40,7 @@ public class ObjectPooler : MonoBehaviour
             for (int i = 0; i < pool.size; i++)
             {
                 GameObject obj = Instantiate(pool.prefab,transform);
+                obj.name = pool.prefab.name + i;
                 obj.SetActive(false);
                 objectPool.Enqueue(obj);
             }
@@ -72,7 +73,7 @@ public class ObjectPooler : MonoBehaviour
         if (pooledObj != null)
         {
 
-            pooledObj.OnObjectSpawn(playerAttack, rotAngle, BulletTargetOffSetZ);
+            pooledObj.OnObjectSpawn(rotAngle);
 
         }
 

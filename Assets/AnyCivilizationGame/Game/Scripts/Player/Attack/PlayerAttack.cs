@@ -86,7 +86,7 @@ public class PlayerAttack : MonoBehaviour
    /// </summary>
     public void InitilizeVariables()
     {
-        attackJoystick = DemoGameManager.instance.AttackJoystick;
+        attackJoystick = OfflineGameManager.instance.AttackJoystick;
         player = this.gameObject.transform;
         threeDProjectile = GetComponent<ThreeDProjectile>();
         Splats = GetComponentInChildren<SplatManager>();
@@ -331,6 +331,7 @@ public class PlayerAttack : MonoBehaviour
          // We are spawning Bullet object from object pooler with extra location and rotation parameters.
         GameObject spawnedBullet = ObjectPooler.Instance.SpawnFromPool(Bullet.transform.name, BulletSpawnPoints[0].spawnPoint.position, transform.rotation, this, CalculateAngle(player, attackLookAtPoint),0);
         threeDProjectile.BulletObj = spawnedBullet;
+        //Debug.Log(threeDProjectile.BulletObj.name);
         //Fire that selected bullet object.
         threeDProjectile.ThrowThisObject();
     }

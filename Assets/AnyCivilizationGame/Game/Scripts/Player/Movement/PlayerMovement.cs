@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
 
-        MovementJoystick = DemoGameManager.instance.MovementJoystick;
+        MovementJoystick = OfflineGameManager.instance.MovementJoystick;
     }
     private void Start()
     {
@@ -87,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
             if (movementState != MovementState.Idle)
             {
                 SetSpriteVisibility(false);
-
+                Debug.Log("idle oldu");
                 movementState = MovementState.Idle;
                 SetCurrentAnimation();
 
@@ -98,6 +98,7 @@ public class PlayerMovement : MonoBehaviour
             if (movementState != MovementState.Moving)
             {
                 SetSpriteVisibility(true);
+                Debug.Log("moving oldu");
 
                 movementState = MovementState.Moving;
                 SetCurrentAnimation();

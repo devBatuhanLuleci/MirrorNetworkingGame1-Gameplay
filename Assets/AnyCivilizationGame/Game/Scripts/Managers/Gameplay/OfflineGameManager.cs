@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DemoGameManager : MonoBehaviour
+public class OfflineGameManager : MonoBehaviour
 {
     public Joystick MovementJoystick;
     public Joystick AttackJoystick;
 
-    public static DemoGameManager instance;
+    public static OfflineGameManager instance;
 
 
 

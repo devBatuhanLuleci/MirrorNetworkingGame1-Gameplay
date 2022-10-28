@@ -6,34 +6,24 @@ public class Bullet : MonoBehaviour,IPooledObject
 {
 
 
-    [SerializeField]
-    PlayerAttack playerAttack;
-
     Vector3 BulletEndDist;
 
     [SerializeField]
     private float speed=0.5f;
-
-    private float BulletTargetOffSetZ;
 
     private Collider bulletCollider;
     private void Awake()
     {
         bulletCollider = GetComponent<Collider>();
     }
-    public void SetPlayer(PlayerAttack playerAttack,float rotAngle, float BulletTargetOffSetZ)
-    {
-        this.playerAttack = playerAttack;
-        this.BulletTargetOffSetZ  = BulletTargetOffSetZ;
-        SetRotationOffThisObject(rotAngle);
-    }
-    public void OnObjectSpawn(PlayerAttack playerAttack, float rotAngle, float BulletTargetOffSetZ)
+   
+    public void OnObjectSpawn( float rotAngle)
     {
 
-        SetPlayer( playerAttack,  rotAngle , BulletTargetOffSetZ);
-     
+        SetRotationOffThisObject(rotAngle);
+
     }
- 
+
     public void SetRotationOffThisObject(float rotAngle)
     {
         transform.rotation = Quaternion.Euler(0,rotAngle,0);
