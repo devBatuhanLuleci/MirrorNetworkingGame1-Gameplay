@@ -86,7 +86,7 @@ public class PlayerAttack : MonoBehaviour
    /// </summary>
     public void InitilizeVariables()
     {
-        attackJoystick = DemoGameManager.instance.AttackJoystick;
+        attackJoystick = DemoGameManager.Instance.AttackJoystick;
         player = this.gameObject.transform;
         threeDProjectile = GetComponent<ThreeDProjectile>();
         Splats = GetComponentInChildren<SplatManager>();
