@@ -3,14 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using SimpleInputNamespace;
 using System;
+using Mirror;
 using DG.Tweening;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     #region MovementState
     public enum MovementState { Idle, Moving }
+    [SyncVar]
     public MovementState movementState;
     #endregion
+
+
+    [SyncVar]
+    public Vector2 moveDirection;
 
 
 
@@ -38,13 +44,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private Animator PlayerAnimatorController;
 
-    private Joystick MovementJoystick;
 
-    private void Awake()
-    {
-
-        MovementJoystick = OfflineGameManager.instance.MovementJoystick;
-    }
     private void Start()
     {
         SetSpriteVisibility(false);
@@ -52,14 +52,23 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Update()
     {
+        if (netIdentity.isServer)
+        {
+            MovementStateHandler();
+            SetPlayerPosition();
+            SetPlayerRotation();
 
+        }
+        else
+        {
+            SetCurrentAnimation();
+        }
+    }
 
-        MovementStateHandler();
-        SetDirSpritePosition();
-        SetPlayerRotation();
-        SetCurrentAnimation();
-        SetPlayerPosition();
-
+    public void MovementSpriteHandler(Vector2 moveInput)
+    {
+        SetSpriteVisibility(movementState == MovementState.Moving);
+        SetDirSpritePosition(moveInput);
     }
 
 
@@ -75,10 +84,7 @@ public class PlayerMovement : MonoBehaviour
         else if (movementState == MovementState.Moving)
         {
             PlayerAnimatorController.SetBool("Running", true);
-
         }
-
-
     }
 
     /// <summary>
@@ -86,30 +92,22 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     public void MovementStateHandler()
     {
-        if (MovementJoystick.Value.sqrMagnitude < 0.01f)
+        if (moveDirection.sqrMagnitude < 0.01f)
         {
             if (movementState != MovementState.Idle)
             {
-                SetSpriteVisibility(false);
-                Debug.Log("idle oldu");
                 movementState = MovementState.Idle;
                 SetCurrentAnimation();
-
             }
         }
         else
         {
             if (movementState != MovementState.Moving)
             {
-                SetSpriteVisibility(true);
-                Debug.Log("moving oldu");
-
                 movementState = MovementState.Moving;
                 SetCurrentAnimation();
             }
-
         }
-
     }
 
 
@@ -120,16 +118,11 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     public void SetPlayerPosition()
     {
-
-
         if (movementState == MovementState.Moving)
         {
-
-            Vector3 dir = new Vector3(MovementJoystick.Value.x, 0, MovementJoystick.Value.y).normalized;
-
+            Vector3 dir = new Vector3(moveDirection.x, 0, moveDirection.y).normalized;
             transform.Translate(dir * movementSpeed, Space.World);
         }
-
     }
 
     /// <summary>
@@ -140,9 +133,7 @@ public class PlayerMovement : MonoBehaviour
         if (movementState == MovementState.Idle)
             return;
 
-
-        var lookPos = playerDirSprite.position - transform.position;
-        lookPos.y = 0;
+        var lookPos = new Vector3(moveDirection.x, 0f, moveDirection.y).normalized;
         var rotation = Quaternion.LookRotation(lookPos);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
     }
@@ -162,15 +153,10 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>
     /// This function sets PlayerDirSprite Position.
     /// </summary>
-    public void SetDirSpritePosition()
+    public void SetDirSpritePosition(Vector2 moveInput)
     {
-
-
-        playerDirSprite.position = new Vector3(MovementJoystick.Value.x / DirectionSpriteScale + transform.position.x,
-                                    playerDirSprite.position.y,
-                                    MovementJoystick.Value.y / DirectionSpriteScale + transform.position.z);
-
-
+        var scale = new Vector3(moveInput.x, 0, moveInput.y) / DirectionSpriteScale;
+        playerDirSprite.position = scale + transform.position;
     }
     /// <summary>
     /// This function sets PlayerDirSprite Visibility.
@@ -178,11 +164,7 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="visiblityState"  takes visibility state.></param>
     public void SetSpriteVisibility(bool visiblityState)
     {
-
         playerDirSprite.gameObject.SetActive(visiblityState);
-
-
-
     }
 
 

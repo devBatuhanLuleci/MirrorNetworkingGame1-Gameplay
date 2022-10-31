@@ -26,7 +26,7 @@ public class NetworkedGameManager : NetworkBehaviour
         waitingPanel = GameObject.Find("WaitingPanel");
         Debug.Log("awake: " + MatchNetworkManager.Instance.mode);
     }
-
+    
     private void Start()
     {
         if (!ACGNetworkManager.Instance.IsServer)

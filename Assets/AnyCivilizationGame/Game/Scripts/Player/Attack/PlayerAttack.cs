@@ -88,7 +88,8 @@ public class PlayerAttack : MonoBehaviour
    /// </summary>
     public void InitilizeVariables()
     {
-        attackJoystick = OfflineGameManager.instance.AttackJoystick;
+
+        attackJoystick = OfflineGameManager.Instance.AttackJoystick;
         player = this.gameObject.transform;
         threeDProjectile = GetComponent<ThreeDProjectile>();
         playerMovement = GetComponent<PlayerMovement>();
