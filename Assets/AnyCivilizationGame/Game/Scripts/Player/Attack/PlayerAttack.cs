@@ -16,7 +16,9 @@ public class PlayerAttack : MonoBehaviour
     public enum AttackJoystickState { Up, Idle, Holding }
 
     public ShootingState attackState;
-    public enum ShootingState { Idle, Aiming, Reloading, Shooting }
+    public enum ShootingState { Idle, Aiming, Reloading, Shooting,Cancelled}
+ 
+
 
     #endregion
 
@@ -190,8 +192,17 @@ public class PlayerAttack : MonoBehaviour
             if (attackJoystickState != AttackJoystickState.Idle)
             {
                 //    Debug.LogError("Idle");
-                attackState = ShootingState.Idle;
+              
+                if(attackState == ShootingState.Aiming)
+                {
 
+                    attackState = ShootingState.Cancelled;
+                }
+                else if(attackState != ShootingState.Aiming && attackState != ShootingState.Cancelled)
+                {
+                    attackState = ShootingState.Idle;
+
+                }
 
 
                 CancelAttackProjectile();
@@ -202,11 +213,11 @@ public class PlayerAttack : MonoBehaviour
 
         }
 
-        else if (attackJoystick.joystickHeld)
+        else if (attackJoystick.joystickHeld && attackJoystick.Value.sqrMagnitude > ClampedAttackJoystickOffset)
         {
             if (attackJoystickState != AttackJoystickState.Holding)
             {
-
+                
                 //  Debug.LogError("Holding");
                 attackState = ShootingState.Aiming;
                 attackJoystickState = AttackJoystickState.Holding;
@@ -239,6 +250,12 @@ public class PlayerAttack : MonoBehaviour
             }
 
             attackJoystickState = AttackJoystickState.Up;
+
+            if (attackState == ShootingState.Cancelled)
+            {
+
+                attackState = ShootingState.Idle;
+            }
 
         }
 
