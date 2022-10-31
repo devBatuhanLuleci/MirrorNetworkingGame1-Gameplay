@@ -784,9 +784,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20badb2e43573b5489de7e87737be6b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.02
   movementState: 0
+  moveDirection: {x: 0, y: 0}
   playerDirSprite: {fileID: 6626824535787233144}
   rotationSpeed: 14
+  rotationTurnSpeed: 0.4
   movementSpeed: 0.02
   DirectionSpriteScale: 2
   PlayerAnimatorController: {fileID: 6531786051150784646}
@@ -870,7 +874,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   clientAuthority: 0
-  sendInterval: 0.05
+  sendInterval: 0.02
   syncPosition: 1
   syncRotation: 1
   syncScale: 0
