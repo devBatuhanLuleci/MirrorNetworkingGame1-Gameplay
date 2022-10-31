@@ -32,7 +32,9 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
 
     #region Private Variables
     private bool isServer = false;
+    private bool isClient = false;
     public bool IsServer => isServer;
+    public bool IsClient => isClient;
     public int Port { get; private set; }
     #endregion
     #region Events
@@ -61,11 +63,18 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
     private void HandleCommands()
     {
         isServer = CommandLine.HasKey("-server");
+        isClient = CommandLine.HasKey("-client");
         Debug.LogFormat("isServer: {0}", isServer);
+        Debug.LogFormat("isClient: {0}", isClient);
         MainUIManager.Instance.GetPanel<LoadingPanel>().Info("Connecting...");
-        if (!isServer)
+        if (!isServer && !isClient)
         {
             Login();
+        }
+        else if (isClient)
+        {
+            Port = CommandLine.GetInt("-port", -1);
+            Invoke("ClientReady", 1);
         }
         else
         {
@@ -80,6 +89,10 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
     public void ServerReady()
     {
         ACGNetworkManager.Instance.StartServer((ushort)Port);
+    }
+    public void ClientReady()
+    {
+        ACGNetworkManager.Instance.StartClient("localhost", (ushort)Port);
     }
     #endregion
     #region Login Methods

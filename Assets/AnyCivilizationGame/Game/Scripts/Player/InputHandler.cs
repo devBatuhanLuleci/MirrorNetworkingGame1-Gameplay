@@ -13,7 +13,7 @@ public class InputHandler : NetworkBehaviour
 
     #region Private Fields
 
-    private DemoGameManager gameManager;
+    private OfflineGameManager gameManager;
     private PlayerMovement PlayerMovement;
     #endregion
 
@@ -21,7 +21,7 @@ public class InputHandler : NetworkBehaviour
     private void Awake()
     {
         NetworkIdentity = GetComponent<NetworkIdentity>();
-        gameManager = DemoGameManager.Instance;
+        gameManager = OfflineGameManager.Instance;
 
     }
 

@@ -73,8 +73,9 @@ namespace PredictedProjectileExample
             {
 
 
-                StopAllCoroutines();
-                StartCoroutine(Coroutine_Movement(groundDirection.normalized, v0, angle, time));
+                //StopAllCoroutines();
+                //StopCoroutine(Coroutine_Movement(groundDirection.normalized, v0, angle, time));
+                StartCoroutine(Coroutine_Movement(BulletObj,groundDirection.normalized, v0, angle, time));
 
 
             } 
@@ -83,8 +84,9 @@ namespace PredictedProjectileExample
         {
      
 
-            StopAllCoroutines();
-            StartCoroutine(Coroutine_Movement(groundDirection.normalized, v0, angle, time));
+           // StopAllCoroutines();
+            StopCoroutine(Coroutine_Movement(BulletObj, groundDirection.normalized, v0, angle, time));
+            StartCoroutine(Coroutine_Movement(BulletObj,groundDirection.normalized, v0, angle, time));
 
 
         }
@@ -166,12 +168,13 @@ namespace PredictedProjectileExample
         }
 
 
-        IEnumerator Coroutine_Movement(Vector3 direction, float v0, float angle, float time)
+        IEnumerator Coroutine_Movement(GameObject bulletObj, Vector3 direction, float v0, float angle, float time)
         {
             var FirePoint = firePoint.position;
 
             float t = 0;
            // Debug.Log(time / (initialVelocity ));
+                Debug.Log(BulletObj.transform.name);
             while (t < time)
             {
 
@@ -180,8 +183,8 @@ namespace PredictedProjectileExample
 
                 var upValue = projectileType == ProjectileType.Bomb ? (Vector3.up * y) : Vector3.zero;
 
-                BulletObj.transform.position = FirePoint + direction * x + upValue;
-
+                //BulletObj.transform.position = FirePoint + direction * x + upValue;
+                bulletObj.transform.position = FirePoint + direction * x + upValue;
 
 
 
@@ -190,8 +193,9 @@ namespace PredictedProjectileExample
                 yield return null;
 
             }
+
             //burası hedefe vardığında bir kez çalışır.
-            BulletObj.SetActive(false);
+            bulletObj.SetActive(false);
         }
 
     }

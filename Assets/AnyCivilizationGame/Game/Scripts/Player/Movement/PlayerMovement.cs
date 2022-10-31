@@ -4,6 +4,7 @@ using UnityEngine;
 using SimpleInputNamespace;
 using System;
 using Mirror;
+using DG.Tweening;
 
 public class PlayerMovement : NetworkBehaviour
 {
@@ -27,6 +28,10 @@ public class PlayerMovement : NetworkBehaviour
 
     [SerializeField]
     private float rotationSpeed = 8f;
+
+    [SerializeField]
+    private float rotationTurnSpeed = .4f;
+
 
     [SerializeField]
     private float movementSpeed = 5f;
@@ -132,7 +137,18 @@ public class PlayerMovement : NetworkBehaviour
         var rotation = Quaternion.LookRotation(lookPos);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
     }
+    public void SetPlayerRotationToTargetDirection(float targetPos)
+    {
+        //if (movementState == MovementState.Idle)
+        //    return;
 
+
+        //var lookPos = targetPos - transform.position;
+        //lookPos.y = 0;
+        //var rotation = Quaternion.LookRotation(lookPos);
+        transform.DORotateQuaternion(Quaternion.Euler(transform.rotation.eulerAngles.x, targetPos, transform.rotation.eulerAngles.z), rotationTurnSpeed).SetEase(Ease.InOutQuad);
+        //transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.Euler(transform.rotation.eulerAngles.x,targetPos ,transform.rotation.eulerAngles.z), Time.deltaTime * rotationSpeed);
+    }
 
     /// <summary>
     /// This function sets PlayerDirSprite Position.

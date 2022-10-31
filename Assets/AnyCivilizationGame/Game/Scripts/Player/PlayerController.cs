@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerController : NetworkBehaviour
 {
+    public float speed = 1f;
     private void Update()
     {
 
@@ -13,6 +14,7 @@ public class PlayerController : NetworkBehaviour
         var horizontal = Input.GetAxis("Horizontal");
         var vertical = Input.GetAxis("Vertical");
         var move = new Vector2(horizontal, vertical);
+        
         if (move.magnitude > 0.2f)
         {
             MoveCMD(move);
@@ -32,7 +34,7 @@ public class PlayerController : NetworkBehaviour
     public void MoveCMD(Vector2 move)
     {
         if (!netIdentity.isServer) return;
-        transform.Translate(move);
+        transform.Translate(move*speed);
     }
 
     [Command]

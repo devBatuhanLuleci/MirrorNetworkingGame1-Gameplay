@@ -54,7 +54,7 @@ public class PlayerAttack : MonoBehaviour
     public GameObject Bullet;
 
     private ThreeDProjectile threeDProjectile;
-
+    private PlayerMovement playerMovement;
 
 
 
@@ -86,9 +86,11 @@ public class PlayerAttack : MonoBehaviour
    /// </summary>
     public void InitilizeVariables()
     {
-        attackJoystick = DemoGameManager.Instance.AttackJoystick;
+
+        attackJoystick = OfflineGameManager.Instance.AttackJoystick;
         player = this.gameObject.transform;
         threeDProjectile = GetComponent<ThreeDProjectile>();
+        playerMovement = GetComponent<PlayerMovement>();
         Splats = GetComponentInChildren<SplatManager>();
 
         foreach (BulletSpawnPoint spawnPoint in BulletSpawnPoints)
@@ -224,9 +226,9 @@ public class PlayerAttack : MonoBehaviour
 
                 attackState = ShootingState.Shooting;
                 CancelAttackProjectile();
-
+                playerMovement.SetPlayerRotationToTargetDirection(CalculateAngle(player, attackLookAtPoint));
                 SpawnBullet();
-           
+                
 
             }
 
@@ -278,6 +280,7 @@ public class PlayerAttack : MonoBehaviour
         lookPos.y = 0;
 
     }
+  
     private void RotateIndicator()
     {
 
@@ -331,6 +334,7 @@ public class PlayerAttack : MonoBehaviour
          // We are spawning Bullet object from object pooler with extra location and rotation parameters.
         GameObject spawnedBullet = ObjectPooler.Instance.SpawnFromPool(Bullet.transform.name, BulletSpawnPoints[0].spawnPoint.position, transform.rotation, this, CalculateAngle(player, attackLookAtPoint),0);
         threeDProjectile.BulletObj = spawnedBullet;
+        //Debug.Log(threeDProjectile.BulletObj.name);
         //Fire that selected bullet object.
         threeDProjectile.ThrowThisObject();
     }
