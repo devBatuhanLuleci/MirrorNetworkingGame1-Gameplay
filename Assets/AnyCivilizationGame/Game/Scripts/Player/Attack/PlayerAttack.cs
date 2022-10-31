@@ -54,7 +54,7 @@ public class PlayerAttack : MonoBehaviour
     public GameObject Bullet;
 
     private ThreeDProjectile threeDProjectile;
-
+    private PlayerMovement playerMovement;
 
 
 
@@ -89,6 +89,7 @@ public class PlayerAttack : MonoBehaviour
         attackJoystick = OfflineGameManager.instance.AttackJoystick;
         player = this.gameObject.transform;
         threeDProjectile = GetComponent<ThreeDProjectile>();
+        playerMovement = GetComponent<PlayerMovement>();
         Splats = GetComponentInChildren<SplatManager>();
 
         foreach (BulletSpawnPoint spawnPoint in BulletSpawnPoints)
@@ -224,9 +225,9 @@ public class PlayerAttack : MonoBehaviour
 
                 attackState = ShootingState.Shooting;
                 CancelAttackProjectile();
-
+                playerMovement.SetPlayerRotationToTargetDirection(CalculateAngle(player, attackLookAtPoint));
                 SpawnBullet();
-           
+                
 
             }
 
@@ -278,6 +279,7 @@ public class PlayerAttack : MonoBehaviour
         lookPos.y = 0;
 
     }
+  
     private void RotateIndicator()
     {
 
