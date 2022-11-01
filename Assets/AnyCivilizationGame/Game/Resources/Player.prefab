@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6626824536947155889}
-  m_RootOrder: 6
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!212 &6626824535787233151
 SpriteRenderer:
@@ -113,7 +113,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6626824536947155889}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6626824536168583607
 GameObject:
@@ -165,7 +165,7 @@ Transform:
   - {fileID: 6626824536669529836}
   - {fileID: 6626824536557669757}
   m_Father: {fileID: 6626824536947155889}
-  m_RootOrder: 5
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6626824536168583605
 MonoBehaviour:
@@ -763,12 +763,12 @@ Transform:
   - {fileID: 6626824536396642705}
   - {fileID: 6626824536656364009}
   - {fileID: 6626824537634215734}
+  - {fileID: 6626824537462871877}
+  - {fileID: 6626824537031914589}
   - {fileID: 6627568873449279292}
   - {fileID: 6626824535964682116}
   - {fileID: 6626824536168583606}
   - {fileID: 6626824535787233144}
-  - {fileID: 6626824537462871877}
-  - {fileID: 6626824537031914589}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -784,9 +784,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20badb2e43573b5489de7e87737be6b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.02
   movementState: 0
+  moveDirection: {x: 0, y: 0}
   playerDirSprite: {fileID: 6626824535787233144}
   rotationSpeed: 14
+  rotationTurnSpeed: 0.3
   movementSpeed: 0.02
   DirectionSpriteScale: 2
   PlayerAnimatorController: {fileID: 6531786051150784646}
@@ -809,17 +813,22 @@ MonoBehaviour:
   Range: 3.6
   lookPos: {x: 0, y: 0, z: 0}
   attackLookAtPoint: {fileID: 6626824537031914589}
+  player: {fileID: 0}
   BulletSpawnPoints:
   - SpawnPointName: BulletDefaultSpawnPoint
     spawnPoint: {fileID: 6626824536758715068}
     BulletInitPos: {x: 0, y: 0, z: 0}
+    BulletInitRot: {x: 0, y: 0, z: 0}
   - SpawnPointName: BulletLeftSpawnPoint
     spawnPoint: {fileID: 6626824536719893469}
     BulletInitPos: {x: 0, y: 0, z: 0}
+    BulletInitRot: {x: 0, y: 0, z: 0}
   - SpawnPointName: BulletRightSpawnPoint
     spawnPoint: {fileID: 6626824537113770205}
     BulletInitPos: {x: 0, y: 0, z: 0}
+    BulletInitRot: {x: 0, y: 0, z: 0}
   Bullet: {fileID: 7995885019731338434, guid: ed3358c4efc259f4980810956bb328e9, type: 3}
+  threeDProjectile: {fileID: 0}
 --- !u!114 &6626824536947155893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -870,7 +879,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   clientAuthority: 0
-  sendInterval: 0.05
+  sendInterval: 0.02
   syncPosition: 1
   syncRotation: 1
   syncScale: 0
@@ -938,13 +947,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6626824537031914590}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -1.2261876e-25, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6626824536947155889}
-  m_RootOrder: 8
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6626824537113770206
 GameObject:
@@ -1000,8 +1009,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6626824537462871878}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -1.2261876e-25, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1009,7 +1018,7 @@ Transform:
   - {fileID: 6626824537113770205}
   - {fileID: 6626824536758715068}
   m_Father: {fileID: 6626824536947155889}
-  m_RootOrder: 7
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6626824537634215735
 GameObject:
@@ -1488,7 +1497,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4203470457943290, guid: 01c14961d9931d94f9ccb0cf0c46ba9f, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4203470457943290, guid: 01c14961d9931d94f9ccb0cf0c46ba9f, type: 3}
       propertyPath: m_LocalPosition.x

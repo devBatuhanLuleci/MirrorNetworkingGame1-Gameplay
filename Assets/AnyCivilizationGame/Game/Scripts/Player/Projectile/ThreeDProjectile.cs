@@ -174,7 +174,7 @@ namespace PredictedProjectileExample
 
             float t = 0;
            // Debug.Log(time / (initialVelocity ));
-                Debug.Log(BulletObj.transform.name);
+           
             while (t < time)
             {
 
