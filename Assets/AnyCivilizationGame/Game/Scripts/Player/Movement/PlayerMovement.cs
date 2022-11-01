@@ -139,15 +139,8 @@ public class PlayerMovement : NetworkBehaviour
     }
     public void SetPlayerRotationToTargetDirection(float targetPos)
     {
-        //if (movementState == MovementState.Idle)
-        //    return;
 
-
-        //var lookPos = targetPos - transform.position;
-        //lookPos.y = 0;
-        //var rotation = Quaternion.LookRotation(lookPos);
         transform.DORotateQuaternion(Quaternion.Euler(transform.rotation.eulerAngles.x, targetPos, transform.rotation.eulerAngles.z), rotationTurnSpeed).SetEase(Ease.InOutQuad);
-        //transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.Euler(transform.rotation.eulerAngles.x,targetPos ,transform.rotation.eulerAngles.z), Time.deltaTime * rotationSpeed);
     }
 
     /// <summary>
