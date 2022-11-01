@@ -336,6 +336,9 @@ public class PlayerAttack : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This function rotates the indicator object.
+    /// </summary>
     private void RotateIndicator()
     {
 
@@ -441,6 +444,9 @@ public class PlayerAttack : MonoBehaviour
         }
 
     }
+    /// <summary>
+    /// Reset bullet spawn point positions for auto attack bullet position.
+    /// </summary>
     private void ResetBulletSpawnPointPosition()
     {
 
@@ -468,7 +474,7 @@ public class PlayerAttack : MonoBehaviour
 
 }
 /// <summary>
-/// This class targets one single spawn point.
+/// This class takes bullet spawn point arguments.
 /// </summary>
 [System.Serializable]
 public class BulletSpawnPoint
