@@ -71,11 +71,11 @@ public class PlayerAttack : MonoBehaviour
     private void Start()
     {
 
-        UpdateSelection();
+        ActivateIndicator();
     }
     private void Update()
     {
-        SetAttackJoystickState();
+        ConfigureAttackState();
         SetLookPosition();
         RotateIndicator();
         SetBulletSpawnPointPosition();
@@ -90,10 +90,12 @@ public class PlayerAttack : MonoBehaviour
     {
 
         attackJoystick = OfflineGameManager.Instance.AttackJoystick;
-        player = this.gameObject.transform;
         threeDProjectile = GetComponent<ThreeDProjectile>();
         playerMovement = GetComponent<PlayerMovement>();
         Splats = GetComponentInChildren<SplatManager>();
+        player = this.gameObject.transform;
+
+
         foreach (BulletSpawnPoint spawnPoint in BulletSpawnPoints)
         {
             spawnPoint.BulletInitPos = spawnPoint.spawnPoint.localPosition;
@@ -185,14 +187,13 @@ public class PlayerAttack : MonoBehaviour
 
     }
 
-    public void SetAttackJoystickState()
+    public void ConfigureAttackState()
     {
-
+        // If Attack Button is pressing and it is not aiming.
         if (attackJoystick.joystickHeld && attackJoystick.Value.sqrMagnitude <= ClampedAttackJoystickOffset)
         {
             if (attackJoystickState != AttackJoystickState.Idle)
             {
-                //    Debug.LogError("Idle");
 
                 if (attackState == ShootingState.Aiming)
                 {
@@ -213,22 +214,21 @@ public class PlayerAttack : MonoBehaviour
             }
 
         }
-
+        // If Attack Button is pressing and it is aiming.
         else if (attackJoystick.joystickHeld && attackJoystick.Value.sqrMagnitude > ClampedAttackJoystickOffset)
         {
             if (attackJoystickState != AttackJoystickState.Holding)
             {
 
-                //  Debug.LogError("Holding");
                 attackState = ShootingState.Aiming;
                 attackJoystickState = AttackJoystickState.Holding;
-                UpdateSelection();
+                ActivateIndicator();
 
                 SelectAttackProjectile();
 
             }
         }
-
+        // If touch has released on attack button
         else if (!attackJoystick.joystickHeld && attackJoystick.Value.sqrMagnitude == 0)
         {
             if (attackJoystickState == AttackJoystickState.Holding)
@@ -236,8 +236,16 @@ public class PlayerAttack : MonoBehaviour
                 //Shoot here!
 
                 attackState = ShootingState.Shooting;
+
+
+                //Deactivate Projectile line.
                 CancelAttackProjectile();
+                
+                //Rotate character to bullet thrown rotation.
                 playerMovement.SetPlayerRotationToTargetDirection(CalculateAngle(player, attackLookAtPoint));
+
+
+                //Spawn the bullet object.
                 SpawnBullet();
 
             }
@@ -253,12 +261,15 @@ public class PlayerAttack : MonoBehaviour
                 {
                     //Auto-Attack
                     attackState = ShootingState.Shooting;
+                    //Auto spawn bullet on current player direction.
                     SpawnBullet(true);
                     
                 }
 
 
             }
+
+            //Reset bullet spawn point positions.
             ResetBulletSpawnPointPosition();
 
             attackJoystickState = AttackJoystickState.Up;
@@ -269,6 +280,13 @@ public class PlayerAttack : MonoBehaviour
 
     }
 
+
+    /// <summary>
+    /// Calculate angle between two vectors in 360 degrees.
+    /// </summary>
+    /// <param name="from initposition"></param>
+    /// <param name="to targetposition"></param>
+    /// <returns></returns>
     public float CalculateAngle(Transform from, Transform to)
     {
         float angle = Vector3.Angle((to.position - from.position), Vector3.forward);
@@ -281,8 +299,10 @@ public class PlayerAttack : MonoBehaviour
 
         return angle;
     }
-
-    private void UpdateSelection()
+    /// <summary>
+    /// Activate the indicator.
+    /// </summary>
+    private void ActivateIndicator()
     {
         if (splatType == SplatType.BasicIndicator)
         {
