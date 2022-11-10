@@ -33,10 +33,6 @@ namespace PredictedProjectileExample
         public GameObject BulletObj;
         private PlayerAttack playerAttack;
 
-        private bool throwable = false;
-
-
-
         float height;
         float angle;
         float v0;
@@ -56,9 +52,8 @@ namespace PredictedProjectileExample
 
             height = projectileType == ProjectileType.Bomb ? (targetPos.y + targetPos.magnitude / 2f) : 0;
             height = Mathf.Max(0.01f, height);
-            //float angle;
-            //float v0;
-            //float time;
+    
+
             CalculatePathWithHeight(targetPos, height, out v0, out angle, out time);
 
        
@@ -69,22 +64,10 @@ namespace PredictedProjectileExample
             targetPos = new Vector3(groundDirection.magnitude, direction.y, 0);
 
 
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-
-
-                //StopAllCoroutines();
-                //StopCoroutine(Coroutine_Movement(groundDirection.normalized, v0, angle, time));
-                StartCoroutine(Coroutine_Movement(BulletObj,groundDirection.normalized, v0, angle, time));
-
-
-            } 
         }
         public void ThrowThisObject()
         {
      
-
-           // StopAllCoroutines();
             StopCoroutine(Coroutine_Movement(BulletObj, groundDirection.normalized, v0, angle, time));
             StartCoroutine(Coroutine_Movement(BulletObj,groundDirection.normalized, v0, angle, time));
 

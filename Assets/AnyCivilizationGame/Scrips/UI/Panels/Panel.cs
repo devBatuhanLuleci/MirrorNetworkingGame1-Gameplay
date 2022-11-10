@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Panel : MonoBehaviour, IPanel
 {
+    private Panel currentPanel;
+
+
 
     public virtual void Close()
     {
@@ -19,9 +22,56 @@ public class Panel : MonoBehaviour, IPanel
         gameObject.SetActive(true);
         OnPanelShow();
     }
+    public T GetPanel<T>() where T : Panel
+    {
+        var props = this.GetType().GetFields();
+        for (int i = 0; i < props.Length; i++)
+        {
+            var item = props[i].GetValue(this);
+            if (item is T) return item as T;
 
+        }
+        return null;
+    }
+    protected void Show(Panel panel)
+    {
+        Debug.Log(IsChild(panel));
+
+        if (!IsChild(panel))
+        {
+            //  throw new System.Exception($"{panel.name} is not a child.of {this}");
+            Debug.LogError($"{panel.name} is not a child.of {this}");
+            return;
+        }
+
+        currentPanel?.Close();
+        panel.Show();
+        currentPanel = panel;
+    }
+    protected bool IsChild(Panel panel)
+    {
+
+
+        var props = this.GetType().GetFields();
+        for (int i = 0; i < props.Length; i++)
+        {
+            var item = props[i].GetValue(this);
+            if (item == panel)
+            {
+                return true;
+            }
+
+        }
+
+
+
+        return false;
+
+
+
+    }
     protected virtual void OnPanelShow() { }
     protected virtual void OnPanelClose() { }
 
- 
+
 }
