@@ -8,6 +8,7 @@ class GridSystemCameraController : MonoBehaviour
     public bool Rotate;
     protected Plane Plane;
     public float zoomValue;
+    public float speed = 1;
     private void Awake()
     {
         if (Camera == null)
@@ -37,34 +38,34 @@ class GridSystemCameraController : MonoBehaviour
                 {
                     GridManager.instance.inputState = GridManager.InputState.Dragging;
                 }
-                Camera.transform.Translate(Delta1, Space.World);
-                Camera.transform.position = new Vector3(Mathf.Clamp(Camera.transform.position.x, -5, 5), Camera.transform.position.y, Mathf.Clamp(Camera.transform.position.z, -30/zoomValue, 10/zoomValue));
+                Camera.transform.Translate(Delta1*speed, Space.World);
+            //    Camera.transform.position = new Vector3(Mathf.Clamp(Camera.transform.position.x, -5, 5), Camera.transform.position.y, Mathf.Clamp(Camera.transform.position.z, -30/zoomValue, 10/zoomValue));
             }
         }
 
         //Pinch
-        if (Input.touchCount >= 2)
-        {
-            var pos1 = PlanePosition(Input.GetTouch(0).position);
-            var pos2 = PlanePosition(Input.GetTouch(1).position);
-            var pos1b = PlanePosition(Input.GetTouch(0).position - Input.GetTouch(0).deltaPosition);
-            var pos2b = PlanePosition(Input.GetTouch(1).position - Input.GetTouch(1).deltaPosition);
+        //if (Input.touchCount >= 2)
+        //{
+        //    var pos1 = PlanePosition(Input.GetTouch(0).position);
+        //    var pos2 = PlanePosition(Input.GetTouch(1).position);
+        //    var pos1b = PlanePosition(Input.GetTouch(0).position - Input.GetTouch(0).deltaPosition);
+        //    var pos2b = PlanePosition(Input.GetTouch(1).position - Input.GetTouch(1).deltaPosition);
 
-            //calc zoom
-            var zoom = Vector3.Distance(pos1, pos2) /
-                       Vector3.Distance(pos1b, pos2b);
+        //    //calc zoom
+        //    var zoom = Vector3.Distance(pos1, pos2) /
+        //               Vector3.Distance(pos1b, pos2b);
 
-            //edge case
-            if (zoom == 0 || zoom > 10)
-                return;
+        //    //edge case
+        //    if (zoom == 0 || zoom > 10)
+        //        return;
 
-            zoomValue = zoom;
-            //Move cam amount the mid ray
-            Camera.transform.position = Vector3.LerpUnclamped(pos1, Camera.transform.position, 1 / zoom);
+        //    zoomValue = zoom;
+        //    //Move cam amount the mid ray
+        //    Camera.transform.position = Vector3.LerpUnclamped(pos1, Camera.transform.position, 1 / zoom);
 
-            if (Rotate && pos2b != pos2)
-                Camera.transform.RotateAround(pos1, Plane.normal, Vector3.SignedAngle(pos2 - pos1, pos2b - pos1b, Plane.normal));
-        }
+        //    if (Rotate && pos2b != pos2)
+        //        Camera.transform.RotateAround(pos1, Plane.normal, Vector3.SignedAngle(pos2 - pos1, pos2b - pos1b, Plane.normal));
+        //}
         if (Input.touchCount >= 1)
         {
 
@@ -107,10 +108,10 @@ class GridSystemCameraController : MonoBehaviour
         return Vector3.zero;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(transform.position, transform.position + transform.up);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawLine(transform.position, transform.position + transform.up);
+    //}
 #endif
     #endregion
 

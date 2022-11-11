@@ -17,9 +17,9 @@ public class SC_FPSCounter : MonoBehaviour
 
     private void Awake()
     {
-        Application.targetFrameRate = 90;
-        QualitySettings.vSyncCount = 1;
+        Application.targetFrameRate = 120;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        
     }
     // Use this for initialization
     void Start()

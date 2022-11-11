@@ -36,9 +36,10 @@ public class Grid : MonoBehaviour
 
     public Transform GridParent;
 
-
-    private void Start()
+    public void CreateGrids()
     {
+	
+	
 
         if (Grids.Count > 0)
             Grids.Clear();
@@ -66,6 +67,12 @@ public class Grid : MonoBehaviour
 
             }
         }
+
+
+    } 
+    private void Start()
+    {
+    //CreateGrids();
     }
 
 
