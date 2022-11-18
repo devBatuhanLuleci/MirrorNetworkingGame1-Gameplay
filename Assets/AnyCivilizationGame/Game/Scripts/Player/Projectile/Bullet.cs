@@ -2,31 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-public class Bullet : MonoBehaviour,IPooledObject
+using Mirror;
+
+public class Bullet : Throwable, IPooledObject
 {
 
 
-    Vector3 BulletEndDist;
 
     [SerializeField]
-    private float speed=0.5f;
+    private float speed = 0.5f;
 
-    private Collider bulletCollider;
-    private void Awake()
+    public void OnObjectSpawn(float rotAngle)
     {
-        bulletCollider = GetComponent<Collider>();
-    }
-   
-    public void OnObjectSpawn( float rotAngle)
-    {
-
         SetRotationOffThisObject(rotAngle);
-
     }
 
     public void SetRotationOffThisObject(float rotAngle)
     {
-        transform.rotation = Quaternion.Euler(0,rotAngle,0);
+        transform.rotation = Quaternion.Euler(0, rotAngle, 0);
     }
     private void OnCollisionEnter(Collision collision)
     {

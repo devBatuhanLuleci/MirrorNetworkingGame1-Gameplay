@@ -1,66 +1,62 @@
 using Mirror;
+using SimpleInputNamespace;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputHandler : NetworkBehaviour
+public class InputHandler : Singleton<InputHandler>
 {
     #region Public Fields
-
-    public NetworkIdentity NetworkIdentity { get; private set; }
+    [SerializeField] private Joystick MovementJoystick;
+    [SerializeField] private Joystick AttackJoystick;
     #endregion
 
     #region Private Fields
-
-    private OfflineGameManager gameManager;
-    private PlayerMovement PlayerMovement;
+    [SerializeField]
+    private PlayerController PlayerController;
     #endregion
 
 
-    private void Awake()
+    public void Init(PlayerController player)
     {
-        NetworkIdentity = GetComponent<NetworkIdentity>();
-        gameManager = OfflineGameManager.Instance;
-
+        PlayerController = player;
+        gameObject.SetActive(true);
     }
 
-    private void Start()
+    protected override void Awake()
     {
-        if (NetworkIdentity.isServer || NetworkIdentity.isLocalPlayer)
+        if (ACGNetworkManager.Instance.IsServer)
         {
-            PlayerMovement = GetComponent<PlayerMovement>();
+            Destroy(gameObject);
+            return;
         }
-    }
 
-    private void LateUpdate()
-    {
-        HandleInputs();
-    }
+        base.Awake();
+        gameObject.SetActive(false);
 
-    private void HandleInputs()
+    }
+    private void Update()
     {
-        if (!NetworkIdentity.isLocalPlayer || NetworkIdentity.isServer) return;
+        if (PlayerController == null) return;
         Move();
+        MainAttack();
+    }
+
+    private void MainAttack()
+    {
+        var targetingDirection = AttackJoystick.Value;
+        var held = AttackJoystick.joystickHeld;
+        PlayerController.Targeting(targetingDirection, held);
+
     }
 
     private void Move()
     {
-        var moveValue = gameManager.MovementJoystick.Value;
-        PlayerMovement.MovementSpriteHandler(moveValue);
-        if (moveValue.sqrMagnitude >= 0f)
-        {
-            MoveCmd(moveValue);
-        }
+        var moveValue = MovementJoystick.Value;
+        PlayerController.Move(moveValue);
     }
 
 
-    #region Command Methods
 
-    [Command]
-    public void MoveCmd(Vector2 move)
-    {
-        PlayerMovement.moveDirection = move;
-    }
-    #endregion
 }

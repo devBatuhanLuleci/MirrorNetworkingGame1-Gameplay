@@ -7,11 +7,11 @@ public class BasicIndicator : MonoBehaviour
     private LineRenderer AttackBasicIndicator;
     public LayerMask LayerMask;
     private float TrailDistance;
-    PlayerAttack playerAttack;
+    // PlayerAttack playerAttack;
     private void Awake()
     {
         AttackBasicIndicator = GetComponent<LineRenderer>();
-        playerAttack = transform.GetComponentInParent<PlayerAttack>();
+        // playerAttack = transform.GetComponentInParent<PlayerAttack>();
 
     }
     //private void OnDrawGizmos()
@@ -19,11 +19,11 @@ public class BasicIndicator : MonoBehaviour
     //    Debug.DrawRay(playerAttack.transform.position + new Vector3(0, .5f, 0), (playerAttack.lookPos.normalized )* TrailDistance, Color.green);
     //    //Debug.Log((transform.GetComponentInParent<PlayerAttack>().lookPos.normalized) * TrailDistance);
     //}
-    private void Update()
-    {
-        playerAttack.threeDProjectile.targetPoint.position = playerAttack.player.transform.position + ((playerAttack.lookPos.normalized) * playerAttack.Range);
-
-    }
+    // public Vector3 Show()
+    // {
+    //     // playerAttack.threeDProjectile.targetPoint.position = playerAttack.player.transform.position + ((playerAttack.lookPos.normalized) * playerAttack.Range);
+    //     return playerAttack.player.transform.position + ((playerAttack.lookPos.normalized) * playerAttack.Range);
+    // }
     public void RotateProjector(Transform player, Vector3 lookPos,Transform target,RaycastHit hit,float trailDistance)
     {
 
@@ -33,17 +33,11 @@ public class BasicIndicator : MonoBehaviour
         if (Physics.Raycast(player.transform.position, (lookPos.normalized), out hit, trailDistance, LayerMask))
         {
             AttackBasicIndicator.SetPosition(1, hit.point);
-
-
         }
         else
         {
             AttackBasicIndicator.SetPosition(1, player.transform.position + ((lookPos.normalized) * trailDistance));
         }
-
-     
-
-
     }
 
 

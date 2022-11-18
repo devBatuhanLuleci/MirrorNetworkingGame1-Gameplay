@@ -136,13 +136,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AmbientBrightness: 0.81
+    - _AmbientBrightness: 3.1
     - _Anime: 0
     - _AnimeSoftness: 0.01
     - _AnimeThreshold1: 0.45
     - _AnimeThreshold2: 0.85
     - _BlendOp: 0
-    - _Brightness: 1.03
+    - _Brightness: 1
     - _BumpScale: 1
     - _Contrast: 1
     - _Cull: 2

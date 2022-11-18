@@ -63,6 +63,23 @@ public class PlayerMovement : NetworkBehaviour
         {
             SetCurrentAnimation();
         }
+        ResetMovementInput();
+    }
+
+    /// <summary>
+    /// Reset movement input if player not send input on the network
+    /// </summary>
+    private void ResetMovementInput()
+    {
+        if (moveDirection.sqrMagnitude > 0)
+        {
+            moveDirection = moveDirection * 0.5f;
+        }
+        else
+        {
+            moveDirection = Vector2.zero;
+        }
+
     }
 
     public void MovementSpriteHandler(Vector2 moveInput)
@@ -92,7 +109,7 @@ public class PlayerMovement : NetworkBehaviour
     /// </summary>
     public void MovementStateHandler()
     {
-        if (moveDirection.sqrMagnitude < 0.01f)
+        if (moveDirection.sqrMagnitude < 0.1f)
         {
             if (movementState != MovementState.Idle)
             {
@@ -122,6 +139,7 @@ public class PlayerMovement : NetworkBehaviour
         {
             Vector3 dir = new Vector3(moveDirection.x, 0, moveDirection.y).normalized;
             transform.Translate(dir * movementSpeed, Space.World);
+
         }
     }
 
@@ -137,10 +155,9 @@ public class PlayerMovement : NetworkBehaviour
         var rotation = Quaternion.LookRotation(lookPos);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
     }
-    public void SetPlayerRotationToTargetDirection(float targetPos)
+    public Tween SetPlayerRotationToTargetDirection(float targetPos)
     {
-
-        transform.DORotateQuaternion(Quaternion.Euler(transform.rotation.eulerAngles.x, targetPos, transform.rotation.eulerAngles.z), rotationTurnSpeed).SetEase(Ease.InOutQuad);
+        return transform.DORotateQuaternion(Quaternion.Euler(transform.rotation.eulerAngles.x, targetPos, transform.rotation.eulerAngles.z), rotationTurnSpeed).SetEase(Ease.InOutQuad);
     }
 
     /// <summary>
@@ -160,7 +177,10 @@ public class PlayerMovement : NetworkBehaviour
         playerDirSprite.gameObject.SetActive(visiblityState);
     }
 
-
+    public void Move(Vector2 moveInput)
+    {
+        moveDirection = moveInput;
+    }
 
 
 

@@ -10,14 +10,15 @@ public class PlayerSetup : MonoBehaviour
     private void Awake()
     {
         NetworkIdentity = GetComponent<NetworkIdentity>();
-
     }
 
     private void Start()
     {
-        if (NetworkIdentity.isLocalPlayer)
+        if (NetworkIdentity.isLocalPlayer && !NetworkIdentity.isServer)
         {
             CameraController.Instance.Initialize(transform);
+            var player = GetComponent<PlayerController>();
+            InputHandler.Instance.Init(player);
         }
     }
 }

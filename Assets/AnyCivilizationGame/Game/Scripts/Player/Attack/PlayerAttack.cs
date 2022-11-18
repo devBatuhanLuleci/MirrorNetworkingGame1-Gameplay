@@ -1,22 +1,32 @@
 ﻿using DG.Tweening;
+using Mirror;
 using PredictedProjectileExample;
 using SimpleInputNamespace;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Werewolf.StatusIndicators.Components;
 
-public class PlayerAttack : MonoBehaviour
+public class PlayerAttack : NetworkBehaviour
 {
 
-    private Joystick attackJoystick;
+    //private Joystick attackJoystick;
+    public Vector2 AttackDirection { get; set; } = Vector2.zero;
+    public bool AttackHeld { get; set; } = false;
     [Space]
     #region States
+
+    #region SyncVariables
+
+
+    #endregion
+    public ShootingState attackState;
+
     public AttackJoystickState attackJoystickState;
     public enum AttackJoystickState { Up, Idle, Holding }
 
-    public ShootingState attackState;
     public enum ShootingState { Idle, Aiming, Reloading, Shooting, Cancelled }
 
 
@@ -60,27 +70,23 @@ public class PlayerAttack : MonoBehaviour
 
 
 
-
-
-    private void Awake()
-    {
-        InitilizeVariables();
-
-
-    }
     private void Start()
     {
-
+        //if (!netIdentity.isLocalPlayer) return;
+        InitilizeVariables();
         ActivateIndicator();
     }
-    private void Update()
+    public void Targeting(Vector2 attackDirection, bool attackHeld = false)
     {
+        //Debug.LogError($"Targeting attackDirection: {attackDirection} attackHeld: {attackHeld}");
+        if (!netIdentity.isLocalPlayer) return;
+        AttackDirection = attackDirection;
+        AttackHeld = attackHeld;
         ConfigureAttackState();
         SetLookPosition();
         RotateIndicator();
         SetBulletSpawnPointPosition();
-
-
+        threeDProjectile.targetPoint.position = player.transform.position + ((lookPos.normalized) * Range);
     }
 
     /// <summary>
@@ -88,11 +94,8 @@ public class PlayerAttack : MonoBehaviour
     /// </summary>
     public void InitilizeVariables()
     {
-
-        attackJoystick = OfflineGameManager.Instance.AttackJoystick;
-        threeDProjectile = GetComponent<ThreeDProjectile>();
+        InitilizeClientVariables();
         playerMovement = GetComponent<PlayerMovement>();
-        Splats = GetComponentInChildren<SplatManager>();
         player = this.gameObject.transform;
 
 
@@ -105,8 +108,12 @@ public class PlayerAttack : MonoBehaviour
 
     }
 
-
-
+    private void InitilizeClientVariables()
+    {
+        //AttackJoystick = OfflineGameManager.Instance.AttackJoystick;
+        threeDProjectile = GetComponent<ThreeDProjectile>();
+        Splats = GetComponentInChildren<SplatManager>();
+    }
 
     public void CancelAttackProjectile()
     {
@@ -127,20 +134,14 @@ public class PlayerAttack : MonoBehaviour
             case SplatType.AngleMissileBasic:
                 if (attackSplat.Manager != null)
                 {
-
                     attackSplat.Manager.CancelSpellIndicator();
                     attackSplat.ChangeTransparency(0);
-
                 }
 
                 break;
 
             case SplatType.BasicIndicator:
-
-
                 BasicIndicator.ResetProjector();
-
-
                 break;
 
             default:
@@ -156,28 +157,20 @@ public class PlayerAttack : MonoBehaviour
         switch (splatType)
         {
             case SplatType.LineMissileBasic:
-
                 if (attackSplat.Manager != null)
                 {
-
                     attackSplat.ChangeTransparency(attackSplat.transparencyValue);
-
                 }
-
                 break;
+
             case SplatType.AngleMissileBasic:
                 if (attackSplat.Manager != null)
                 {
-
                     attackSplat.ChangeTransparency(attackSplat.transparencyValue);
-
                 }
                 break;
+
             case SplatType.BasicIndicator:
-
-
-
-
                 break;
 
             default:
@@ -190,7 +183,7 @@ public class PlayerAttack : MonoBehaviour
     public void ConfigureAttackState()
     {
         // If Attack Button is pressing and it is not aiming.
-        if (attackJoystick.joystickHeld && attackJoystick.Value.sqrMagnitude <= ClampedAttackJoystickOffset)
+        if (AttackHeld && AttackDirection.sqrMagnitude <= ClampedAttackJoystickOffset)
         {
             if (attackJoystickState != AttackJoystickState.Idle)
             {
@@ -215,38 +208,32 @@ public class PlayerAttack : MonoBehaviour
 
         }
         // If Attack Button is pressing and it is aiming.
-        else if (attackJoystick.joystickHeld && attackJoystick.Value.sqrMagnitude > ClampedAttackJoystickOffset)
+        else if (AttackHeld && AttackDirection.sqrMagnitude > ClampedAttackJoystickOffset)
         {
             if (attackJoystickState != AttackJoystickState.Holding)
             {
-
                 attackState = ShootingState.Aiming;
                 attackJoystickState = AttackJoystickState.Holding;
                 ActivateIndicator();
-
                 SelectAttackProjectile();
-
             }
         }
         // If touch has released on attack button
-        else if (!attackJoystick.joystickHeld && attackJoystick.Value.sqrMagnitude == 0)
+        else if (!AttackHeld && AttackDirection.sqrMagnitude == 0)
         {
             if (attackJoystickState == AttackJoystickState.Holding)
             {
                 //Shoot here!
-
                 attackState = ShootingState.Shooting;
 
 
                 //Deactivate Projectile line.
                 CancelAttackProjectile();
-                
-                //Rotate character to bullet thrown rotation.
-                playerMovement.SetPlayerRotationToTargetDirection(CalculateAngle(player, attackLookAtPoint));
+                var angle = CalculateAngle(player, attackLookAtPoint);
 
 
                 //Spawn the bullet object.
-                SpawnBullet();
+                CmdFire(false, angle);
 
             }
 
@@ -261,9 +248,10 @@ public class PlayerAttack : MonoBehaviour
                 {
                     //Auto-Attack
                     attackState = ShootingState.Shooting;
+
                     //Auto spawn bullet on current player direction.
-                    SpawnBullet(true);
-                    
+                    CmdFire(true, CalculateAngle(player, attackLookAtPoint));
+
                 }
 
 
@@ -271,10 +259,7 @@ public class PlayerAttack : MonoBehaviour
 
             //Reset bullet spawn point positions.
             ResetBulletSpawnPointPosition();
-
             attackJoystickState = AttackJoystickState.Up;
-
-
 
         }
 
@@ -319,15 +304,11 @@ public class PlayerAttack : MonoBehaviour
     {
         if (attackJoystickState == AttackJoystickState.Holding)
         {
-
-
-            attackLookAtPoint.position = new Vector3(attackJoystick.Value.x + player.position.x, 0f, attackJoystick.Value.y + player.position.z);
-
+            attackLookAtPoint.position = new Vector3(AttackDirection.x + player.position.x, 0f, AttackDirection.y + player.position.z);
         }
         else
         {
             attackLookAtPoint.position = new Vector3(player.position.x + player.forward.x, 0f, player.position.z + player.forward.z);
-
         }
         Vector3 targetDir = attackLookAtPoint.transform.position - player.transform.position;
         lookPos = targetDir;
@@ -362,12 +343,14 @@ public class PlayerAttack : MonoBehaviour
 
 
         }
-      
+
     }
     /// <summary>
     /// This function spawns bullet and throw with some informations.
     /// </summary>
-    public void SpawnBullet(bool isAutoattack = false)
+    /// 
+    [Command]
+    public void CmdFire(bool isAutoattack, float angle)
     {
         #region MultipleBullet
 
@@ -385,23 +368,38 @@ public class PlayerAttack : MonoBehaviour
         // Debug.Log(Bullet.transform.name + " " + objectPooler.pools[0].tag);
         #endregion
 
+        //Rotate character to bullet thrown rotation and spawnBullet.
+        playerMovement.SetPlayerRotationToTargetDirection(angle).onComplete = () =>
+        {
+            SpawnBullet(isAutoattack, angle);
+        };
+    }
+
+    private void SpawnBullet(bool isAutoattack, float angle)
+    {
+
         // We are spawning Bullet object from object pooler with extra location and rotation parameters.
+        var spawnedBullet = ObjectPooler.Instance.SpawnFromPool(Bullet.transform.name, BulletSpawnPoints[0].spawnPoint.position, transform.rotation, this, isAutoattack ? transform.rotation.eulerAngles.y : angle, 0);
 
 
-        GameObject spawnedBullet = ObjectPooler.Instance.SpawnFromPool(Bullet.transform.name, BulletSpawnPoints[0].spawnPoint.position, transform.rotation, this, isAutoattack ? transform.rotation.eulerAngles.y : CalculateAngle(player, attackLookAtPoint), 0);
-        threeDProjectile.BulletObj = spawnedBullet;
+        //var spawnedBullet = Instantiate(Bullet, BulletSpawnPoints[0].spawnPoint.position, transform.rotation);
+
+
+        //threeDProjectile.BulletObj = spawnedBullet;
 
         //Fire that selected bullet object.
-        threeDProjectile.ThrowThisObject();
+
+        spawnedBullet.GetComponent<Bullet>().Throw(new Vector3[] { spawnedBullet.transform.position, spawnedBullet.transform.forward.normalized * 500 });
+        NetworkServer.Spawn(spawnedBullet);
+
     }
+
 
     /// <summary>
     /// This function handles multiple bullet position on player.
     /// </summary>
     private void SetBulletSpawnPointPosition()
     {
-
-
 
         if (attackJoystickState == AttackJoystickState.Holding)
         {
@@ -415,28 +413,12 @@ public class PlayerAttack : MonoBehaviour
                 foreach (BulletSpawnPoint BulletSpawnPoint in BulletSpawnPoints)
                 {
 
-
-
-
                     BulletSpawnPoint.spawnPoint.eulerAngles = new Vector3(0, CalculateAngle(player, attackLookAtPoint), 0);
-
-
                     var BulletPosition = new Vector3(player.transform.position.x + (lookPos.normalized.x * BulletSpawnPoint.BulletInitPos.z) + offsetVector.x * BulletSpawnPoint.BulletInitPos.x,
                                                              BulletSpawnPoint.spawnPoint.position.y,
                                                              player.transform.position.z + (lookPos.normalized.z * BulletSpawnPoint.BulletInitPos.z) + offsetVector.z * BulletSpawnPoint.BulletInitPos.x);
-
-
-
-
-
-
                     BulletSpawnPoint.spawnPoint.position = BulletPosition;
-
-
                 }
-
-
-
             }
         }
 
