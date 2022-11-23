@@ -22,16 +22,23 @@ public class Bullet : Throwable, IPooledObject
         time = speed;
     }
 
-
+    /// <summary>
+    /// This method calls from when the bullet spawn from pool.
+    /// </summary>
+    /// <param name="rotAngle"></param>
     public void OnObjectSpawn(float rotAngle)
     {
         SetRotationOffThisObject(rotAngle);
     }
-
+    /// <summary>
+    /// This function sets the rotation of bullet when it is spawn.
+    /// </summary>
+    /// <param name="rotAngle"></param>
     public void SetRotationOffThisObject(float rotAngle)
     {
         transform.rotation = Quaternion.Euler(0, rotAngle, 0);
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent<PlayerController>(out var enemy) && netIdentity.isServer)

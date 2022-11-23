@@ -38,6 +38,7 @@ public class BasicIndicator : MonoBehaviour
         {
             AttackBasicIndicator.SetPosition(1, player.transform.position + ((lookPos.normalized) * trailDistance));
         }
+
     }
 
 

@@ -38416,6 +38416,7 @@ GameObject:
   - component: {fileID: 1869173212}
   - component: {fileID: 1869173213}
   - component: {fileID: 1869173214}
+  - component: {fileID: 1869173215}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -38459,9 +38460,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20badb2e43573b5489de7e87737be6b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   movementState: 0
+  moveDirection: {x: 0, y: 0}
   playerDirSprite: {fileID: 847932691}
   rotationSpeed: 14
+  rotationTurnSpeed: 0.4
   movementSpeed: 0.02
   DirectionSpriteScale: 2
   PlayerAnimatorController: {fileID: 1530917087}
@@ -38484,17 +38489,22 @@ MonoBehaviour:
   Range: 3.6
   lookPos: {x: 0, y: 0, z: 0}
   attackLookAtPoint: {fileID: 1750828598}
+  player: {fileID: 0}
   BulletSpawnPoints:
   - SpawnPointName: BulletDefaultSpawnPoint
     spawnPoint: {fileID: 2023895255}
     BulletInitPos: {x: 0, y: 0, z: 0}
+    BulletInitRot: {x: 0, y: 0, z: 0}
   - SpawnPointName: BulletLeftSpawnPoint
     spawnPoint: {fileID: 2062717366}
     BulletInitPos: {x: 0, y: 0, z: 0}
+    BulletInitRot: {x: 0, y: 0, z: 0}
   - SpawnPointName: BulletRightSpawnPoint
     spawnPoint: {fileID: 1702398646}
     BulletInitPos: {x: 0, y: 0, z: 0}
+    BulletInitRot: {x: 0, y: 0, z: 0}
   Bullet: {fileID: 7995885019731338434, guid: ed3358c4efc259f4980810956bb328e9, type: 3}
+  threeDProjectile: {fileID: 0}
 --- !u!114 &1869173214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38513,6 +38523,23 @@ MonoBehaviour:
   firePoint: {fileID: 2023895255}
   targetPoint: {fileID: 704525807}
   BulletObj: {fileID: 0}
+--- !u!114 &1869173215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869173208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 1713533931
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!1001 &1874396332
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43019,7 +43046,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

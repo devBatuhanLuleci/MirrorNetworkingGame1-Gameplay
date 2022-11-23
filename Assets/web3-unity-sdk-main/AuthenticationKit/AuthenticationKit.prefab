@@ -1267,6 +1267,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79c8fa24db406244db3ad98c3d511c21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moralisID: 
+  walletAddr: 
   _willInitializeOnStart: 1
   _signAndLoginToMoralis: 1
   OnConnected:
@@ -2032,14 +2034,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd6be4bbb9b40ea854620c0fadb255c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _authenticationKit: {fileID: 3876187000511888102}
   _iosPlatform: {fileID: 5960147524383832346}
   _walletConnectPlatform: {fileID: 5960147524612815101}
-  _connectButton: {fileID: 5960147524468780590}
-  _disconnectButton: {fileID: 5960147523946594279}
   _retryButton: {fileID: 1710447951954220109}
   _statusText: {fileID: 7719833343429020056}
-  _backgroundImage: {fileID: 9043788976697764418}
   _backgroundImageColor: {r: 0, g: 0, b: 0, a: 0.5}
 --- !u!1001 &5960147523641222743
 PrefabInstance:

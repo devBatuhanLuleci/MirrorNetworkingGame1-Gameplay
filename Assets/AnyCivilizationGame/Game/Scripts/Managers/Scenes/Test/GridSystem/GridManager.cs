@@ -10,6 +10,7 @@ public class GridManager : MonoBehaviour
 
     private void Awake()
     {
+       
         instance = this;
     }
 

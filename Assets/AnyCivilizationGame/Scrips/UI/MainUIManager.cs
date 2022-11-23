@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-public class MainUIManager : Singleton<MainUIManager>
+class MainUIManager : Panel
 {
     [Header("Setup")]
     public Panel loadingPanel;
@@ -12,17 +12,24 @@ public class MainUIManager : Singleton<MainUIManager>
     public Panel PickCharacterPanel;
     public Panel CharacterNFTMintPanel;
     public Panel lobbyPanel;
-
+    public Panel mainMenuPanel;
     [Space]
     [SerializeField]
     public Panel startPanel = null;
 
+    public static MainUIManager Instance
+    {
+        get;   // get method
+        private set;
+    }
 
-    private Panel currentPanel;
 
     #region MonoBehavior Methods
 
-
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -38,45 +45,31 @@ public class MainUIManager : Singleton<MainUIManager>
     {
         AddListeners();
         // if statPnael not null set startpanel else set LadingPanel
-        currentPanel = startPanel ?? loadingPanel;
-        ShowPanel(currentPanel);
-    }
+        var currentPanel = startPanel ?? loadingPanel;
+        Show(currentPanel);
+       
+    }   
 
 
 
     public void MoralisLogin()
     {
-        ShowPanel(loginPanel);
+        Show(loginPanel);
     }
 
     public void PickCharacterPanelShow()
     {
-        ShowPanel(PickCharacterPanel);
+        Show(PickCharacterPanel);
     }
 
-    public T GetPanel<T>() where T : Panel
-    {
-        var props = this.GetType().GetFields();
-        for (int i = 0; i < props.Length; i++)
-        {
-            var item = props[i].GetValue(this);
-            if (item is T) return item as T;
 
-        }
-        return null;
-    }
     /// <summary>
     /// Check Server update
     /// </summary>
     private void CheckServer()
     {
     }
-    private void ShowPanel(Panel panel)
-    {
-        currentPanel.Close();
-        panel.Show();
-        currentPanel = panel;
-    }
+
 
     #endregion
 
@@ -112,12 +105,12 @@ public class MainUIManager : Singleton<MainUIManager>
     {
         // TODO check user have any nft character 
         // ?f not  open Nft buy panel
-        ShowPanel(lobbyPanel);
+        Show(mainMenuPanel);
 
     }
     private void OnUserUnregister()
     {
-        ShowPanel(registerPanel);
+        Show(registerPanel);
     }
 
     internal void Login()
@@ -138,7 +131,7 @@ public class MainUIManager : Singleton<MainUIManager>
                 Debug.Log("login with Admin");
                 break;
             case LoginType.None:
-                ShowPanel(lobbyPanel);
+                Show(mainMenuPanel);
                 break;
             default:
                 break;

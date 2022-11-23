@@ -22,6 +22,7 @@ public class InfoPopup: PopupPanel
         var info = new InfoPopupValue(msg);
         PopupManager.Show<InfoPopup>(info);
     }
+
 }
 
 public class InfoPopupValue : IPopupValue

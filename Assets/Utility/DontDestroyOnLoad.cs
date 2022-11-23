@@ -9,7 +9,9 @@ public class DontDestroyOnLoad : MonoBehaviour
 
     private void Awake()
     {
-        if(string.IsNullOrEmpty(parent))
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
+        if (string.IsNullOrEmpty(parent))
         {
             DontDestroyOnLoad(gameObject);
         }
