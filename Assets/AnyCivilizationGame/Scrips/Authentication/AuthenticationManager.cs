@@ -88,11 +88,11 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
 
     public void ServerReady()
     {
-        ACGNetworkManager.Instance.StartServer((ushort)Port);
+        ACGDataManager.Instance.StartServer((ushort)Port);
     }
     public void ClientReady()
     {
-        ACGNetworkManager.Instance.StartClient("localhost", (ushort)Port);
+        ACGDataManager.Instance.StartClient("localhost", (ushort)Port);
     }
     #endregion
     #region Login Methods

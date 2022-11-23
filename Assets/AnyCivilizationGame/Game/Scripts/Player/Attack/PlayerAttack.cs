@@ -79,7 +79,7 @@ public class PlayerAttack : NetworkBehaviour
     public void Targeting(Vector2 attackDirection, bool attackHeld = false)
     {
         //Debug.LogError($"Targeting attackDirection: {attackDirection} attackHeld: {attackHeld}");
-        if (!netIdentity.isLocalPlayer) return;
+        //if (!netIdentity.isLocalPlayer) return;
         AttackDirection = attackDirection;
         AttackHeld = attackHeld;
         ConfigureAttackState();
@@ -124,10 +124,8 @@ public class PlayerAttack : NetworkBehaviour
 
                 if (attackSplat.Manager != null)
                 {
-
                     attackSplat.Manager.CancelSpellIndicator();
                     attackSplat.ChangeTransparency(0);
-
                 }
 
                 break;
@@ -292,12 +290,10 @@ public class PlayerAttack : NetworkBehaviour
         if (splatType == SplatType.BasicIndicator)
         {
             BasicIndicator.gameObject.SetActive(true);
-
         }
         else
         {
             Splats.SelectSpellIndicator(splatType.ToString());
-
         }
     }
     private void SetLookPosition()
@@ -326,8 +322,6 @@ public class PlayerAttack : NetworkBehaviour
 
             if (splatType == SplatType.BasicIndicator)
             {
-
-
                 BasicIndicator.RotateProjector(player, lookPos, threeDProjectile.targetPoint, hit, Range);
             }
             else
@@ -379,25 +373,30 @@ public class PlayerAttack : NetworkBehaviour
     {
 
         // We are spawning Bullet object from object pooler with extra location and rotation parameters.
-        var spawnedBullet = ObjectPooler.Instance.SpawnFromPool(Bullet.transform.name, BulletSpawnPoints[0].spawnPoint.position, transform.rotation, this, isAutoattack ? transform.rotation.eulerAngles.y : angle, 0);
+        var spawnedBullet = ObjectPooler.Instance.SpawnFromPool(Bullet.transform.name, BulletSpawnPoints[0].spawnPoint.position, transform.rotation, this, isAutoattack ? transform.rotation.eulerAngles.y : angle, 0).GetComponent<Bullet>();
 
 
         //var spawnedBullet = Instantiate(Bullet, BulletSpawnPoints[0].spawnPoint.position, transform.rotation);
 
-
         //threeDProjectile.BulletObj = spawnedBullet;
 
+        
+        var lobbyPlayer = ACGDataManager.Instance.LobbyPlayer;
         //Fire that selected bullet object.
+        var targetPos = transform.forward.normalized * 5;
+        targetPos.y = spawnedBullet.transform.position.y;
 
-        spawnedBullet.GetComponent<Bullet>().Throw(new Vector3[] { spawnedBullet.transform.position, spawnedBullet.transform.forward.normalized * 500 });
-        NetworkServer.Spawn(spawnedBullet);
+        //spawnedBullet.GetComponent<Bullet>().Init(lobbyPlayer.UserName, netId);
+        spawnedBullet.Init("Debug User " + netId, netId);
+        spawnedBullet.Throw(new Vector3[] { spawnedBullet.transform.position, targetPos });
+        NetworkServer.Spawn(spawnedBullet.gameObject);
 
     }
 
 
     /// <summary>
     /// This function handles multiple bullet position on player.
-    /// </summary>
+    /// </summary>ö
     private void SetBulletSpawnPointPosition()
     {
 
@@ -433,15 +432,8 @@ public class PlayerAttack : NetworkBehaviour
 
             foreach (BulletSpawnPoint BulletSpawnPoint in BulletSpawnPoints)
             {
-
-
-
-
                 BulletSpawnPoint.spawnPoint.localEulerAngles = BulletSpawnPoint.BulletInitRot;
-
                 BulletSpawnPoint.spawnPoint.localPosition = BulletSpawnPoint.BulletInitPos;
-
-
             }
         }
 

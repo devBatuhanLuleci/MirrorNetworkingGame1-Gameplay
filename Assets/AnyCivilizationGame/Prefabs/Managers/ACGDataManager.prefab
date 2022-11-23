@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8584755591091565463}
   - component: {fileID: 8584755591091565461}
   m_Layer: 0
-  m_Name: ACGNetworkManager
+  m_Name: ACGDataManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,17 +1,17 @@
+using Mirror;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static PredictedProjectileExample.ThreeDProjectile;
 
-public class Throwable : MonoBehaviour
+public class Throwable : NetworkBehaviour
 {
+    protected float time;
 
     private Coroutine throwingCoroutine;
-    float movemenTime = 0;
+    private float movemenTime = 0;
 
-    public void Throw(Vector3[] path, float time = 2f)
+    public void Throw(Vector3[] path)
     {
-        throwingCoroutine = StartCoroutine(Coroutine_Movement(path, time));
+        throwingCoroutine = StartCoroutine(Coroutine_Movement(path));
     }
 
     private void Update()
@@ -26,7 +26,7 @@ public class Throwable : MonoBehaviour
 
     }
 
-    IEnumerator Coroutine_Movement(Vector3[] path, float time)
+    IEnumerator Coroutine_Movement(Vector3[] path)
     {
         movemenTime += Time.deltaTime;
         var flow = movemenTime / time;
@@ -41,6 +41,7 @@ public class Throwable : MonoBehaviour
             if (Vector3.Distance(transform.position, currentPosition) <= 0.01f)
             {
                 index++;
+                index = Mathf.Min(index, lastIndex);
                 currentPosition = path[index];
             }
             yield return null;

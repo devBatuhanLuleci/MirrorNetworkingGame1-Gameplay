@@ -19,6 +19,9 @@ public class PlayerSetup : MonoBehaviour
             CameraController.Instance.Initialize(transform);
             var player = GetComponent<PlayerController>();
             InputHandler.Instance.Init(player);
+        }else if (NetworkIdentity.isServer)
+        {
+            GetComponent<Health>().ResetValues();
         }
     }
 }

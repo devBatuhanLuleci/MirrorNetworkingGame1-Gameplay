@@ -1,21 +1,28 @@
 using kcp2k;
 using Mirror;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ACGNetworkManager : MonoBehaviour
+public class ACGDataManager : MonoBehaviour
 {
-    private static ACGNetworkManager instance;
-    public static ACGNetworkManager Instance { get { return instance; } }
+    private static ACGDataManager instance;
+    public static ACGDataManager Instance { get { return instance; } }
     [SerializeField]
     private string gameSceneName = "GameScene";
-    public ushort Port { get; private set; }
-    public string NetworkAddress { get; private set; }
-    public bool IsServer { get; private set; }
+
+    public GameData GameData { get; private set; }
+    public LobbyPlayer LobbyPlayer { get;  set; }
 
     public void Awake()
     {
         InitSingleton();
+        InitDatas();
+    }
+
+    private void InitDatas()
+    {
+        GameData = new GameData();
     }
 
     private void InitSingleton()
@@ -33,8 +40,8 @@ public class ACGNetworkManager : MonoBehaviour
 
     public void StartServer(ushort port)
     {
-        IsServer = true;
-        Port = port;
+        GameData.IsServer = true;
+        GameData.Port = port;
         //var transport = GetComponent<KcpTransport>();
         //transport.Port = port;
         //StartServer();
@@ -43,9 +50,9 @@ public class ACGNetworkManager : MonoBehaviour
 
     public void StartClient(string netAddress, ushort port)
     {
-        IsServer = false;
-        Port = port;
-        NetworkAddress = netAddress;
+        GameData.IsServer = false;
+        GameData.Port = port;
+        GameData.NetworkAddress = netAddress;
 
         //var transport = GetComponent<KcpTransport>();
 

@@ -29,7 +29,7 @@ public class MatchNetworkManager : NetworkManager
     public override void Start()
     {
         base.Start();
-        if (ACGNetworkManager.Instance.IsServer)
+        if (ACGDataManager.Instance.GameData.IsServer)
         {
             StartServerNetwork();
         }
@@ -40,8 +40,8 @@ public class MatchNetworkManager : NetworkManager
     }
     private void StartClientNetwork()
     {
-        networkAddress = ACGNetworkManager.Instance.NetworkAddress;
-        GetComponent<KcpTransport>().Port = ACGNetworkManager.Instance.Port;
+        networkAddress = ACGDataManager.Instance.GameData.NetworkAddress;
+        GetComponent<KcpTransport>().Port = ACGDataManager.Instance.GameData.Port;
         StartClient();
 
     }
@@ -53,7 +53,7 @@ public class MatchNetworkManager : NetworkManager
             Debug.LogError("when starting the server KcpTransport is not found!");
             return;
         }
-        transport.Port = ACGNetworkManager.Instance.Port;
+        transport.Port = ACGDataManager.Instance.GameData.Port;
         StartServer();
 
         var prefab = Resources.Load<NetworkedGameManager>(nameof(NetworkedGameManager));
@@ -63,7 +63,7 @@ public class MatchNetworkManager : NetworkManager
         NetworkedGameManager.Instance.ServerStarted();
         players = new Dictionary<int, NetworkConnectionToClient>();
 
-        LoadBalancer.Instance.SpawnServer.SendClientRequestToServer(new OnReadyEvent(ACGNetworkManager.Instance.Port));
+        LoadBalancer.Instance.SpawnServer.SendClientRequestToServer(new OnReadyEvent(ACGDataManager.Instance.GameData.Port));
         NetworkedGameManager.Instance.Info("OnReadyEvent msg sended to master server.");
     }
     public override void OnServerConnect(NetworkConnectionToClient conn)

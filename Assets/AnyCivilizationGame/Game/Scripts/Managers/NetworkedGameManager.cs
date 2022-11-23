@@ -29,7 +29,7 @@ public class NetworkedGameManager : NetworkBehaviour
     
     private void Start()
     {
-        if (!ACGNetworkManager.Instance.IsServer)
+        if (!ACGDataManager.Instance.GameData.IsServer)
         {
             ClientStarted();
             CmdReady();
@@ -51,14 +51,14 @@ public class NetworkedGameManager : NetworkBehaviour
         //    NetworkClient.RegisterPrefab(vfxManagerPrefab.gameObject);
         //}
 
-        string msg = $"Client Started. Port: {ACGNetworkManager.Instance.Port}";
+        string msg = $"Client Started. Port: {ACGDataManager.Instance.GameData.Port}";
         Info(msg);
     }
     public void ServerStarted()
     {
 
         // Setup();
-        string msg = $" <color=green> Server listining on </color> localhost:{ACGNetworkManager.Instance.Port}";
+        string msg = $" <color=green> Server listining on </color> localhost:{ACGDataManager.Instance.GameData.Port}";
         Info(msg);
     }
 

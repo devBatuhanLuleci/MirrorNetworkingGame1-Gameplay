@@ -10,12 +10,18 @@ public  class PlayerController : NetworkBehaviour
 {
     private PlayerMovement movement;
     private PlayerAttack attack;
+    private Health health;
     private void Awake()
     {
         movement = GetComponent<PlayerMovement>();
         attack = GetComponent<PlayerAttack>();
+        health = GetComponent<Health>();
     }
     #region Input Methods
+    public virtual void TakeDamage(int damage)
+    {
+        health.TakeDamage(damage);
+    }
     public virtual void Move(Vector2 move)
     {
         movement.MovementSpriteHandler(move);

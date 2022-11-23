@@ -7,7 +7,7 @@ using UnityEngine;
 public class LobbyManager : EventManagerBase
 {
     public override LoadBalancerEvent loadBalancerEvent { get; protected set; } = LoadBalancerEvent.Lobby;
-    public LobbyPlayer LobbyPlayer { get; set; }
+    public LobbyPlayer LobbyPlayer { get { return ACGDataManager.Instance.LobbyPlayer; } set { ACGDataManager.Instance.LobbyPlayer = value; } }
 
     public LobbyManager(LoadBalancer loadBalancer) : base(loadBalancer)
     {
