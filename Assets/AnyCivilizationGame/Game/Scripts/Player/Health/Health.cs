@@ -7,7 +7,7 @@ public class Health : NetworkBehaviour
 {
     public int MaxHealth { get; private set; } = 100;
 
-    [SyncVar(hook = "RefreshUI")]
+    [SyncVar]
     public int Value;
 
     public void TakeDamage(int damage)
