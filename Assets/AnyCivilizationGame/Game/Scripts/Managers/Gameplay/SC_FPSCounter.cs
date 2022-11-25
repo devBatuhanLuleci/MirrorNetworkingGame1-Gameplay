@@ -17,7 +17,7 @@ public class SC_FPSCounter : MonoBehaviour
 
     private void Awake()
     {
-        Application.targetFrameRate = 120;
+        Application.targetFrameRate = 60;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         
     }
@@ -52,6 +52,6 @@ public class SC_FPSCounter : MonoBehaviour
     void OnGUI()
     {
         //Display the fps and round to 2 decimals
-        GUI.Label(new Rect(5, 5, 100, 25), fps.ToString("F2") + "FPS", textStyle);
+        GUI.Label(new Rect(15, 10, 100, 25), fps.ToString("F2") + "FPS", textStyle);
     }
 }
