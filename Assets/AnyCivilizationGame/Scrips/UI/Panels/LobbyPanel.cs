@@ -161,6 +161,8 @@ public class LobbyPanel : Panel
 
     private void SendClientRequestToServer(IEvent ev)
     {
+        if(LoadBalancer.Instance == null) Debug.LogError("LoadBalancer is null!");
+        if(LoadBalancer.Instance.LobbyManager == null) Debug.LogError("LobbyManager is null!");
         LoadBalancer.Instance.LobbyManager.SendClientRequestToServer(ev);
     }
 
