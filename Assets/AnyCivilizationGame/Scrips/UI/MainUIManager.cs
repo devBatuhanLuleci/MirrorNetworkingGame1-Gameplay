@@ -105,7 +105,7 @@ class MainUIManager : Panel
     {
         // TODO check user have any nft character 
         // ?f not  open Nft buy panel
-        Show(mainMenuPanel);
+        Show(lobbyPanel);
 
     }
     private void OnUserUnregister()
@@ -131,7 +131,7 @@ class MainUIManager : Panel
                 Debug.Log("login with Admin");
                 break;
             case LoginType.None:
-                Show(mainMenuPanel);
+                Show(lobbyPanel);
                 break;
             default:
                 break;
