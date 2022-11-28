@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4203470457943290}
   - component: {fileID: 95319963403342656}
   m_Layer: 0
-  m_Name: clothingSet_04_And_nackedSet
+  m_Name: Character1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

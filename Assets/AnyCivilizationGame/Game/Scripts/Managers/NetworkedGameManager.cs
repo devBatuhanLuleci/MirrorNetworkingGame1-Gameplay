@@ -108,7 +108,7 @@ public class NetworkedGameManager : NetworkBehaviour
         Debug.LogError("Ready!");
         playerCount++;
         SetPlayerCount(playerCount);
-        if (playerCount > 2)
+        if (playerCount > 0)
         {
             RpcStartGame();
         }

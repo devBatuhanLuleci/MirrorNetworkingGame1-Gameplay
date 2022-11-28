@@ -41,8 +41,7 @@ public class PlayerMovement : NetworkBehaviour
     private float DirectionSpriteScale = 2f;
 
 
-    [SerializeField]
-    private Animator PlayerAnimatorController;
+    public Animator PlayerAnimatorController;
 
 
     private void Start()
@@ -96,11 +95,11 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (movementState == MovementState.Idle)
         {
-            PlayerAnimatorController.SetBool("Running", false);
+            PlayerAnimatorController?.SetBool("Running", false);
         }
         else if (movementState == MovementState.Moving)
         {
-            PlayerAnimatorController.SetBool("Running", true);
+            PlayerAnimatorController?.SetBool("Running", true);
         }
     }
 
@@ -113,16 +112,14 @@ public class PlayerMovement : NetworkBehaviour
         {
             if (movementState != MovementState.Idle)
             {
-                movementState = MovementState.Idle;
-                SetCurrentAnimation();
+                movementState = MovementState.Idle;            
             }
         }
         else
         {
             if (movementState != MovementState.Moving)
             {
-                movementState = MovementState.Moving;
-                SetCurrentAnimation();
+                movementState = MovementState.Moving;               
             }
         }
     }
