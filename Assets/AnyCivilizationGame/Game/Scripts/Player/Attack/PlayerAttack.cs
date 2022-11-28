@@ -353,7 +353,7 @@ public class PlayerAttack : NetworkBehaviour
     /// </summary>
     /// 
     [Command]
-    public void CmdFire(bool isAutoattack, float angle, Vector3 dir, float speed, float angleNew, float timeNew,float initialVelocity)
+    public void CmdFire(bool isAutoattack, float angle, Vector3 dir, float speed, float angleNew, float timeNew, float initialVelocity)
     {
         #region MultipleBullet
 
@@ -374,7 +374,7 @@ public class PlayerAttack : NetworkBehaviour
         //Rotate character to bullet thrown rotation and spawnBullet.
         playerMovement.SetPlayerRotationToTargetDirection(angle).onComplete = () =>
         {
-            SpawnBullet(isAutoattack, angle,dir,speed,angleNew,timeNew,initialVelocity);
+            SpawnBullet(isAutoattack, angle, dir, speed, angleNew, timeNew, initialVelocity);
         };
     }
 
@@ -382,14 +382,14 @@ public class PlayerAttack : NetworkBehaviour
     {
 
         // We are spawning Bullet object from object pooler with extra location and rotation parameters.
-        var spawnedBullet = ObjectPooler.Instance.SpawnFromPool(Bullet.transform.name, BulletSpawnPoints[0].spawnPoint.position, transform.rotation, this, isAutoattack ? transform.rotation.eulerAngles.y : angle, 0).GetComponent<Bullet>();
+        var spawnedBullet = ObjectPooler.Instance.Get(Bullet.transform.name, BulletSpawnPoints[0].spawnPoint.position, transform.rotation).GetComponent<Bullet>();
 
 
         //var spawnedBullet = Instantiate(Bullet, BulletSpawnPoints[0].spawnPoint.position, transform.rotation);
 
         //threeDProjectile.BulletObj = spawnedBullet;
 
-        
+
         var lobbyPlayer = ACGDataManager.Instance.LobbyPlayer;
         //Fire that selected bullet object.
         var targetPos = transform.forward.normalized * 5;
