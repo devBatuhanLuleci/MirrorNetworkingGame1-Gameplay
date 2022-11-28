@@ -11,11 +11,27 @@ public  class PlayerController : NetworkBehaviour
     private PlayerMovement movement;
     private PlayerAttack attack;
     private Health health;
+    [HideInInspector]
+    public PlayerUIHandler playerUIHandler;
+
+    #region Character Projectile Details
+    public Transform FirePoint;
+    public Transform TargetPoint;
+    public LineRenderer temporaryLine;
+    public float initialVelocity = 1f;
+    #endregion
+
     private void Awake()
     {
         movement = GetComponent<PlayerMovement>();
         attack = GetComponent<PlayerAttack>();
         health = GetComponent<Health>();
+        playerUIHandler = GetComponent<PlayerUIHandler>();
+    }
+
+    public virtual void SetParametersForShoot()
+    {
+
     }
     #region Input Methods
     public virtual void TakeDamage(int damage)

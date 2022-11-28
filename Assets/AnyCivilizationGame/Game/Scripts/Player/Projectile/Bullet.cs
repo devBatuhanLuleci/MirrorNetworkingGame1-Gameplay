@@ -19,7 +19,7 @@ public class Bullet : Throwable, IPooledObject
 
     private void Awake()
     {
-        time = speed;
+        timeOld = speed;
     }
 
     /// <summary>
@@ -41,13 +41,13 @@ public class Bullet : Throwable, IPooledObject
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<PlayerController>(out var enemy) && netIdentity.isServer)
-        {
-            enemy.TakeDamage(damage);
-            gameObject.SetActive(false);
-            Debug.Log("some one hited by " + OwnerName);
-            NetworkServer.Destroy(gameObject);
-        }
+        //if (other.TryGetComponent<PlayerController>(out var enemy) && netIdentity.isServer)
+        //{
+        //    enemy.TakeDamage(damage);
+        //    gameObject.SetActive(false);
+        //    Debug.Log("some one hited by " + OwnerName);
+        //    NetworkServer.Destroy(gameObject);
+        //}
     }
 
     public void Init(string ownerName, uint ownerNetId)
