@@ -498,7 +498,6 @@ MonoBehaviour:
     BulletInitPos: {x: 0, y: 0, z: 0}
     BulletInitRot: {x: 0, y: 0, z: 0}
   Bullet: {fileID: 7995885019731338434, guid: ed3358c4efc259f4980810956bb328e9, type: 3}
-  threeDProjectile: {fileID: 0}
 --- !u!114 &1847445832484111781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -562,7 +561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9bcb9bb10f9f494eba876b697c27c4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectedCharacter: Character1
+  SelectedCharacter: FatBoy
 --- !u!114 &-6845222926521172771
 MonoBehaviour:
   m_ObjectHideFlags: 0

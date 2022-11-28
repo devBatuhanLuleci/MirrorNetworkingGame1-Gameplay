@@ -65,8 +65,7 @@ public class PlayerAttack : NetworkBehaviour
     public List<BulletSpawnPoint> BulletSpawnPoints;
 
     public GameObject Bullet;
-    [HideInInspector]
-    public ThreeDProjectile threeDProjectile;
+
     private PlayerMovement playerMovement;
 
 
@@ -114,9 +113,7 @@ public class PlayerAttack : NetworkBehaviour
 
     private void InitilizeClientVariables()
     {
-        //AttackJoystick = OfflineGameManager.Instance.AttackJoystick;
-        threeDProjectile = GetComponent<ThreeDProjectile>();
-        Splats = GetComponentInChildren<SplatManager>();
+        Splats = GetComponentInChildren<SplatManager>(true);
     }
 
     public void CancelAttackProjectile()

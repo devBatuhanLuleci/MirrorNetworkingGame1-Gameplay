@@ -13,6 +13,7 @@ public class PlayerSetup : MonoBehaviour
 
     #region Private Fields
     private NetworkIdentity NetworkIdentity;
+    private GameObject characterMesh;
     #endregion
 
 
@@ -23,6 +24,14 @@ public class PlayerSetup : MonoBehaviour
 
     private void Start()
     {
+        if (!NetworkIdentity.isServer)
+        {
+            characterMesh = CreateCharacterMesh();
+            var playerMovement = GetComponent<PlayerMovement>();
+            playerMovement.PlayerAnimatorController = characterMesh.GetComponent<Animator>();
+        }
+
+
         if (NetworkIdentity.isLocalPlayer && !NetworkIdentity.isServer)
         {
             InitLocalPlayer();
@@ -36,14 +45,11 @@ public class PlayerSetup : MonoBehaviour
 
     private void InitLocalPlayer()
     {
-        var characterMesh = CreateCharacterMesh();
 
         var playerController = GetComponent<PlayerController>();
-        var playerMovement = GetComponent<PlayerMovement>();
 
         CameraController.Instance.Initialize(transform);
         InputHandler.Instance.Init(playerController);
-        playerMovement.PlayerAnimatorController = characterMesh.GetComponent<Animator>();
     }
 
     private GameObject CreateCharacterMesh()
