@@ -38,7 +38,7 @@ public class InputHandler : Singleton<InputHandler>
     }
     private void Update()
     {
-        if (PlayerController == null) return;
+        if (PlayerController == null || !PlayerController.IsLive) return;
         Move();
         MainAttack();
     }

@@ -7,28 +7,39 @@ public class Health : NetworkBehaviour
 {
     public int MaxHealth { get; private set; } = 100;
 
-    [SyncVar]
+    [SyncVar(hook = nameof(RefreshUI))]
     public int Value;
 
-    public void TakeDamage(int damage)
+    private PlayerController playerController;
+
+    private void Awake()
+    {
+        playerController = GetComponent<PlayerController>();
+    }
+
+    public bool TakeDamage(int damage)
     {
         var newHealth = Value - damage;
         Value = Mathf.Clamp(newHealth, 0, 100);
         if (Value <= 0)
         {
             Debug.LogError("Dath");
+            return true;
         }
+        return false;
     }
-
     public void ResetValues()
     {
-        Debug.LogError("maxHelath: " + MaxHealth);
         Value = MaxHealth;
     }
-
-    public void RefreshUI()
+    public void ResetValues(int value)
     {
-        // TODO: Health bar? güncelle.
+        Value = MaxHealth = value;
+    }
+
+    public void RefreshUI(int oldValue, int newValue)
+    {
+        playerController.HealthChanged(newValue);
     }
 
 }

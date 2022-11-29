@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Mirror;
+using System;
 
 public class Bullet : Throwable, IPooledObject
 {
     public int damage = 50;
 
 
-    [SyncVar]
     public string OwnerName = "";
-    [SyncVar]
     public uint OwnerNetId = 0;
 
     [SerializeField]
     private float speed = 0.5f;
+
 
     private void Awake()
     {
@@ -41,13 +41,18 @@ public class Bullet : Throwable, IPooledObject
 
     private void OnTriggerEnter(Collider other)
     {
-        //if (other.TryGetComponent<PlayerController>(out var enemy) && netIdentity.isServer)
-        //{
-        //    enemy.TakeDamage(damage);
-        //    gameObject.SetActive(false);
-        //    Debug.Log("some one hited by " + OwnerName);
-        //    NetworkServer.Destroy(gameObject);
-        //}
+        if (other.TryGetComponent<PlayerController>(out var otherPlayerController) && CanAttack(otherPlayerController))
+        {
+            otherPlayerController.TakeDamage(damage);
+            gameObject.SetActive(false);
+            Debug.Log("some one hited by " + OwnerName);
+            NetworkServer.Destroy(gameObject);
+        }
+    }
+
+    private bool CanAttack(PlayerController playerController)
+    {
+        return OwnerNetId != 0 && playerController.netIdentity.netId != OwnerNetId && netIdentity.isServer;
     }
 
     public void Init(string ownerName, uint ownerNetId)

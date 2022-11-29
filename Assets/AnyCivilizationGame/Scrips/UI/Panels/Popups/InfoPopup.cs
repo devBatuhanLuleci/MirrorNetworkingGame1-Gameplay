@@ -3,25 +3,26 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class InfoPopup: PopupPanel
+public class InfoPopup : PopupPanel
 {
     public TextMeshProUGUI infoText;
 
     public override void Init<T>(T popupValue)
     {
         base.Init(popupValue);
-        if (popupValue is ErrorPanelValue)
+        if (popupValue is InfoPopupValue)
         {
-            var errorPopupValue = popupValue as ErrorPanelValue;
-            infoText.text = errorPopupValue.ErrorText;
+            var errorPopupValue = popupValue as InfoPopupValue;
+            infoText.text = errorPopupValue.Info;
         }
     }
 
-    public static void Show(string msg)
+    public static InfoPopup Show(string msg)
     {
         var info = new InfoPopupValue(msg);
-        PopupManager.Show<InfoPopup>(info);
+        return PopupManager.Show<InfoPopup>(info);
     }
+
 
 }
 

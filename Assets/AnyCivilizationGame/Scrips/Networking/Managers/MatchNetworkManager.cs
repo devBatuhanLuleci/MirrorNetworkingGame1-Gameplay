@@ -38,6 +38,29 @@ public class MatchNetworkManager : NetworkManager
             StartClientNetwork();
         }
     }
+    #region Game Logich
+
+    /// <summary>
+    /// this method must call from server
+    /// </summary>
+    public void Respawn(PlayerController player)
+    {
+        StartCoroutine(IERespawn(player));
+    }
+    /// <summary>
+    /// this method must call from server
+    /// </summary>
+    public IEnumerator IERespawn(PlayerController player)
+    {
+        yield return new WaitForSeconds(5);
+        if (player != null)
+        {
+            player.Respawn();
+        }
+    }
+    #endregion
+
+    #region  Server Logich
     private void StartClientNetwork()
     {
         networkAddress = ACGDataManager.Instance.GameData.NetworkAddress;
@@ -59,7 +82,7 @@ public class MatchNetworkManager : NetworkManager
         var prefab = Resources.Load<NetworkedGameManager>(nameof(NetworkedGameManager));
         var networkedGameManager = Instantiate(prefab);
         NetworkServer.Spawn(networkedGameManager.gameObject);
-        
+
         NetworkedGameManager.Instance.ServerStarted();
         players = new Dictionary<int, NetworkConnectionToClient>();
 
@@ -84,5 +107,6 @@ public class MatchNetworkManager : NetworkManager
     }
 
 
+    #endregion
 
 }

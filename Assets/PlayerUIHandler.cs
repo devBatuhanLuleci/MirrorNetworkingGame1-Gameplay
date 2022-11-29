@@ -1,13 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerUIHandler : MonoBehaviour
 {
-    #region Shoot projectile fields
+    #region UI fields
+    [Header("Setup")]
+    [SerializeField]
+    private Canvas canvas;
+    [SerializeField]
+    private Slider healthSlider;
 
+    [SerializeField]
+    private TMP_Text healthText;
+
+
+    [SerializeField]
+    private TMP_Text nameText;
+    #endregion
+
+    #region Shoot projectile fields
+    [Space]
+    [Header("Projectile")]
+
+    [SerializeField]
     private PlayerController playerController;
-    
+
     public enum ProjectileType { Bullet, Bomb }
     public ProjectileType projectileType;
 
@@ -35,20 +55,55 @@ public class PlayerUIHandler : MonoBehaviour
     public Vector3 groundDirection;
     [HideInInspector]
     public Vector3 targetPos;
-
     #endregion
-    private void Awake()
+
+
+    #region  Private Fields 
+    private int maxHelath = 100;
+    private bool initialized = false;
+
+    #region  Components 
+    private Transform camera;
+    #endregion
+    #endregion
+    public void Initialize(int value)
     {
-        playerController = GetComponent<PlayerController>();
+        camera = Camera.main.transform;
+        initialized = true;
+        maxHelath = value;
+        ChangeHealth(value);
+        var dir = transform.position - camera.position;
+        look = Quaternion.LookRotation(dir, Vector3.up);
     }
+
+
+    Quaternion look;
     private void Update()
     {
-
+        if (!initialized) return;
+        UILook();
         CalculateProjectile();
-
-
     }
 
+    private void UILook()
+    {
+        if (canvas != null && camera != null)
+        {
+            canvas.transform.rotation = look;
+        }
+    }
+
+
+    #region  Health Bar
+
+    public void ChangeHealth(int health)
+    {
+        healthText.text = health.ToString();
+        healthSlider.value = (float)maxHelath / (float)health;
+    }
+    #endregion
+
+    #region  Projectile
     public void CalculateProjectile()
     {
         height = projectileType == ProjectileType.Bomb ? (targetPos.y + targetPos.magnitude / 2f) : 0;
@@ -143,5 +198,6 @@ public class PlayerUIHandler : MonoBehaviour
 
 
     }
+    #endregion
 
 }

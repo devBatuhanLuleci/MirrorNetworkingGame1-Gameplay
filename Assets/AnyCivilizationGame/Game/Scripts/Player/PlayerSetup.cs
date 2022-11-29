@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSetup : MonoBehaviour
+public class PlayerSetup : NetworkBehaviour
 {
 
     #region Public Fields
@@ -12,40 +12,48 @@ public class PlayerSetup : MonoBehaviour
     #endregion
 
     #region Private Fields
-    private NetworkIdentity NetworkIdentity;
+    private Health health;
+    private PlayerUIHandler playerUIHandler;
+    private PlayerMovement playerMovement;
     private GameObject characterMesh;
+    private NetworkIdentity NetworkIdentity;
     #endregion
 
 
     private void Awake()
     {
         NetworkIdentity = GetComponent<NetworkIdentity>();
+        health = GetComponent<Health>();
+        playerUIHandler = GetComponent<PlayerUIHandler>();
+        playerMovement = GetComponent<PlayerMovement>();
     }
 
-    private void Start()
+    public void Start()
     {
+        // Do anything on all client but not server
         if (!NetworkIdentity.isServer)
         {
             characterMesh = CreateCharacterMesh();
-            var playerMovement = GetComponent<PlayerMovement>();
             playerMovement.PlayerAnimatorController = characterMesh.GetComponent<Animator>();
+            health.ResetValues(100);
+            playerUIHandler.Initialize(health.MaxHealth);
+        }
+        else // Do anything on server
+        {
+            health.ResetValues(100);
+            playerUIHandler.enabled = false;
         }
 
-
+        // Do anything on only local client
         if (NetworkIdentity.isLocalPlayer && !NetworkIdentity.isServer)
         {
             InitLocalPlayer();
+        }
 
-        }
-        else if (NetworkIdentity.isServer)
-        {
-            GetComponent<Health>().ResetValues();
-        }
     }
 
     private void InitLocalPlayer()
     {
-
         var playerController = GetComponent<PlayerController>();
 
         CameraController.Instance.Initialize(transform);
