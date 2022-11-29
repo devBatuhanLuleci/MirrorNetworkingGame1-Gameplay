@@ -28041,6 +28041,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ObjectPooler
       objectReference: {fileID: 0}
+    - target: {fileID: 7167353221741499809, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
+      propertyPath: pools.Array.data[0].size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7167353221741499814, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
       propertyPath: m_RootOrder
       value: 10

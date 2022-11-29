@@ -24,6 +24,10 @@ public class ObjectPooler : MonoBehaviour
     {
         InitializePools();
     }
+
+    /// <summary>
+    /// Create all and register all pools.
+    /// </summary>
     private void InitializePools()
     {
         poolDictionary = new Dictionary<string, ObjectPool>();
@@ -36,7 +40,9 @@ public class ObjectPooler : MonoBehaviour
             poolDictionary.Add(pool.tag, objectPool);
         }
     }
-
+    /// <summary>
+    /// Get or create next pool object.
+    /// </summary>
     public GameObject Get(string tag, Vector3 position, Quaternion rotation)
     {
         // Debug.Log(tag);
@@ -46,9 +52,7 @@ public class ObjectPooler : MonoBehaviour
         }
 
         Debug.Log("Pool with tag " + tag + " doesn't exist.");
-
         return null;
-
     }
 
 
