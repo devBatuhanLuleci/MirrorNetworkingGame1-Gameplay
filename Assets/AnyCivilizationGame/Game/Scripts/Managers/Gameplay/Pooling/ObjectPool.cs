@@ -25,37 +25,44 @@ public class ObjectPool : MonoBehaviour
         obj.SetActive(false);
         return obj;
     }
-
+    /// <summary>
+    /// Reister pool prefab for network spawn
+    /// </summary>
     private void RegisterPools()
     {
         NetworkClient.RegisterPrefab(pool.prefab, SpawnHandler, UnspawnHandler);
     }
-    // used by NetworkClient.RegisterPrefab
+
+    /// <summary>
+    /// used by NetworkClient.RegisterPrefab
+    /// </summary>
     GameObject SpawnHandler(SpawnMessage msg) => Get(msg.position, msg.rotation);
 
     // used by NetworkClient.RegisterPrefab
     void UnspawnHandler(GameObject spawned) => Return(spawned);
 
-
+    /// <summary>
+    /// Get next element of this pool
+    /// </summary>
     public GameObject Get(Vector3 position, Quaternion rotation)
     {
+        GameObject next = pools.Get();
 
+        next.transform.position = position;
+        next.transform.rotation = rotation;
+        next.SetActive(true);
 
-        GameObject objectToSpawn = pools.Get();    
-
-        objectToSpawn.transform.position = position;
-        objectToSpawn.transform.rotation = rotation;
-        objectToSpawn.SetActive(true);
-
-        return objectToSpawn;
-
+        return next;
     }
 
 
 
-    // Used to put object back into pool so they can b
-    // Should be used on server after unspawning an object
-    // Used on client by NetworkClient to unspawn objects
+
+    /// <summary>
+    /// Used to put object back into pool so they can b
+    /// Should be used on server after unspawning an object
+    ///  Used on client by NetworkClient to unspawn objects
+    /// </summary>
     public void Return(GameObject spawned)
     {
         // disable object
