@@ -13,6 +13,7 @@ public  class PlayerController : NetworkBehaviour
     private Health health;
     [HideInInspector]
     public PlayerUIHandler playerUIHandler;
+    [HideInInspector]
     public Animator PlayerAnimatorController;
 
 
@@ -30,6 +31,7 @@ public  class PlayerController : NetworkBehaviour
         attack = GetComponent<PlayerAttack>();
         health = GetComponent<Health>();
         playerUIHandler = GetComponent<PlayerUIHandler>();
+        PlayerAnimatorController = GetComponent<Animator>();
     }
 
     public virtual void SetParametersForShoot()

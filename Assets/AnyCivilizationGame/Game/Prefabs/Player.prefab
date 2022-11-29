@@ -461,7 +461,6 @@ MonoBehaviour:
   rotationTurnSpeed: 0.5
   movementSpeed: 0.035
   DirectionSpriteScale: 2
-  PlayerAnimatorController: {fileID: 0}
 --- !u!114 &6626824536947155894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -577,6 +576,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   playerUIHandler: {fileID: 9098212380682637946}
+  PlayerAnimatorController: {fileID: 0}
   FirePoint: {fileID: 6626824537031914589}
   TargetPoint: {fileID: 6626824535964682116}
   temporaryLine: {fileID: 6626824536396642706}

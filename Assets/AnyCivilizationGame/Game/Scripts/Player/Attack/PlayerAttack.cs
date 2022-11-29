@@ -16,19 +16,18 @@ public class PlayerAttack : NetworkBehaviour
     //private Joystick attackJoystick;
     public Vector2 AttackDirection { get; set; } = Vector2.zero;
     public bool AttackHeld { get; set; } = false;
-    [Space]
+
     #region States
 
-    #region SyncVariables
-
-
-    #endregion
-    public ShootingState attackState;
-
-    public AttackJoystickState attackJoystickState;
     public enum AttackJoystickState { Up, Idle, Holding }
 
     public enum ShootingState { Idle, Aiming, Reloading, Shooting, Cancelled }
+
+
+
+    public ShootingState attackState;
+    [SyncVar/*(hook =nameof(PlayAttackAnimation))*/]
+    public AttackJoystickState attackJoystickState;
 
 
 
@@ -223,17 +222,16 @@ public class PlayerAttack : NetworkBehaviour
             if (attackJoystickState == AttackJoystickState.Holding)
             {
                 //Shoot here!
-                attackState = ShootingState.Shooting;
 
+                attackState = ShootingState.Shooting;
 
                 //Deactivate Projectile line.
                 CancelAttackProjectile();
                 var angle = CalculateAngle(player, attackLookAtPoint);
                 Debug.Log(angle);
-
+                AttackAnimationLocalPlayer();
                 //Spawn the bullet object.
                 CmdFire(false, angle, playerController.playerUIHandler.groundDirection.normalized, playerController.playerUIHandler.v0, playerController.playerUIHandler.angle, playerController.playerUIHandler.timeNew, playerController.initialVelocity);
-
                 //Debug.Log("stat1:"+ playerController.playerUIHandler.groundDirection.normalized +
                 //" stat2:" + playerController.playerUIHandler.v0
                 //+ " stat3:" + playerController.playerUIHandler.angle +
@@ -252,7 +250,7 @@ public class PlayerAttack : NetworkBehaviour
                 {
                     //Auto-Attack
                     attackState = ShootingState.Shooting;
-
+                    AttackAnimationLocalPlayer();
                     //Auto spawn bullet on current player direction.
                     CmdFire(true, CalculateAngle(player, attackLookAtPoint), playerController.playerUIHandler.groundDirection.normalized, playerController.playerUIHandler.v0, playerController.playerUIHandler.angle, playerController.playerUIHandler.timeNew, playerController.initialVelocity);
 
@@ -348,6 +346,7 @@ public class PlayerAttack : NetworkBehaviour
         }
 
     }
+
     /// <summary>
     /// This function spawns bullet and throw with some informations.
     /// </summary>
@@ -372,10 +371,27 @@ public class PlayerAttack : NetworkBehaviour
         #endregion
         //Debug.Log(angle);
         //Rotate character to bullet thrown rotation and spawnBullet.
+        AttackAnimationOtherClients();
+
         playerMovement.SetPlayerRotationToTargetDirection(angle).onComplete = () =>
         {
             SpawnBullet(isAutoattack, angle, dir, speed, angleNew, timeNew, initialVelocity);
         };
+    }
+
+
+    public void AttackAnimationLocalPlayer()
+    {
+
+        playerController.PlayerAnimatorController.SetTrigger("Shoot");
+
+    }
+    [ClientRpc(includeOwner = false)]
+    public void AttackAnimationOtherClients()
+    {
+
+        playerController.PlayerAnimatorController.SetTrigger("Shoot");
+
     }
 
     private void SpawnBullet(bool isAutoattack, float angle, Vector3 dir, float speed, float angleNew, float timeNew, float initialVelocity)
