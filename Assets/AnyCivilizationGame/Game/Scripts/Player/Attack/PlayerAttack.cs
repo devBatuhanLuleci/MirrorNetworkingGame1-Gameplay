@@ -392,8 +392,8 @@ public class PlayerAttack : NetworkBehaviour
         
         var lobbyPlayer = ACGDataManager.Instance.LobbyPlayer;
         //Fire that selected bullet object.
-        var targetPos = transform.forward.normalized * 5;
-        targetPos.y = spawnedBullet.transform.position.y;
+        //var targetPos = transform.forward.normalized * 5;
+        //targetPos.y = spawnedBullet.transform.position.y;
 
         //spawnedBullet.GetComponent<Bullet>().Init(lobbyPlayer.UserName, netId);
         spawnedBullet.Init("Debug User " + netId, netId);

@@ -459,7 +459,7 @@ MonoBehaviour:
   playerDirSprite: {fileID: 6626824535787233144}
   rotationSpeed: 14
   rotationTurnSpeed: 0.5
-  movementSpeed: 0.02
+  movementSpeed: 0.035
   DirectionSpriteScale: 2
   PlayerAnimatorController: {fileID: 0}
 --- !u!114 &6626824536947155894

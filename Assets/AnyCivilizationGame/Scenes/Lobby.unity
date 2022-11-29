@@ -19315,6 +19315,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: LoadBalancer
       objectReference: {fileID: 0}
+    - target: {fileID: 5054325042896838334, guid: f9412cdb0fec08a4e8f262ad4cc060c9, type: 3}
+      propertyPath: Port
+      value: 8080
+      objectReference: {fileID: 0}
+    - target: {fileID: 7322224510750757519, guid: f9412cdb0fec08a4e8f262ad4cc060c9, type: 3}
+      propertyPath: host
+      value: http://192.168.1.101
+      objectReference: {fileID: 0}
     - target: {fileID: 8979378384603827278, guid: f9412cdb0fec08a4e8f262ad4cc060c9, type: 3}
       propertyPath: m_RootOrder
       value: 3

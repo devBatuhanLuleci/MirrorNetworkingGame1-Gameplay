@@ -1491,7 +1491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b0fecffa3f624585964b0d0eb21b18e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Port: 7777
+  Port: 8080
   DualMode: 1
   NoDelay: 1
   Interval: 10
@@ -1527,7 +1527,7 @@ MonoBehaviour:
   offlineScene: 
   onlineScene: 
   transport: {fileID: 111900424}
-  networkAddress: localhost
+  networkAddress: 192.168.1.101
   maxConnections: 100
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 6626824536947155891, guid: 3d845d7b633a2d44f810017a3903690b, type: 3}
