@@ -14,12 +14,14 @@ public class PlayerSetup : MonoBehaviour
     #region Private Fields
     private NetworkIdentity NetworkIdentity;
     private GameObject characterMesh;
+    private PlayerController playerController;
     #endregion
 
 
     private void Awake()
     {
         NetworkIdentity = GetComponent<NetworkIdentity>();
+        playerController = GetComponent<PlayerController>();
     }
 
     private void Start()
@@ -27,8 +29,7 @@ public class PlayerSetup : MonoBehaviour
         if (!NetworkIdentity.isServer)
         {
             characterMesh = CreateCharacterMesh();
-            var playerMovement = GetComponent<PlayerMovement>();
-            playerMovement.PlayerAnimatorController = characterMesh.GetComponent<Animator>();
+            playerController.PlayerAnimatorController = characterMesh.GetComponent<Animator>();
         }
 
 

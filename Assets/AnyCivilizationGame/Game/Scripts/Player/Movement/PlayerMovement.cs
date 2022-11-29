@@ -40,10 +40,12 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField]
     private float DirectionSpriteScale = 2f;
 
+    private PlayerController PlayerController;
 
-    public Animator PlayerAnimatorController;
-
-
+    private void Awake()
+    {
+        PlayerController = GetComponent<PlayerController>();
+    }
     private void Start()
     {
         SetSpriteVisibility(false);
@@ -95,11 +97,11 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (movementState == MovementState.Idle)
         {
-            PlayerAnimatorController?.SetBool("Running", false);
+            PlayerController.PlayerAnimatorController?.SetBool("Running", false);
         }
         else if (movementState == MovementState.Moving)
         {
-            PlayerAnimatorController?.SetBool("Running", true);
+            PlayerController.PlayerAnimatorController?.SetBool("Running", true);
         }
     }
 

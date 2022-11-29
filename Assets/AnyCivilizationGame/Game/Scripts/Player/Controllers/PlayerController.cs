@@ -13,6 +13,9 @@ public  class PlayerController : NetworkBehaviour
     private Health health;
     [HideInInspector]
     public PlayerUIHandler playerUIHandler;
+    public Animator PlayerAnimatorController;
+
+
 
     #region Character Projectile Details
     public Transform FirePoint;
