@@ -66,6 +66,7 @@ public class Bullet : Throwable, IPooledObject
     public override void OnArrived()
     {
         NetworkServer.UnSpawn(gameObject);
+        base.OnArrived();
     }
 
 }

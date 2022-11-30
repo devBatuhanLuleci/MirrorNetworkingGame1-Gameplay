@@ -1285,11 +1285,11 @@ MonoBehaviour:
   PlayerAnimatorController: {fileID: 0}
   BulletSpawnPoints:
   - SpawnPointName: LeftSpawnPoint
-    spawnPoint: {x: -0.45, y: 1, z: -0.8}
+    spawnPoint: {x: -0.55, y: 1, z: 0.8}
     BulletInitPos: {x: 0, y: 0, z: 0}
     BulletInitRot: {x: 0, y: 0, z: 0}
   - SpawnPointName: RightSpawnPoint
-    spawnPoint: {x: 0.45, y: 1, z: -0.8}
+    spawnPoint: {x: 0.55, y: 1, z: 0.8}
     BulletInitPos: {x: 0, y: 0, z: 0}
     BulletInitRot: {x: 0, y: 0, z: 0}
   - SpawnPointName: DefaultSpawnPoint

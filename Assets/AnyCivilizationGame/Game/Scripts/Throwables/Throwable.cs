@@ -38,7 +38,9 @@ public class Throwable : NetworkBehaviour
     //}
     public virtual void OnArrived()
     {
-        Debug.Log("we arrived.");
+        gameObject.SetActive(false);
+
+      //  Debug.Log("we arrived.");
     }
 
     //IEnumerator Coroutine_Movement(Vector3[] path)
@@ -101,14 +103,14 @@ public class Throwable : NetworkBehaviour
             StopCoroutine(throwingCoroutine);
 
        // throwingCoroutine= StartCoroutine(Coroutine_Movement(this.gameObject, groundDirection.normalized, v0, angle, timeNew));
-        throwingCoroutine = StartCoroutine(Coroutine_Movement(this.gameObject, dir, v, Angle, TimeNew,initialVelocity));
+        throwingCoroutine = StartCoroutine(Coroutine_Movement(dir, v, Angle, TimeNew,initialVelocity));
 
 
     }
 
 
 
-    IEnumerator Coroutine_Movement(GameObject bulletObj, Vector3 direction, float v0, float angle, float time,float initialVelocity)
+    IEnumerator Coroutine_Movement( Vector3 direction, float v0, float angle, float time,float initialVelocity)
     {
     
         var FirePoint = transform.position;
@@ -125,7 +127,7 @@ public class Throwable : NetworkBehaviour
             var upValue = projectileType == ProjectileType.Bomb ? (Vector3.up * y) : Vector3.zero;
 
             //BulletObj.transform.position = FirePoint + direction * x + upValue;
-            bulletObj.transform.position = FirePoint + direction * x + upValue;
+           transform.position = FirePoint + direction * x + upValue;
 
 
 
@@ -137,7 +139,6 @@ public class Throwable : NetworkBehaviour
 
         //burası hedefe vardığında bir kez çalışır.
         OnArrived();
-        bulletObj.SetActive(false);
     }
     #endregion
 

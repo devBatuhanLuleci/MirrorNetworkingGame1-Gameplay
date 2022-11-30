@@ -226,7 +226,13 @@ public class PlayerAttack : NetworkBehaviour
                 Debug.Log(angle);
                 AttackAnimationLocalPlayer();
                 //Spawn the bullet object.
-                CmdFire(false, angle, playerController.playerUIHandler.groundDirection.normalized, playerController.playerUIHandler.v0, playerController.playerUIHandler.angle, playerController.playerUIHandler.timeNew, playerController.initialVelocity);
+                CmdFire(false,
+                    angle,
+                    playerController.playerUIHandler.groundDirection.normalized,
+                    playerController.playerUIHandler.v0,
+                    playerController.playerUIHandler.angle,
+                    playerController.playerUIHandler.timeNew,
+                    playerController.initialVelocity);
                 //Debug.Log("stat1:"+ playerController.playerUIHandler.groundDirection.normalized +
                 //" stat2:" + playerController.playerUIHandler.v0
                 //+ " stat3:" + playerController.playerUIHandler.angle +
@@ -247,7 +253,12 @@ public class PlayerAttack : NetworkBehaviour
                     attackState = ShootingState.Shooting;
                     AttackAnimationLocalPlayer();
                     //Auto spawn bullet on current player direction.
-                    CmdFire(true, CalculateAngle(player, attackLookAtPoint), playerController.playerUIHandler.groundDirection.normalized, playerController.playerUIHandler.v0, playerController.playerUIHandler.angle, playerController.playerUIHandler.timeNew, playerController.initialVelocity);
+                    CmdFire(true, CalculateAngle(player, attackLookAtPoint),
+                        playerController.playerUIHandler.groundDirection.normalized,
+                        playerController.playerUIHandler.v0,
+                        playerController.playerUIHandler.angle,
+                        playerController.playerUIHandler.timeNew,
+                        playerController.initialVelocity);
 
                 }
 
