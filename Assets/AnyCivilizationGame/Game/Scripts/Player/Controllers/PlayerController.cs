@@ -24,7 +24,7 @@ public class PlayerController : NetworkBehaviour
     [HideInInspector]
     public Animator PlayerAnimatorController;
 
-
+    public List<BulletSpawnPoints> BulletSpawnPoints;
 
     #region Character Projectile Details
     public Transform FirePoint;
@@ -45,12 +45,19 @@ public class PlayerController : NetworkBehaviour
         playerUIHandler = GetComponent<PlayerUIHandler>();
         PlayerAnimatorController = GetComponent<Animator>();
     }
+    private void Start()
+    {
+        foreach (BulletSpawnPoints spawnPoint in BulletSpawnPoints)
+        {
+            spawnPoint.BulletInitPos = spawnPoint.spawnPoint;
+        }
 
+    }
     public void SpawnBullet(bool isAutoattack, float angle, Vector3 dir, float speed, float angleNew, float timeNew, float initialVelocity)
     {
        
         // We are spawning Bullet object from object pooler with extra location and rotation parameters.
-        var spawnedBullet = ObjectPooler.Instance.Get(attack.Bullet.transform.name, attack.BulletSpawnPoints[0].spawnPoint.position, Quaternion.Euler(0,angle,0)).GetComponent<Bullet>();
+        var spawnedBullet = ObjectPooler.Instance.Get(attack.Bullet.transform.name,transform.position+BulletSpawnPoints[0].spawnPoint, Quaternion.Euler(0,angle,0)).GetComponent<Bullet>();
 
 
         //var spawnedBullet = Instantiate(Bullet, BulletSpawnPoints[0].spawnPoint.position, transform.rotation);
@@ -66,15 +73,8 @@ public class PlayerController : NetworkBehaviour
         //spawnedBullet.GetComponent<Bullet>().Init(lobbyPlayer.UserName, netId);
         spawnedBullet.Init("Debug User " + netId, netId);
 
-        // spawnedBullet.Throw(new Vector3[] { spawnedBullet.transform.position, targetPos });
-        //Debug.Log("stat1:"+ playerController.playerUIHandler.groundDirection.normalized +
-        //" stat2:" + playerController.playerUIHandler.v0
-        //+ " stat3:" + playerController.playerUIHandler.angle +
-        //" stat4:" + playerController.playerUIHandler.timeNew +
-        //" stat5:" + playerController.initialVelocity);
-
       //  Debug.Log("stat1:" + dir + " stat2:" + speed + " stat3:" + angleNew + " stat4:" + timeNew + " stat5:" + initialVelocity);
-        spawnedBullet.Throw(dir, speed, angleNew, timeNew, FirePoint, initialVelocity);
+        spawnedBullet.Throw(dir, speed, angleNew, timeNew, initialVelocity);
         NetworkServer.Spawn(spawnedBullet.gameObject);
 
     }
@@ -166,3 +166,5 @@ public class PlayerController : NetworkBehaviour
 
     #endregion
 }
+
+

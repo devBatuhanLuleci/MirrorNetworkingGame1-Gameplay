@@ -47,7 +47,7 @@ public class Bullet : Throwable, IPooledObject
             otherPlayerController.TakeDamage(damage);
             gameObject.SetActive(false);
             Debug.Log("some one hited by " + OwnerName);
-            NetworkServer.Destroy(gameObject);
+            NetworkServer.UnSpawn(gameObject);
         }
     }
 
@@ -65,7 +65,7 @@ public class Bullet : Throwable, IPooledObject
 
     public override void OnArrived()
     {
-        NetworkServer.Destroy(gameObject);
+        NetworkServer.UnSpawn(gameObject);
     }
 
 }

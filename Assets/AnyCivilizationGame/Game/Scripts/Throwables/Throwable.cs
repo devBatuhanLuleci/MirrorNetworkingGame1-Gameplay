@@ -94,23 +94,24 @@ public class Throwable : NetworkBehaviour
 
     }
 
-    public void Throw(Vector3 dir , float v , float Angle , float TimeNew, Transform firePoint, float initialVelocity)
+    public void Throw(Vector3 dir , float v , float Angle , float TimeNew, float initialVelocity)
     {
 
         if (throwingCoroutine != null)
             StopCoroutine(throwingCoroutine);
 
        // throwingCoroutine= StartCoroutine(Coroutine_Movement(this.gameObject, groundDirection.normalized, v0, angle, timeNew));
-        throwingCoroutine = StartCoroutine(Coroutine_Movement(this.gameObject, dir, firePoint, v, Angle, TimeNew,initialVelocity));
+        throwingCoroutine = StartCoroutine(Coroutine_Movement(this.gameObject, dir, v, Angle, TimeNew,initialVelocity));
 
 
     }
 
 
 
-    IEnumerator Coroutine_Movement(GameObject bulletObj, Vector3 direction, Transform Firepoint, float v0, float angle, float time,float initialVelocity)
+    IEnumerator Coroutine_Movement(GameObject bulletObj, Vector3 direction, float v0, float angle, float time,float initialVelocity)
     {
-        var FirePoint = Firepoint.position;
+    
+        var FirePoint = transform.position;
 
         float t = 0;
         // Debug.Log(time / (initialVelocity ));

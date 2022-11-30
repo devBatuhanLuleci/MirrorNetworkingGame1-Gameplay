@@ -1200,19 +1200,6 @@ MonoBehaviour:
   lookPos: {x: 0, y: 0, z: 0}
   attackLookAtPoint: {fileID: 6626824537031914589}
   player: {fileID: 0}
-  BulletSpawnPoints:
-  - SpawnPointName: BulletDefaultSpawnPoint
-    spawnPoint: {fileID: 6626824536758715068}
-    BulletInitPos: {x: 0, y: 0, z: 0}
-    BulletInitRot: {x: 0, y: 0, z: 0}
-  - SpawnPointName: BulletLeftSpawnPoint
-    spawnPoint: {fileID: 6626824536719893469}
-    BulletInitPos: {x: 0, y: 0, z: 0}
-    BulletInitRot: {x: 0, y: 0, z: 0}
-  - SpawnPointName: BulletRightSpawnPoint
-    spawnPoint: {fileID: 6626824537113770205}
-    BulletInitPos: {x: 0, y: 0, z: 0}
-    BulletInitRot: {x: 0, y: 0, z: 0}
   Bullet: {fileID: 7995885019731338434, guid: ed3358c4efc259f4980810956bb328e9, type: 3}
 --- !u!114 &1847445832484111781
 MonoBehaviour:
@@ -1296,6 +1283,19 @@ MonoBehaviour:
   syncInterval: 0.1
   playerUIHandler: {fileID: 9098212380682637946}
   PlayerAnimatorController: {fileID: 0}
+  BulletSpawnPoints:
+  - SpawnPointName: LeftSpawnPoint
+    spawnPoint: {x: -0.45, y: 1, z: -0.8}
+    BulletInitPos: {x: 0, y: 0, z: 0}
+    BulletInitRot: {x: 0, y: 0, z: 0}
+  - SpawnPointName: RightSpawnPoint
+    spawnPoint: {x: 0.45, y: 1, z: -0.8}
+    BulletInitPos: {x: 0, y: 0, z: 0}
+    BulletInitRot: {x: 0, y: 0, z: 0}
+  - SpawnPointName: DefaultSpawnPoint
+    spawnPoint: {x: 0, y: 0.5, z: 0.41}
+    BulletInitPos: {x: 0, y: 0, z: 0}
+    BulletInitRot: {x: 0, y: 0, z: 0}
   FirePoint: {fileID: 6626824537031914589}
   TargetPoint: {fileID: 6626824535964682116}
   temporaryLine: {fileID: 6626824536396642706}

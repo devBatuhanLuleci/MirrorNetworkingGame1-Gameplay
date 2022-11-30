@@ -61,7 +61,7 @@ public class PlayerAttack : NetworkBehaviour
     private RaycastHit hit;
 
 
-    public List<BulletSpawnPoint> BulletSpawnPoints;
+  
 
     public GameObject Bullet;
 
@@ -87,7 +87,7 @@ public class PlayerAttack : NetworkBehaviour
         ConfigureAttackState();
         SetLookPosition();
         RotateIndicator();
-        SetBulletSpawnPointPosition();
+        //SetBulletSpawnPointPosition();
         playerController.TargetPoint.position = player.transform.position + ((lookPos.normalized) * Range);
     }
 
@@ -101,12 +101,7 @@ public class PlayerAttack : NetworkBehaviour
         player = this.gameObject.transform;
 
 
-        foreach (BulletSpawnPoint spawnPoint in BulletSpawnPoints)
-        {
-            spawnPoint.BulletInitPos = spawnPoint.spawnPoint.localPosition;
-            spawnPoint.BulletInitRot = spawnPoint.spawnPoint.localRotation.eulerAngles;
-        }
-
+     
 
     }
 
@@ -260,7 +255,7 @@ public class PlayerAttack : NetworkBehaviour
             }
 
             //Reset bullet spawn point positions.
-            ResetBulletSpawnPointPosition();
+           // ResetBulletSpawnPointPosition();
             attackJoystickState = AttackJoystickState.Up;
 
         }
@@ -400,63 +395,51 @@ public class PlayerAttack : NetworkBehaviour
     /// <summary>
     /// This function handles multiple bullet position on player.
     /// </summary>ö
-    private void SetBulletSpawnPointPosition()
-    {
+//    private void SetBulletSpawnPointPosition()
+//    {
 
-        if (attackJoystickState == AttackJoystickState.Holding)
-        {
+//        if (attackJoystickState == AttackJoystickState.Holding)
+//        {
 
-            if (splatType == SplatType.BasicIndicator)
-            {
+//            if (splatType == SplatType.BasicIndicator)
+//            {
 
-                var offsetVector = Vector3.Cross(Vector3.up, lookPos.normalized);
-                offsetVector.Normalize();
+//                var offsetVector = Vector3.Cross(Vector3.up, lookPos.normalized);
+//                offsetVector.Normalize();
 
-                foreach (BulletSpawnPoint BulletSpawnPoint in BulletSpawnPoints)
-                {
+//                foreach (BulletSpawnPoint BulletSpawnPoint in BulletSpawnPoints)
+//                {
 
-                    BulletSpawnPoint.spawnPoint.eulerAngles = new Vector3(0, CalculateAngle(player, attackLookAtPoint), 0);
-                    var BulletPosition = new Vector3(player.transform.position.x + (lookPos.normalized.x * BulletSpawnPoint.BulletInitPos.z) + offsetVector.x * BulletSpawnPoint.BulletInitPos.x,
-                                                             BulletSpawnPoint.spawnPoint.position.y,
-                                                             player.transform.position.z + (lookPos.normalized.z * BulletSpawnPoint.BulletInitPos.z) + offsetVector.z * BulletSpawnPoint.BulletInitPos.x);
-                    BulletSpawnPoint.spawnPoint.position = BulletPosition;
-                }
-            }
-        }
+//                    BulletSpawnPoint.spawnPoint.eulerAngles = new Vector3(0, CalculateAngle(player, attackLookAtPoint), 0);
+//                    var BulletPosition = new Vector3(player.transform.position.x + (lookPos.normalized.x * BulletSpawnPoint.BulletInitPos.z) + offsetVector.x * BulletSpawnPoint.BulletInitPos.x,
+//                                                             BulletSpawnPoint.spawnPoint.position.y,
+//                                                             player.transform.position.z + (lookPos.normalized.z * BulletSpawnPoint.BulletInitPos.z) + offsetVector.z * BulletSpawnPoint.BulletInitPos.x);
+//                    BulletSpawnPoint.spawnPoint.position = BulletPosition;
+//                }
+//            }
+//        }
 
-    }
-    /// <summary>
-    /// Reset bullet spawn point positions for auto attack bullet position.
-    /// </summary>
-    private void ResetBulletSpawnPointPosition()
-    {
+//    }
+//    /// <summary>
+//    /// Reset bullet spawn point positions for auto attack bullet position.
+//    /// </summary>
+//    private void ResetBulletSpawnPointPosition()
+//    {
 
-        if (splatType == SplatType.BasicIndicator)
-        {
-            var offsetVector = Vector3.Cross(Vector3.up, lookPos.normalized);
-            offsetVector.Normalize();
+//        if (splatType == SplatType.BasicIndicator)
+//        {
+//            var offsetVector = Vector3.Cross(Vector3.up, lookPos.normalized);
+//            offsetVector.Normalize();
 
-            foreach (BulletSpawnPoint BulletSpawnPoint in BulletSpawnPoints)
-            {
-                BulletSpawnPoint.spawnPoint.localEulerAngles = BulletSpawnPoint.BulletInitRot;
-                BulletSpawnPoint.spawnPoint.localPosition = BulletSpawnPoint.BulletInitPos;
-            }
-        }
+//            foreach (BulletSpawnPoint BulletSpawnPoint in BulletSpawnPoints)
+//            {
+//                BulletSpawnPoint.spawnPoint.localEulerAngles = BulletSpawnPoint.BulletInitRot;
+//                BulletSpawnPoint.spawnPoint.localPosition = BulletSpawnPoint.BulletInitPos;
+//            }
+//        }
 
-    }
+//    }
 
 
 }
-/// <summary>
-/// This class takes bullet spawn point arguments.
-/// </summary>
-[System.Serializable]
-public class BulletSpawnPoint
-{
-    public string SpawnPointName;
-    public Transform spawnPoint;
-    [HideInInspector]
-    public Vector3 BulletInitPos;
-    [HideInInspector]
-    public Vector3 BulletInitRot;
-}
+
