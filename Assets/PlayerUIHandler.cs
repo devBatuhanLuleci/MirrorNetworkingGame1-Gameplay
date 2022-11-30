@@ -53,8 +53,8 @@ public class PlayerUIHandler : MonoBehaviour
     public Vector3 direction;
     [HideInInspector]
     public Vector3 groundDirection;
-    [HideInInspector]
-    public Vector3 targetPos;
+    //[HideInInspector]
+    //public Vector3 targetPos;
     #endregion
 
 
@@ -82,7 +82,7 @@ public class PlayerUIHandler : MonoBehaviour
     {
         if (!initialized) return;
         UILook();
-        CalculateProjectile();
+       // CalculateProjectile();
     }
 
     private void UILook()
@@ -104,20 +104,19 @@ public class PlayerUIHandler : MonoBehaviour
     #endregion
 
     #region  Projectile
-    public void CalculateProjectile()
+    public void CalculateProjectile(Vector3 dir)
     {
-        height = projectileType == ProjectileType.Bomb ? (targetPos.y + targetPos.magnitude / 2f) : 0;
+       var normalPos = dir ;
+        height = projectileType == ProjectileType.Bomb ? (normalPos.y + normalPos.magnitude / 2f) : 0;
         height = Mathf.Max(0.01f, height);
+        var targetPos = new Vector3(normalPos.magnitude, normalPos.y, 0);
+       
+       // DrawPath(groundDirection.normalized, v0, angle, timeNew, _step);
 
+
+        Debug.Log(normalPos);
         CalculatePathWithHeight(targetPos, height, out v0, out angle, out timeNew);
 
-
-        DrawPath(groundDirection.normalized, v0, angle, timeNew, _step);
-
-
-        direction = playerController.TargetPoint.position - transform.position;
-        groundDirection = new Vector3(direction.x, 0, direction.z);
-        targetPos = new Vector3(groundDirection.magnitude, direction.y, 0);
 
 
 
