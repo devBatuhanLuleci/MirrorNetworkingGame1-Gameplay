@@ -7,7 +7,7 @@ public class Throwable : NetworkBehaviour
     protected float timeOld;
 
     private Coroutine throwingCoroutine;
-    private float movemenTime = 0;
+    protected float movemenTime = 0;
 
 
 
