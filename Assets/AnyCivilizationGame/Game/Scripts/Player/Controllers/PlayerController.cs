@@ -53,11 +53,11 @@ public class PlayerController : NetworkBehaviour
         }
 
     }
-    public void SpawnBullet(bool isAutoattack, float angle, Vector3 dir, float speed, float angleNew, float timeNew, float initialVelocity)
+    public void SpawnBullet(bool isAutoattack, Vector3 dir, float speed, float angleNew, float timeNew, float initialVelocity)
     {
        
         // We are spawning Bullet object from object pooler with extra location and rotation parameters.
-        var spawnedBullet = ObjectPooler.Instance.Get(attack.Bullet.transform.name,transform.position+BulletSpawnPoints[0].spawnPoint, Quaternion.Euler(0,angle,0)).GetComponent<Bullet>();
+        var spawnedBullet = ObjectPooler.Instance.Get(attack.Bullet.transform.name,transform.position+BulletSpawnPoints[0].spawnPoint, Quaternion.Euler(dir)).GetComponent<Bullet>();
 
 
         //var spawnedBullet = Instantiate(Bullet, BulletSpawnPoints[0].spawnPoint.position, transform.rotation);

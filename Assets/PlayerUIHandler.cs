@@ -115,7 +115,7 @@ public class PlayerUIHandler : MonoBehaviour
         DrawPath(groundDirection.normalized, v0, angle, timeNew, _step);
 
 
-        direction = playerController.TargetPoint.position - playerController.FirePoint.position;
+        direction = playerController.TargetPoint.position - transform.position;
         groundDirection = new Vector3(direction.x, 0, direction.z);
         targetPos = new Vector3(groundDirection.magnitude, direction.y, 0);
 

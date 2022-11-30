@@ -156,6 +156,7 @@ public class PlayerMovement : NetworkBehaviour
     }
     public Tween SetPlayerRotationToTargetDirection(float targetPos)
     {
+       
         return transform.DORotateQuaternion(Quaternion.Euler(transform.rotation.eulerAngles.x, targetPos, transform.rotation.eulerAngles.z), rotationTurnSpeed).SetEase(Ease.InOutQuad);
     }
 
