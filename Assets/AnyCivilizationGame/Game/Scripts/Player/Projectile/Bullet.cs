@@ -28,6 +28,7 @@ public class Bullet : Throwable, IPooledObject
     /// <param name="rotAngle"></param>
     public void OnObjectSpawn(float rotAngle)
     {
+      //  Debug.Log("rotangle: " + rotAngle);
         SetRotationOffThisObject(rotAngle);
     }
     /// <summary>
