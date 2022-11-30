@@ -237,7 +237,7 @@ public class PlayerAttack : NetworkBehaviour
 
                 var dir = finalDir;
 
-                playerController.playerUIHandler.CalculateProjectile(dir, 3);
+                playerController.playerUIHandler.CalculateProjectile(dir);
 
                 CmdFire(false,
 
