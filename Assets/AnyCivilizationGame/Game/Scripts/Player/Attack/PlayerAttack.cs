@@ -230,11 +230,17 @@ public class PlayerAttack : NetworkBehaviour
                 var startPos = player.transform.position + ((lookPos.normalized) );
                 var targetPos = player.transform.position + ((lookPos.normalized) * 2);
 
-              
+                var direction = targetPos - startPos;
+
+                var finalDir = new Vector3(direction.x, 0, direction.z).normalized;
+
+
+                var dir = finalDir;
+
+
                 CmdFire(false,
 
-                    startPos, 
-                    targetPos,
+                  dir,
 
 
                     playerController.playerUIHandler.v0,
@@ -261,16 +267,22 @@ public class PlayerAttack : NetworkBehaviour
                     attackState = ShootingState.Shooting;
                     AttackAnimationLocalPlayer();
                     //Auto spawn bullet on current player direction.
-                    var startPos = player.transform.position + ((lookPos.normalized) );
+
+                    var startPos = player.transform.position + ((lookPos.normalized));
                     var targetPos = player.transform.position + ((lookPos.normalized) * 2);
 
                     var direction = targetPos - startPos;
 
                     var finalDir = new Vector3(direction.x, 0, direction.z).normalized;
 
-                    CmdFire(true,
 
-                        startPos,targetPos,
+                    var dir = finalDir;
+
+
+                    CmdFire(false,
+
+                      dir,
+
 
                         playerController.playerUIHandler.v0,
                         playerController.playerUIHandler.angle,
@@ -297,42 +309,7 @@ public class PlayerAttack : NetworkBehaviour
     /// <param name="from initposition"></param>
     /// <param name="to targetposition"></param>
     /// <returns></returns>
-    public float CalculateAngle(Transform from, Transform to)
-    {
-        float angle = Vector3.Angle((to.position - from.position), Vector3.forward);
-        float angle2 = Vector3.Angle((to.position - from.position), Vector3.right);
 
-        if (angle2 > 90)
-        {
-            angle = 360 - angle;
-        }
-
-        return angle;
-    }
-    public float CalculateAngle(Transform from, Vector3 to)
-    {
-        float angle = Vector3.Angle((to - from.position), Vector3.forward);
-        float angle2 = Vector3.Angle((to - from.position), Vector3.right);
-
-        if (angle2 > 90)
-        {
-            angle = 360 - angle;
-        }
-
-        return angle;
-    }
-    public float CalculateAngle(Vector3 from, Vector3 to)
-    {
-        float angle = Vector3.Angle((to - from), Vector3.forward);
-        float angle2 = Vector3.Angle((to - from), Vector3.right);
-
-        if (angle2 > 90)
-        {
-            angle = 360 - angle;
-        }
-
-        return angle;
-    }
     /// <summary>
     /// Activate the indicator.
     /// </summary>
@@ -399,11 +376,11 @@ public class PlayerAttack : NetworkBehaviour
     /// </summary>
     /// 
     [Command]
-    public void CmdFire(bool isAutoattack,Vector3 startPos,Vector3 targetPos, float speed, float angleNew, float timeNew, float initialVelocity)
+    public void CmdFire(bool isAutoattack,Vector3 dir, float speed, float angleNew, float timeNew, float initialVelocity)
     {
-        var angle = CalculateAngle(startPos, targetPos);
+         var angle = CalculationManager.GetAngle(dir);
         //Debug.Log("angle "+ CalculateAngle(BasicIndicator.AttackBasicIndicator.GetPosition(0), BasicIndicator.AttackBasicIndicator.GetPosition(1)));
-        Debug.Log("angle " + angle);
+   
         // Debug.Log("değer : "+ CalculateAngle(player, dir));
         #region MultipleBullet
 
@@ -420,22 +397,21 @@ public class PlayerAttack : NetworkBehaviour
         //}
         // Debug.Log(Bullet.transform.name + " " + objectPooler.pools[0].tag);
         #endregion
-        //Debug.Log(angle);
-        //Rotate character to bullet thrown rotation and spawnBullet.
-        AttackAnimationOtherClients();
-        // Debug.Log(angle);
-        var direction = targetPos - startPos;
 
-        var finalDir = new Vector3(direction.x, 0, direction.z).normalized;
-
-
-        var dir = finalDir;
-
-        playerController.SpawnBullet(isAutoattack, dir, speed, angleNew, timeNew, initialVelocity);
         playerMovement.SetPlayerRotationToTargetDirection(angle).onComplete = () =>
         {
 
         };
+        //Rotate character to bullet thrown rotation and spawnBullet.
+        AttackAnimationOtherClients();
+ 
+        // Debug.Log(angle);
+    
+
+
+
+        playerController.SpawnBullet(isAutoattack, dir, speed, angleNew, timeNew, initialVelocity);
+    
     }
 
 

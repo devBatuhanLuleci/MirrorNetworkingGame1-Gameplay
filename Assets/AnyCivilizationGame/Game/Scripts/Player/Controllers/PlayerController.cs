@@ -57,7 +57,7 @@ public class PlayerController : NetworkBehaviour
     {
        
         // We are spawning Bullet object from object pooler with extra location and rotation parameters.
-        var spawnedBullet = ObjectPooler.Instance.Get(attack.Bullet.transform.name,transform.position+BulletSpawnPoints[0].spawnPoint, Quaternion.Euler(dir)).GetComponent<Bullet>();
+        var spawnedBullet = ObjectPooler.Instance.Get(attack.Bullet.transform.name,transform.position+BulletSpawnPoints[0].spawnPoint,Quaternion.Euler(0,CalculationManager.GetAngle(dir),0)).GetComponent<Bullet>();
 
 
         //var spawnedBullet = Instantiate(Bullet, BulletSpawnPoints[0].spawnPoint.position, transform.rotation);
