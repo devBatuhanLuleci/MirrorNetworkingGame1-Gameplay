@@ -16,24 +16,24 @@ public class PlayerSetup : NetworkBehaviour
     private PlayerUIHandler playerUIHandler;
     private PlayerMovement playerMovement;
     private GameObject characterMesh;
-<<<<<<< HEAD
+
     private PlayerController playerController;
-=======
+
     private NetworkIdentity NetworkIdentity;
->>>>>>> 3b46bd8fbbccc486827b651697b0f83c63cdb9bc
+
     #endregion
 
 
     private void Awake()
     {
         NetworkIdentity = GetComponent<NetworkIdentity>();
-<<<<<<< HEAD
+
         playerController = GetComponent<PlayerController>();
-=======
+
         health = GetComponent<Health>();
         playerUIHandler = GetComponent<PlayerUIHandler>();
         playerMovement = GetComponent<PlayerMovement>();
->>>>>>> 3b46bd8fbbccc486827b651697b0f83c63cdb9bc
+
     }
 
     public void Start()
@@ -42,10 +42,9 @@ public class PlayerSetup : NetworkBehaviour
         if (!NetworkIdentity.isServer)
         {
             characterMesh = CreateCharacterMesh();
-<<<<<<< HEAD
+
             playerController.PlayerAnimatorController = characterMesh.GetComponent<Animator>();
-=======
-            playerMovement.PlayerAnimatorController = characterMesh.GetComponent<Animator>();
+
             health.ResetValues(100);
             playerUIHandler.Initialize(health.MaxHealth);
         }
@@ -53,7 +52,7 @@ public class PlayerSetup : NetworkBehaviour
         {
             health.ResetValues(100);
             playerUIHandler.enabled = false;
->>>>>>> 3b46bd8fbbccc486827b651697b0f83c63cdb9bc
+
         }
 
         // Do anything on only local client
