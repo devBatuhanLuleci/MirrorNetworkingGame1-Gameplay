@@ -237,17 +237,11 @@ public class PlayerAttack : NetworkBehaviour
 
                 var dir = finalDir;
 
-                playerController.playerUIHandler.CalculateProjectile(dir);
+               // playerController.playerUIHandler.CalculateProjectile(dir);
 
                 CmdFire(false,
 
-                  dir,
-
-
-                    playerController.playerUIHandler.v0,
-                    playerController.playerUIHandler.angle,
-                    playerController.playerUIHandler.timeNew,
-                    playerController.initialVelocity);
+                  dir);
                 //Debug.Log("stat1:"+ playerController.playerUIHandler.groundDirection.normalized +
                 //" stat2:" + playerController.playerUIHandler.v0
                 //+ " stat3:" + playerController.playerUIHandler.angle +
@@ -279,17 +273,11 @@ public class PlayerAttack : NetworkBehaviour
 
                     var dir = finalDir;
 
-                    playerController.playerUIHandler.CalculateProjectile(dir);
+                  //  playerController.playerUIHandler.CalculateProjectile(dir);
 
                     CmdFire(false,
 
-                      dir,
-
-
-                        playerController.playerUIHandler.v0,
-                        playerController.playerUIHandler.angle,
-                        playerController.playerUIHandler.timeNew,
-                        playerController.initialVelocity);
+                      dir);
 
                 }
 
@@ -378,7 +366,7 @@ public class PlayerAttack : NetworkBehaviour
     /// </summary>
     /// 
     [Command]
-    public void CmdFire(bool isAutoattack,Vector3 dir, float speed, float angleNew, float timeNew, float initialVelocity)
+    public void CmdFire(bool isAutoattack,Vector3 dir)
     {
          var angle = CalculationManager.GetAngle(dir);
         //Debug.Log("angle "+ CalculateAngle(BasicIndicator.AttackBasicIndicator.GetPosition(0), BasicIndicator.AttackBasicIndicator.GetPosition(1)));
@@ -412,7 +400,7 @@ public class PlayerAttack : NetworkBehaviour
 
 
 
-        playerController.SpawnBullet(isAutoattack, dir, speed, angleNew, timeNew, initialVelocity);
+        playerController.SpawnBullet(isAutoattack, dir);
     
     }   
 

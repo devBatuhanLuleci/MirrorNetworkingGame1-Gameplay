@@ -53,7 +53,7 @@ public class PlayerController : NetworkBehaviour
         }
 
     }
-    public void SpawnBullet(bool isAutoattack, Vector3 dir, float speed, float angleNew, float timeNew, float initialVelocity)
+    public void SpawnBullet(bool isAutoattack, Vector3 dir)
     {
        
         // We are spawning Bullet object from object pooler with extra location and rotation parameters.
@@ -64,7 +64,7 @@ public class PlayerController : NetworkBehaviour
 
         //threeDProjectile.BulletObj = spawnedBullet;
 
-
+       
         var lobbyPlayer = ACGDataManager.Instance.LobbyPlayer;
         //Fire that selected bullet object.
         //var targetPos = transform.forward.normalized * 5;
@@ -74,7 +74,7 @@ public class PlayerController : NetworkBehaviour
         spawnedBullet.Init("Debug User " + netId, netId);
 
       //  Debug.Log("stat1:" + dir + " stat2:" + speed + " stat3:" + angleNew + " stat4:" + timeNew + " stat5:" + initialVelocity);
-        spawnedBullet.Throw(dir, speed, angleNew, timeNew, initialVelocity);
+        spawnedBullet.Throw(dir);
         NetworkServer.Spawn(spawnedBullet.gameObject);
 
     }

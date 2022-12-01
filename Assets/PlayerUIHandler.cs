@@ -106,15 +106,14 @@ public class PlayerUIHandler : MonoBehaviour
     #region  Projectile
     public void CalculateProjectile(Vector3 dir)
     {
-       var normalPos = dir ;
-        height = projectileType == ProjectileType.Bomb ? (normalPos.y + normalPos.magnitude / 2f) : 0;
+    
+        height = projectileType == ProjectileType.Bomb ? (dir.y + dir.magnitude / 2f) : 0;
         height = Mathf.Max(0.01f, height);
-        var targetPos = new Vector3(normalPos.magnitude, normalPos.y, 0);
+        var targetPos = new Vector3(dir.magnitude, dir.y, 0);
        
        // DrawPath(groundDirection.normalized, v0, angle, timeNew, _step);
 
 
-        Debug.Log(normalPos);
         CalculatePathWithHeight(targetPos, height, out v0, out angle, out timeNew);
 
 
