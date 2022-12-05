@@ -79,25 +79,11 @@ public class Throwable : NetworkBehaviour
 
     #region new
 
-    private void Update()
-    {
-        //height = projectileType == ProjectileType.Bomb ? (targetPos.y + targetPos.magnitude / 2f) : 0;
-        //height = Mathf.Max(0.01f, height);
-
-        //CalculatePathWithHeight(targetPos, height, out v0, out angle, out timeNew);
-
-
-        //DrawPath(groundDirection.normalized, v0, angle, timeNew, _step);
-
-        //direction = targetPoint.position - firePoint.position;
-        //groundDirection = new Vector3(direction.x, 0, direction.z);
-        //targetPos = new Vector3(groundDirection.magnitude, direction.y, 0);
-
-
-    }
 
     public void Throw(Vector3 dir)
     {
+      
+
         CalculateProjectile(dir);
         if (throwingCoroutine != null)
             StopCoroutine(throwingCoroutine);
@@ -179,7 +165,7 @@ public class Throwable : NetworkBehaviour
         // DrawPath(groundDirection.normalized, v0, angle, timeNew, _step);
 
 
-        Debug.Log(dir);
+       // Debug.Log(dir);
         CalculatePathWithHeight(targetPos*5, height, out v0, out angle, out timeNew);
 
 

@@ -1,9 +1,8 @@
-using Mirror;
+﻿using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 [Serializable]
 public class PlayerController : NetworkBehaviour
@@ -11,7 +10,8 @@ public class PlayerController : NetworkBehaviour
 
     #region     Private Fields
     private PlayerMovement movement;
-    private PlayerAttack attack;
+    [HideInInspector]
+    public PlayerAttack attack;
     private Health health;
     [SerializeField]
     public bool IsLive { get; private set; } = true;
@@ -27,12 +27,12 @@ public class PlayerController : NetworkBehaviour
     public List<BulletSpawnPoints> BulletSpawnPoints;
 
     #region Character Projectile Details
-    public Transform FirePoint;
+
     public Transform TargetPoint;
-    public LineRenderer temporaryLine;
-    public float initialVelocity = 1f;
 
 
+    public int BulletCount = 1;
+    public float BulletIntervalTime = .2f;
     #endregion
 
 
@@ -43,7 +43,7 @@ public class PlayerController : NetworkBehaviour
         attack = GetComponent<PlayerAttack>();
         health = GetComponent<Health>();
         playerUIHandler = GetComponent<PlayerUIHandler>();
-        PlayerAnimatorController = GetComponent<Animator>();
+
     }
     private void Start()
     {
@@ -53,30 +53,66 @@ public class PlayerController : NetworkBehaviour
         }
 
     }
-    public void SpawnBullet(bool isAutoattack, Vector3 dir)
+
+    public void SpawnBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime)
     {
-       
-        // We are spawning Bullet object from object pooler with extra location and rotation parameters.
-        var spawnedBullet = ObjectPooler.Instance.Get(attack.Bullet.transform.name,transform.position+BulletSpawnPoints[0].spawnPoint,Quaternion.Euler(0,CalculationManager.GetAngle(dir),0)).GetComponent<Bullet>();
-
-
-        //var spawnedBullet = Instantiate(Bullet, BulletSpawnPoints[0].spawnPoint.position, transform.rotation);
-
-        //threeDProjectile.BulletObj = spawnedBullet;
-
-       
         var lobbyPlayer = ACGDataManager.Instance.LobbyPlayer;
-        //Fire that selected bullet object.
-        //var targetPos = transform.forward.normalized * 5;
-        //targetPos.y = spawnedBullet.transform.position.y;
+       StartCoroutine( SpawnIntervalBullet(spawnPoint,dir,BulletCount, BulletIntervalTime));
 
-        //spawnedBullet.GetComponent<Bullet>().Init(lobbyPlayer.UserName, netId);
-        spawnedBullet.Init("Debug User " + netId, netId);
 
-      //  Debug.Log("stat1:" + dir + " stat2:" + speed + " stat3:" + angleNew + " stat4:" + timeNew + " stat5:" + initialVelocity);
-        spawnedBullet.Throw(dir);
-        NetworkServer.Spawn(spawnedBullet.gameObject);
+    }
+    //public void SpawnIntervalBullet(int BulletCount, float BulletIntervalTime)
+    //{
+    //    var time = BulletIntervalTime;
+    //    int currentBulletCount = BulletCount;
+    //    while (currentBulletCount > 0)
+    //    {
+    //        time -= Time.unscaledDeltaTime;
+    //        Debug.Log("time : " + time);
+    //        if (time <= 0f)
+    //        {
 
+    //            time = BulletIntervalTime;
+    //            currentBulletCount--;
+    //            Debug.Log($"Shoot, currentBulletCount:{currentBulletCount}");
+    //        }
+    //    }
+
+    //}
+    public IEnumerator SpawnIntervalBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime)
+    {
+
+        int currentBulletCount = BulletCount;
+
+        while (currentBulletCount > 0)
+        {
+            for (int i = 0; i < spawnPoint.Length; i++)
+            {
+
+          
+            var offsetVector = Vector3.Cross(Vector3.up, dir);
+            offsetVector.Normalize();
+            var spawnedBullet = ObjectPooler.Instance.Get(attack.Bullet.transform.name, transform.position + offsetVector * spawnPoint[i%spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + dir * spawnPoint[i % spawnPoint.Length].z, Quaternion.Euler(0, CalculationManager.GetAngle(dir), 0)).GetComponent<Bullet>();
+            spawnedBullet.Init("Debug User " + netId, netId);
+            spawnedBullet.Throw(dir);
+            NetworkServer.Spawn(spawnedBullet.gameObject);
+
+            yield return new WaitForSeconds(BulletIntervalTime);
+
+            currentBulletCount--;
+            Debug.Log($"Shoot, currentBulletCount:{currentBulletCount}");
+            }
+
+        }
+        attack.attackState = PlayerAttack.ShootingState.Idle;
+
+        yield return null;
+    }
+
+
+    public virtual void Fire(bool isAutoattack, Vector3 dir)
+    {
+        // Inherited classes are overriding this method.
     }
 
     #region Input Methods

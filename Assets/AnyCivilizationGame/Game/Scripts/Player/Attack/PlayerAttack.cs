@@ -21,10 +21,11 @@ public class PlayerAttack : NetworkBehaviour
 
     public enum AttackJoystickState { Up, Idle, Holding }
 
+
     public enum ShootingState { Idle, Aiming, Reloading, Shooting, Cancelled }
 
 
-
+    [SyncVar]
     public ShootingState attackState;
     [SyncVar/*(hook =nameof(PlayAttackAnimation))*/]
     public AttackJoystickState attackJoystickState;
@@ -88,7 +89,7 @@ public class PlayerAttack : NetworkBehaviour
         SetLookPosition();
         RotateIndicator();
         //SetBulletSpawnPointPosition();
-        playerController.TargetPoint.position = player.transform.position + ((lookPos.normalized) * Range);
+       playerController.TargetPoint.position = player.transform.position + ((lookPos.normalized) * Range);
     }
 
     /// <summary>
@@ -239,14 +240,8 @@ public class PlayerAttack : NetworkBehaviour
 
                // playerController.playerUIHandler.CalculateProjectile(dir);
 
-                CmdFire(false,
+                CmdFire(false,  dir);
 
-                  dir);
-                //Debug.Log("stat1:"+ playerController.playerUIHandler.groundDirection.normalized +
-                //" stat2:" + playerController.playerUIHandler.v0
-                //+ " stat3:" + playerController.playerUIHandler.angle +
-                //" stat4:" + playerController.playerUIHandler.timeNew +
-                //" stat5:" + playerController.initialVelocity);
             }
 
             if (attackJoystickState == AttackJoystickState.Idle)
@@ -254,12 +249,12 @@ public class PlayerAttack : NetworkBehaviour
                 if (attackState == ShootingState.Cancelled)
                 {
 
-                    attackState = ShootingState.Idle;
+                   // attackState = ShootingState.Idle;
                 }
                 else if (attackState == ShootingState.Idle)
                 {
                     //Auto-Attack
-                    attackState = ShootingState.Shooting;
+              
                     AttackAnimationLocalPlayer();
                     //Auto spawn bullet on current player direction.
 
@@ -272,12 +267,10 @@ public class PlayerAttack : NetworkBehaviour
 
 
                     var dir = finalDir;
-
+              
                   //  playerController.playerUIHandler.CalculateProjectile(dir);
 
-                    CmdFire(false,
-
-                      dir);
+                    CmdFire(true, dir);
 
                 }
 
@@ -368,9 +361,10 @@ public class PlayerAttack : NetworkBehaviour
     [Command]
     public void CmdFire(bool isAutoattack,Vector3 dir)
     {
+        dir.Normalize();
          var angle = CalculationManager.GetAngle(dir);
         //Debug.Log("angle "+ CalculateAngle(BasicIndicator.AttackBasicIndicator.GetPosition(0), BasicIndicator.AttackBasicIndicator.GetPosition(1)));
-   
+
         // Debug.Log("değer : "+ CalculateAngle(player, dir));
         #region MultipleBullet
 
@@ -387,20 +381,21 @@ public class PlayerAttack : NetworkBehaviour
         //}
         // Debug.Log(Bullet.transform.name + " " + objectPooler.pools[0].tag);
         #endregion
-
+        attackState = ShootingState.Shooting;
         playerMovement.SetPlayerRotationToTargetDirection(angle).onComplete = () =>
         {
 
         };
         //Rotate character to bullet thrown rotation and spawnBullet.
         AttackAnimationOtherClients();
- 
+
         // Debug.Log(angle);
-    
 
 
+        // TODO: Multiple bullet spawn system.
 
-        playerController.SpawnBullet(isAutoattack, dir);
+ 
+        playerController.Fire(isAutoattack, dir);
     
     }   
 
@@ -408,7 +403,8 @@ public class PlayerAttack : NetworkBehaviour
     public void AttackAnimationLocalPlayer()
     {
 
-        playerController.PlayerAnimatorController.SetTrigger("Shoot");
+       playerController.PlayerAnimatorController.SetTrigger("Shoot");
+     //   playerController.PlayerAnimatorController.Play("FatBoyFireLoopSequence");
 
     }
     [ClientRpc(includeOwner = false)]
@@ -416,6 +412,7 @@ public class PlayerAttack : NetworkBehaviour
     {
 
         playerController.PlayerAnimatorController.SetTrigger("Shoot");
+      //  playerController.PlayerAnimatorController.Play("FatBoyFireLoopSequence");
 
     }
 

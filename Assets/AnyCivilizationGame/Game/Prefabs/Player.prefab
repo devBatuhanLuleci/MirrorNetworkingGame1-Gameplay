@@ -1281,6 +1281,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  attack: {fileID: 0}
   playerUIHandler: {fileID: 9098212380682637946}
   PlayerAnimatorController: {fileID: 0}
   BulletSpawnPoints:
@@ -1292,14 +1293,9 @@ MonoBehaviour:
     spawnPoint: {x: 0.55, y: 1, z: 0.8}
     BulletInitPos: {x: 0, y: 0, z: 0}
     BulletInitRot: {x: 0, y: 0, z: 0}
-  - SpawnPointName: DefaultSpawnPoint
-    spawnPoint: {x: 0, y: 0.5, z: 0.41}
-    BulletInitPos: {x: 0, y: 0, z: 0}
-    BulletInitRot: {x: 0, y: 0, z: 0}
-  FirePoint: {fileID: 6626824537031914589}
   TargetPoint: {fileID: 6626824535964682116}
-  temporaryLine: {fileID: 6626824536396642706}
-  initialVelocity: 0.1
+  BulletCount: 6
+  BulletIntervalTime: 0.25
 --- !u!114 &-1678189773969174488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1353,7 +1349,6 @@ MonoBehaviour:
   timeNew: 0
   direction: {x: 0, y: 0, z: 0}
   groundDirection: {x: 0, y: 0, z: 0}
-  targetPos: {x: 0, y: 0, z: 0}
 --- !u!1 &6626824537031914590
 GameObject:
   m_ObjectHideFlags: 0
@@ -1594,6 +1589,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d7df3f50bf46cd49b0393f1ca9e107f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AttackBasicIndicator: {fileID: 0}
   LayerMask:
     serializedVersion: 2
     m_Bits: 1
