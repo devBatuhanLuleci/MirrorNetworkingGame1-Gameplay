@@ -2150,8 +2150,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3454,8 +3454,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6126,7 +6126,7 @@ GameObject:
   - component: {fileID: 627195342}
   - component: {fileID: 627195346}
   m_Layer: 5
-  m_Name: MainCanvas
+  m_Name: UI_Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6971,7 +6971,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 160, y: 70}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &715022074
 MonoBehaviour:
@@ -8462,8 +8462,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -10250,8 +10250,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -10418,7 +10418,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 160, y: 70}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1145165595
 MonoBehaviour:
@@ -12953,8 +12953,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 30}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 0, y: 70}
+  m_SizeDelta: {x: 160, y: 70}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1478381818
 MonoBehaviour:
@@ -19314,6 +19314,22 @@ PrefabInstance:
     - target: {fileID: 4306205537346192014, guid: f9412cdb0fec08a4e8f262ad4cc060c9, type: 3}
       propertyPath: m_Name
       value: LoadBalancer
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054325042896838334, guid: f9412cdb0fec08a4e8f262ad4cc060c9, type: 3}
+      propertyPath: debugLog
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054325042896838334, guid: f9412cdb0fec08a4e8f262ad4cc060c9, type: 3}
+      propertyPath: statisticsGUI
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054325042896838334, guid: f9412cdb0fec08a4e8f262ad4cc060c9, type: 3}
+      propertyPath: statisticsLog
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7322224510750757519, guid: f9412cdb0fec08a4e8f262ad4cc060c9, type: 3}
+      propertyPath: host
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8979378384603827278, guid: f9412cdb0fec08a4e8f262ad4cc060c9, type: 3}
       propertyPath: m_RootOrder

@@ -67,7 +67,7 @@ public class LobbyPanel : Panel
         }
         StartGameButton.GetComponent<Button>().interactable = false;
 
-        if (count > 1)
+        if (count >= 1)
         {
             StartGameButton.GetComponent<Button>().interactable = true;
         }
@@ -141,7 +141,7 @@ public class LobbyPanel : Panel
         }
 
         if (StartGameButton.activeSelf)
-            StartGameButton.GetComponent<Button>().interactable = users.Count > 2;
+            StartGameButton.GetComponent<Button>().interactable = users.Count >= 1;
     }
     private void ClearList()
     {
@@ -161,8 +161,8 @@ public class LobbyPanel : Panel
 
     private void SendClientRequestToServer(IEvent ev)
     {
-        if(LoadBalancer.Instance == null) Debug.LogError("LoadBalancer is null!");
-        if(LoadBalancer.Instance.LobbyManager == null) Debug.LogError("LobbyManager is null!");
+        if (LoadBalancer.Instance == null) Debug.LogError("LoadBalancer is null!");
+        if (LoadBalancer.Instance.LobbyManager == null) Debug.LogError("LobbyManager is null!");
         LoadBalancer.Instance.LobbyManager.SendClientRequestToServer(ev);
     }
 

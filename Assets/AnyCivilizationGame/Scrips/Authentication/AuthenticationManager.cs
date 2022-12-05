@@ -92,7 +92,7 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
     }
     public void ClientReady()
     {
-        ACGDataManager.Instance.StartClient("localhost", (ushort)Port);
+        ACGDataManager.Instance.StartClient("40.117.113.124", (ushort)Port);
     }
     #endregion
     #region Login Methods

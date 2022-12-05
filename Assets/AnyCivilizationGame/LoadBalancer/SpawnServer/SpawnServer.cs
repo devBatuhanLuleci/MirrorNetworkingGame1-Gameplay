@@ -24,6 +24,8 @@ public class SpawnServer : EventManagerBase
         var responseTypes = new Dictionary<byte, Type>();
         responseTypes.Add((byte)SpawnServerEvent.Ready, typeof(OnReadyEvent));
         responseTypes.Add((byte)SpawnServerEvent.ConnectToGameServer, typeof(ConnectToGameServerEvent));
+        responseTypes.Add((byte)SpawnServerEvent.CloseRoom, typeof(CloseRoomEvent));
+
         return responseTypes;
     }
 

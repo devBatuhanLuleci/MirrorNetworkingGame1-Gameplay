@@ -7,8 +7,15 @@ using UnityEngine;
 
 public class LoadBalancer : Singleton<LoadBalancer>
 {
+    public enum Host
+    {
+        [StringValue("localhost")] LocalHost,
+        [StringValue("40.117.113.124")] TestServer 
+    }
+
+
     [Header("Listener Setup")]
-    [SerializeField] private string host = "localhost";
+    [SerializeField] private Host host = Host.LocalHost;
     [SerializeField] private bool startClientOnStart = true;
     [Space]
     [SerializeField] private Transport transport;
@@ -43,8 +50,7 @@ public class LoadBalancer : Singleton<LoadBalancer>
         if (startClientOnStart)
         {
             isClient = true;
-            transport.ClientConnect(host);
-            Debug.Log("loadbalancer connected on " + host + ":" + transport.ServerUri().Port);
+            transport.ClientConnect(host.GetStringValue());
         }
 
     }
@@ -140,6 +146,7 @@ public class LoadBalancer : Singleton<LoadBalancer>
 
     private void OnClientDisconnected()
     {
+        Debug.LogError("loadbalancer disconnect to " + host.GetStringValue() + ":" + transport.ServerUri().Port);
     }
 
     private void OnClientDataSent(ArraySegment<byte> data, int arg2)
@@ -157,12 +164,13 @@ public class LoadBalancer : Singleton<LoadBalancer>
         }
         else
         {
-            throw new Exception($"Event handler not found! type: {type}");
+            Debug.LogError($"Event handler not found! type: {type}");
         }
     }
 
     private void OnClientConnected()
     {
+        Debug.Log("loadbalancer connected to " + host.GetStringValue() + ":" + transport.ServerUri().Port);
         SetupManagers();
     }
     #endregion
