@@ -1295,7 +1295,7 @@ MonoBehaviour:
     BulletInitRot: {x: 0, y: 0, z: 0}
   TargetPoint: {fileID: 6626824535964682116}
   BulletCount: 6
-  BulletIntervalTime: 0.25
+  BulletIntervalTime: 0.233
 --- !u!114 &-1678189773969174488
 MonoBehaviour:
   m_ObjectHideFlags: 0

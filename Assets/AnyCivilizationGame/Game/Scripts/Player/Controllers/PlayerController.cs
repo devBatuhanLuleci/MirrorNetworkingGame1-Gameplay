@@ -89,6 +89,7 @@ public class PlayerController : NetworkBehaviour
             for (int i = 0; i < spawnPoint.Length; i++)
             {
 
+            yield return new WaitForSeconds(BulletIntervalTime);
           
             var offsetVector = Vector3.Cross(Vector3.up, dir);
             offsetVector.Normalize();
@@ -97,10 +98,10 @@ public class PlayerController : NetworkBehaviour
             spawnedBullet.Throw(dir);
             NetworkServer.Spawn(spawnedBullet.gameObject);
 
-            yield return new WaitForSeconds(BulletIntervalTime);
 
             currentBulletCount--;
             Debug.Log($"Shoot, currentBulletCount:{currentBulletCount}");
+
             }
 
         }
