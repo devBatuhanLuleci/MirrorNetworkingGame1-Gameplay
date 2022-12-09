@@ -13,12 +13,16 @@ public class PlayerController : NetworkBehaviour
     [HideInInspector]
     public PlayerAttack attack;
     private Health health;
+
+    [HideInInspector]
+    public Energy energy;
     [SerializeField]
     public bool IsLive { get; private set; } = true;
 
     private InfoPopup infoPopup;
     #endregion
-
+    [HideInInspector]
+    public Transform Spine;
     [HideInInspector]
     public PlayerUIHandler playerUIHandler;
     [HideInInspector]
@@ -33,6 +37,10 @@ public class PlayerController : NetworkBehaviour
 
     public int BulletCount = 1;
     public float BulletIntervalTime = .2f;
+
+    public float StartFireAnimationWaitTime = .2f;
+    public float FinishFireAnimationWaitTime = .2f;
+
     #endregion
 
 
@@ -42,6 +50,7 @@ public class PlayerController : NetworkBehaviour
         movement = GetComponent<PlayerMovement>();
         attack = GetComponent<PlayerAttack>();
         health = GetComponent<Health>();
+        energy = GetComponent<Energy>();
         playerUIHandler = GetComponent<PlayerUIHandler>();
 
     }
@@ -54,10 +63,14 @@ public class PlayerController : NetworkBehaviour
 
     }
 
+
+
     public void SpawnBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime)
     {
         var lobbyPlayer = ACGDataManager.Instance.LobbyPlayer;
-       StartCoroutine( SpawnIntervalBullet(spawnPoint,dir,BulletCount, BulletIntervalTime));
+
+        if (energy.CastEnergy())
+            StartCoroutine(SpawnIntervalBullet(spawnPoint, dir, BulletCount, BulletIntervalTime));
 
 
     }
@@ -81,35 +94,45 @@ public class PlayerController : NetworkBehaviour
     //}
     public IEnumerator SpawnIntervalBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime)
     {
+        //TODO : burası fire  loop animasyonu entegre edileceği zaman değiecek.
 
+
+        yield return new WaitForSeconds(StartFireAnimationWaitTime);
         int currentBulletCount = BulletCount;
 
         while (currentBulletCount > 0)
         {
             for (int i = 0; i < spawnPoint.Length; i++)
             {
+                SetShootingParameter(true);
+                yield return new WaitForSeconds(BulletIntervalTime);
 
-            yield return new WaitForSeconds(BulletIntervalTime);
-          
-            var offsetVector = Vector3.Cross(Vector3.up, dir);
-            offsetVector.Normalize();
-            var spawnedBullet = ObjectPooler.Instance.Get(attack.Bullet.transform.name, transform.position + offsetVector * spawnPoint[i%spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + dir * spawnPoint[i % spawnPoint.Length].z, Quaternion.Euler(0, CalculationManager.GetAngle(dir), 0)).GetComponent<Bullet>();
-            spawnedBullet.Init("Debug User " + netId, netId);
-            spawnedBullet.Throw(dir);
-            NetworkServer.Spawn(spawnedBullet.gameObject);
+                var offsetVector = Vector3.Cross(Vector3.up, dir);
+                offsetVector.Normalize();
+                var spawnedBullet = ObjectPooler.Instance.Get(attack.Bullet.transform.name, transform.position + offsetVector * spawnPoint[i % spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + dir * spawnPoint[i % spawnPoint.Length].z, Quaternion.Euler(0, CalculationManager.GetAngle(dir), 0)).GetComponent<Bullet>();
+                spawnedBullet.Init("Debug User " + netId, netId);
+                spawnedBullet.Throw(dir);
+                NetworkServer.Spawn(spawnedBullet.gameObject);
 
 
-            currentBulletCount--;
-            Debug.Log($"Shoot, currentBulletCount:{currentBulletCount}");
+                currentBulletCount--;
+                Debug.Log($"Shoot, currentBulletCount:{currentBulletCount}");
 
             }
 
         }
+        yield return new WaitForSeconds(FinishFireAnimationWaitTime);
         attack.attackState = PlayerAttack.ShootingState.Idle;
+     
+        SetShootingParameter(false);
 
-        yield return null;
     }
+    [ClientRpc]
+    public void SetShootingParameter(bool isShooting)
+    {
+        PlayerAnimatorController.SetBool("Shooting", isShooting);
 
+    }
 
     public virtual void Fire(bool isAutoattack, Vector3 dir)
     {
@@ -154,6 +177,17 @@ public class PlayerController : NetworkBehaviour
     public void HealthChanged(int health)
     {
         playerUIHandler.ChangeHealth(health);
+    }
+    public void EnergyChanged(float energyAmount)
+    {
+        playerUIHandler.ChangeEnergy(energyAmount);
+    }
+
+    [ClientRpc]
+    public void ShakeEnergyBar()
+    {
+        playerUIHandler.ShakeEnergyBar();
+
     }
     public virtual void Move(Vector2 move)
     {

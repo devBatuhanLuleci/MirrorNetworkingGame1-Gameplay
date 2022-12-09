@@ -13,6 +13,7 @@ public class PlayerSetup : NetworkBehaviour
 
     #region Private Fields
     private Health health;
+    private Energy energy;
     private PlayerUIHandler playerUIHandler;
     private PlayerMovement playerMovement;
     private GameObject characterMesh;
@@ -31,6 +32,7 @@ public class PlayerSetup : NetworkBehaviour
         playerController = GetComponent<PlayerController>();
 
         health = GetComponent<Health>();
+        energy = GetComponent<Energy>();
         playerUIHandler = GetComponent<PlayerUIHandler>();
         playerMovement = GetComponent<PlayerMovement>();
 
@@ -44,6 +46,7 @@ public class PlayerSetup : NetworkBehaviour
             characterMesh = CreateCharacterMesh();
 
             playerController.PlayerAnimatorController = characterMesh.GetComponent<Animator>();
+            GetSpine(characterMesh);
 
             health.ResetValues(100);
             playerUIHandler.Initialize(health.MaxHealth);
@@ -52,13 +55,19 @@ public class PlayerSetup : NetworkBehaviour
         {
             health.ResetValues(100);
             playerUIHandler.enabled = false;
-
+            energy.MakeEnergyBarsFull();
         }
 
         // Do anything on only local client
         if (NetworkIdentity.isLocalPlayer && !NetworkIdentity.isServer)
         {
             InitLocalPlayer();
+        }
+
+        // Do anything   on other clients and server
+        if (!NetworkIdentity.isLocalPlayer && !NetworkIdentity.isServer)
+        {
+            InitOtherPlayers();
         }
 
     }
@@ -70,7 +79,20 @@ public class PlayerSetup : NetworkBehaviour
         CameraController.Instance.Initialize(transform);
         InputHandler.Instance.Init(playerController);
     }
+    private void InitOtherPlayers()
+    {
+        var playerController = GetComponent<PlayerController>();
+        playerUIHandler.DisablePanel();
 
+
+    }
+    public void GetSpine(GameObject characterMesh)
+    {
+        var SpineObj = characterMesh.transform.Find("Root/Hip");
+        Debug.Log(SpineObj.name);
+        playerController.Spine = SpineObj;
+
+    }
     private GameObject CreateCharacterMesh()
     {
         var path = "Characters/" + SelectedCharacter;

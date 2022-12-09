@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
+using DG.Tweening;
 
 public class PlayerUIHandler : MonoBehaviour
 {
@@ -13,8 +15,30 @@ public class PlayerUIHandler : MonoBehaviour
     [SerializeField]
     private Slider healthSlider;
 
+
     [SerializeField]
     private TMP_Text healthText;
+
+    [SerializeField]
+    private GameObject EnergyBarGeneral;
+
+    [SerializeField]
+    private Image EnergyBarGray;
+
+    #endregion
+    [SerializeField]
+    private Image EnergyBarOrange;
+
+    [SerializeField]
+    private Image EnergyBarRed;
+
+    #region ShakeParameters
+    public bool isShaking = false;
+    public float duration = 1f;
+    public Vector3 strength=new Vector3(50,0,0);
+    public int vibrato = 8;
+    public float randomness = 0;
+
 
 
     [SerializeField]
@@ -53,6 +77,9 @@ public class PlayerUIHandler : MonoBehaviour
     public Vector3 direction;
     [HideInInspector]
     public Vector3 groundDirection;
+
+
+
     //[HideInInspector]
     //public Vector3 targetPos;
     #endregion
@@ -75,14 +102,27 @@ public class PlayerUIHandler : MonoBehaviour
         var dir = transform.position - camera.position;
         look = Quaternion.LookRotation(dir, Vector3.up);
     }
-
+    public void DisablePanel()
+    {
+        EnergyBarGeneral.SetActive(false);
+    }
 
     Quaternion look;
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            MakeEnergyBarsFull();
+
+
+        }
+
         if (!initialized) return;
         UILook();
-       // CalculateProjectile();
+        // CalculateProjectile();
+
+
+
     }
 
     private void UILook()
@@ -103,15 +143,74 @@ public class PlayerUIHandler : MonoBehaviour
     }
     #endregion
 
+
+    #region Energy Bar
+
+
+    public void MakeEnergyBarsFull()
+    {
+
+        EnergyBarOrange.fillAmount = 1;
+        EnergyBarGray.fillAmount = 1;
+
+
+    }
+    public void ChangeEnergy(float fillAmount)
+    {
+
+        float perBarAmount = 0.333f;
+
+        int value = Mathf.FloorToInt(fillAmount / perBarAmount);
+
+        EnergyBarGray.fillAmount = fillAmount;
+
+        if (fillAmount > perBarAmount * value)
+            EnergyBarOrange.fillAmount = perBarAmount * value;
+
+
+
+
+    }
+    public void ShakeEnergyBar()
+    {
+
+        if (!isShaking)
+        {
+            EnergyBarGeneral.transform.DOShakePosition(duration, strength, vibrato, randomness, false, true)
+                .SetRelative()
+                .SetEase(Ease.OutQuad)
+                .OnStart(() => { isShaking = true; })
+                .OnComplete(() => { isShaking = false; });
+
+            //EnergyBarGeneral.transform.DOPunchScale(Vector3.one, duration, vibrato, 1);
+            EnergyBarGeneral.transform.DOScale(0.2f,duration/2f).SetRelative().SetLoops(2, LoopType.Yoyo);
+
+            EnergyBarRed.DOColor(new Color(255,0,0,25/255f), duration/2f).SetLoops(2,LoopType.Yoyo).SetEase(Ease.Linear);
+
+
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+    #endregion  
     #region  Projectile
     public void CalculateProjectile(Vector3 dir)
     {
-    
+
         height = projectileType == ProjectileType.Bomb ? (dir.y + dir.magnitude / 2f) : 0;
         height = Mathf.Max(0.01f, height);
         var targetPos = new Vector3(dir.magnitude, dir.y, 0);
-       
-       // DrawPath(groundDirection.normalized, v0, angle, timeNew, _step);
+
+        // DrawPath(groundDirection.normalized, v0, angle, timeNew, _step);
 
 
         CalculatePathWithHeight(targetPos, height, out v0, out angle, out timeNew);

@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public static class DictionaryExtensions 
+public static class DictionaryExtensions
 {
 
     public static bool TryGetKey<K, V>(this IDictionary<K, V> instance, V value, out K key)
@@ -19,4 +18,5 @@ public static class DictionaryExtensions
         key = default(K);
         return false;
     }
+
 }

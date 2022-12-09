@@ -89,7 +89,7 @@ public class PlayerAttack : NetworkBehaviour
         SetLookPosition();
         RotateIndicator();
         //SetBulletSpawnPointPosition();
-       playerController.TargetPoint.position = player.transform.position + ((lookPos.normalized) * Range);
+        playerController.TargetPoint.position = player.transform.position + ((lookPos.normalized) * Range);
     }
 
     /// <summary>
@@ -228,7 +228,7 @@ public class PlayerAttack : NetworkBehaviour
                 AttackAnimationLocalPlayer();
                 //Spawn the bullet object.
 
-                var startPos = player.transform.position + ((lookPos.normalized) );
+                var startPos = player.transform.position + ((lookPos.normalized));
                 var targetPos = player.transform.position + ((lookPos.normalized) * 2);
 
                 var direction = targetPos - startPos;
@@ -238,9 +238,9 @@ public class PlayerAttack : NetworkBehaviour
 
                 var dir = finalDir;
 
-               // playerController.playerUIHandler.CalculateProjectile(dir);
+                // playerController.playerUIHandler.CalculateProjectile(dir);
 
-                CmdFire(false,  dir);
+                CmdFire(false, dir);
 
             }
 
@@ -249,12 +249,12 @@ public class PlayerAttack : NetworkBehaviour
                 if (attackState == ShootingState.Cancelled)
                 {
 
-                   // attackState = ShootingState.Idle;
+                    // attackState = ShootingState.Idle;
                 }
                 else if (attackState == ShootingState.Idle)
                 {
                     //Auto-Attack
-              
+
                     AttackAnimationLocalPlayer();
                     //Auto spawn bullet on current player direction.
 
@@ -267,8 +267,8 @@ public class PlayerAttack : NetworkBehaviour
 
 
                     var dir = finalDir;
-              
-                  //  playerController.playerUIHandler.CalculateProjectile(dir);
+
+                    //  playerController.playerUIHandler.CalculateProjectile(dir);
 
                     CmdFire(true, dir);
 
@@ -359,10 +359,10 @@ public class PlayerAttack : NetworkBehaviour
     /// </summary>
     /// 
     [Command]
-    public void CmdFire(bool isAutoattack,Vector3 dir)
+    public void CmdFire(bool isAutoattack, Vector3 dir)
     {
         dir.Normalize();
-         var angle = CalculationManager.GetAngle(dir);
+        var angle = CalculationManager.GetAngle(dir);
         //Debug.Log("angle "+ CalculateAngle(BasicIndicator.AttackBasicIndicator.GetPosition(0), BasicIndicator.AttackBasicIndicator.GetPosition(1)));
 
         // Debug.Log("değer : "+ CalculateAngle(player, dir));
@@ -394,26 +394,30 @@ public class PlayerAttack : NetworkBehaviour
 
         // TODO: Multiple bullet spawn system.
 
- 
+
         playerController.Fire(isAutoattack, dir);
-    
-    }   
+
+    }
 
 
     public void AttackAnimationLocalPlayer()
     {
+        if (playerController.energy.HaveEnergy())
+        {
+            playerController.PlayerAnimatorController.SetTrigger("Shoot");
 
-       playerController.PlayerAnimatorController.SetTrigger("Shoot");
-     //   playerController.PlayerAnimatorController.Play("FatBoyFireLoopSequence");
+        }
+        //   playerController.PlayerAnimatorController.Play("FatBoyFireLoopSequence");
 
     }
     [ClientRpc(includeOwner = false)]
     public void AttackAnimationOtherClients()
     {
-
-        playerController.PlayerAnimatorController.SetTrigger("Shoot");
-      //  playerController.PlayerAnimatorController.Play("FatBoyFireLoopSequence");
-
+        if (playerController.energy.HaveEnergy())
+        {
+            playerController.PlayerAnimatorController.SetTrigger("Shoot");
+            //  playerController.PlayerAnimatorController.Play("FatBoyFireLoopSequence");
+        }
     }
 
 

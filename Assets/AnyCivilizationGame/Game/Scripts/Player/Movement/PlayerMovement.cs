@@ -99,7 +99,7 @@ public class PlayerMovement : NetworkBehaviour
         {
             PlayerController.PlayerAnimatorController?.SetBool("Running", false);
         }
-        else if (movementState == MovementState.Moving)
+        else if (movementState == MovementState.Moving )
         {
             PlayerController.PlayerAnimatorController?.SetBool("Running", true);
         }
