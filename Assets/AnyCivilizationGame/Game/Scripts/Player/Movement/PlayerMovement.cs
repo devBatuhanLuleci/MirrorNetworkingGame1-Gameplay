@@ -19,7 +19,9 @@ public class PlayerMovement : NetworkBehaviour
     public Vector2 moveDirection;
 
 
-
+    [SyncVar ( hook = nameof(RotateSpine))]
+    [HideInInspector]
+    public float angle=0;
 
 
     [SerializeField]
@@ -159,6 +161,15 @@ public class PlayerMovement : NetworkBehaviour
        
         return transform.DORotateQuaternion(Quaternion.Euler(transform.rotation.eulerAngles.x, targetPos, transform.rotation.eulerAngles.z), rotationTurnSpeed).SetEase(Ease.InOutQuad);
     }
+
+
+    public void RotateSpine(float oldAngle, float newAngle)
+    {
+        Debug.Log("newAngle : " + newAngle) ;
+        PlayerController.SpineRotator.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(newAngle, newAngle, newAngle)), .1f).SetEase(Ease.InOutQuad);
+
+    }
+
 
     /// <summary>
     /// This function sets PlayerDirSprite Position.

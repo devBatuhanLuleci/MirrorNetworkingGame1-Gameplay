@@ -382,10 +382,11 @@ public class PlayerAttack : NetworkBehaviour
         // Debug.Log(Bullet.transform.name + " " + objectPooler.pools[0].tag);
         #endregion
         attackState = ShootingState.Shooting;
-        playerMovement.SetPlayerRotationToTargetDirection(angle).onComplete = () =>
-        {
+        //playerMovement.SetPlayerRotationToTargetDirection(angle).onComplete = () =>
+        //{
 
-        };
+        //};
+        RotateSpine(angle);
         //Rotate character to bullet thrown rotation and spawnBullet.
         AttackAnimationOtherClients();
 
@@ -398,7 +399,11 @@ public class PlayerAttack : NetworkBehaviour
         playerController.Fire(isAutoattack, dir);
 
     }
-
+    
+    public void RotateSpine(float angle)
+    {
+        playerController.RotateSpine(angle);
+    }
 
     public void AttackAnimationLocalPlayer()
     {

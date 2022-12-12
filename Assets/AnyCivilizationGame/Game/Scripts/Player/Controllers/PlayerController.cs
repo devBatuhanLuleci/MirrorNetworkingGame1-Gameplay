@@ -21,8 +21,8 @@ public class PlayerController : NetworkBehaviour
 
     private InfoPopup infoPopup;
     #endregion
-    [HideInInspector]
-    public Transform Spine;
+ 
+    public Transform SpineRotator;
     [HideInInspector]
     public PlayerUIHandler playerUIHandler;
     [HideInInspector]
@@ -63,6 +63,7 @@ public class PlayerController : NetworkBehaviour
 
     }
 
+  
 
 
     public void SpawnBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime)
@@ -161,6 +162,11 @@ public class PlayerController : NetworkBehaviour
         IsLive = false;
         MatchNetworkManager.Instance.Respawn(this);
         DeathRPC();
+    }
+
+    public void RotateSpine(float value)
+    {
+        movement.angle = value;
     }
 
     /// <summary>

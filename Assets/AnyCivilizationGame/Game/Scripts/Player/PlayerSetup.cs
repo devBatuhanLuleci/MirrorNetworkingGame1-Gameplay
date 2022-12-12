@@ -36,6 +36,11 @@ public class PlayerSetup : NetworkBehaviour
         playerUIHandler = GetComponent<PlayerUIHandler>();
         playerMovement = GetComponent<PlayerMovement>();
 
+        if (!NetworkIdentity.isServer)
+        {
+
+        }
+
     }
 
     public void Start()
@@ -43,13 +48,19 @@ public class PlayerSetup : NetworkBehaviour
         // Do anything on all client but not server
         if (!NetworkIdentity.isServer)
         {
+
+
             characterMesh = CreateCharacterMesh();
 
             playerController.PlayerAnimatorController = characterMesh.GetComponent<Animator>();
-            GetSpine(characterMesh);
+            GetSpine(characterMesh.transform);
 
             health.ResetValues(100);
             playerUIHandler.Initialize(health.MaxHealth);
+
+
+            SetupComponent();
+
         }
         else // Do anything on server
         {
@@ -72,6 +83,11 @@ public class PlayerSetup : NetworkBehaviour
 
     }
 
+    private void SetupComponent()
+    {
+      
+    }
+
     private void InitLocalPlayer()
     {
         var playerController = GetComponent<PlayerController>();
@@ -86,11 +102,17 @@ public class PlayerSetup : NetworkBehaviour
 
 
     }
-    public void GetSpine(GameObject characterMesh)
+    public void GetSpine(Transform characterMesh)
     {
-        var SpineObj = characterMesh.transform.Find("Root/Hip");
-        Debug.Log(SpineObj.name);
-        playerController.Spine = SpineObj;
+        var SpineObj = characterMesh.FindByName("Spine");
+
+        GameObject obj = new GameObject();
+        obj.transform.parent = SpineObj.parent;
+        obj.transform.name = "Char_Rotator";
+        obj.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        obj.transform.localScale = Vector3.one;
+        SpineObj.SetParent(obj.transform);
+        playerController.SpineRotator = obj.transform;
 
     }
     private GameObject CreateCharacterMesh()
