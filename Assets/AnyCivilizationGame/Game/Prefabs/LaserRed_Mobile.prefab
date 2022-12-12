@@ -4957,6 +4957,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  projectileType: 0
   damage: 50
   OwnerName: 
   OwnerNetId: 0
@@ -4991,9 +4992,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 0.05
   clientAuthority: 0
-  sendInterval: 0.05
+  sendInterval: 0.02
   syncPosition: 1
   syncRotation: 1
   syncScale: 0

@@ -18,6 +18,9 @@ public class PlayerMovement : NetworkBehaviour
     [SyncVar]
     public Vector2 moveDirection;
 
+    [SyncVar ( hook = nameof(RotateSpine))]
+    [HideInInspector]
+    public float angle=0;
 
     [SerializeField]
     private Transform playerDirSprite;
@@ -37,10 +40,12 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField]
     private float DirectionSpriteScale = 2f;
 
+    private PlayerController PlayerController;
 
-    public Animator PlayerAnimatorController;
-
-
+    private void Awake()
+    {
+        PlayerController = GetComponent<PlayerController>();
+    }
     private void Start()
     {
         SetSpriteVisibility(false);
@@ -92,11 +97,11 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (movementState == MovementState.Idle)
         {
-            PlayerAnimatorController?.SetBool("Running", false);
+            PlayerController.PlayerAnimatorController?.SetBool("Running", false);
         }
-        else if (movementState == MovementState.Moving)
+        else if (movementState == MovementState.Moving )
         {
-            PlayerAnimatorController?.SetBool("Running", true);
+            PlayerController.PlayerAnimatorController?.SetBool("Running", true);
         }
     }
 
@@ -142,7 +147,7 @@ public class PlayerMovement : NetworkBehaviour
     /// </summary>
     public void SetPlayerRotation()
     {
-        if (movementState == MovementState.Idle)
+        if (movementState == MovementState.Idle  || PlayerController.attack.attackState==PlayerAttack.ShootingState.Shooting)
             return;
 
         var lookPos = new Vector3(moveDirection.x, 0f, moveDirection.y).normalized;
@@ -151,8 +156,18 @@ public class PlayerMovement : NetworkBehaviour
     }
     public Tween SetPlayerRotationToTargetDirection(float targetPos)
     {
+       
         return transform.DORotateQuaternion(Quaternion.Euler(transform.rotation.eulerAngles.x, targetPos, transform.rotation.eulerAngles.z), rotationTurnSpeed).SetEase(Ease.InOutQuad);
     }
+
+
+    public void RotateSpine(float oldAngle, float newAngle)
+    {
+        Debug.Log("newAngle : " + newAngle) ;
+        PlayerController.SpineRotator.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(newAngle, newAngle, newAngle)), .1f).SetEase(Ease.InOutQuad);
+
+    }
+
 
     /// <summary>
     /// This function sets PlayerDirSprite Position.

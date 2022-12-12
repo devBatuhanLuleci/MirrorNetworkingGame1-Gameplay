@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class BasicIndicator : MonoBehaviour
 {
-    private LineRenderer AttackBasicIndicator;
+    [HideInInspector]
+    public LineRenderer AttackBasicIndicator;
     public LayerMask LayerMask;
     private float TrailDistance;
     // PlayerAttack playerAttack;

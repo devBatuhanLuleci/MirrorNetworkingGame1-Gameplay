@@ -1491,7 +1491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b0fecffa3f624585964b0d0eb21b18e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Port: 7777
+  Port: 8080
   DualMode: 1
   NoDelay: 1
   Interval: 10
@@ -1527,7 +1527,7 @@ MonoBehaviour:
   offlineScene: 
   onlineScene: 
   transport: {fileID: 111900424}
-  networkAddress: localhost
+  networkAddress: 192.168.1.101
   maxConnections: 100
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 6626824536947155891, guid: 3d845d7b633a2d44f810017a3903690b, type: 3}
@@ -18018,7 +18018,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 21.4
+  field of view: 20
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -18044,7 +18044,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1355108728}
   m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 0, y: 22, z: -12.48}
+  m_LocalPosition: {x: 0, y: 37.5, z: -21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -28024,10 +28024,6 @@ PrefabInstance:
     - target: {fileID: 7167353221741499808, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
       propertyPath: m_Name
       value: ObjectPooler
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167353221741499809, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
-      propertyPath: pools.Array.data[0].size
-      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7167353221741499814, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
       propertyPath: m_RootOrder

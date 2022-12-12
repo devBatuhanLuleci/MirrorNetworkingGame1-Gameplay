@@ -16,19 +16,19 @@ public class PlayerAttack : NetworkBehaviour
     //private Joystick attackJoystick;
     public Vector2 AttackDirection { get; set; } = Vector2.zero;
     public bool AttackHeld { get; set; } = false;
-    [Space]
+
     #region States
 
-    #region SyncVariables
-
-
-    #endregion
-    public ShootingState attackState;
-
-    public AttackJoystickState attackJoystickState;
     public enum AttackJoystickState { Up, Idle, Holding }
 
+
     public enum ShootingState { Idle, Aiming, Reloading, Shooting, Cancelled }
+
+
+    [SyncVar]
+    public ShootingState attackState;
+    [SyncVar/*(hook =nameof(PlayAttackAnimation))*/]
+    public AttackJoystickState attackJoystickState;
 
 
 
@@ -62,7 +62,7 @@ public class PlayerAttack : NetworkBehaviour
     private RaycastHit hit;
 
 
-    public List<BulletSpawnPoint> BulletSpawnPoints;
+
 
     public GameObject Bullet;
 
@@ -88,7 +88,7 @@ public class PlayerAttack : NetworkBehaviour
         ConfigureAttackState();
         SetLookPosition();
         RotateIndicator();
-        SetBulletSpawnPointPosition();
+        //SetBulletSpawnPointPosition();
         playerController.TargetPoint.position = player.transform.position + ((lookPos.normalized) * Range);
     }
 
@@ -102,11 +102,6 @@ public class PlayerAttack : NetworkBehaviour
         player = this.gameObject.transform;
 
 
-        foreach (BulletSpawnPoint spawnPoint in BulletSpawnPoints)
-        {
-            spawnPoint.BulletInitPos = spawnPoint.spawnPoint.localPosition;
-            spawnPoint.BulletInitRot = spawnPoint.spawnPoint.localRotation.eulerAngles;
-        }
 
 
     }
@@ -223,22 +218,30 @@ public class PlayerAttack : NetworkBehaviour
             if (attackJoystickState == AttackJoystickState.Holding)
             {
                 //Shoot here!
-                attackState = ShootingState.Shooting;
 
+                attackState = ShootingState.Shooting;
 
                 //Deactivate Projectile line.
                 CancelAttackProjectile();
-                var angle = CalculateAngle(player, attackLookAtPoint);
-                Debug.Log(angle);
-
+                //var angle = CalculateAngle(player, attackLookAtPoint);
+                //Debug.Log(angle);
+                AttackAnimationLocalPlayer();
                 //Spawn the bullet object.
-                CmdFire(false, angle, playerController.playerUIHandler.groundDirection.normalized, playerController.playerUIHandler.v0, playerController.playerUIHandler.angle, playerController.playerUIHandler.timeNew, playerController.initialVelocity);
 
-                //Debug.Log("stat1:"+ playerController.playerUIHandler.groundDirection.normalized +
-                //" stat2:" + playerController.playerUIHandler.v0
-                //+ " stat3:" + playerController.playerUIHandler.angle +
-                //" stat4:" + playerController.playerUIHandler.timeNew +
-                //" stat5:" + playerController.initialVelocity);
+                var startPos = player.transform.position + ((lookPos.normalized));
+                var targetPos = player.transform.position + ((lookPos.normalized) * 2);
+
+                var direction = targetPos - startPos;
+
+                var finalDir = new Vector3(direction.x, 0, direction.z).normalized;
+
+
+                var dir = finalDir;
+
+                // playerController.playerUIHandler.CalculateProjectile(dir);
+
+                CmdFire(false, dir);
+
             }
 
             if (attackJoystickState == AttackJoystickState.Idle)
@@ -246,15 +249,28 @@ public class PlayerAttack : NetworkBehaviour
                 if (attackState == ShootingState.Cancelled)
                 {
 
-                    attackState = ShootingState.Idle;
+                    // attackState = ShootingState.Idle;
                 }
                 else if (attackState == ShootingState.Idle)
                 {
                     //Auto-Attack
-                    attackState = ShootingState.Shooting;
 
+                    AttackAnimationLocalPlayer();
                     //Auto spawn bullet on current player direction.
-                    CmdFire(true, CalculateAngle(player, attackLookAtPoint), playerController.playerUIHandler.groundDirection.normalized, playerController.playerUIHandler.v0, playerController.playerUIHandler.angle, playerController.playerUIHandler.timeNew, playerController.initialVelocity);
+
+                    var startPos = player.transform.position + ((lookPos.normalized));
+                    var targetPos = player.transform.position + ((lookPos.normalized) * 2);
+
+                    var direction = targetPos - startPos;
+
+                    var finalDir = new Vector3(direction.x, 0, direction.z).normalized;
+
+
+                    var dir = finalDir;
+
+                    //  playerController.playerUIHandler.CalculateProjectile(dir);
+
+                    CmdFire(true, dir);
 
                 }
 
@@ -262,7 +278,7 @@ public class PlayerAttack : NetworkBehaviour
             }
 
             //Reset bullet spawn point positions.
-            ResetBulletSpawnPointPosition();
+            // ResetBulletSpawnPointPosition();
             attackJoystickState = AttackJoystickState.Up;
 
         }
@@ -276,18 +292,7 @@ public class PlayerAttack : NetworkBehaviour
     /// <param name="from initposition"></param>
     /// <param name="to targetposition"></param>
     /// <returns></returns>
-    public float CalculateAngle(Transform from, Transform to)
-    {
-        float angle = Vector3.Angle((to.position - from.position), Vector3.forward);
-        float angle2 = Vector3.Angle((to.position - from.position), Vector3.right);
 
-        if (angle2 > 90)
-        {
-            angle = 360 - angle;
-        }
-
-        return angle;
-    }
     /// <summary>
     /// Activate the indicator.
     /// </summary>
@@ -348,13 +353,19 @@ public class PlayerAttack : NetworkBehaviour
         }
 
     }
+
     /// <summary>
     /// This function spawns bullet and throw with some informations.
     /// </summary>
     /// 
     [Command]
-    public void CmdFire(bool isAutoattack, float angle, Vector3 dir, float speed, float angleNew, float timeNew, float initialVelocity)
+    public void CmdFire(bool isAutoattack, Vector3 dir)
     {
+        dir.Normalize();
+        var angle = CalculationManager.GetAngle(dir);
+        //Debug.Log("angle "+ CalculateAngle(BasicIndicator.AttackBasicIndicator.GetPosition(0), BasicIndicator.AttackBasicIndicator.GetPosition(1)));
+
+        // Debug.Log("değer : "+ CalculateAngle(player, dir));
         #region MultipleBullet
 
         //foreach (BulletSpawnPoint BulletSpawnPoint in BulletSpawnPoints)
@@ -370,108 +381,101 @@ public class PlayerAttack : NetworkBehaviour
         //}
         // Debug.Log(Bullet.transform.name + " " + objectPooler.pools[0].tag);
         #endregion
-        //Debug.Log(angle);
+        attackState = ShootingState.Shooting;
+        //playerMovement.SetPlayerRotationToTargetDirection(angle).onComplete = () =>
+        //{
+
+        //};
+        RotateSpine(angle);
         //Rotate character to bullet thrown rotation and spawnBullet.
-        playerMovement.SetPlayerRotationToTargetDirection(angle).onComplete = () =>
-        {
-            SpawnBullet(isAutoattack, angle, dir, speed, angleNew, timeNew, initialVelocity);
-        };
-    }
+        AttackAnimationOtherClients();
 
-    private void SpawnBullet(bool isAutoattack, float angle, Vector3 dir, float speed, float angleNew, float timeNew, float initialVelocity)
+        // Debug.Log(angle);
+
+
+        // TODO: Multiple bullet spawn system.
+
+
+        playerController.Fire(isAutoattack, dir);
+
+    }
+    
+    public void RotateSpine(float angle)
     {
+        playerController.RotateSpine(angle);
+    }
 
-        // We are spawning Bullet object from object pooler with extra location and rotation parameters.
-        var spawnedBullet = ObjectPooler.Instance.Get(Bullet.transform.name, BulletSpawnPoints[0].spawnPoint.position, transform.rotation).GetComponent<Bullet>();
+    public void AttackAnimationLocalPlayer()
+    {
+        if (playerController.energy.HaveEnergy())
+        {
+            playerController.PlayerAnimatorController.SetTrigger("Shoot");
 
-
-        //var spawnedBullet = Instantiate(Bullet, BulletSpawnPoints[0].spawnPoint.position, transform.rotation);
-
-        //threeDProjectile.BulletObj = spawnedBullet;
-
-
-        var lobbyPlayer = ACGDataManager.Instance.LobbyPlayer;
-        //Fire that selected bullet object.
-        var targetPos = transform.forward.normalized * 5;
-        targetPos.y = spawnedBullet.transform.position.y;
-
-        //spawnedBullet.GetComponent<Bullet>().Init(lobbyPlayer.UserName, netId);
-        spawnedBullet.Init("Debug User " + netId, netId);
-
-        // spawnedBullet.Throw(new Vector3[] { spawnedBullet.transform.position, targetPos });
-        //Debug.Log("stat1:"+ playerController.playerUIHandler.groundDirection.normalized +
-        //" stat2:" + playerController.playerUIHandler.v0
-        //+ " stat3:" + playerController.playerUIHandler.angle +
-        //" stat4:" + playerController.playerUIHandler.timeNew +
-        //" stat5:" + playerController.initialVelocity);
-
-        Debug.Log("stat1:" + dir + " stat2:" + speed + " stat3:" + angleNew + " stat4:" + timeNew + " stat5:" + initialVelocity);
-        spawnedBullet.Throw(dir, speed, angleNew, timeNew, playerController.FirePoint, initialVelocity);
-        NetworkServer.Spawn(spawnedBullet.gameObject);
+        }
+        //   playerController.PlayerAnimatorController.Play("FatBoyFireLoopSequence");
 
     }
+    [ClientRpc(includeOwner = false)]
+    public void AttackAnimationOtherClients()
+    {
+        if (playerController.energy.HaveEnergy())
+        {
+            playerController.PlayerAnimatorController.SetTrigger("Shoot");
+            //  playerController.PlayerAnimatorController.Play("FatBoyFireLoopSequence");
+        }
+    }
+
+
 
 
     /// <summary>
     /// This function handles multiple bullet position on player.
     /// </summary>ö
-    private void SetBulletSpawnPointPosition()
-    {
+    //    private void SetBulletSpawnPointPosition()
+    //    {
 
-        if (attackJoystickState == AttackJoystickState.Holding)
-        {
+    //        if (attackJoystickState == AttackJoystickState.Holding)
+    //        {
 
-            if (splatType == SplatType.BasicIndicator)
-            {
+    //            if (splatType == SplatType.BasicIndicator)
+    //            {
 
-                var offsetVector = Vector3.Cross(Vector3.up, lookPos.normalized);
-                offsetVector.Normalize();
+    //                var offsetVector = Vector3.Cross(Vector3.up, lookPos.normalized);
+    //                offsetVector.Normalize();
 
-                foreach (BulletSpawnPoint BulletSpawnPoint in BulletSpawnPoints)
-                {
+    //                foreach (BulletSpawnPoint BulletSpawnPoint in BulletSpawnPoints)
+    //                {
 
-                    BulletSpawnPoint.spawnPoint.eulerAngles = new Vector3(0, CalculateAngle(player, attackLookAtPoint), 0);
-                    var BulletPosition = new Vector3(player.transform.position.x + (lookPos.normalized.x * BulletSpawnPoint.BulletInitPos.z) + offsetVector.x * BulletSpawnPoint.BulletInitPos.x,
-                                                             BulletSpawnPoint.spawnPoint.position.y,
-                                                             player.transform.position.z + (lookPos.normalized.z * BulletSpawnPoint.BulletInitPos.z) + offsetVector.z * BulletSpawnPoint.BulletInitPos.x);
-                    BulletSpawnPoint.spawnPoint.position = BulletPosition;
-                }
-            }
-        }
+    //                    BulletSpawnPoint.spawnPoint.eulerAngles = new Vector3(0, CalculateAngle(player, attackLookAtPoint), 0);
+    //                    var BulletPosition = new Vector3(player.transform.position.x + (lookPos.normalized.x * BulletSpawnPoint.BulletInitPos.z) + offsetVector.x * BulletSpawnPoint.BulletInitPos.x,
+    //                                                             BulletSpawnPoint.spawnPoint.position.y,
+    //                                                             player.transform.position.z + (lookPos.normalized.z * BulletSpawnPoint.BulletInitPos.z) + offsetVector.z * BulletSpawnPoint.BulletInitPos.x);
+    //                    BulletSpawnPoint.spawnPoint.position = BulletPosition;
+    //                }
+    //            }
+    //        }
 
-    }
-    /// <summary>
-    /// Reset bullet spawn point positions for auto attack bullet position.
-    /// </summary>
-    private void ResetBulletSpawnPointPosition()
-    {
+    //    }
+    //    /// <summary>
+    //    /// Reset bullet spawn point positions for auto attack bullet position.
+    //    /// </summary>
+    //    private void ResetBulletSpawnPointPosition()
+    //    {
 
-        if (splatType == SplatType.BasicIndicator)
-        {
-            var offsetVector = Vector3.Cross(Vector3.up, lookPos.normalized);
-            offsetVector.Normalize();
+    //        if (splatType == SplatType.BasicIndicator)
+    //        {
+    //            var offsetVector = Vector3.Cross(Vector3.up, lookPos.normalized);
+    //            offsetVector.Normalize();
 
-            foreach (BulletSpawnPoint BulletSpawnPoint in BulletSpawnPoints)
-            {
-                BulletSpawnPoint.spawnPoint.localEulerAngles = BulletSpawnPoint.BulletInitRot;
-                BulletSpawnPoint.spawnPoint.localPosition = BulletSpawnPoint.BulletInitPos;
-            }
-        }
+    //            foreach (BulletSpawnPoint BulletSpawnPoint in BulletSpawnPoints)
+    //            {
+    //                BulletSpawnPoint.spawnPoint.localEulerAngles = BulletSpawnPoint.BulletInitRot;
+    //                BulletSpawnPoint.spawnPoint.localPosition = BulletSpawnPoint.BulletInitPos;
+    //            }
+    //        }
 
-    }
+    //    }
 
 
 }
-/// <summary>
-/// This class takes bullet spawn point arguments.
-/// </summary>
-[System.Serializable]
-public class BulletSpawnPoint
-{
-    public string SpawnPointName;
-    public Transform spawnPoint;
-    [HideInInspector]
-    public Vector3 BulletInitPos;
-    [HideInInspector]
-    public Vector3 BulletInitRot;
-}
+

@@ -58,7 +58,7 @@ public class NetworkedGameManager : NetworkBehaviour
     {
 
         // Setup();
-        string msg = $" <color=green> Server listining on </color> localhost:{ACGDataManager.Instance.GameData.Port}";
+        string msg = $" <color=green> Server listining on </color> this server:{ACGDataManager.Instance.GameData.Port}";
         Info(msg);
     }
 

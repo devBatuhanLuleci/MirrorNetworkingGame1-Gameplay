@@ -13,19 +13,34 @@ public class PlayerSetup : NetworkBehaviour
 
     #region Private Fields
     private Health health;
+    private Energy energy;
     private PlayerUIHandler playerUIHandler;
     private PlayerMovement playerMovement;
     private GameObject characterMesh;
+
+    private PlayerController playerController;
+
     private NetworkIdentity NetworkIdentity;
+
     #endregion
 
 
     private void Awake()
     {
         NetworkIdentity = GetComponent<NetworkIdentity>();
+
+        playerController = GetComponent<PlayerController>();
+
         health = GetComponent<Health>();
+        energy = GetComponent<Energy>();
         playerUIHandler = GetComponent<PlayerUIHandler>();
         playerMovement = GetComponent<PlayerMovement>();
+
+        if (!NetworkIdentity.isServer)
+        {
+
+        }
+
     }
 
     public void Start()
@@ -33,15 +48,25 @@ public class PlayerSetup : NetworkBehaviour
         // Do anything on all client but not server
         if (!NetworkIdentity.isServer)
         {
+
+
             characterMesh = CreateCharacterMesh();
-            playerMovement.PlayerAnimatorController = characterMesh.GetComponent<Animator>();
+
+            playerController.PlayerAnimatorController = characterMesh.GetComponent<Animator>();
+            GetSpine(characterMesh.transform);
+
             health.ResetValues(100);
             playerUIHandler.Initialize(health.MaxHealth);
+
+
+            SetupComponent();
+
         }
         else // Do anything on server
         {
             health.ResetValues(100);
             playerUIHandler.enabled = false;
+            energy.MakeEnergyBarsFull();
         }
 
         // Do anything on only local client
@@ -50,6 +75,17 @@ public class PlayerSetup : NetworkBehaviour
             InitLocalPlayer();
         }
 
+        // Do anything   on other clients and server
+        if (!NetworkIdentity.isLocalPlayer && !NetworkIdentity.isServer)
+        {
+            InitOtherPlayers();
+        }
+
+    }
+
+    private void SetupComponent()
+    {
+      
     }
 
     private void InitLocalPlayer()
@@ -59,7 +95,26 @@ public class PlayerSetup : NetworkBehaviour
         CameraController.Instance.Initialize(transform);
         InputHandler.Instance.Init(playerController);
     }
+    private void InitOtherPlayers()
+    {
+        var playerController = GetComponent<PlayerController>();
+        playerUIHandler.DisablePanel();
 
+
+    }
+    public void GetSpine(Transform characterMesh)
+    {
+        var SpineObj = characterMesh.FindByName("Spine");
+
+        GameObject obj = new GameObject();
+        obj.transform.parent = SpineObj.parent;
+        obj.transform.name = "Char_Rotator";
+        obj.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        obj.transform.localScale = Vector3.one;
+        SpineObj.SetParent(obj.transform);
+        playerController.SpineRotator = obj.transform;
+
+    }
     private GameObject CreateCharacterMesh()
     {
         var path = "Characters/" + SelectedCharacter;
