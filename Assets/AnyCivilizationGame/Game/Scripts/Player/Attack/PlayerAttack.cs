@@ -361,6 +361,13 @@ public class PlayerAttack : NetworkBehaviour
     [Command]
     public void CmdFire(bool isAutoattack, Vector3 dir)
     {
+        if (!playerController.energy.HaveEnergy())
+        {
+            return;
+
+        }
+
+
         dir.Normalize();
         var angle = CalculationManager.GetAngle(dir);
         //Debug.Log("angle "+ CalculateAngle(BasicIndicator.AttackBasicIndicator.GetPosition(0), BasicIndicator.AttackBasicIndicator.GetPosition(1)));
@@ -399,7 +406,7 @@ public class PlayerAttack : NetworkBehaviour
         playerController.Fire(isAutoattack, dir);
 
     }
-    
+
     public void RotateSpine(float angle)
     {
         playerController.RotateSpine(angle);
