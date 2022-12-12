@@ -66,6 +66,7 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
         isClient = CommandLine.HasKey("-client");
         Debug.LogFormat("isServer: {0}", isServer);
         Debug.LogFormat("isClient: {0}", isClient);
+
         MainUIManager.Instance.GetPanel<LoadingPanel>().Info("Connecting...");
         if (!isServer && !isClient)
         {
@@ -85,6 +86,7 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
             Invoke("ServerReady", 1);
         }
     }
+
 
     public void ServerReady()
     {

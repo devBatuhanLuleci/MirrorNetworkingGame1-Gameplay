@@ -19,9 +19,6 @@ public class PlayerMovement : NetworkBehaviour
     public Vector2 moveDirection;
 
 
-
-
-
     [SerializeField]
     private Transform playerDirSprite;
 
@@ -112,14 +109,14 @@ public class PlayerMovement : NetworkBehaviour
         {
             if (movementState != MovementState.Idle)
             {
-                movementState = MovementState.Idle;            
+                movementState = MovementState.Idle;
             }
         }
         else
         {
             if (movementState != MovementState.Moving)
             {
-                movementState = MovementState.Moving;               
+                movementState = MovementState.Moving;
             }
         }
     }
