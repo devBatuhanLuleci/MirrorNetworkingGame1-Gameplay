@@ -5,7 +5,7 @@ using DG.Tweening;
 using Mirror;
 using System;
 
-public class Bullet : Throwable, IPooledObject
+public class Bullet : Throwable, INetworkPooledObject
 {
     public int damage = 50;
 
@@ -16,6 +16,7 @@ public class Bullet : Throwable, IPooledObject
     [SerializeField]
     private float speed = 0.5f;
 
+    public Action ReturnHandler { get; set; }
 
     private void Awake()
     {
@@ -48,6 +49,8 @@ public class Bullet : Throwable, IPooledObject
             gameObject.SetActive(false);
             Debug.Log("some one hited by " + OwnerName);
             NetworkServer.UnSpawn(gameObject);
+            ReturnHandler();
+
         }
     }
 
@@ -66,7 +69,8 @@ public class Bullet : Throwable, IPooledObject
     public override void OnArrived()
     {
         NetworkServer.UnSpawn(gameObject);
-        base.OnArrived();
+        ReturnHandler();
+      
     }
 
 }
