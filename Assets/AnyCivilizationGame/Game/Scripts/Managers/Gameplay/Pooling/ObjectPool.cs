@@ -22,7 +22,17 @@ public class ObjectPool : MonoBehaviour
     private GameObject CreateObject()
     {
         GameObject obj = Instantiate(pool.prefab, transform);
+
         obj.SetActive(false);
+
+        if (obj.TryGetComponent<INetworkPooledObject>(out var nextNetworked))
+        {
+            nextNetworked.ReturnHandler = () =>
+            {
+                Return(obj);
+            };
+        }
+
         return obj;
     }
     /// <summary>
@@ -49,13 +59,7 @@ public class ObjectPool : MonoBehaviour
     {
         GameObject next = pools.Get();
 
-        if (next.TryGetComponent<INetworkPooledObject>(out var nextNetworked))
-        {
-            nextNetworked.ReturnHandler += () =>
-            {
-                Return(next);
-            };
-        }
+       
 
         next.transform.position = position;
         next.transform.rotation = rotation;
