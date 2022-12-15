@@ -1,4 +1,5 @@
-﻿using Mirror;
+﻿using DG.Tweening;
+using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ public class PlayerController : NetworkBehaviour
 
     private InfoPopup infoPopup;
     #endregion
- 
+
     public Transform SpineRotator;
     [HideInInspector]
     public PlayerUIHandler playerUIHandler;
@@ -63,7 +64,7 @@ public class PlayerController : NetworkBehaviour
 
     }
 
-  
+
 
 
     public void SpawnBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime)
@@ -124,7 +125,7 @@ public class PlayerController : NetworkBehaviour
         }
         yield return new WaitForSeconds(FinishFireAnimationWaitTime);
         attack.attackState = PlayerAttack.ShootingState.Idle;
-     
+
         SetShootingParameter(false);
 
     }
@@ -238,6 +239,13 @@ public class PlayerController : NetworkBehaviour
         {
             infoPopup.Close();
         }
+    }
+
+    internal void SetSpineRotator(Transform transform)
+    {
+        SpineRotator = transform;
+        SpineRotator.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(movement.angle, movement.angle, movement.angle)), .1f).SetEase(Ease.InOutQuad);
+
     }
 
 

@@ -8,7 +8,7 @@ public static class TransformExtentions
      Component[] objs=   instance.GetComponentsInChildren(typeof(Transform), true);
         foreach (Component item in objs)
         {
-            if (item.gameObject.name == "Spine")
+            if (item.gameObject.name == name)
             {
                 instance = item.transform;
             

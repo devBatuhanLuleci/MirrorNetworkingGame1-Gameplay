@@ -58,9 +58,6 @@ public class PlayerSetup : NetworkBehaviour
             health.ResetValues(100);
             playerUIHandler.Initialize(health.MaxHealth);
 
-
-            SetupComponent();
-
         }
         else // Do anything on server
         {
@@ -83,10 +80,6 @@ public class PlayerSetup : NetworkBehaviour
 
     }
 
-    private void SetupComponent()
-    {
-      
-    }
 
     private void InitLocalPlayer()
     {
@@ -112,7 +105,8 @@ public class PlayerSetup : NetworkBehaviour
         obj.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
         obj.transform.localScale = Vector3.one;
         SpineObj.SetParent(obj.transform);
-        playerController.SpineRotator = obj.transform;
+        playerController.SetSpineRotator(obj.transform);
+
 
     }
     private GameObject CreateCharacterMesh()
