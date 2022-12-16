@@ -49,6 +49,10 @@ public class Energy : NetworkBehaviour
     }
     public void IncreaseEnergyOverTime()
     {
+        if(playerController.attack.attackState== PlayerAttack.ShootingState.Shooting)
+        {
+            return;
+        }
 
         CurrentFillAmount += Time.deltaTime * fillSpeed;
         if (CurrentFillAmount > MaxfillAmount)

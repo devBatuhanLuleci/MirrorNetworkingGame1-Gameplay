@@ -163,11 +163,16 @@ public class PlayerMovement : NetworkBehaviour
 
     public void RotateSpine(float oldAngle, float newAngle)
     {
-        Debug.Log("newAngle : " + newAngle);
+        Debug.Log("newAngle : " + newAngle) ;
         PlayerController.SpineRotator.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(newAngle, newAngle, newAngle)), .1f).SetEase(Ease.InOutQuad);
 
     }
+    public void RotateSpineReset()
+    {
+       
+        PlayerController.SpineRotator.DOLocalRotateQuaternion(Quaternion.Euler(Vector3.zero), PlayerController.AttackTurnSpeed).SetEase(Ease.InOutQuad);
 
+    }
 
     /// <summary>
     /// This function sets PlayerDirSprite Position.

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Mirror;
@@ -22,7 +22,17 @@ public class ObjectPool : MonoBehaviour
     private GameObject CreateObject()
     {
         GameObject obj = Instantiate(pool.prefab, transform);
+
         obj.SetActive(false);
+
+        if (obj.TryGetComponent<INetworkPooledObject>(out var nextNetworked))
+        {
+            nextNetworked.ReturnHandler = () =>
+            {
+                Return(obj);
+            };
+        }
+
         return obj;
     }
     /// <summary>
@@ -31,6 +41,7 @@ public class ObjectPool : MonoBehaviour
     private void RegisterPools()
     {
         NetworkClient.RegisterPrefab(pool.prefab, SpawnHandler, UnspawnHandler);
+        
     }
 
     /// <summary>
@@ -48,13 +59,16 @@ public class ObjectPool : MonoBehaviour
     {
         GameObject next = pools.Get();
 
+       
+
         next.transform.position = position;
         next.transform.rotation = rotation;
         next.SetActive(true);
 
+    
+
         return next;
     }
-
 
 
 
@@ -65,6 +79,7 @@ public class ObjectPool : MonoBehaviour
     /// </summary>
     public void Return(GameObject spawned)
     {
+        Debug.Log("Server'da çalışıyor.");
         // disable object
         spawned.SetActive(false);
 

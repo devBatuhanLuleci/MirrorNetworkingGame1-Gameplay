@@ -29,6 +29,7 @@ public class PlayerController : NetworkBehaviour
     [HideInInspector]
     public Animator PlayerAnimatorController;
 
+    public float AttackTurnSpeed = 0.25f;
     public List<BulletSpawnPoints> BulletSpawnPoints;
 
     #region Character Projectile Details
@@ -125,7 +126,7 @@ public class PlayerController : NetworkBehaviour
         }
         yield return new WaitForSeconds(FinishFireAnimationWaitTime);
         attack.attackState = PlayerAttack.ShootingState.Idle;
-
+     
         SetShootingParameter(false);
 
     }
@@ -133,6 +134,12 @@ public class PlayerController : NetworkBehaviour
     public void SetShootingParameter(bool isShooting)
     {
         PlayerAnimatorController.SetBool("Shooting", isShooting);
+
+    }
+    [ClientRpc]
+    public void RotateSpineResetter()
+    {
+        movement.RotateSpineReset();
 
     }
 
