@@ -147,7 +147,7 @@ public class PlayerMovement : NetworkBehaviour
     /// </summary>
     public void SetPlayerRotation()
     {
-        if (movementState == MovementState.Idle || PlayerController.attack.attackState == PlayerAttack.ShootingState.Shooting)
+        if (movementState == MovementState.Idle || PlayerController.attack.isShooting)
             return;
 
         var lookPos = new Vector3(moveDirection.x, 0f, moveDirection.y).normalized;

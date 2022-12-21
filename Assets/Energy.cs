@@ -49,7 +49,7 @@ public class Energy : NetworkBehaviour
     }
     public void IncreaseEnergyOverTime()
     {
-        if(playerController.attack.attackState== PlayerAttack.ShootingState.Shooting)
+        if(playerController.attack.isShooting)
         {
             return;
         }

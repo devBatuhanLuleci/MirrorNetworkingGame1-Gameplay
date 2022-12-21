@@ -125,7 +125,7 @@ public class PlayerController : NetworkBehaviour
 
         }
         yield return new WaitForSeconds(FinishFireAnimationWaitTime);
-        attack.attackState = PlayerAttack.ShootingState.Idle;
+        attack.isShooting=false;
         RotateSpineResetter();
         SetShootingParameter(false);
 

@@ -22,7 +22,7 @@ public class PlayerAttack : NetworkBehaviour
     public enum AttackJoystickState { Up, Idle, Holding }
 
 
-    public enum ShootingState { Idle, Aiming, Reloading, Shooting, Cancelled }
+    public enum ShootingState { Idle, Aiming, Reloading, Cancelled }
 
 
     [SyncVar]
@@ -30,6 +30,8 @@ public class PlayerAttack : NetworkBehaviour
     [SyncVar/*(hook =nameof(PlayAttackAnimation))*/]
     public AttackJoystickState attackJoystickState;
 
+    [SyncVar]
+    public bool isShooting;
 
 
     #endregion
@@ -85,8 +87,8 @@ public class PlayerAttack : NetworkBehaviour
         //if (!netIdentity.isLocalPlayer) return;
         AttackDirection = attackDirection;
         AttackHeld = attackHeld;
+        //HandleAttackIndicator();
         ConfigureAttackState();
-        HandleAttackIndicator();
         SetLookPosition();
         RotateIndicator();
         //SetBulletSpawnPointPosition();
@@ -175,85 +177,10 @@ public class PlayerAttack : NetworkBehaviour
 
     }
 
-    public void HandleAttackIndicator()
-    {
-      
-
-        // If Attack Button is pressing and it is not aiming.
-        if (AttackHeld && AttackDirection.sqrMagnitude <= ClampedAttackJoystickOffset)
-        {
-            if (attackJoystickState != AttackJoystickState.Idle)
-            {
-
-
-
-                CancelAttackProjectile();
-
-             
-            }
-
-        }
-        // If Attack Button is pressing and it is aiming.
-        else if (AttackHeld && AttackDirection.sqrMagnitude > ClampedAttackJoystickOffset)
-        {
-            if (attackJoystickState != AttackJoystickState.Holding)
-            {
-             
-                ActivateIndicator();
-                SelectAttackProjectile();
-            }
-        }
-        // If touch has released on attack button
-        else if (!AttackHeld && AttackDirection.sqrMagnitude == 0)
-        {
-            if (attackJoystickState == AttackJoystickState.Holding)
-            {
-                //Shoot here!
-
-
-
-                //Deactivate Projectile line.
-                CancelAttackProjectile();
-                //var angle = CalculateAngle(player, attackLookAtPoint);
-                //Debug.Log(angle);
-               
-                //Spawn the bullet object.
-
-           
-
-
-            }
-
-            if (attackJoystickState == AttackJoystickState.Idle)
-            {
-                if (attackState == ShootingState.Cancelled)
-                {
-
-                    // attackState = ShootingState.Idle;
-                }
-                else if (attackState == ShootingState.Idle)
-                {
-                
-
-                }
-
-
-            }
-
-            //Reset bullet spawn point positions.
-            // ResetBulletSpawnPointPosition();
-    
-
-        }
-
-    }
-
+ 
     public void ConfigureAttackState()
     {
-        if (attackState != ShootingState.Shooting)
-        {
-            return;
-        }
+      
 
         // If Attack Button is pressing and it is not aiming.
         if (AttackHeld && AttackDirection.sqrMagnitude <= ClampedAttackJoystickOffset)
@@ -274,7 +201,6 @@ public class PlayerAttack : NetworkBehaviour
 
 
                 CancelAttackProjectile();
-
                 attackJoystickState = AttackJoystickState.Idle;
 
             }
@@ -285,10 +211,12 @@ public class PlayerAttack : NetworkBehaviour
         {
             if (attackJoystickState != AttackJoystickState.Holding)
             {
-                attackState = ShootingState.Aiming;
-                attackJoystickState = AttackJoystickState.Holding;
                 ActivateIndicator();
                 SelectAttackProjectile();
+
+                attackState = ShootingState.Aiming;
+                attackJoystickState = AttackJoystickState.Holding;
+
             }
         }
         // If touch has released on attack button
@@ -301,9 +229,10 @@ public class PlayerAttack : NetworkBehaviour
 
 
                 //Deactivate Projectile line.
-                CancelAttackProjectile();
+
                 //var angle = CalculateAngle(player, attackLookAtPoint);
                 //Debug.Log(angle);
+                CancelAttackProjectile();
                 AttackAnimationLocalPlayer();
                 //Spawn the bullet object.
 
@@ -409,7 +338,7 @@ public class PlayerAttack : NetworkBehaviour
     private void RotateIndicator()
     {
 
-        if (attackJoystickState == AttackJoystickState.Holding)
+        if (attackJoystickState == AttackJoystickState.Holding )
         {
 
 
@@ -440,7 +369,7 @@ public class PlayerAttack : NetworkBehaviour
     [Command]
     public void CmdFire(bool isAutoattack, Vector3 dir)
     {
-        if (!playerController.energy.HaveEnergy() || attackState == ShootingState.Shooting)
+        if (!playerController.energy.HaveEnergy() || isShooting)
         {
             return;
 
@@ -467,7 +396,7 @@ public class PlayerAttack : NetworkBehaviour
         //}
         // Debug.Log(Bullet.transform.name + " " + objectPooler.pools[0].tag);
         #endregion
-        attackState = ShootingState.Shooting;
+        isShooting = true;
         //playerMovement.SetPlayerRotationToTargetDirection(angle).onComplete = () =>
         //{
 
