@@ -86,6 +86,7 @@ public class PlayerAttack : NetworkBehaviour
         AttackDirection = attackDirection;
         AttackHeld = attackHeld;
         ConfigureAttackState();
+        HandleAttackIndicator();
         SetLookPosition();
         RotateIndicator();
         //SetBulletSpawnPointPosition();
@@ -174,8 +175,86 @@ public class PlayerAttack : NetworkBehaviour
 
     }
 
+    public void HandleAttackIndicator()
+    {
+      
+
+        // If Attack Button is pressing and it is not aiming.
+        if (AttackHeld && AttackDirection.sqrMagnitude <= ClampedAttackJoystickOffset)
+        {
+            if (attackJoystickState != AttackJoystickState.Idle)
+            {
+
+
+
+                CancelAttackProjectile();
+
+             
+            }
+
+        }
+        // If Attack Button is pressing and it is aiming.
+        else if (AttackHeld && AttackDirection.sqrMagnitude > ClampedAttackJoystickOffset)
+        {
+            if (attackJoystickState != AttackJoystickState.Holding)
+            {
+             
+                ActivateIndicator();
+                SelectAttackProjectile();
+            }
+        }
+        // If touch has released on attack button
+        else if (!AttackHeld && AttackDirection.sqrMagnitude == 0)
+        {
+            if (attackJoystickState == AttackJoystickState.Holding)
+            {
+                //Shoot here!
+
+
+
+                //Deactivate Projectile line.
+                CancelAttackProjectile();
+                //var angle = CalculateAngle(player, attackLookAtPoint);
+                //Debug.Log(angle);
+               
+                //Spawn the bullet object.
+
+           
+
+
+            }
+
+            if (attackJoystickState == AttackJoystickState.Idle)
+            {
+                if (attackState == ShootingState.Cancelled)
+                {
+
+                    // attackState = ShootingState.Idle;
+                }
+                else if (attackState == ShootingState.Idle)
+                {
+                
+
+                }
+
+
+            }
+
+            //Reset bullet spawn point positions.
+            // ResetBulletSpawnPointPosition();
+    
+
+        }
+
+    }
+
     public void ConfigureAttackState()
     {
+        if (attackState != ShootingState.Shooting)
+        {
+            return;
+        }
+
         // If Attack Button is pressing and it is not aiming.
         if (AttackHeld && AttackDirection.sqrMagnitude <= ClampedAttackJoystickOffset)
         {
@@ -219,7 +298,7 @@ public class PlayerAttack : NetworkBehaviour
             {
                 //Shoot here!
 
-                attackState = ShootingState.Shooting;
+
 
                 //Deactivate Projectile line.
                 CancelAttackProjectile();
@@ -361,7 +440,7 @@ public class PlayerAttack : NetworkBehaviour
     [Command]
     public void CmdFire(bool isAutoattack, Vector3 dir)
     {
-        if (!playerController.energy.HaveEnergy())
+        if (!playerController.energy.HaveEnergy() || attackState == ShootingState.Shooting)
         {
             return;
 

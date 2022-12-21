@@ -28,9 +28,9 @@ public class Energy : NetworkBehaviour
     }
 
 
-    public bool CastEnergy()
+    public void CastEnergy()
     {
-      return  DecreaseEnergy(.333f);
+       DecreaseEnergy(.333f);
 
 
     }
@@ -40,7 +40,7 @@ public class Energy : NetworkBehaviour
         if (CurrentEnergyAmount==0)
         {
             haveEnergy = false;
-
+            playerController.ShakeEnergyBar();
 
         }
         return haveEnergy;
@@ -71,23 +71,17 @@ public class Energy : NetworkBehaviour
         }
         
     }
-    public bool DecreaseEnergy(float energyAmount)
+    public void DecreaseEnergy(float energyAmount)
     {
-        bool haveEnergy ;
+      
         if (CurrentFillAmount >= energyAmount)
         {
             CurrentFillAmount -= energyAmount;
-            haveEnergy = true;
+          
             CurrentEnergyAmount--;
 
         }
-        else
-        {
-            haveEnergy = false;
-            playerController.ShakeEnergyBar();
-
-        }
-        return haveEnergy;
+       
     }
    
     public void MakeEnergyBarsFull()
