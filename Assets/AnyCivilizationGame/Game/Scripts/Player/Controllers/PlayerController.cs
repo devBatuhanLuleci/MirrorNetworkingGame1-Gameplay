@@ -119,7 +119,7 @@ public class PlayerController : NetworkBehaviour
 
 
                 currentBulletCount--;
-                Debug.Log($"Shoot, currentBulletCount:{currentBulletCount}");
+               // Debug.Log($"Shoot, currentBulletCount:{currentBulletCount}");
 
             }
 

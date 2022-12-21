@@ -4958,7 +4958,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   projectileType: 0
-  damage: 50
+  damage: 5
   OwnerName: 
   OwnerNetId: 0
   speed: 0.5
