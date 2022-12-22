@@ -6,12 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/AnyCivilizationGame/Scenes/Lobby.unity
+    path: Assets/AnyCivilizationGame/Game/Scripts/Managers/Scenes/Test/3DPredictedProjectile/3DPredictedProjectileBulletTest.unity
+    guid: 65a0cff8aa967c04aa44e9e41d7191a0
+  - enabled: 1
+    path: Assets/AnyCivilizationGame/Scenes/ProductionScenes/Lobby.unity
     guid: 73f54674197734f46a9e55ba4876a02a
   - enabled: 1
-    path: Assets/AnyCivilizationGame/Scenes/GameScene/GameScene.unity
+    path: Assets/AnyCivilizationGame/Scenes/ProductionScenes/GameScene.unity
     guid: a85d851277738db4d9842ab54a3e2410
-  - enabled: 1
-    path: Assets/AnyCivilizationGame/Scenes/Test.unity
-    guid: 240f03ea54fcb2643aa1370ffb6be004
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   m_configObjects: {}

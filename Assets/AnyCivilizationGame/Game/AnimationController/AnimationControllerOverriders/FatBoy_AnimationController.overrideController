@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: FatBoy_AnimationController
+  m_Controller: {fileID: 9100000, guid: 5b75dd19695087244ab67b16477428f4, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: -5252816984213320552, guid: a5e11101db1088e47b2aef562350ae30, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 382f44372e131ef469c37274d63d645d, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: e80fee2359c8aaa4789fddd4ce2fd01e, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: e80fee2359c8aaa4789fddd4ce2fd01e, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: bb9d0f8923a72734092b4727514fdca4, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: bb9d0f8923a72734092b4727514fdca4, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 6d0a1109dd420814993c7bd341ba837d, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 6d0a1109dd420814993c7bd341ba837d, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 382f44372e131ef469c37274d63d645d, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 382f44372e131ef469c37274d63d645d, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: a8848b7ff24818148bf939114ce3d473, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 485ce5106c438db4f84e4506e5fc3df2, type: 2}
