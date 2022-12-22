@@ -63,21 +63,6 @@ public class NetworkedGameManager : NetworkBehaviour
     }
 
 
-    private void Setup()
-    {
-        var vfxManagerPrefab = Resources.Load<GameObject>("VfxManager");
-        if (vfxManagerPrefab == null)
-        {
-            Debug.LogError("vfxManagerPrefab is null");
-        }
-        else
-        {
-            var vfxManager = Instantiate(vfxManagerPrefab);
-            NetworkServer.Spawn(vfxManager);
-        }
-    }
-
-
     public void StartGame()
     {
         Info("StartGame");
@@ -114,6 +99,7 @@ public class NetworkedGameManager : NetworkBehaviour
         }
     }
 
+    // TODO: mak playerCount a SyncVar
     [ClientRpc]
     public void SetPlayerCount(int value)
     {

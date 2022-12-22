@@ -38,47 +38,21 @@ public class ACGDataManager : MonoBehaviour
         }
     }
 
+    // TODO: this will be moved to its new location at a later date.
     public void StartServer(ushort port)
     {
         GameData.IsServer = true;
         GameData.Port = port;
-        //var transport = GetComponent<KcpTransport>();
-        //transport.Port = port;
-        //StartServer();
         SceneManager.LoadScene(gameSceneName);
     }
-
+    // TODO: this will be moved to its new location at a later date.
     public void StartClient(string netAddress, ushort port)
     {
         GameData.IsServer = false;
         GameData.Port = port;
         GameData.NetworkAddress = netAddress;
-
-        //var transport = GetComponent<KcpTransport>();
-
-        //networkAddress = netAddress;
-        //transport.Port = port;
-        //transport.enabled = true;
-        //StartClient();
         SceneManager.LoadScene(gameSceneName);
 
     }
-    //public void StartClient( ushort port)
-    //{
-    //    IsServer = false;
-    //    Port = port;
-    //    Debug.LogError("ben clientim:");
-
-    //    //var transport = GetComponent<KcpTransport>();
-
-    //    //networkAddress = netAddress;
-    //    //transport.Port = port;
-    //    //transport.enabled = true;
-    //    //StartClient();
-    //    SceneManager.LoadScene(gameSceneName);
-
-    //}
-
-
 
 }
