@@ -147,7 +147,7 @@ public class PlayerMovement : NetworkBehaviour
     /// </summary>
     public void SetPlayerRotation()
     {
-        if (movementState == MovementState.Idle || PlayerController.attack.attackState == PlayerAttack.ShootingState.Shooting)
+        if (movementState == MovementState.Idle || PlayerController.attack.isShooting)
             return;
 
         var lookPos = new Vector3(moveDirection.x, 0f, moveDirection.y).normalized;
@@ -164,8 +164,18 @@ public class PlayerMovement : NetworkBehaviour
     public void RotateSpine(float oldAngle, float newAngle)
     {
         Debug.Log("newAngle : " + newAngle) ;
-        PlayerController.SpineRotator.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(newAngle, newAngle, newAngle)), .1f).SetEase(Ease.InOutQuad);
+        //   PlayerController.SpineRotator.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(newAngle, newAngle, newAngle)), .1f).SetEase(Ease.InOutQuad);
+        var LocalAngle = transform.rotation.eulerAngles.y + PlayerController.SpineRotator.rotation.eulerAngles.x - angle;
 
+        PlayerController.SpineRotator.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(LocalAngle, 0, 0)), PlayerController.AttackTurnSpeed).SetEase(Ease.InOutQuad);
+    }
+    public void GetCurrentRotateSpine(float angle)
+    {
+        Debug.Log("newAngle : " + angle);
+        //   PlayerController.SpineRotator.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(newAngle, newAngle, newAngle)), .1f).SetEase(Ease.InOutQuad);
+        var LocalAngle = transform.rotation.eulerAngles.y + PlayerController.SpineRotator.rotation.eulerAngles.x - angle;
+
+        PlayerController.SpineRotator.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(LocalAngle, 0, 0)), 0f).SetEase(Ease.InOutQuad);
     }
     public void RotateSpineReset()
     {

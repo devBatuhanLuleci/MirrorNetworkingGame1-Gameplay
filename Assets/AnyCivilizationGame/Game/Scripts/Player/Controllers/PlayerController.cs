@@ -72,7 +72,7 @@ public class PlayerController : NetworkBehaviour
     {
         var lobbyPlayer = ACGDataManager.Instance.LobbyPlayer;
 
-        if (energy.CastEnergy())
+        energy.CastEnergy();
             StartCoroutine(SpawnIntervalBullet(spawnPoint, dir, BulletCount, BulletIntervalTime));
 
 
@@ -119,14 +119,15 @@ public class PlayerController : NetworkBehaviour
 
 
                 currentBulletCount--;
-                Debug.Log($"Shoot, currentBulletCount:{currentBulletCount}");
+               // Debug.Log($"Shoot, currentBulletCount:{currentBulletCount}");
 
             }
 
         }
         yield return new WaitForSeconds(FinishFireAnimationWaitTime);
-        attack.attackState = PlayerAttack.ShootingState.Idle;
-     
+        attack.isShooting=false;
+        attack.shootingState = PlayerAttack.ShootingState.Idle;
+        RotateSpineResetter();
         SetShootingParameter(false);
 
     }
@@ -134,6 +135,7 @@ public class PlayerController : NetworkBehaviour
     public void SetShootingParameter(bool isShooting)
     {
         PlayerAnimatorController.SetBool("Shooting", isShooting);
+     
 
     }
     [ClientRpc]
@@ -251,7 +253,7 @@ public class PlayerController : NetworkBehaviour
     internal void SetSpineRotator(Transform transform)
     {
         SpineRotator = transform;
-        SpineRotator.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(movement.angle, movement.angle, movement.angle)), .1f).SetEase(Ease.InOutQuad);
+        movement.GetCurrentRotateSpine(movement.angle);
 
     }
 

@@ -1452,6 +1452,7 @@ MonoBehaviour:
   syncInterval: 0.02
   movementState: 0
   moveDirection: {x: 0, y: 0}
+  angle: 0
   playerDirSprite: {fileID: 6626824535787233144}
   rotationSpeed: 14
   rotationTurnSpeed: 0.5
@@ -1471,8 +1472,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  attackState: 0
+  shootingState: 0
   attackJoystickState: 0
+  isShooting: 0
   splatType: 2
   BasicIndicator: {fileID: 6626824537634215732}
   Range: 3.6
@@ -1562,8 +1564,10 @@ MonoBehaviour:
   syncInterval: 0.1
   attack: {fileID: 0}
   energy: {fileID: 0}
+  SpineRotator: {fileID: 0}
   playerUIHandler: {fileID: 9098212380682637946}
   PlayerAnimatorController: {fileID: 0}
+  AttackTurnSpeed: 0.25
   BulletSpawnPoints:
   - SpawnPointName: LeftSpawnPoint
     spawnPoint: {x: -0.55, y: 1, z: 0.8}
@@ -1603,10 +1607,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.3
+  m_Radius: 0.4
   m_Height: 1.5
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!114 &9098212380682637946
 MonoBehaviour:
   m_ObjectHideFlags: 0

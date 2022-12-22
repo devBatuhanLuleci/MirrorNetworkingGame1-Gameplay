@@ -22,14 +22,16 @@ public class PlayerAttack : NetworkBehaviour
     public enum AttackJoystickState { Up, Idle, Holding }
 
 
-    public enum ShootingState { Idle, Aiming, Reloading, Shooting, Cancelled }
+    public enum ShootingState { Idle, Aiming, Reloading, Cancelled }
 
 
     [SyncVar]
-    public ShootingState attackState;
+    public ShootingState shootingState;
     [SyncVar/*(hook =nameof(PlayAttackAnimation))*/]
     public AttackJoystickState attackJoystickState;
 
+    [SyncVar]
+    public bool isShooting;
 
 
     #endregion
@@ -85,6 +87,7 @@ public class PlayerAttack : NetworkBehaviour
         //if (!netIdentity.isLocalPlayer) return;
         AttackDirection = attackDirection;
         AttackHeld = attackHeld;
+        //HandleAttackIndicator();
         ConfigureAttackState();
         SetLookPosition();
         RotateIndicator();
@@ -174,28 +177,30 @@ public class PlayerAttack : NetworkBehaviour
 
     }
 
+
     public void ConfigureAttackState()
     {
+
+
         // If Attack Button is pressing and it is not aiming.
         if (AttackHeld && AttackDirection.sqrMagnitude <= ClampedAttackJoystickOffset)
         {
             if (attackJoystickState != AttackJoystickState.Idle)
             {
 
-                if (attackState == ShootingState.Aiming)
+                if (shootingState == ShootingState.Aiming)
                 {
 
-                    attackState = ShootingState.Cancelled;
+                    shootingState = ShootingState.Cancelled;
                 }
-                else if (attackState != ShootingState.Aiming && attackState != ShootingState.Cancelled)
+                else if (shootingState != ShootingState.Aiming && shootingState != ShootingState.Cancelled)
                 {
-                    attackState = ShootingState.Idle;
+                    shootingState = ShootingState.Idle;
 
                 }
 
 
                 CancelAttackProjectile();
-
                 attackJoystickState = AttackJoystickState.Idle;
 
             }
@@ -206,10 +211,12 @@ public class PlayerAttack : NetworkBehaviour
         {
             if (attackJoystickState != AttackJoystickState.Holding)
             {
-                attackState = ShootingState.Aiming;
-                attackJoystickState = AttackJoystickState.Holding;
                 ActivateIndicator();
                 SelectAttackProjectile();
+
+                shootingState = ShootingState.Aiming;
+                attackJoystickState = AttackJoystickState.Holding;
+
             }
         }
         // If touch has released on attack button
@@ -219,13 +226,18 @@ public class PlayerAttack : NetworkBehaviour
             {
                 //Shoot here!
 
-                attackState = ShootingState.Shooting;
+
 
                 //Deactivate Projectile line.
-                CancelAttackProjectile();
+
                 //var angle = CalculateAngle(player, attackLookAtPoint);
                 //Debug.Log(angle);
-                AttackAnimationLocalPlayer();
+                CancelAttackProjectile();
+                if (!isShooting)
+                {
+                    AttackAnimationLocalPlayer();
+
+                }
                 //Spawn the bullet object.
 
                 var startPos = player.transform.position + ((lookPos.normalized));
@@ -246,16 +258,19 @@ public class PlayerAttack : NetworkBehaviour
 
             if (attackJoystickState == AttackJoystickState.Idle)
             {
-                if (attackState == ShootingState.Cancelled)
+                if (shootingState == ShootingState.Cancelled)
                 {
 
                     // attackState = ShootingState.Idle;
                 }
-                else if (attackState == ShootingState.Idle)
+                else if (shootingState == ShootingState.Idle)
                 {
                     //Auto-Attack
+                    if (!isShooting)
+                    {
+                        AttackAnimationLocalPlayer();
 
-                    AttackAnimationLocalPlayer();
+                    }
                     //Auto spawn bullet on current player direction.
 
                     var startPos = player.transform.position + ((lookPos.normalized));
@@ -280,6 +295,7 @@ public class PlayerAttack : NetworkBehaviour
             //Reset bullet spawn point positions.
             // ResetBulletSpawnPointPosition();
             attackJoystickState = AttackJoystickState.Up;
+            shootingState = ShootingState.Idle;
 
         }
 
@@ -361,7 +377,7 @@ public class PlayerAttack : NetworkBehaviour
     [Command]
     public void CmdFire(bool isAutoattack, Vector3 dir)
     {
-        if (!playerController.energy.HaveEnergy())
+        if (!playerController.energy.HaveEnergy() || isShooting)
         {
             return;
 
@@ -388,7 +404,7 @@ public class PlayerAttack : NetworkBehaviour
         //}
         // Debug.Log(Bullet.transform.name + " " + objectPooler.pools[0].tag);
         #endregion
-        attackState = ShootingState.Shooting;
+        isShooting = true;
         //playerMovement.SetPlayerRotationToTargetDirection(angle).onComplete = () =>
         //{
 
