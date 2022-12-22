@@ -1,6 +1,5 @@
 ﻿using DG.Tweening;
 using Mirror;
-using PredictedProjectileExample;
 using SimpleInputNamespace;
 using System;
 using System.Collections;
