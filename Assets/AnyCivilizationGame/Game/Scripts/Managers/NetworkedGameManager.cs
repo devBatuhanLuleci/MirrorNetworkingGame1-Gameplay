@@ -26,10 +26,10 @@ public class NetworkedGameManager : NetworkBehaviour
         waitingPanel = GameObject.Find("WaitingPanel");
         Debug.Log("awake: " + MatchNetworkManager.Instance.mode);
     }
-    
+
     private void Start()
     {
-        if (!ACGDataManager.Instance.GameData.IsServer)
+        if (ACGDataManager.Instance.GameData.TerminalType == TerminalType.Client)
         {
             ClientStarted();
             CmdReady();

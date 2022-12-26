@@ -1,5 +1,6 @@
 using kcp2k;
 using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -29,7 +30,7 @@ public class MatchNetworkManager : NetworkManager
     public override void Start()
     {
         base.Start();
-        if (ACGDataManager.Instance.GameData.IsServer)
+        if (ACGDataManager.Instance.GameData.TerminalType == TerminalType.Server)
         {
             StartServerNetwork();
         }
@@ -63,10 +64,9 @@ public class MatchNetworkManager : NetworkManager
     #region  Server Logich
     private void StartClientNetwork()
     {
-        networkAddress = ACGDataManager.Instance.GameData.NetworkAddress;
+        networkAddress = ACGDataManager.Instance.GameData.GameServerAddress;
         GetComponent<KcpTransport>().Port = ACGDataManager.Instance.GameData.Port;
         StartClient();
-
     }
     private void StartServerNetwork()
     {
@@ -79,16 +79,21 @@ public class MatchNetworkManager : NetworkManager
         transport.Port = ACGDataManager.Instance.GameData.Port;
         StartServer();
 
-        var prefab = Resources.Load<NetworkedGameManager>(nameof(NetworkedGameManager));
-        var networkedGameManager = Instantiate(prefab);
-        NetworkServer.Spawn(networkedGameManager.gameObject);
-
-        NetworkedGameManager.Instance.ServerStarted();
+        CreateGameManager();
         players = new Dictionary<int, NetworkConnectionToClient>();
 
         LoadBalancer.Instance.SpawnServer.SendClientRequestToServer(new OnReadyEvent(ACGDataManager.Instance.GameData.Port));
         NetworkedGameManager.Instance.Info("OnReadyEvent msg sended to master server.");
     }
+
+    private void CreateGameManager()
+    {
+        var prefab = Resources.Load<NetworkedGameManager>(nameof(NetworkedGameManager));
+        var networkedGameManager = Instantiate(prefab);
+        NetworkServer.Spawn(networkedGameManager.gameObject);
+        NetworkedGameManager.Instance.ServerStarted();
+    }
+
     public override void OnServerConnect(NetworkConnectionToClient conn)
     {
         base.OnServerConnect(conn);
