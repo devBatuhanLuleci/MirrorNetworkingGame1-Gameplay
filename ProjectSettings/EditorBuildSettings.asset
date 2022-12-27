@@ -5,9 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/AnyCivilizationGame/Game/Scripts/Managers/Scenes/Test/3DPredictedProjectile/3DPredictedProjectileBulletTest.unity
-    guid: 65a0cff8aa967c04aa44e9e41d7191a0
+    path: Assets/AnyCivilizationGame/Scenes/TestScenes/BulletThrowTest/BulletThrowTest.unity
+    guid: 3827a8a54fdb83a49a11fce6fd6d6818
   - enabled: 1
     path: Assets/AnyCivilizationGame/Scenes/ProductionScenes/Lobby.unity
     guid: 73f54674197734f46a9e55ba4876a02a
