@@ -404,11 +404,11 @@ public class PlayerAttack : NetworkBehaviour
         // Debug.Log(Bullet.transform.name + " " + objectPooler.pools[0].tag);
         #endregion
         isShooting = true;
-        //playerMovement.SetPlayerRotationToTargetDirection(angle).onComplete = () =>
-        //{
+        playerMovement.SetPlayerRotationToTargetDirection(angle).onComplete = () =>
+        {
 
-        //};
-        RotateSpine(angle);
+        };
+        // RotateSpine(angle);
         //Rotate character to bullet thrown rotation and spawnBullet.
         AttackAnimationOtherClients();
 
