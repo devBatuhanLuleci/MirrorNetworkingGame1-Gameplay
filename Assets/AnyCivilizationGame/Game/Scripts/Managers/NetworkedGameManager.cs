@@ -26,10 +26,10 @@ public class NetworkedGameManager : NetworkBehaviour
         waitingPanel = GameObject.Find("WaitingPanel");
         Debug.Log("awake: " + MatchNetworkManager.Instance.mode);
     }
-    
+
     private void Start()
     {
-        if (!ACGDataManager.Instance.GameData.IsServer)
+        if (ACGDataManager.Instance.GameData.TerminalType == TerminalType.Client)
         {
             ClientStarted();
             CmdReady();
@@ -60,21 +60,6 @@ public class NetworkedGameManager : NetworkBehaviour
         // Setup();
         string msg = $" <color=green> Server listining on </color> this server:{ACGDataManager.Instance.GameData.Port}";
         Info(msg);
-    }
-
-
-    private void Setup()
-    {
-        var vfxManagerPrefab = Resources.Load<GameObject>("VfxManager");
-        if (vfxManagerPrefab == null)
-        {
-            Debug.LogError("vfxManagerPrefab is null");
-        }
-        else
-        {
-            var vfxManager = Instantiate(vfxManagerPrefab);
-            NetworkServer.Spawn(vfxManager);
-        }
     }
 
 
@@ -114,6 +99,7 @@ public class NetworkedGameManager : NetworkBehaviour
         }
     }
 
+    // TODO: mak playerCount a SyncVar
     [ClientRpc]
     public void SetPlayerCount(int value)
     {
