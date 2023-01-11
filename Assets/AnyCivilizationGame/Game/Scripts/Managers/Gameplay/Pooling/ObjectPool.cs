@@ -79,7 +79,7 @@ public class ObjectPool : MonoBehaviour
     /// </summary>
     public void Return(GameObject spawned)
     {
-        Debug.Log("Server'da çalışıyor.");
+    //    Debug.Log("Server'da çalışıyor.");
         // disable object
         spawned.SetActive(false);
 

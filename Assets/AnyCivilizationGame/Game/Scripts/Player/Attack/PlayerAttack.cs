@@ -82,6 +82,11 @@ public class PlayerAttack : NetworkBehaviour
     }
     public void Targeting(Vector2 attackDirection, bool attackHeld = false)
     {
+        if (isShooting)
+        {
+         //   playerController.DoSomething();
+        }
+
         //Debug.LogError($"Targeting attackDirection: {attackDirection} attackHeld: {attackHeld}");
         //if (!netIdentity.isLocalPlayer) return;
         AttackDirection = attackDirection;
@@ -404,13 +409,14 @@ public class PlayerAttack : NetworkBehaviour
         // Debug.Log(Bullet.transform.name + " " + objectPooler.pools[0].tag);
         #endregion
         isShooting = true;
-        playerMovement.SetPlayerRotationToTargetDirection(angle).onComplete = () =>
-        {
+        //playerMovement.SetPlayerRotationToTargetDirection(angle).onComplete = () =>
+        //{
 
-        };
-        // RotateSpine(angle);
+        //};
+        RotateSpine(angle);
         //Rotate character to bullet thrown rotation and spawnBullet.
-        AttackAnimationOtherClients();
+        AttackAnimationOtherClients(dir);
+        AttackAnimationOtherClients2(dir);
 
         // Debug.Log(angle);
 
@@ -438,15 +444,26 @@ public class PlayerAttack : NetworkBehaviour
 
     }
     [ClientRpc(includeOwner = false)]
-    public void AttackAnimationOtherClients()
+    public void AttackAnimationOtherClients(Vector3 dir)
     {
         if (playerController.energy.HaveEnergy())
         {
+          // playerController.SetLowerBodyAnimation(dir);
             playerController.PlayerAnimatorController.SetTrigger("Shoot");
             //  playerController.PlayerAnimatorController.Play("FatBoyFireLoopSequence");
         }
     }
-
+    [ClientRpc(includeOwner = true)]
+    public void AttackAnimationOtherClients2(Vector3 dir)
+    {
+        if (playerController.energy.HaveEnergy())
+        {
+            
+            playerController.SetLowerBodyAnimation(dir);
+           // playerController.PlayerAnimatorController.SetTrigger("Shoot");
+            //  playerController.PlayerAnimatorController.Play("FatBoyFireLoopSequence");
+        }
+    }
 
 
 

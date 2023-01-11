@@ -31,7 +31,7 @@ public class PlayerController : NetworkBehaviour
 
     public float AttackTurnSpeed = 0.25f;
     public List<BulletSpawnPoints> BulletSpawnPoints;
-
+    private Vector3 attackDir;
     #region Character Projectile Details
 
     public Transform TargetPoint;
@@ -73,7 +73,7 @@ public class PlayerController : NetworkBehaviour
         var lobbyPlayer = ACGDataManager.Instance.LobbyPlayer;
 
         energy.CastEnergy();
-            StartCoroutine(SpawnIntervalBullet(spawnPoint, dir, BulletCount, BulletIntervalTime));
+        StartCoroutine(SpawnIntervalBullet(spawnPoint, dir, BulletCount, BulletIntervalTime));
 
 
     }
@@ -101,6 +101,10 @@ public class PlayerController : NetworkBehaviour
 
 
         yield return new WaitForSeconds(StartFireAnimationWaitTime);
+
+
+
+
         int currentBulletCount = BulletCount;
 
         while (currentBulletCount > 0)
@@ -119,13 +123,13 @@ public class PlayerController : NetworkBehaviour
 
 
                 currentBulletCount--;
-               // Debug.Log($"Shoot, currentBulletCount:{currentBulletCount}");
+                // Debug.Log($"Shoot, currentBulletCount:{currentBulletCount}");
 
             }
 
         }
         yield return new WaitForSeconds(FinishFireAnimationWaitTime);
-        attack.isShooting=false;
+        attack.isShooting = false;
         attack.shootingState = PlayerAttack.ShootingState.Idle;
         RotateSpineResetter();
         SetShootingParameter(false);
@@ -135,7 +139,7 @@ public class PlayerController : NetworkBehaviour
     public void SetShootingParameter(bool isShooting)
     {
         PlayerAnimatorController.SetBool("Shooting", isShooting);
-     
+
 
     }
     [ClientRpc]
@@ -198,6 +202,65 @@ public class PlayerController : NetworkBehaviour
     {
         playerUIHandler.ChangeEnergy(energyAmount);
     }
+
+    public void SetLowerBodyAnimation(Vector3 dir)
+    {
+        attackDir= CalculateVectors(dir);
+
+    }
+    public Vector3 CalculateVectors(Vector3 dir)
+    {
+
+        // Debug.Log("moveDir: " + moveDirection);
+
+        //Debug.Log("attackDir: " + dir);
+        return dir;
+
+    }
+    //public void DoSomething()
+    //{
+    //    Vector3 Movedir = new Vector3(movement.moveDirection.x, 0, movement.moveDirection.y).normalized;
+
+    //    //var direction = target.position - transform.position;
+    //    //direction.Normalize();
+
+    //    //var offsetVector = Vector3.Cross(attackDir, Movedir);
+    //    var offsetVector = Vector3.Cross(Vector3.up, attackDir);
+    //    offsetVector.Normalize();
+    //    Debug.DrawRay(transform.position, offsetVector, Color.black, 20f);
+    //   // var startPosition = transform.position + offsetVector /** localHorizontalOffset*/ + Movedir /** radialOffset*/;
+    //    var startPosition = offsetVector ;
+
+    //    Debug.Log("dir: " + startPosition);
+    //    var animDir = new Vector3(Mathf.Round(startPosition.normalized.x), 0f, Mathf.Round(startPosition.normalized.z));
+
+    //    if (animDir.x > 0 && Mathf.Abs(animDir.x) > Mathf.Abs(animDir.z))
+    //    {
+    //        // Debug.Log("pos: " + startPosition);
+    //        Debug.Log("right");
+
+    //    }
+    //    else if (animDir.x < 0 && Mathf.Abs(animDir.x) > Mathf.Abs(animDir.z))
+    //    {
+    //        Debug.Log("left");
+
+    //    }
+    //    else if (animDir.z > 0 && Mathf.Abs(animDir.x) < Mathf.Abs(animDir.z))
+    //    {
+    //        Debug.Log("forward");
+
+    //    }
+    //    else if (animDir.z < 0 && Mathf.Abs(animDir.x) < Mathf.Abs(animDir.z))
+    //    {
+    //        Debug.Log("backward");
+
+    //    }
+
+    //    //   Debug.Log("moveDir: " + Movedir);
+    //    //  Debug.Log("attackDir: " + attackDir);
+
+    //}
+
 
     [ClientRpc]
     public void ShakeEnergyBar()

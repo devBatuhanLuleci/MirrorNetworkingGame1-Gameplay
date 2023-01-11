@@ -173,10 +173,10 @@ public class PlayerUIHandler : MonoBehaviour
     }
     public void ShakeEnergyBar()
     {
-        Debug.Log("anlamadım1");
+      //  Debug.Log("anlamadım1");
         if (!isShaking)
         {
-            Debug.Log("anlamadım2");
+          //  Debug.Log("anlamadım2");
 
             EnergyBarGeneral.transform.DOShakePosition(duration, strength, vibrato, randomness, false, true)
                 .SetRelative()

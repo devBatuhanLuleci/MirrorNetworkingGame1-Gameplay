@@ -41,6 +41,7 @@ public class InputHandler : Singleton<InputHandler>
         if (PlayerController == null || !PlayerController.IsLive) return;
         Move();
         MainAttack();
+       // CalculateSomething();
     }
 
     private void MainAttack()
@@ -56,6 +57,19 @@ public class InputHandler : Singleton<InputHandler>
         var moveValue = MovementJoystick.Value;
         PlayerController.Move(moveValue);
     }
+    //public void CalculateSomething()
+    //{
+    //    //   Debug.Log("moveDir " + MovementJoystick.Value);
+    //    //   Debug.Log("attackDir " + AttackJoystick.Value);
+    //    var direction = target.position - transform.position;
+    //    direction.Normalize();
+
+    //    var offsetVector = Vector3.Cross(Vector2.up, direction);
+    //    offsetVector.Normalize();
+    //    var startPosition = transform.position + offsetVector * localHorizontalOffset + direction * radialOffset;
+
+
+    //}
 
 
 
