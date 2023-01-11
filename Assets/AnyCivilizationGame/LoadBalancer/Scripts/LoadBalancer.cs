@@ -7,6 +7,12 @@ using UnityEngine;
 
 public class LoadBalancer : Singleton<LoadBalancer>
 {
+    public enum Host
+    {
+        [StringValue("localhost")] LocalHost,
+        [StringValue("40.117.113.124")] TestServer 
+    }
+
 
     [Header("Listener Setup")]
     [SerializeField] private Host host = Host.LocalHost;
@@ -15,13 +21,11 @@ public class LoadBalancer : Singleton<LoadBalancer>
     [SerializeField] private Transport transport;
 
 
-
     private bool isServer = false;
     private bool isClient = false;
     // store all users of connected to lobby
     private Dictionary<byte, EventManagerBase> eventHandlers = new Dictionary<byte, EventManagerBase>();
 
-    public Host Host => host;
 
     #region Managers
     public ACGAuthenticationManager AuthenticationManager { get; private set; }
@@ -35,9 +39,7 @@ public class LoadBalancer : Singleton<LoadBalancer>
 
     private void Start()
     {
-
         Application.runInBackground = true;
-        SetupManagers();
         if (transport == null)
         {
             Debug.LogError("Transport not found!");
@@ -47,30 +49,10 @@ public class LoadBalancer : Singleton<LoadBalancer>
         SetupLinstener();
         if (startClientOnStart)
         {
-            StartClient();
+            isClient = true;
+            transport.ClientConnect(host.GetStringValue());
         }
 
-    }
-
-
-    public void StartClient(string hostAddress)
-    {
-        // disconnect if already connected.
-        if (isClient)
-        {
-            transport.ClientDisconnect();
-        }
-        isClient = true;
-        transport.ClientConnect(hostAddress);
-        Debug.LogError("Host address:" + hostAddress + " Port: " + transport.ServerUri().Port);
-    }
-    public void StartClient(Host host)
-    {
-        StartClient(host.GetStringValue());
-    }
-    public void StartClient()
-    {
-        StartClient(host);
     }
 
     private void SetupManagers()
@@ -164,7 +146,7 @@ public class LoadBalancer : Singleton<LoadBalancer>
 
     private void OnClientDisconnected()
     {
-        Debug.LogError("loadbalancer disconnect to " + transport.ServerUri().Host + ":" + transport.ServerUri().Port);
+        Debug.LogError("loadbalancer disconnect to " + host.GetStringValue() + ":" + transport.ServerUri().Port);
     }
 
     private void OnClientDataSent(ArraySegment<byte> data, int arg2)
@@ -189,7 +171,7 @@ public class LoadBalancer : Singleton<LoadBalancer>
     private void OnClientConnected()
     {
         Debug.Log("loadbalancer connected to " + host.GetStringValue() + ":" + transport.ServerUri().Port);
-        ACGDataManager.Instance.OnConnectedToMasterServer();
+        SetupManagers();
     }
     #endregion
 

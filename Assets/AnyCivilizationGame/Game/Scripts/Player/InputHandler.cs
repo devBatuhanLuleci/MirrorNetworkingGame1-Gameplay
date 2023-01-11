@@ -26,7 +26,7 @@ public class InputHandler : Singleton<InputHandler>
 
     protected override void Awake()
     {
-        if (ACGDataManager.Instance.GameData.TerminalType == TerminalType.Server)
+        if (ACGDataManager.Instance.GameData.IsServer)
         {
             Destroy(gameObject);
             return;

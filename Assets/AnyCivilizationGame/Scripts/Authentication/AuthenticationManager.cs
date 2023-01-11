@@ -35,6 +35,7 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
     private bool isClient = false;
     public bool IsServer => isServer;
     public bool IsClient => isClient;
+    public int Port { get; private set; }
     #endregion
     #region Events
     public UnityEvent OnUserUnregister;
@@ -44,39 +45,56 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
     #region MonoBehaviour Call  Back
     private void Start()
     {
-        //StartAuth();
+        HandleCommands();
     }
     #endregion
     #region Public Methods
 
     #region CommandLine
-    public void StartAuth()
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
+    static void LoadCommandLine()
     {
-        var gameData = ACGDataManager.Instance.GameData;
-        MainUIManager.Instance.GetPanel<LoadingPanel>().Info("Connecting to master server...");
-        if (gameData.TerminalType == TerminalType.Client)
-        {
-            if (gameData.Port != 0) ClientReady();
-            else Login();
-        }
+        // Use commandline options passed to the application
+        var text = System.Environment.CommandLine + "\n";
 
+        // Initialize the CommandLine
+        CommandLine.Init(text);
+    }
+    private void HandleCommands()
+    {
+        isServer = CommandLine.HasKey("-server");
+        isClient = CommandLine.HasKey("-client");
+        Debug.LogFormat("isServer: {0}", isServer);
+        Debug.LogFormat("isClient: {0}", isClient);
+
+        MainUIManager.Instance.GetPanel<LoadingPanel>().Info("Connecting...");
+        if (!isServer && !isClient)
+        {
+            Login();
+        }
+        else if (isClient)
+        {
+            Port = CommandLine.GetInt("-port", -1);
+            Invoke("ClientReady", 1);
+        }
         else
         {
             // TODO:
             // Setup server.
-            MainUIManager.Instance.GetPanel<LoadingPanel>().Info($"listining on {ACGDataManager.Instance.GameData.Port}");
-            ServerReady();
+            Port = CommandLine.GetInt("-port", -1);
+            MainUIManager.Instance.GetPanel<LoadingPanel>().Info($"listining on {Port}");
+            Invoke("ServerReady", 1);
         }
     }
 
 
     public void ServerReady()
     {
-        ACGDataManager.Instance.StartServer();
+        ACGDataManager.Instance.StartServer((ushort)Port);
     }
     public void ClientReady()
     {
-        ACGDataManager.Instance.StartClient();
+        ACGDataManager.Instance.StartClient("localhost", (ushort)Port);
     }
     #endregion
     #region Login Methods

@@ -588,8 +588,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -2177033828658535784}
-        m_TargetAssemblyTypeName: Panel, Assembly-CSharp
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: ErrorPanel, Assembly-CSharp
         m_MethodName: Close
         m_Mode: 1
         m_Arguments:
