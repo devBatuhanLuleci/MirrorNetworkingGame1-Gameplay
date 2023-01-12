@@ -12,6 +12,7 @@ public class ThrowTest : MonoBehaviour
     public Transform targetPoint;
     private Coroutine throwingCoroutine;
     protected float movemenTime = 0;
+    public float minProjectileLimit = 0.1f;
     public float step = .1f;
     public Joystick joystick;
     public float radialOffset = 2;
@@ -46,38 +47,42 @@ public class ThrowTest : MonoBehaviour
     private void Update()
     {
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
+       
 
-        if (Physics.Raycast(ray, out hit))
-        {
-
-            Vector3 dir = hit.point - firePoint.position;
-
+            Vector3 dir = targetPoint.position - firePoint.position;
+        Vector3 tmp = new Vector3(dir.x, 0, dir.z);
+       
+        float val  = Mathf.Min(1, tmp.magnitude / distance);
+        
+        Debug.Log(val > minProjectileLimit);
+            dir.Normalize();
             Vector3 groundDir = new Vector3(dir.x, 0, dir.z);
             
             Vector3 targetPos = new Vector3(groundDir.magnitude, dir.y, 0);
-          
-            //Debug.Log(targetPos.y);
+      //   Debug.Log(( (groundDir* distance).magnitude)/*>0.3f*/);
+        //  Debug.Log(((targetPos * distance)- (OffSetHandler(groundDir)*distance)).magnitude)/*>0.3f*/;
+        //Debug.Log(targetPos.y);
 
 
-            //dir = (targetPoint.position - transform.position).normalized;
-            // var targetingDirection = joystick.joystickHeld ? joystick.Value : (Vector2)dir;
-            //dir = targetingDirection;
+        //dir = (targetPoint.position - transform.position).normalized;
+        // var targetingDirection = joystick.joystickHeld ? joystick.Value : (Vector2)dir;
+        // targetingDirection.Normalize();
+        //dir = targetingDirection;
 
-            // dir.Normalize();
-            // var groundDir = new Vector3(dir.x, -a, dir.y);
-           //  Debug.Log("targetPos: " + targetPos);
-            //Debug.Log("groundDir: " + groundDir.normalized);
+        // dir.Normalize();
+        // var groundDir = new Vector3(dir.x, -a, dir.y);
+        //  Debug.Log("targetPos: " + targetPos);
+        //Debug.Log("groundDir: " + groundDir.normalized);
 
-            CalculateProjectile(targetPos);
+        //CalculateProjectile(targetPos*distance);
+        CalculateProjectile(tmp);
             DrawPath(groundDir.normalized, v0, angle, timeNew, step);
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Throw(targetPos);
 
             }
-        }
+        
     }
     private void MainAttack()
     {
@@ -191,7 +196,7 @@ public class ThrowTest : MonoBehaviour
             
 
         // Debug.Log(dir);
-        CalculatePathWithHeight(targetPos -OffSetHandler(dir) /** distance*/, height, out v0, out angle, out timeNew);
+        CalculatePathWithHeight(targetPos/* -OffSetHandler(dir) *//** distance*/, height, out v0, out angle, out timeNew);
 
 
 
