@@ -47,19 +47,34 @@ public class ThrowTest : MonoBehaviour
     private void Update()
     {
 
-       
 
-            Vector3 dir = targetPoint.position - firePoint.position;
-        Vector3 tmp = new Vector3(dir.x, 0, dir.z);
-       
-        float val  = Mathf.Min(1, tmp.magnitude / distance);
+
+        Vector3 dir = targetPoint.position - firePoint.position;
+        //Vector3 pos = targetPoint.position - firePoint.position;
+        //pos.y = 0;
+        //Debug.Log(pos.normalized);
+        Vector3 tmp = new Vector3(dir.x, -firePoint.position.y, dir.z);
+       // tmp.Normalize();
+        //float val = Mathf.Min(1, tmp.magnitude / distance);
+
+        //Debug.Log(val > minProjectileLimit);
+
+        //if (val < minProjectileLimit)
+        //{
+        //    line.enabled = false;
+
+
+        //}
+        //else
+        //{
+        //    line.enabled = true;
+
+        //}
         
-        Debug.Log(val > minProjectileLimit);
-            dir.Normalize();
-            Vector3 groundDir = new Vector3(dir.x, 0, dir.z);
-            
-            Vector3 targetPos = new Vector3(groundDir.magnitude, dir.y, 0);
-      //   Debug.Log(( (groundDir* distance).magnitude)/*>0.3f*/);
+        Vector3 groundDir = new Vector3(dir.x, 0, dir.z);
+
+        Vector3 targetPos = new Vector3(groundDir.magnitude, dir.y, 0);
+        //   Debug.Log(( (groundDir* distance).magnitude)/*>0.3f*/);
         //  Debug.Log(((targetPos * distance)- (OffSetHandler(groundDir)*distance)).magnitude)/*>0.3f*/;
         //Debug.Log(targetPos.y);
 
@@ -76,13 +91,13 @@ public class ThrowTest : MonoBehaviour
 
         //CalculateProjectile(targetPos*distance);
         CalculateProjectile(tmp);
-            DrawPath(groundDir.normalized, v0, angle, timeNew, step);
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Throw(targetPos);
+        DrawPath(groundDir.normalized, v0, angle, timeNew, step);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Throw(targetPos);
 
-            }
-        
+        }
+
     }
     private void MainAttack()
     {
@@ -189,14 +204,14 @@ public class ThrowTest : MonoBehaviour
         height = projectileType == ProjectileType.Bomb ? (dir.y + dir.magnitude / 2f) /** 5*/ : 0;
         height = Mathf.Max(0.01f, height);
 
-        var targetPos = new Vector3(new Vector3(dir.x,0,dir.z).magnitude, dir.y, 0);
-        
-        
+        var targetPos = new Vector3(new Vector3(dir.x, 0, dir.z).magnitude, dir.y, 0);
+
+
         // DrawPath(groundDirection.normalized, v0, angle, timeNew, _step);
-            
+
 
         // Debug.Log(dir);
-        CalculatePathWithHeight(targetPos/* -OffSetHandler(dir) *//** distance*/, height, out v0, out angle, out timeNew);
+        CalculatePathWithHeight((targetPos - OffSetHandler(dir))/* * distance*/, height, out v0, out angle, out timeNew);
 
 
 
@@ -217,7 +232,7 @@ public class ThrowTest : MonoBehaviour
         var startPosition = /*+offsetVector * localHorizontalOffset*/  direction * radialOffset;
 
 
-        return startPosition;   
+        return startPosition;
         // return Vector3.zero;
     }
 
