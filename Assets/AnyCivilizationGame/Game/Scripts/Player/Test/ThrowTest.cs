@@ -50,12 +50,15 @@ public class ThrowTest : MonoBehaviour
 
 
         Vector3 dir = targetPoint.position - firePoint.position;
-        //Vector3 pos = targetPoint.position - firePoint.position;
-        //pos.y = 0;
-        //Debug.Log(pos.normalized);
-        Vector3 tmp = new Vector3(dir.x, -firePoint.position.y, dir.z);
-       // tmp.Normalize();
-        //float val = Mathf.Min(1, tmp.magnitude / distance);
+        Vector3 pos = targetPoint.position - firePoint.position;
+    
+        pos.y = 0;
+        //pos.Normalize();
+
+        Vector3 tmp = new Vector3(pos.x, -firePoint.position.y, pos.z);
+        // tmp.Normalize();
+       // Debug.Log(pos.magnitude);
+        float val = Mathf.Min(1, tmp.magnitude / distance);
 
         //Debug.Log(val > minProjectileLimit);
 
@@ -70,10 +73,13 @@ public class ThrowTest : MonoBehaviour
         //    line.enabled = true;
 
         //}
-        
-        Vector3 groundDir = new Vector3(dir.x, 0, dir.z);
+     
+        //height = projectileType == ProjectileType.Bomb ? (dir.y + dir.magnitude / 2f) /** 5*/ : 0;
+    
+        Vector3 groundDir = new Vector3(pos.x, 0, pos.z);
 
-        Vector3 targetPos = new Vector3(groundDir.magnitude, dir.y, 0);
+        Vector3 targetPos = new Vector3(groundDir.magnitude, pos.y, 0);
+        Vector3 targetPos2 = new Vector3(groundDir.magnitude, pos.y, 0);
         //   Debug.Log(( (groundDir* distance).magnitude)/*>0.3f*/);
         //  Debug.Log(((targetPos * distance)- (OffSetHandler(groundDir)*distance)).magnitude)/*>0.3f*/;
         //Debug.Log(targetPos.y);
@@ -90,7 +96,8 @@ public class ThrowTest : MonoBehaviour
         //Debug.Log("groundDir: " + groundDir.normalized);
 
         //CalculateProjectile(targetPos*distance);
-        CalculateProjectile(tmp);
+
+        CalculateProjectile(targetPos2);
         DrawPath(groundDir.normalized, v0, angle, timeNew, step);
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -201,17 +208,26 @@ public class ThrowTest : MonoBehaviour
 
     public void CalculateProjectile(Vector3 dir)
     {
-        height = projectileType == ProjectileType.Bomb ? (dir.y + dir.magnitude / 2f) /** 5*/ : 0;
-        height = Mathf.Max(0.01f, height);
 
-        var targetPos = new Vector3(new Vector3(dir.x, 0, dir.z).magnitude, dir.y, 0);
+        // var targetPos = new Vector3(new Vector3(dir.x, 0, dir.z).magnitude, dir.y, 0);
 
 
         // DrawPath(groundDirection.normalized, v0, angle, timeNew, _step);
 
-
+        height = projectileType == ProjectileType.Bomb ?/* (dir.y + dir.magnitude / 2f)*/.5f /** 5*/ : 0;
+        // Debug.Log(height);
+        height = Mathf.Max(0.01f, height);
         // Debug.Log(dir);
-        CalculatePathWithHeight((targetPos - OffSetHandler(dir))/* * distance*/, height, out v0, out angle, out timeNew);
+        //Debug.Log((targetPos - OffSetHandler(dir)));
+
+        //height = projectileType == ProjectileType.Bomb ? (dir.y + dir.magnitude / 2f) /** 5*/ : 0;
+        //Debug.Log(height);
+        //height = Mathf.Max(0.01f, height);
+        // Debug.Log(Mathf.Min(dir.magnitude,dir.normalized.magnitude*distance));
+        Debug.Log(dir.normalized);
+        //Debug.Log(new Vector3(dir.x, 0f, dir.z).magnitude);
+
+        CalculatePathWithHeight(dir/*dir.normalized* Mathf.Min(dir.magnitude, dir.normalized.magnitude * distance)*//*new Vector3(targetPos.x * distance, targetPos.y,targetPos.z * distance  /*- OffSetHandler(dir)*/ , height, out v0, out angle, out timeNew);
 
 
 
@@ -251,7 +267,7 @@ public class ThrowTest : MonoBehaviour
 
             var FirstUpValue = projectileType == ProjectileType.Bomb ? (Vector3.up * y) : Vector3.zero;
 
-            line.SetPosition(count, firePoint.position + direction * x + FirstUpValue + OffSetHandler(direction));
+            line.SetPosition(count, firePoint.position + direction * x + FirstUpValue /*+ OffSetHandler(direction)*/);
 
             count++;
 
@@ -263,7 +279,7 @@ public class ThrowTest : MonoBehaviour
 
         var upValue = projectileType == ProjectileType.Bomb ? (Vector3.up * yFinal) : Vector3.zero;
 
-        line.SetPosition(count, firePoint.position + (direction * xFinal + upValue) + OffSetHandler(direction));
+        line.SetPosition(count, firePoint.position + (direction * xFinal + upValue) /*+ OffSetHandler(direction)*/);
 
 
     }
