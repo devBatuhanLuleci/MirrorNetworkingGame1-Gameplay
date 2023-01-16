@@ -5,33 +5,31 @@ using UnityEngine;
 
 public class ThrowTest : MonoBehaviour
 {
-    protected float timeOld;
+
     public LineRenderer line;
-    public Vector3 dir;
     public Transform firePoint;
     public Transform targetPoint;
+    public Joystick attackJoystick;
     private Coroutine throwingCoroutine;
-    protected float movemenTime = 0;
-    public float minProjectileLimit = 0.1f;
-    public float step = .1f;
-    public Joystick joystick;
-    public float radialOffset = 2;
-    public float localHorizontalOffset = 1;
-    public float distance = 5;
+    public float Range = 5;
+    public float bulletSpeed = 0.1f;
+    public float radialOffset = .75f;
+    public float minAttackLimit = 0.1f;
+    public GameObject throwableObj;
     public enum ProjectileType { Bullet, Bomb }
     public ProjectileType projectileType;
 
-    public float a;
-    public float b;
-    public float c;
     float height;
     float v0;
     float angle;
     float timeNew;
+    float step = .1f;
+
 
     public virtual void OnArrived()
     {
-        gameObject.SetActive(false);
+
+        throwableObj.SetActive(false);
 
         //  Debug.Log("we arrived.");
     }
@@ -46,70 +44,38 @@ public class ThrowTest : MonoBehaviour
 
     private void Update()
     {
+        AttackProjectileHandler();
 
 
 
-        Vector3 dir = targetPoint.position - firePoint.position;
-        Vector3 pos = targetPoint.position - firePoint.position;
-    
-        pos.y = 0;
-        //pos.Normalize();
 
-        Vector3 tmp = new Vector3(pos.x, -firePoint.position.y, pos.z);
-        // tmp.Normalize();
-       // Debug.Log(pos.magnitude);
-        float val = Mathf.Min(1, tmp.magnitude / distance);
-
-        //Debug.Log(val > minProjectileLimit);
-
-        //if (val < minProjectileLimit)
-        //{
-        //    line.enabled = false;
-
-
-        //}
-        //else
-        //{
-        //    line.enabled = true;
-
-        //}
-     
-        //height = projectileType == ProjectileType.Bomb ? (dir.y + dir.magnitude / 2f) /** 5*/ : 0;
-    
-        Vector3 groundDir = new Vector3(pos.x, 0, pos.z);
-
-        Vector3 targetPos = new Vector3(groundDir.magnitude, pos.y, 0);
-        Vector3 targetPos2 = new Vector3(groundDir.magnitude, pos.y, 0);
-        //   Debug.Log(( (groundDir* distance).magnitude)/*>0.3f*/);
-        //  Debug.Log(((targetPos * distance)- (OffSetHandler(groundDir)*distance)).magnitude)/*>0.3f*/;
-        //Debug.Log(targetPos.y);
-
-
-        //dir = (targetPoint.position - transform.position).normalized;
-        // var targetingDirection = joystick.joystickHeld ? joystick.Value : (Vector2)dir;
-        // targetingDirection.Normalize();
-        //dir = targetingDirection;
-
-        // dir.Normalize();
-        // var groundDir = new Vector3(dir.x, -a, dir.y);
-        //  Debug.Log("targetPos: " + targetPos);
-        //Debug.Log("groundDir: " + groundDir.normalized);
-
-        //CalculateProjectile(targetPos*distance);
-
-        CalculateProjectile(targetPos2);
-        DrawPath(groundDir.normalized, v0, angle, timeNew, step);
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Throw(targetPos);
-
-        }
 
     }
+    public void AttackProjectileHandler()
+    {
+        Vector3 dist = targetPoint.position - firePoint.position;
+
+
+        Vector3 dir = new Vector3(dist.x, 0, dist.z);
+
+        Vector3 targetPos = new Vector3(dir.magnitude, -firePoint.position.y, 0);
+
+
+        CalculateProjectile(targetPos);
+        DrawPath(dir.normalized, v0, angle, timeNew, step);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            throwableObj.SetActive(true);
+            Throw(dir.normalized);
+
+        }
+    }
+
     private void MainAttack()
     {
-        var targetingDirection = joystick.Value;
-        var held = joystick.joystickHeld;
+        var targetingDirection = attackJoystick.Value;
+        var held = attackJoystick.joystickHeld;
 
 
     }
@@ -140,8 +106,7 @@ public class ThrowTest : MonoBehaviour
         if (throwingCoroutine != null)
             StopCoroutine(throwingCoroutine);
 
-        // throwingCoroutine= StartCoroutine(Coroutine_Movement(this.gameObject, groundDirection.normalized, v0, angle, timeNew));
-        throwingCoroutine = StartCoroutine(Coroutine_Movement(dir, v0, angle, timeNew, .1f));
+        throwingCoroutine = StartCoroutine(Coroutine_Movement(dir, v0, angle, timeNew, bulletSpeed));
 
 
     }
@@ -151,7 +116,7 @@ public class ThrowTest : MonoBehaviour
     IEnumerator Coroutine_Movement(Vector3 direction, float v0, float angle, float time, float initialVelocity)
     {
 
-        var FirePoint = transform.position;
+        var FirePoint = firePoint.position + StartPosOffSet(direction);
 
         float t = 0;
         // Debug.Log(time / (initialVelocity ));
@@ -164,8 +129,7 @@ public class ThrowTest : MonoBehaviour
 
             var upValue = projectileType == ProjectileType.Bomb ? (Vector3.up * y) : Vector3.zero;
 
-            //BulletObj.transform.position = FirePoint + direction * x + upValue;
-            transform.position = FirePoint + direction * x + upValue;
+            throwableObj.transform.position = FirePoint + direction * x + upValue;
 
 
 
@@ -209,37 +173,37 @@ public class ThrowTest : MonoBehaviour
     public void CalculateProjectile(Vector3 dir)
     {
 
-        // var targetPos = new Vector3(new Vector3(dir.x, 0, dir.z).magnitude, dir.y, 0);
+        var targetPos = new Vector3(new Vector3(dir.x, 0, dir.z).magnitude, dir.y, 0);
 
-
-        // DrawPath(groundDirection.normalized, v0, angle, timeNew, _step);
-
-        height = projectileType == ProjectileType.Bomb ?/* (dir.y + dir.magnitude / 2f)*/.5f /** 5*/ : 0;
-        // Debug.Log(height);
+        height = projectileType == ProjectileType.Bomb ? (dir.y + dir.magnitude / 2f) : 0;
         height = Mathf.Max(0.01f, height);
-        // Debug.Log(dir);
-        //Debug.Log((targetPos - OffSetHandler(dir)));
 
-        //height = projectileType == ProjectileType.Bomb ? (dir.y + dir.magnitude / 2f) /** 5*/ : 0;
-        //Debug.Log(height);
-        //height = Mathf.Max(0.01f, height);
-        // Debug.Log(Mathf.Min(dir.magnitude,dir.normalized.magnitude*distance));
-        Debug.Log(dir.normalized);
-        //Debug.Log(new Vector3(dir.x, 0f, dir.z).magnitude);
+        var dist = new Vector3(dir.x, 0, dir.z).magnitude;
 
-        CalculatePathWithHeight(dir/*dir.normalized* Mathf.Min(dir.magnitude, dir.normalized.magnitude * distance)*//*new Vector3(targetPos.x * distance, targetPos.y,targetPos.z * distance  /*- OffSetHandler(dir)*/ , height, out v0, out angle, out timeNew);
 
+        if (dist - StartPosOffSet(targetPos).magnitude < minAttackLimit)
+        {
+            line.enabled = false;
+
+
+        }
+        else
+        {
+            line.enabled = true;
+
+            if (dist <= Range)
+                CalculatePathWithHeight(dir.normalized * targetPos.magnitude - StartPosOffSet(targetPos), height, out v0, out angle, out timeNew);
+
+        }
 
 
 
 
     }
 
-    public Vector3 OffSetHandler(Vector3 dir)
+    public Vector3 StartPosOffSet(Vector3 dir)
     {
 
-
-        //var direction = target.position - transform.position;
         var direction = new Vector3(dir.x, 0, dir.z);
         direction.Normalize();
 
@@ -249,11 +213,12 @@ public class ThrowTest : MonoBehaviour
 
 
         return startPosition;
-        // return Vector3.zero;
+
     }
 
     private void DrawPath(Vector3 direction, float v0, float angle, float time, float step)
     {
+        var startPos = firePoint.position + StartPosOffSet(direction);
         step = Mathf.Max(0.01f, step);
 
         line.positionCount = (int)(time / step) + 2;
@@ -267,19 +232,18 @@ public class ThrowTest : MonoBehaviour
 
             var FirstUpValue = projectileType == ProjectileType.Bomb ? (Vector3.up * y) : Vector3.zero;
 
-            line.SetPosition(count, firePoint.position + direction * x + FirstUpValue /*+ OffSetHandler(direction)*/);
+            line.SetPosition(count, startPos + direction * x + FirstUpValue);
 
             count++;
 
         }
 
         float xFinal = v0 * time * Mathf.Cos(angle);
-        // float yFinal = v0 * time * Mathf.Sin(angle) - 0.5f * -Physics.gravity.y * Mathf.Pow(time, 2);
         float yFinal = v0 * time * Mathf.Sin(angle) - 0.5f * -Physics.gravity.y * Mathf.Pow(time, 2);
 
         var upValue = projectileType == ProjectileType.Bomb ? (Vector3.up * yFinal) : Vector3.zero;
 
-        line.SetPosition(count, firePoint.position + (direction * xFinal + upValue) /*+ OffSetHandler(direction)*/);
+        line.SetPosition(count, startPos + (direction * xFinal + upValue));
 
 
     }

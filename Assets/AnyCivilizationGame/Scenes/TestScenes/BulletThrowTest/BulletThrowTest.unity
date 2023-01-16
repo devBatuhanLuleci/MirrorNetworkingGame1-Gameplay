@@ -147,7 +147,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 250576152}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 0, z: 0}
+  m_LocalPosition: {x: 2.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -471,7 +471,7 @@ GameObject:
   - component: {fileID: 1040778120}
   - component: {fileID: 1040778119}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: obj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -579,7 +579,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1203432048}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.44, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -767,7 +767,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1511436869}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1060,19 +1060,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   line: {fileID: 278305105}
-  dir: {x: 0, y: 0, z: 0}
   firePoint: {fileID: 1203432049}
   targetPoint: {fileID: 250576153}
-  minProjectileLimit: 0.3
-  step: 0.1
-  joystick: {fileID: 1312194524}
+  minProjectileLimit: 0.2
+  attackJoystick: {fileID: 1312194524}
   radialOffset: 0.75
   localHorizontalOffset: 0
   distance: 5
+  throwableObj: {fileID: 1040778118}
   projectileType: 1
-  a: 0
-  b: 0
-  c: 0
+  initVelocity: 1
 --- !u!1 &2090548911
 GameObject:
   m_ObjectHideFlags: 0
