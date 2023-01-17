@@ -3038,6 +3038,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4209569864283064, guid: 9c8446fabd2f61c4a823aebd526a359d, type: 3}
   m_PrefabInstance: {fileID: 193248442}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &199860303 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6687793302222142692, guid: fce737788d736d340848eff13e926a88, type: 3}
+  m_PrefabInstance: {fileID: 762080995}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &201379978
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10054,12 +10059,16 @@ PrefabInstance:
       value: Forklift_1 (2)
       objectReference: {fileID: 0}
     - target: {fileID: 6687793302222142692, guid: fce737788d736d340848eff13e926a88, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6687793302222142692, guid: fce737788d736d340848eff13e926a88, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6687793302222142692, guid: fce737788d736d340848eff13e926a88, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 127
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fce737788d736d340848eff13e926a88, type: 3}
@@ -10068,6 +10077,19 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6306165651838838366, guid: fce737788d736d340848eff13e926a88, type: 3}
   m_PrefabInstance: {fileID: 762080995}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &762080999
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 199860303}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.4, y: 3.9224975, z: 8.07}
+  m_Center: {x: -0.0028742552, y: 1.961429, z: -0.85777557}
 --- !u!1 &762390800
 GameObject:
   m_ObjectHideFlags: 0
@@ -17963,7 +17985,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 3511
+    m_Bits: 7607
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -22077,12 +22099,16 @@ PrefabInstance:
       value: Forklift_1 (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6687793302222142692, guid: fce737788d736d340848eff13e926a88, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6687793302222142692, guid: fce737788d736d340848eff13e926a88, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6687793302222142692, guid: fce737788d736d340848eff13e926a88, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 127
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fce737788d736d340848eff13e926a88, type: 3}
@@ -24557,6 +24583,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 493038, guid: dab5db0c0226560499e1021898aafb64, type: 3}
   m_PrefabInstance: {fileID: 1870814951}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1872148085 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6687793302222142692, guid: fce737788d736d340848eff13e926a88, type: 3}
+  m_PrefabInstance: {fileID: 1648583999}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1872148088
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1872148085}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.10251, y: 3.9224975, z: 6.1607943}
+  m_Center: {x: -0.0028742552, y: 1.961429, z: -0.85777557}
 --- !u!1001 &1885856767
 PrefabInstance:
   m_ObjectHideFlags: 0

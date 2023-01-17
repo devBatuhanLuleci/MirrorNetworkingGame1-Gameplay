@@ -57,31 +57,28 @@ public class PlayerUIHandler : MonoBehaviour
 
 
 
-    float _step;
+    public LineRenderer AttackBasicIndicator;
+    public LayerMask LayerMask;
 
 
 
-    private bool throwable = false;
 
+    public float Range = 5;
+    public float bulletSpeed = 0.1f;
+    public float radialOffset = .75f;
+    public float minAttackLimit = 0.1f;
 
-    [HideInInspector]
-    public float height;
-
-    [HideInInspector]
-    public float angle;
-    [HideInInspector]
-    public float v0;
-    [HideInInspector]
-    public float timeNew;
-    [HideInInspector]
-    public Vector3 direction;
-    [HideInInspector]
-    public Vector3 groundDirection;
+    float height;
+    float v0;
+    float angle;
+    float timeNew;
+    float step = .1f;
 
 
 
-    //[HideInInspector]
-    //public Vector3 targetPos;
+
+
+
     #endregion
 
 
@@ -173,10 +170,9 @@ public class PlayerUIHandler : MonoBehaviour
     }
     public void ShakeEnergyBar()
     {
-      //  Debug.Log("anlamadım1");
-        if (!isShaking)
+         if (!isShaking)
         {
-          //  Debug.Log("anlamadım2");
+        
 
             EnergyBarGeneral.transform.DOShakePosition(duration, strength, vibrato, randomness, false, true)
                 .SetRelative()
@@ -184,7 +180,6 @@ public class PlayerUIHandler : MonoBehaviour
                 .OnStart(() => { isShaking = true; })
                 .OnComplete(() => { isShaking = false; });
 
-            //EnergyBarGeneral.transform.DOPunchScale(Vector3.one, duration, vibrato, 1);
             EnergyBarGeneral.transform.DOScale(0.2f,duration/2f).SetRelative().SetLoops(2, LoopType.Yoyo);
 
             EnergyBarRed.DOColor(new Color(255,0,0,25/255f), duration/2f).SetLoops(2,LoopType.Yoyo).SetEase(Ease.Linear);
@@ -197,65 +192,116 @@ public class PlayerUIHandler : MonoBehaviour
 
     }
 
+    public void RotateProjector(Transform player, Vector2 lookPos, Transform target, RaycastHit hit, float trailDistance)
+    {
+        #region Old
+        //AttackBasicIndicator.SetPosition(0, player.transform.position + (lookPos.normalized) / 4f);
+        //var hitOffSet = (Vector3.up * 0.5f);
+
+        //if (Physics.Raycast(player.transform.position + hitOffSet, (lookPos.normalized), out hit, trailDistance, LayerMask))
+        //{
+        //    AttackBasicIndicator.SetPosition(1, hit.point - hitOffSet);
+        //}
+        //else
+        //{
+        //    AttackBasicIndicator.SetPosition(1, player.transform.position + ((lookPos.normalized) * trailDistance));
+        //}
+        #endregion
+
+        #region new
+
+
+        Vector3 dir = new Vector3(lookPos.x, 0, lookPos.y);
+
+        Vector3 targetPos = new Vector3(dir.magnitude * Range, -playerController.BulletSpawnPoints[0].spawnPoint.y, 0);
+
+
+        CalculateProjectile(targetPos);
+        DrawPath(dir.normalized,player, v0, angle, timeNew, step);
+
+      
+
+
+        #endregion
 
 
 
 
 
 
-    #endregion  
-    #region  Projectile
+    }
+
+
+    private void DrawPath(Vector3 direction,Transform player, float v0, float angle, float time, float step)
+    {
+       //var startPos = playerController.BulletSpawnPoints[0].spawnPoint + StartPosOffSet(direction);
+        var startPos = player.transform.position +new Vector3(0,playerController.BulletSpawnPoints[0].spawnPoint.y,0) + StartPosOffSet(direction);
+        step = Mathf.Max(0.01f, step);
+
+        AttackBasicIndicator.positionCount = (int)(time / step) + 2;
+
+        int count = 0;
+
+        for (float i = 0; i < time; i += step)
+        {
+            float x = v0 * i * Mathf.Cos(angle);
+            float y = v0 * i * Mathf.Sin(angle) - 0.5f * -Physics.gravity.y * Mathf.Pow(i, 2);
+
+            var FirstUpValue = projectileType == ProjectileType.Bomb ? (Vector3.up * y) : Vector3.zero;
+
+            AttackBasicIndicator.SetPosition(count, startPos + direction * x + FirstUpValue);
+
+            count++;
+
+        }
+
+        float xFinal = v0 * time * Mathf.Cos(angle);
+        float yFinal = v0 * time * Mathf.Sin(angle) - 0.5f * -Physics.gravity.y * Mathf.Pow(time, 2);
+
+        var upValue = projectileType == ProjectileType.Bomb ? (Vector3.up * yFinal) : Vector3.zero;
+
+        AttackBasicIndicator.SetPosition(count, startPos + (direction * xFinal + upValue));
+
+
+    }
+    public void ResetProjector()
+    {
+        AttackBasicIndicator.positionCount = 0;
+        //AttackBasicIndicator.SetPosition(0, Vector3.zero);
+     
+
+    }
+
+
     public void CalculateProjectile(Vector3 dir)
     {
 
+        var targetPos = new Vector3(new Vector3(dir.x, 0, dir.z).magnitude, dir.y, 0);
+
         height = projectileType == ProjectileType.Bomb ? (dir.y + dir.magnitude / 2f) : 0;
         height = Mathf.Max(0.01f, height);
-        var targetPos = new Vector3(dir.magnitude, dir.y, 0);
 
-        // DrawPath(groundDirection.normalized, v0, angle, timeNew, _step);
-
-
-        CalculatePathWithHeight(targetPos, height, out v0, out angle, out timeNew);
+        var dist = new Vector3(dir.x, 0, dir.z).magnitude;
 
 
+        if (dist - StartPosOffSet(targetPos).magnitude < minAttackLimit)
+        {
+            AttackBasicIndicator.enabled = false;
 
 
-    }
+        }
+        else
+        {
+            AttackBasicIndicator.enabled = true;
 
-    private void DrawPath(Vector3 direction, float v0, float angle, float time, float step)
-    {
-        // step = Mathf.Max(0.01f, step);
+            if (dist <= Range)
+                CalculatePathWithHeight(dir.normalized * targetPos.magnitude - StartPosOffSet(targetPos), height, out v0, out angle, out timeNew);
 
-        // line.positionCount = (int)(time / step) + 2;
-
-        // int count = 0;
-
-        // for (float i = 0; i < time; i += step)
-        // {
-        //     float x = v0 * i * Mathf.Cos(angle);
-        //     float y = v0 * i * Mathf.Sin(angle) - 0.5f * -Physics.gravity.y * Mathf.Pow(i, 2);
-
-        //     var FirstUpValue = projectileType == ProjectileType.Bomb ? (Vector3.up * y) : Vector3.zero;
-
-        //    // line.SetPosition(count, firePoint.position + direction * x + FirstUpValue);
-
-        //     count++;
-
-        // }
-
-        // float xFinal = v0 * time * Mathf.Cos(angle);
-        //// float yFinal = v0 * time * Mathf.Sin(angle) - 0.5f * -Physics.gravity.y * Mathf.Pow(time, 2);
-        // float yFinal = v0 * time * Mathf.Sin(angle) - 0.5f * -Physics.gravity.y * Mathf.Pow(time, 2);
-
-        // var upValue = projectileType == ProjectileType.Bomb ? (Vector3.up * yFinal) : Vector3.zero;
-        // line.SetPosition(count, firePoint.position + direction * xFinal + upValue);
+        }
 
 
-    }
 
-    private float QuadraticEquation(float a, float b, float c, float sign)
-    {
-        return (-b + sign * Mathf.Sqrt(b * b - 4 * a * c)) / (2 * a);
+
     }
     private void CalculatePathWithHeight(Vector3 targetPos, float h, out float v0, out float angle, out float time)
     {
@@ -279,24 +325,26 @@ public class PlayerUIHandler : MonoBehaviour
 
 
     }
-
-    private void CalculatePath(Vector3 targetPos, float angle, out float v0, out float time)
+    private float QuadraticEquation(float a, float b, float c, float sign)
     {
-        float xt = targetPos.x;
-        float yt = targetPos.y;
-        float g = -Physics.gravity.y;
+        return (-b + sign * Mathf.Sqrt(b * b - 4 * a * c)) / (2 * a);
+    }
 
-        float v1 = Mathf.Pow(xt, 2) * g;
-        float v2 = 2 * xt * Mathf.Sin(angle) * Mathf.Cos(angle);
-        float v3 = 2 * yt * Mathf.Pow(Mathf.Cos(angle), 2);
-        v0 = Mathf.Sqrt(v1 / (v2 - v3));
+    public Vector3 StartPosOffSet(Vector3 dir)
+    {
 
-        time = xt / (v0 * Mathf.Cos(angle));
+        var direction = new Vector3(dir.x, 0, dir.z);
+        direction.Normalize();
+
+        var offsetVector = Vector3.Cross(Vector3.up, direction);
+        offsetVector.Normalize();
+        var startPosition = /*+offsetVector * localHorizontalOffset*/  direction * radialOffset;
 
 
-
+        return startPosition;
 
     }
+
     #endregion
 
 }

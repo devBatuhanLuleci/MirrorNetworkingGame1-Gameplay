@@ -68,8 +68,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 5889
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b4c6d0278f224624f9aa27cc37aac560, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: b4c6d0278f224624f9aa27cc37aac560, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1476,7 +1476,6 @@ MonoBehaviour:
   attackJoystickState: 0
   isShooting: 0
   splatType: 2
-  BasicIndicator: {fileID: 6626824537634215732}
   Range: 3.6
   lookPos: {x: 0, y: 0, z: 0}
   attackLookAtPoint: {fileID: 6626824537031914589}
@@ -1637,13 +1636,15 @@ MonoBehaviour:
   randomness: 0
   nameText: {fileID: 4907378497591976099}
   playerController: {fileID: -6845222926521172771}
-  projectileType: 0
-  height: 0
-  angle: 0
-  v0: 0
-  timeNew: 0
-  direction: {x: 0, y: 0, z: 0}
-  groundDirection: {x: 0, y: 0, z: 0}
+  projectileType: 1
+  AttackBasicIndicator: {fileID: 6626824537634215733}
+  LayerMask:
+    serializedVersion: 2
+    m_Bits: 4096
+  Range: 5
+  bulletSpeed: 0.1
+  radialOffset: 0.4
+  minAttackLimit: 0.1
 --- !u!114 &5942264606546606850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1768,7 +1769,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6626824537634215734}
   - component: {fileID: 6626824537634215733}
-  - component: {fileID: 6626824537634215732}
   m_Layer: 6
   m_Name: BasicIndicator
   m_TagString: Untagged
@@ -1890,22 +1890,6 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &6626824537634215732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6626824537634215735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d7df3f50bf46cd49b0393f1ca9e107f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AttackBasicIndicator: {fileID: 0}
-  LayerMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!1 &7252856717436117146
 GameObject:
   m_ObjectHideFlags: 0

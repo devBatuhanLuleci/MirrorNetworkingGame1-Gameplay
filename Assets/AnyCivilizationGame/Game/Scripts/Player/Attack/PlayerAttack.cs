@@ -41,9 +41,6 @@ public class PlayerAttack : NetworkBehaviour
 
     public SplatManager Splats { get; set; }
 
-    [SerializeField]
-    private BasicIndicator BasicIndicator;
-
     public float Range = 3.6f;
 
     [HideInInspector]
@@ -94,7 +91,7 @@ public class PlayerAttack : NetworkBehaviour
         //HandleAttackIndicator();
         ConfigureAttackState();
         SetLookPosition();
-        RotateIndicator();
+        RotateIndicator(attackDirection);
         //SetBulletSpawnPointPosition();
         playerController.TargetPoint.position = player.transform.position + ((lookPos.normalized) * Range);
     }
@@ -142,7 +139,7 @@ public class PlayerAttack : NetworkBehaviour
                 break;
 
             case SplatType.BasicIndicator:
-                BasicIndicator.ResetProjector();
+                playerController.playerUIHandler.ResetProjector();
                 break;
 
             default:
@@ -320,7 +317,7 @@ public class PlayerAttack : NetworkBehaviour
     {
         if (splatType == SplatType.BasicIndicator)
         {
-            BasicIndicator.gameObject.SetActive(true);
+            playerController.playerUIHandler.AttackBasicIndicator.gameObject.SetActive(true);
         }
         else
         {
@@ -347,7 +344,7 @@ public class PlayerAttack : NetworkBehaviour
     /// <summary>
     /// This function rotates the indicator object.
     /// </summary>
-    private void RotateIndicator()
+    private void RotateIndicator(Vector2 dir)
     {
 
         if (attackJoystickState == AttackJoystickState.Holding)
@@ -356,7 +353,8 @@ public class PlayerAttack : NetworkBehaviour
 
             if (splatType == SplatType.BasicIndicator)
             {
-                BasicIndicator.RotateProjector(player, lookPos, playerController.TargetPoint, hit, Range);
+               // BasicIndicator.RotateProjector(player, lookPos, playerController.TargetPoint, hit, Range);
+                playerController.playerUIHandler.RotateProjector(player, dir, playerController.TargetPoint, hit, Range);
             }
             else
             {

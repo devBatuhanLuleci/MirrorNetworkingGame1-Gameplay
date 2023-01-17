@@ -26,6 +26,8 @@ public class ThrowTest : MonoBehaviour
     float step = .1f;
 
 
+    public enum Type { Type1, Type2 }
+    public Type type;
     public virtual void OnArrived()
     {
 
@@ -53,22 +55,49 @@ public class ThrowTest : MonoBehaviour
     }
     public void AttackProjectileHandler()
     {
-        Vector3 dist = targetPoint.position - firePoint.position;
-
-
-        Vector3 dir = new Vector3(dist.x, 0, dist.z);
-
-        Vector3 targetPos = new Vector3(dir.magnitude, -firePoint.position.y, 0);
-
-
-        CalculateProjectile(targetPos);
-        DrawPath(dir.normalized, v0, angle, timeNew, step);
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (type == Type.Type1)
         {
-            throwableObj.SetActive(true);
-            Throw(dir.normalized);
 
+
+            Vector3 dist = targetPoint.position - firePoint.position;
+
+
+            Vector3 dir = new Vector3(dist.x, 0, dist.z);
+
+            Vector3 targetPos = new Vector3(dir.magnitude, -firePoint.position.y, 0);
+
+
+            CalculateProjectile(targetPos);
+            DrawPath(dir.normalized, v0, angle, timeNew, step);
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                throwableObj.SetActive(true);
+                Throw(dir.normalized);
+
+            }
+        }
+       else if (type == Type.Type2)
+        {
+
+
+           // Vector3 dist = targetPoint.position - firePoint.position;
+
+
+            Vector3 dir = new Vector3(attackJoystick.Value.x, 0, attackJoystick.Value.y);
+
+            Vector3 targetPos = new Vector3(dir.magnitude * Range, -firePoint.position.y, 0);
+
+
+            CalculateProjectile(targetPos);
+            DrawPath(dir.normalized, v0, angle, timeNew, step);
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                throwableObj.SetActive(true);
+                Throw(dir.normalized);
+
+            }
         }
     }
 

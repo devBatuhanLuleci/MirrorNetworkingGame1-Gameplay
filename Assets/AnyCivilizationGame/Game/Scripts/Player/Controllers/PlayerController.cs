@@ -47,6 +47,14 @@ public class PlayerController : NetworkBehaviour
 
 
 
+
+
+    
+ 
+    private float TrailDistance;
+
+
+
     private void Awake()
     {
         movement = GetComponent<PlayerMovement>();
@@ -54,6 +62,7 @@ public class PlayerController : NetworkBehaviour
         health = GetComponent<Health>();
         energy = GetComponent<Energy>();
         playerUIHandler = GetComponent<PlayerUIHandler>();
+        
 
     }
     private void Start()
@@ -77,6 +86,10 @@ public class PlayerController : NetworkBehaviour
 
 
     }
+
+  
+
+
     //public void SpawnIntervalBullet(int BulletCount, float BulletIntervalTime)
     //{
     //    var time = BulletIntervalTime;
