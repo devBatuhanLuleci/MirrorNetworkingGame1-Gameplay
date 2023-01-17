@@ -1479,7 +1479,6 @@ MonoBehaviour:
   Range: 3.6
   lookPos: {x: 0, y: 0, z: 0}
   attackLookAtPoint: {fileID: 6626824537031914589}
-  ClampedAttackJoystickOffset: 0.005
   player: {fileID: 0}
   Bullet: {fileID: 7995885019731338434, guid: ed3358c4efc259f4980810956bb328e9, type: 3}
 --- !u!114 &1847445832484111781
@@ -1568,6 +1567,7 @@ MonoBehaviour:
   playerUIHandler: {fileID: 9098212380682637946}
   PlayerAnimatorController: {fileID: 0}
   AttackTurnSpeed: 0.25
+  ClampedAttackJoystickOffset: 0.005
   BulletSpawnPoints:
   - SpawnPointName: LeftSpawnPoint
     spawnPoint: {x: -0.55, y: 1, z: 0.8}
@@ -1637,7 +1637,7 @@ MonoBehaviour:
   randomness: 0
   nameText: {fileID: 4907378497591976099}
   playerController: {fileID: -6845222926521172771}
-  projectileType: 1
+  projectileType: 0
   AttackBasicIndicator: {fileID: 6626824537634215733}
   LayerMask:
     serializedVersion: 2
@@ -1838,7 +1838,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 0}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.4
+    widthMultiplier: 0.2
     widthCurve:
       serializedVersion: 2
       m_Curve:

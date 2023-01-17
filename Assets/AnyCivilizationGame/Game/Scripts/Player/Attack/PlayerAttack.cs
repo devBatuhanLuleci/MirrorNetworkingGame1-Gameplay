@@ -51,7 +51,7 @@ public class PlayerAttack : NetworkBehaviour
     private Transform attackLookAtPoint;
 
 
-    public float ClampedAttackJoystickOffset = 0.1f;
+  
 
     [HideInInspector]
     public Transform player;
@@ -184,7 +184,7 @@ public class PlayerAttack : NetworkBehaviour
 
 
         // If Attack Button is pressing and it is not aiming.
-        if (AttackHeld && AttackDirection.sqrMagnitude <= ClampedAttackJoystickOffset)
+        if (AttackHeld && AttackDirection.sqrMagnitude <= playerController.ClampedAttackJoystickOffset)
         {
             if (attackJoystickState != AttackJoystickState.Idle)
             {
@@ -208,7 +208,7 @@ public class PlayerAttack : NetworkBehaviour
 
         }
         // If Attack Button is pressing and it is aiming.
-        else if (AttackHeld && AttackDirection.sqrMagnitude > ClampedAttackJoystickOffset)
+        else if (AttackHeld && AttackDirection.sqrMagnitude > playerController.ClampedAttackJoystickOffset)
         {
             if (attackJoystickState != AttackJoystickState.Holding)
             {

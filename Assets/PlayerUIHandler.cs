@@ -52,7 +52,7 @@ public class PlayerUIHandler : MonoBehaviour
     [SerializeField]
     private PlayerController playerController;
 
-    public enum ProjectileType { Bullet, Bomb }
+    public enum ProjectileType { StaticBullet, Bomb }
     public ProjectileType projectileType;
 
 
@@ -213,7 +213,8 @@ public class PlayerUIHandler : MonoBehaviour
 
         Vector3 dir = new Vector3(lookPos.x, 0, lookPos.y);
 
-        Vector3 targetPos = new Vector3(dir.magnitude * Range, -playerController.BulletSpawnPoints[0].spawnPoint.y, 0);
+
+        Vector3 targetPos = new Vector3(projectileType==ProjectileType.StaticBullet ? dir.normalized.magnitude * Range: dir.magnitude*Range, -playerController.BulletSpawnPoints[0].spawnPoint.y, 0);
 
 
         CalculateProjectile(targetPos);
@@ -267,8 +268,7 @@ public class PlayerUIHandler : MonoBehaviour
     public void ResetProjector()
     {
         AttackBasicIndicator.positionCount = 0;
-        //AttackBasicIndicator.SetPosition(0, Vector3.zero);
-     
+   
 
     }
 
@@ -284,7 +284,7 @@ public class PlayerUIHandler : MonoBehaviour
         var dist = new Vector3(dir.x, 0, dir.z).magnitude;
 
 
-        if (dist - StartPosOffSet(targetPos).magnitude < minAttackLimit)
+        if (dist - StartPosOffSet(targetPos).magnitude < playerController.ClampedAttackJoystickOffset)
         {
          //   AttackBasicIndicator.enabled = false;
 

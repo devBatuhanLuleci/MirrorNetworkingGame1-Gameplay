@@ -30,6 +30,7 @@ public class PlayerController : NetworkBehaviour
     public Animator PlayerAnimatorController;
 
     public float AttackTurnSpeed = 0.25f;
+    public float ClampedAttackJoystickOffset = 0.005f;
     public List<BulletSpawnPoints> BulletSpawnPoints;
     private Vector3 attackDir;
     #region Character Projectile Details
