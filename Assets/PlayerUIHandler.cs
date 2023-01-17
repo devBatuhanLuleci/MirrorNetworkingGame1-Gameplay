@@ -35,7 +35,7 @@ public class PlayerUIHandler : MonoBehaviour
     #region ShakeParameters
     public bool isShaking = false;
     public float duration = 1f;
-    public Vector3 strength=new Vector3(50,0,0);
+    public Vector3 strength = new Vector3(50, 0, 0);
     public int vibrato = 8;
     public float randomness = 0;
 
@@ -170,9 +170,9 @@ public class PlayerUIHandler : MonoBehaviour
     }
     public void ShakeEnergyBar()
     {
-         if (!isShaking)
+        if (!isShaking)
         {
-        
+
 
             EnergyBarGeneral.transform.DOShakePosition(duration, strength, vibrato, randomness, false, true)
                 .SetRelative()
@@ -180,9 +180,9 @@ public class PlayerUIHandler : MonoBehaviour
                 .OnStart(() => { isShaking = true; })
                 .OnComplete(() => { isShaking = false; });
 
-            EnergyBarGeneral.transform.DOScale(0.2f,duration/2f).SetRelative().SetLoops(2, LoopType.Yoyo);
+            EnergyBarGeneral.transform.DOScale(0.2f, duration / 2f).SetRelative().SetLoops(2, LoopType.Yoyo);
 
-            EnergyBarRed.DOColor(new Color(255,0,0,25/255f), duration/2f).SetLoops(2,LoopType.Yoyo).SetEase(Ease.Linear);
+            EnergyBarRed.DOColor(new Color(255, 0, 0, 25 / 255f), duration / 2f).SetLoops(2, LoopType.Yoyo).SetEase(Ease.Linear);
 
 
 
@@ -214,13 +214,66 @@ public class PlayerUIHandler : MonoBehaviour
         Vector3 dir = new Vector3(lookPos.x, 0, lookPos.y);
 
 
-        Vector3 targetPos = new Vector3(projectileType==ProjectileType.StaticBullet ? dir.normalized.magnitude * Range: dir.magnitude*Range, -playerController.BulletSpawnPoints[0].spawnPoint.y, 0);
+        Vector3 targetPos =  Vector3.zero;
 
 
-        CalculateProjectile(targetPos);
-        DrawPath(dir.normalized,player, v0, angle, timeNew, step);
+        var hitOffSet = (Vector3.up * 0.5f);
+     //   Debug.DrawRay(player.transform.position + hitOffSet, new Vector3(lookPos.normalized.x, 0, lookPos.normalized.y) * Range, Color.green, .1f);
+
+        if (Physics.Raycast(player.transform.position + hitOffSet, new Vector3(lookPos.normalized.x, 0, lookPos.normalized.y), out hit, Range, LayerMask))
+       {
+
+            var dist = (hit.point - player.transform.position).magnitude;
+      Debug.DrawRay(player.transform.position + hitOffSet, new Vector3(lookPos.normalized.x, 0, lookPos.normalized.y)* dist , Color.green, .1f);
+
+            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            go.transform.position = hit.point;
+            Destroy(go, .2f);
+            switch (projectileType)
+            {
+                case ProjectileType.StaticBullet:
+                    targetPos = new Vector3(dir.normalized.magnitude* new Vector3(hit.point.x, 0, hit.point.z).magnitude, -playerController.BulletSpawnPoints[0].spawnPoint.y, 0);
+
+                    break;
+                case ProjectileType.Bomb:
+                    targetPos = new Vector3(dir.normalized.magnitude* new Vector3(hit.point.x, 0, hit.point.z).magnitude, -playerController.BulletSpawnPoints[0].spawnPoint.y, 0);
+
+
+                    break;
+                default:
+                    break;
+            }
+         //  Debug.DrawRay(player.transform.position + hitOffSet, new Vector3(hit.point.x, 0, hit.point.z), Color.green, .1f);
+        }
+
+        else
+        {
+
+         //   Debug.DrawRay(player.transform.position + hitOffSet, new Vector3(lookPos.normalized.x, 0, lookPos.normalized.y) * Range, Color.red, .1f);
+
+            switch (projectileType)
+            {
+                case ProjectileType.StaticBullet:
+                    targetPos = new Vector3(dir.normalized.magnitude * Range, -playerController.BulletSpawnPoints[0].spawnPoint.y, 0);
+
+                    break;
+                case ProjectileType.Bomb:
+                    targetPos = new Vector3(dir.magnitude * Range, -playerController.BulletSpawnPoints[0].spawnPoint.y, 0);
+
+
+                    break;
+                default:
+                    break;
+            }
+
+        }
 
       
+
+        CalculateProjectile(targetPos);
+        DrawPath(dir.normalized, player, v0, angle, timeNew, step);
+
+
 
 
         #endregion
@@ -233,10 +286,10 @@ public class PlayerUIHandler : MonoBehaviour
     }
 
 
-    private void DrawPath(Vector3 direction,Transform player, float v0, float angle, float time, float step)
+    private void DrawPath(Vector3 direction, Transform player, float v0, float angle, float time, float step)
     {
-       //var startPos = playerController.BulletSpawnPoints[0].spawnPoint + StartPosOffSet(direction);
-        var startPos = player.transform.position +new Vector3(0,playerController.BulletSpawnPoints[0].spawnPoint.y,0) + StartPosOffSet(direction);
+        //var startPos = playerController.BulletSpawnPoints[0].spawnPoint + StartPosOffSet(direction);
+        var startPos = player.transform.position + new Vector3(0, playerController.BulletSpawnPoints[0].spawnPoint.y, 0) + StartPosOffSet(direction);
         step = Mathf.Max(0.01f, step);
 
         AttackBasicIndicator.positionCount = (int)(time / step) + 2;
@@ -268,7 +321,7 @@ public class PlayerUIHandler : MonoBehaviour
     public void ResetProjector()
     {
         AttackBasicIndicator.positionCount = 0;
-   
+
 
     }
 
@@ -286,13 +339,13 @@ public class PlayerUIHandler : MonoBehaviour
 
         if (dist - StartPosOffSet(targetPos).magnitude < playerController.ClampedAttackJoystickOffset)
         {
-         //   AttackBasicIndicator.enabled = false;
+            //   AttackBasicIndicator.enabled = false;
 
 
         }
         else
         {
-          //  AttackBasicIndicator.enabled = true;
+            //  AttackBasicIndicator.enabled = true;
 
             if (dist <= Range)
                 CalculatePathWithHeight(dir.normalized * targetPos.magnitude - StartPosOffSet(targetPos), height, out v0, out angle, out timeNew);

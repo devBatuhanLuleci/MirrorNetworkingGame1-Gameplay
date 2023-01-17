@@ -87,7 +87,7 @@ public class ThrowTest : MonoBehaviour
             Vector3 dir = new Vector3(attackJoystick.Value.x, 0, attackJoystick.Value.y);
 
             Vector3 targetPos = new Vector3(dir.magnitude * Range, -firePoint.position.y, 0);
-
+           
 
             CalculateProjectile(targetPos);
             DrawPath(dir.normalized, v0, angle, timeNew, step);
