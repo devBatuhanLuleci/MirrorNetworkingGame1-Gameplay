@@ -51,7 +51,7 @@ public class PlayerAttack : NetworkBehaviour
     private Transform attackLookAtPoint;
 
 
-    private float ClampedAttackJoystickOffset = 0.1f;
+    public float ClampedAttackJoystickOffset = 0.1f;
 
     [HideInInspector]
     public Transform player;

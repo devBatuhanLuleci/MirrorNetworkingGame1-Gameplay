@@ -1479,6 +1479,7 @@ MonoBehaviour:
   Range: 3.6
   lookPos: {x: 0, y: 0, z: 0}
   attackLookAtPoint: {fileID: 6626824537031914589}
+  ClampedAttackJoystickOffset: 0.005
   player: {fileID: 0}
   Bullet: {fileID: 7995885019731338434, guid: ed3358c4efc259f4980810956bb328e9, type: 3}
 --- !u!114 &1847445832484111781

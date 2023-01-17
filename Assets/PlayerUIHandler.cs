@@ -286,13 +286,13 @@ public class PlayerUIHandler : MonoBehaviour
 
         if (dist - StartPosOffSet(targetPos).magnitude < minAttackLimit)
         {
-            AttackBasicIndicator.enabled = false;
+         //   AttackBasicIndicator.enabled = false;
 
 
         }
         else
         {
-            AttackBasicIndicator.enabled = true;
+          //  AttackBasicIndicator.enabled = true;
 
             if (dist <= Range)
                 CalculatePathWithHeight(dir.normalized * targetPos.magnitude - StartPosOffSet(targetPos), height, out v0, out angle, out timeNew);
