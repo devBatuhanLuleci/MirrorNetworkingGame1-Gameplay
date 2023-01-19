@@ -201,27 +201,29 @@ public class ThrowTest : MonoBehaviour
 
     public void CalculateProjectile(Vector3 dir)
     {
-
+       // Debug.Log("dir: " + dir);
         var targetPos = new Vector3(new Vector3(dir.x, 0, dir.z).magnitude, dir.y, 0);
 
         height = projectileType == ProjectileType.Bomb ? (dir.y + dir.magnitude / 2f) : 0;
         height = Mathf.Max(0.01f, height);
 
         var dist = new Vector3(dir.x, 0, dir.z).magnitude;
+        Debug.Log("targetPos: " + targetPos);
+        Debug.Log("pos: " +( dist - StartPosOffSet(targetPos).magnitude));
 
 
-        if (dist - StartPosOffSet(targetPos).magnitude < minAttackLimit)
+        if (targetPos.x < minAttackLimit)
         {
-            line.enabled = false;
+              line.enabled = false;
 
 
         }
         else
         {
-            line.enabled = true;
+             line.enabled = true;
 
-            if (dist <= Range)
-                CalculatePathWithHeight(dir.normalized * targetPos.magnitude - StartPosOffSet(targetPos), height, out v0, out angle, out timeNew);
+          //  if (dist <= Range)
+                CalculatePathWithHeight(dir.normalized * targetPos.magnitude /*- StartPosOffSet(targetPos)*/, height, out v0, out angle, out timeNew);
 
         }
 

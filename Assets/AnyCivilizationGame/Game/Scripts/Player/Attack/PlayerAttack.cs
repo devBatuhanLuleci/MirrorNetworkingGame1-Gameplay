@@ -41,8 +41,6 @@ public class PlayerAttack : NetworkBehaviour
 
     public SplatManager Splats { get; set; }
 
-    public float Range = 3.6f;
-
     [HideInInspector]
     public Vector3 lookPos;
 
@@ -93,7 +91,7 @@ public class PlayerAttack : NetworkBehaviour
         SetLookPosition();
         RotateIndicator(attackDirection);
         //SetBulletSpawnPointPosition();
-        playerController.TargetPoint.position = player.transform.position + ((lookPos.normalized) * Range);
+        playerController.TargetPoint.position = player.transform.position + ((lookPos.normalized) * playerController.Range);
     }
 
     /// <summary>
@@ -182,9 +180,9 @@ public class PlayerAttack : NetworkBehaviour
     public void ConfigureAttackState()
     {
 
-
+        
         // If Attack Button is pressing and it is not aiming.
-        if (AttackHeld && AttackDirection.sqrMagnitude <= playerController.ClampedAttackJoystickOffset)
+        if (AttackHeld && AttackDirection.magnitude <= playerController.ClampedAttackJoystickOffset)
         {
             if (attackJoystickState != AttackJoystickState.Idle)
             {
@@ -208,7 +206,7 @@ public class PlayerAttack : NetworkBehaviour
 
         }
         // If Attack Button is pressing and it is aiming.
-        else if (AttackHeld && AttackDirection.sqrMagnitude > playerController.ClampedAttackJoystickOffset)
+        else if (AttackHeld && AttackDirection.magnitude > playerController.ClampedAttackJoystickOffset)
         {
             if (attackJoystickState != AttackJoystickState.Holding)
             {
@@ -221,7 +219,7 @@ public class PlayerAttack : NetworkBehaviour
             }
         }
         // If touch has released on attack button
-        else if (!AttackHeld && AttackDirection.sqrMagnitude == 0)
+        else if (!AttackHeld && AttackDirection.magnitude == 0)
         {
             if (attackJoystickState == AttackJoystickState.Holding)
             {
@@ -354,7 +352,7 @@ public class PlayerAttack : NetworkBehaviour
             if (splatType == SplatType.BasicIndicator)
             {
                // BasicIndicator.RotateProjector(player, lookPos, playerController.TargetPoint, hit, Range);
-                playerController.playerUIHandler.RotateProjector(player, dir, playerController.TargetPoint, hit, Range);
+                playerController.playerUIHandler.RotateProjector(player, dir, playerController.TargetPoint, hit, playerController.Range);
             }
             else
             {

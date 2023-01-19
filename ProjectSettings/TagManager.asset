@@ -21,8 +21,8 @@ TagManager:
   - Plane
   - Flare
   - Obstacle
-  - 
-  - 
+  - GroundIndicator
+  - BombIndicator
   - 
   - 
   - 

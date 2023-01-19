@@ -23,7 +23,7 @@ public class Throwable : NetworkBehaviour
     float v0;
     float angle;
     float timeNew;
-  
+
     //public void Throw(Vector3[] path)
     //{
     //    throwingCoroutine = StartCoroutine(Coroutine_Movement(path));
@@ -80,16 +80,16 @@ public class Throwable : NetworkBehaviour
     #region new
 
 
-    public void Throw(Vector3 dir)
+    public void Throw(Vector3 dir, float Range)
     {
-      
 
-        CalculateProjectile(dir);
+
+        CalculateProjectile(dir, Range);
         if (throwingCoroutine != null)
             StopCoroutine(throwingCoroutine);
 
         // throwingCoroutine= StartCoroutine(Coroutine_Movement(this.gameObject, groundDirection.normalized, v0, angle, timeNew));
-        throwingCoroutine = StartCoroutine(Coroutine_Movement(dir,v0,angle,timeNew,.1f));
+        throwingCoroutine = StartCoroutine(Coroutine_Movement(dir, v0, angle, timeNew, .1f));
 
 
     }
@@ -154,19 +154,19 @@ public class Throwable : NetworkBehaviour
     }
 
 
-    public void CalculateProjectile(Vector3 dir)
+    public void CalculateProjectile(Vector3 dir, float Range)
     {
 
-         height = projectileType == ProjectileType.Bomb ? (dir.y + dir.magnitude / 2f) : 0;
+        height = projectileType == ProjectileType.Bomb ? (dir.y + dir.magnitude / 2f) : 0;
         height = Mathf.Max(0.01f, height);
-    
-       var  targetPos = new Vector3(dir.magnitude, dir.y, 0);
+
+        var targetPos = new Vector3(dir.magnitude, dir.y, 0);
 
         // DrawPath(groundDirection.normalized, v0, angle, timeNew, _step);
 
-
-       // Debug.Log(dir);
-        CalculatePathWithHeight(targetPos*5, height, out v0, out angle, out timeNew);
+      // Debug.Log("TargetPosRange: " + (targetPos * Range));
+        // Debug.Log(dir);
+        CalculatePathWithHeight(targetPos * Range, height, out v0, out angle, out timeNew);
 
 
 

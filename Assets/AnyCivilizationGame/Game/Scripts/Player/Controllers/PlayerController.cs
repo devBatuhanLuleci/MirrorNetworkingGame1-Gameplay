@@ -37,6 +37,7 @@ public class PlayerController : NetworkBehaviour
 
     public Transform TargetPoint;
 
+    public float Range = 5f;
 
     public int BulletCount = 1;
     public float BulletIntervalTime = .2f;
@@ -132,7 +133,7 @@ public class PlayerController : NetworkBehaviour
                 offsetVector.Normalize();
                 var spawnedBullet = ObjectPooler.Instance.Get(attack.Bullet.transform.name, transform.position + offsetVector * spawnPoint[i % spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + dir * spawnPoint[i % spawnPoint.Length].z, Quaternion.Euler(0, CalculationManager.GetAngle(dir), 0)).GetComponent<Bullet>();
                 spawnedBullet.Init("Debug User " + netId, netId);
-                spawnedBullet.Throw(dir);
+                spawnedBullet.Throw(dir,Range);
                 NetworkServer.Spawn(spawnedBullet.gameObject);
 
 
