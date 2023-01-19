@@ -223,7 +223,7 @@ public class PlayerUIHandler : MonoBehaviour
         {
 
             var dist = (hit.point - (player.transform.position + StartPosOffSet(dir.normalized))).magnitude;
-            Debug.DrawRay(player.transform.position + hitOffSet + StartPosOffSet(dir.normalized), new Vector3(lookPos.normalized.x, 0, lookPos.normalized.y) * dist, Color.green, .1f);
+          //  Debug.DrawRay(player.transform.position + hitOffSet + StartPosOffSet(dir.normalized), new Vector3(lookPos.normalized.x, 0, lookPos.normalized.y) * dist, Color.green, .1f);
             var bombPos = Vector3.zero;
          
             switch (projectileType)
@@ -258,7 +258,7 @@ public class PlayerUIHandler : MonoBehaviour
         else
         {
            
-            Debug.DrawRay(player.transform.position + hitOffSet +StartPosOffSet(dir.normalized), new Vector3(lookPos.normalized.x, 0, lookPos.normalized.y) * playerController.Range, Color.red, .1f);
+           // Debug.DrawRay(player.transform.position + hitOffSet +StartPosOffSet(dir.normalized), new Vector3(lookPos.normalized.x, 0, lookPos.normalized.y) * playerController.Range, Color.red, .1f);
 
             switch (projectileType)
             {

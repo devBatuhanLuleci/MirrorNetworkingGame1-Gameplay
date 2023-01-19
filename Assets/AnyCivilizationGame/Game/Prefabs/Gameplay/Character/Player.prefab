@@ -1807,7 +1807,7 @@ MonoBehaviour:
   randomness: 0
   nameText: {fileID: 4907378497591976099}
   playerController: {fileID: -6845222926521172771}
-  projectileType: 1
+  projectileType: 0
   BombIndicator: {fileID: 5936946434980951897}
   AttackBasicIndicator: {fileID: 6626824537634215733}
   LayerMask:

@@ -10008,7 +10008,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5174403850752253233, guid: fce737788d736d340848eff13e926a88, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5174403850752253233, guid: fce737788d736d340848eff13e926a88, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -22132,7 +22132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5174403850752253233, guid: fce737788d736d340848eff13e926a88, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5174403850752253233, guid: fce737788d736d340848eff13e926a88, type: 3}
       propertyPath: m_StaticShadowCaster
