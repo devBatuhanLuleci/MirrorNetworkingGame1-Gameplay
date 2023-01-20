@@ -4,10 +4,16 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using static NetworkedGameManager;
 
 public class NetworkedGameManager : NetworkBehaviour
 {
-    #region Fields
+    #region Sub classes
+
+    #endregion
+    #region 
+
+    #region Singleton 
     private static NetworkedGameManager instance;
     public static NetworkedGameManager Instance
     {
@@ -16,40 +22,50 @@ public class NetworkedGameManager : NetworkBehaviour
             return instance;
         }
     }
-    public GameObject waitingPanel;
-    private NetworkIdentity networkIdentity;
     #endregion
+
+    private bool IsClient => ACGDataManager.Instance.GameData.TerminalType == TerminalType.Client;
+
+    #region MonoBehaviour Methods
     private void Awake()
     {
         instance = this;
-        networkIdentity = GetComponent<NetworkIdentity>();
-        waitingPanel = GameObject.Find("WaitingPanel");
-        Debug.Log("awake: " + MatchNetworkManager.Instance.mode);
+        InitAssigments();
+        Info("awake: " + MatchNetworkManager.Instance.mode);
     }
-    
     private void Start()
     {
-        if (!ACGDataManager.Instance.GameData.IsServer)
-        {
-            ClientStarted();
-            CmdReady();
-            Debug.Log("awake: " + MatchNetworkManager.Instance.mode);
+        Info("isClient: " + isClient);
+        if (IsClient) SetupClient();
 
-        }
+    }
+
+    #endregion
+
+    #region NetworkBehavior Methods
+
+    #endregion
+    #endregion
+
+    private void InitAssigments()
+    {
+
+    }
+
+
+    private void SetupClient()
+    {
+        // TODO: open character select panel
+
+        GameUIManager.Instance.SelectCharacter();
+        ClientStarted();
+        CmdReady();
+        Info("awake: " + MatchNetworkManager.Instance.mode);
 
     }
 
     public void ClientStarted()
     {
-        //var vfxManagerPrefab = Resources.Load<GameObject>("VfxManager");
-        //if (vfxManagerPrefab == null)
-        //{
-        //    Debug.LogError("vfxManagerPrefab is null");
-        //}
-        //else
-        //{
-        //    NetworkClient.RegisterPrefab(vfxManagerPrefab.gameObject);
-        //}
 
         string msg = $"Client Started. Port: {ACGDataManager.Instance.GameData.Port}";
         Info(msg);
@@ -58,35 +74,20 @@ public class NetworkedGameManager : NetworkBehaviour
     {
 
         // Setup();
-        string msg = $" <color=green> Server listining on </color> this server:{ACGDataManager.Instance.GameData.Port}";
+        string msg = $" <color=green> Server listining on </color> localhost:{ACGDataManager.Instance.GameData.Port}";
         Info(msg);
-    }
-
-
-    private void Setup()
-    {
-        var vfxManagerPrefab = Resources.Load<GameObject>("VfxManager");
-        if (vfxManagerPrefab == null)
-        {
-            Debug.LogError("vfxManagerPrefab is null");
-        }
-        else
-        {
-            var vfxManager = Instantiate(vfxManagerPrefab);
-            NetworkServer.Spawn(vfxManager);
-        }
     }
 
 
     public void StartGame()
     {
         Info("StartGame");
-        waitingPanel.SetActive(false);
     }
 
     public void Info(string msg)
     {
-        waitingPanel.GetComponentInChildren<TextMeshProUGUI>().text = msg;
+        msg = "[MatchNetworkManager]: " + msg;
+        GameUIManager.Instance.GetPanel<Waiting>().Info = msg;
         Debug.LogError(msg);
 
     }
@@ -95,7 +96,7 @@ public class NetworkedGameManager : NetworkBehaviour
     [ClientRpc]
     public void RpcStartGame()
     {
-        Debug.LogError("RpcStartGame");
+        Info("RpcStartGame");
         StartGame();
     }
     #endregion
@@ -105,15 +106,16 @@ public class NetworkedGameManager : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdReady()
     {
-        Debug.LogError("Ready!");
+        Info("Ready!");
         playerCount++;
         SetPlayerCount(playerCount);
-        if (playerCount > 0)
+        if (playerCount >= ACGDataManager.Instance.GameData.MaxPlayerCount)
         {
             RpcStartGame();
         }
     }
 
+    // TODO: mak playerCount a SyncVar
     [ClientRpc]
     public void SetPlayerCount(int value)
     {

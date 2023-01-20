@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Panel : MonoBehaviour, IPanel
 {
-    private Panel currentPanel;
+    protected Panel currentPanel;
 
 
 
@@ -15,6 +15,11 @@ public class Panel : MonoBehaviour, IPanel
 
         OnPanelClose();
         gameObject.SetActive(false);
+    }
+    public virtual void Close(bool destroy)
+    {
+        Close();
+        if (destroy) Destroy(gameObject);
     }
 
     public virtual void Show()
@@ -35,8 +40,6 @@ public class Panel : MonoBehaviour, IPanel
     }
     protected void Show(Panel panel)
     {
-        Debug.Log(IsChild(panel));
-
         if (!IsChild(panel))
         {
             //  throw new System.Exception($"{panel.name} is not a child.of {this}");
@@ -50,8 +53,6 @@ public class Panel : MonoBehaviour, IPanel
     }
     protected bool IsChild(Panel panel)
     {
-
-
         var props = this.GetType().GetFields();
         for (int i = 0; i < props.Length; i++)
         {
@@ -62,13 +63,7 @@ public class Panel : MonoBehaviour, IPanel
             }
 
         }
-
-
-
         return false;
-
-
-
     }
     protected virtual void OnPanelShow() { }
     protected virtual void OnPanelClose() { }

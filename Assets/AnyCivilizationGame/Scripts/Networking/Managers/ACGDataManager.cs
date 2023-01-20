@@ -1,23 +1,59 @@
 using kcp2k;
 using Mirror;
+using Oddworm.Framework;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ACGDataManager : MonoBehaviour
 {
+    [Header("Test Area")]
+    [SerializeField] private string BootArgs = "";
+
+
+
     private static ACGDataManager instance;
     public static ACGDataManager Instance { get { return instance; } }
     [SerializeField]
     private string gameSceneName = "GameScene";
 
-    public GameData GameData { get; private set; }
-    public LobbyPlayer LobbyPlayer { get;  set; }
+    public GameData GameData;
+    public LobbyPlayer LobbyPlayer { get; set; }
+    KcpTransport transport;
+    public void Start()
+    {
+        Setup();
+    }
 
-    public void Awake()
+    private void Setup()
     {
         InitSingleton();
         InitDatas();
+        HandleCommands();
+        ConnectToTheMaster();
+    }
+
+    public void OnConnectedToMasterServer()
+    {
+        // TODO: Get Game Data from master
+        StartAuth();
+    }
+    public void StartAuth()
+    {
+        AuthenticationManager.Instance.StartAuth();
+    }
+
+    private void ConnectToTheMaster()
+    {
+        if (!String.IsNullOrEmpty(GameData.HostAddress))
+        {
+            LoadBalancer.Instance.StartClient(GameData.HostAddress);
+        }
+        else
+        {
+            LoadBalancer.Instance.StartClient();
+        }
     }
 
     private void InitDatas()
@@ -38,47 +74,59 @@ public class ACGDataManager : MonoBehaviour
         }
     }
 
-    public void StartServer(ushort port)
+    // TODO: this will be moved to its new location at a later date.
+    public void StartServer()
     {
-        GameData.IsServer = true;
+        SceneManager.LoadScene(gameSceneName);
+    }
+    // TODO: this will be moved to its new location at a later date.
+    public void StartClient(string gameServerAddress, ushort port)
+    {
         GameData.Port = port;
-        //var transport = GetComponent<KcpTransport>();
-        //transport.Port = port;
-        //StartServer();
+        GameData.GameServerAddress = gameServerAddress;
+        SceneManager.LoadScene(gameSceneName);
+    }
+    public void StartClient()
+    {
         SceneManager.LoadScene(gameSceneName);
     }
 
-    public void StartClient(string netAddress, ushort port)
+    #region HandleCommands
+    private void HandleCommands()
     {
-        GameData.IsServer = false;
-        GameData.Port = port;
-        GameData.NetworkAddress = netAddress;
+#if UNITY_EDITOR
+        CommandLineInitializer.LoadCommandLine(" " + BootArgs);
+#endif
+        GameData.TerminalType = TerminalType.Client;
+        GameData.GameServerAddress = LoadBalancer.Instance.Host.GetStringValue();
 
-        //var transport = GetComponent<KcpTransport>();
+        if (CommandLine.HasKey("-server"))
+        {
+            Debug.LogError("Starting as Server");
+            GameData.TerminalType = TerminalType.Server;
+        }
 
-        //networkAddress = netAddress;
-        //transport.Port = port;
-        //transport.enabled = true;
-        //StartClient();
-        SceneManager.LoadScene(gameSceneName);
+        if (CommandLine.HasKey("-client"))
+        {
+            GameData.GameServerAddress = CommandLine.GetString("-client", GameData.GameServerAddress);
+            Debug.LogError("starting as Client");
+        }
+
+        if (CommandLine.HasKey("-port"))
+        {
+            var Port = CommandLine.GetInt("-port", -1);
+            Debug.LogErrorFormat("Port: {0}", Port);
+            GameData.Port = (ushort)Port;
+        }
+        if (CommandLine.HasKey("-host"))
+        {
+            var Host = CommandLine.GetString("-host", "");
+            GameData.HostAddress = Host;
+            Debug.LogErrorFormat("Host: {0}", Host);
+        }
 
     }
-    //public void StartClient( ushort port)
-    //{
-    //    IsServer = false;
-    //    Port = port;
-    //    Debug.LogError("ben clientim:");
-
-    //    //var transport = GetComponent<KcpTransport>();
-
-    //    //networkAddress = netAddress;
-    //    //transport.Port = port;
-    //    //transport.enabled = true;
-    //    //StartClient();
-    //    SceneManager.LoadScene(gameSceneName);
-
-    //}
 
 
-
+    #endregion
 }

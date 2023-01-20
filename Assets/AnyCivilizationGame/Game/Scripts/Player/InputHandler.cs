@@ -26,7 +26,7 @@ public class InputHandler : Singleton<InputHandler>
 
     protected override void Awake()
     {
-        if (ACGDataManager.Instance.GameData.IsServer)
+        if (ACGDataManager.Instance.GameData.TerminalType == TerminalType.Server)
         {
             Destroy(gameObject);
             return;
@@ -41,7 +41,6 @@ public class InputHandler : Singleton<InputHandler>
         if (PlayerController == null || !PlayerController.IsLive) return;
         Move();
         MainAttack();
-       // CalculateSomething();
     }
 
     private void MainAttack()
@@ -57,6 +56,7 @@ public class InputHandler : Singleton<InputHandler>
         var moveValue = MovementJoystick.Value;
         PlayerController.Move(moveValue);
     }
+
     //public void CalculateSomething()
     //{
     //    //   Debug.Log("moveDir " + MovementJoystick.Value);
