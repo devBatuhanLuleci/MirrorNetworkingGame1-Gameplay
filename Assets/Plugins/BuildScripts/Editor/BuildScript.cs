@@ -14,7 +14,7 @@ public class BuildScript
     public static void BuildWindowsGameServer()
     {
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
-        buildPlayerOptions.scenes = new[] { "Assets/AnyCivilizationGame/Scenes/Lobby.unity", "Assets/AnyCivilizationGame/Scenes/GameScene/GameScene.unity" };
+        buildPlayerOptions.scenes = new[] { "Assets/AnyCivilizationGame/Scenes/ProductionScenes/Lobby.unity", "Assets/AnyCivilizationGame/Scenes/ProductionScenes/GameScene.unity" };
         buildPlayerOptions.locationPathName = "../mobil_loadbalancer/Builds/Windows/GameServer/GameServer.exe";
         buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
         buildPlayerOptions.options = BuildOptions.CompressWithLz4HC | BuildOptions.EnableHeadlessMode | BuildOptions.Development;
@@ -24,19 +24,19 @@ public class BuildScript
         Console.WriteLine("Builded Succesfully Windows GameServer (Windows).");
     }
 
-    [MenuItem("Build/GameClient(Windows)")]
-    public static void BuildWindowsGameClient()
-    {
-        BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
-        buildPlayerOptions.scenes = new[] { "Assets/AnyCivilizationGame/Scenes/Game.unity" };
-        buildPlayerOptions.locationPathName = "Builds/Windows/GameClient/GameClient.exe";
-        buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
-        buildPlayerOptions.options = BuildOptions.CompressWithLz4HC | BuildOptions.EnableHeadlessMode;
+    //[MenuItem("Build/GameClient(Windows)")]
+    //public static void BuildWindowsGameClient()
+    //{
+    //    BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
+    //    buildPlayerOptions.scenes = new[] { "Assets/AnyCivilizationGame/Scenes/Game.unity" };
+    //    buildPlayerOptions.locationPathName = "Builds/Windows/GameClient/GameClient.exe";
+    //    buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
+    //    buildPlayerOptions.options = BuildOptions.CompressWithLz4HC | BuildOptions.EnableHeadlessMode;
 
-        Console.WriteLine("Build Windows GameClient (Windows)...");
-        BuildPipeline.BuildPlayer(buildPlayerOptions);
-        Console.WriteLine("Builded Succesfully Windows GameClient (Windows).");
-    }
+    //    Console.WriteLine("Build Windows GameClient (Windows)...");
+    //    BuildPipeline.BuildPlayer(buildPlayerOptions);
+    //    Console.WriteLine("Builded Succesfully Windows GameClient (Windows).");
+    //}
 
     // [MenuItem("Build/Build Server (Linux)")]
     // public static void BuildLinuxServer()
