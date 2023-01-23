@@ -19979,8 +19979,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5472432523209748432, guid: 2b6b2f03839cb1a4dbf01b1d26693676, type: 3}
+      propertyPath: host
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5472432523209748432, guid: 2b6b2f03839cb1a4dbf01b1d26693676, type: 3}
       propertyPath: startClientOnStart
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5472432523209748433, guid: 2b6b2f03839cb1a4dbf01b1d26693676, type: 3}
       propertyPath: Port
