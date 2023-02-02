@@ -14,7 +14,8 @@ public class PlayerAttack : NetworkBehaviour
     private PlayerController playerController;
     //private Joystick attackJoystick;
     public Vector2 AttackDirection { get; set; } = Vector2.zero;
-    public bool AttackHeld { get; set; } = false;
+    public bool BasicAttackHeld { get; set; } = false;
+    public bool UltiAttackHeld { get; set; } = false;
 
     #region States
 
@@ -75,7 +76,7 @@ public class PlayerAttack : NetworkBehaviour
         InitilizeVariables();
         ActivateIndicator();
     }
-    public void Targeting(Vector2 attackDirection, bool attackHeld = false)
+    public void Targeting(Vector2 attackDirection, bool basicAttackButtonHeld = false, bool ultiAttackButtonheld = false)
     {
         if (isShooting)
         {
@@ -85,7 +86,12 @@ public class PlayerAttack : NetworkBehaviour
         //Debug.LogError($"Targeting attackDirection: {attackDirection} attackHeld: {attackHeld}");
         //if (!netIdentity.isLocalPlayer) return;
         AttackDirection = attackDirection;
-        AttackHeld = attackHeld;
+        BasicAttackHeld = basicAttackButtonHeld;
+        UltiAttackHeld = ultiAttackButtonheld;
+
+   
+
+
         //HandleAttackIndicator();
         ConfigureAttackState();
         SetLookPosition();
@@ -182,7 +188,7 @@ public class PlayerAttack : NetworkBehaviour
 
         
         // If Attack Button is pressing and it is not aiming.
-        if (AttackHeld && AttackDirection.magnitude <= playerController.ClampedAttackJoystickOffset)
+        if ((BasicAttackHeld || UltiAttackHeld) && AttackDirection.magnitude <= playerController.ClampedAttackJoystickOffset)
         {
             if (attackJoystickState != AttackJoystickState.Idle)
             {
@@ -206,7 +212,7 @@ public class PlayerAttack : NetworkBehaviour
 
         }
         // If Attack Button is pressing and it is aiming.
-        else if (AttackHeld && AttackDirection.magnitude > playerController.ClampedAttackJoystickOffset)
+        else if ((BasicAttackHeld || UltiAttackHeld) && AttackDirection.magnitude > playerController.ClampedAttackJoystickOffset)
         {
             if (attackJoystickState != AttackJoystickState.Holding)
             {
@@ -219,7 +225,7 @@ public class PlayerAttack : NetworkBehaviour
             }
         }
         // If touch has released on attack button
-        else if (!AttackHeld && AttackDirection.magnitude == 0)
+        else if (!(BasicAttackHeld || UltiAttackHeld) && AttackDirection.magnitude == 0)
         {
             if (attackJoystickState == AttackJoystickState.Holding)
             {
@@ -250,6 +256,7 @@ public class PlayerAttack : NetworkBehaviour
                 var dir = finalDir;
 
                 // playerController.playerUIHandler.CalculateProjectile(dir);
+                playerController.SendAttackType(playerController.currentAttackType);
 
                 CmdFire(false, dir);
 
@@ -283,6 +290,7 @@ public class PlayerAttack : NetworkBehaviour
                     var dir = finalDir;
 
                     //  playerController.playerUIHandler.CalculateProjectile(dir);
+                    playerController.SendAttackType(playerController.currentAttackType);
 
                     CmdFire(true, dir);
 

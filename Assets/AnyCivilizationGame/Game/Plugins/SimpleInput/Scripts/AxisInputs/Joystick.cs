@@ -13,6 +13,7 @@ namespace SimpleInputNamespace
 
 		private RectTransform joystickTR;
 		private Graphic background;
+		private Graphic goGraphic;
 		private float startAlpha;
 		public MovementAxes movementAxes = MovementAxes.XandY;
 		public float valueMultiplier = 1f;
@@ -50,11 +51,15 @@ namespace SimpleInputNamespace
 		private Vector2 m_value = Vector2.zero;
 		public Vector2 Value { get { return m_value; } }
 
+
+		public enum JoystickButtonType { movement, ultiAttack, basicAttack }
+		public JoystickButtonType joystickButtonType;
+
 		private void Awake()
 		{
 			joystickTR = (RectTransform) transform;
 			thumbTR = thumb.rectTransform;
-
+			goGraphic = GetComponent<Graphic>();
 			Graphic bgGraphic = GetComponent<Graphic>();
 			if( bgGraphic )
 			{
@@ -80,7 +85,17 @@ namespace SimpleInputNamespace
 			joystickInitialPos = joystickTR.anchoredPosition;
 			thumbTR.localPosition = Vector3.zero;
 		}
+		public void Deactivate()
+        {
 
+			goGraphic.raycastTarget = false;
+		}
+		public void Activate()
+        {
+			goGraphic.raycastTarget = true;
+
+		}
+     
 		private void Start()
 		{
 			SimpleInputDragListener eventReceiver;
@@ -100,6 +115,7 @@ namespace SimpleInputNamespace
 				}
 
 				eventReceiver = dynamicJoystickMovementArea.gameObject.AddComponent<SimpleInputDragListener>();
+				eventReceiver.ActivateRaycast();
 			}
 
 			eventReceiver.Listener = this;
@@ -125,7 +141,14 @@ namespace SimpleInputNamespace
 		{
 			joystickHeld = true;
 
-			if( isDynamicJoystick )
+
+			FindObjectOfType<InputHandler>().PlayerController.DetectJoystickButton(joystickButtonType);
+
+
+
+
+
+			if ( isDynamicJoystick )
 			{
 				pointerInitialPos = Vector2.zero;
 

@@ -22073,13 +22073,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -2756988412333831601, guid: 6b480cc847f1f5c4f81eef3e283e182c, type: 3}
-      propertyPath: AttackJoystick
-      value: 
-      objectReference: {fileID: 114282555868186542}
-    - target: {fileID: -2756988412333831601, guid: 6b480cc847f1f5c4f81eef3e283e182c, type: 3}
       propertyPath: MovementJoystick
       value: 
       objectReference: {fileID: 114282555954340995}
+    - target: {fileID: -2756988412333831601, guid: 6b480cc847f1f5c4f81eef3e283e182c, type: 3}
+      propertyPath: AttackUltiJoystick
+      value: 
+      objectReference: {fileID: 1774132084}
+    - target: {fileID: -2756988412333831601, guid: 6b480cc847f1f5c4f81eef3e283e182c, type: 3}
+      propertyPath: AttackBasicJoystick
+      value: 
+      objectReference: {fileID: 114282555868186542}
     - target: {fileID: 1428115734942469240, guid: 6b480cc847f1f5c4f81eef3e283e182c, type: 3}
       propertyPath: m_Name
       value: InputHandler
@@ -23554,6 +23558,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 497650, guid: 430d14b744769134e831183525387e01, type: 3}
   m_PrefabInstance: {fileID: 1772950608}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1774132084 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 586083349899058295, guid: c9b1a60902378d443a656ca7b44560cb, type: 3}
+  m_PrefabInstance: {fileID: 3572110114825653327}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d42b387efc83be49900b546e4052e28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1780635535
 PrefabInstance:
   m_ObjectHideFlags: 0

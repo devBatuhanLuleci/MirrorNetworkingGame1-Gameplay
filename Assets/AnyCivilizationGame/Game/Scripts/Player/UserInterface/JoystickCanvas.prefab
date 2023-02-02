@@ -35,6 +35,7 @@ RectTransform:
   - {fileID: 3642821934130687928}
   - {fileID: 3572110115262460415}
   - {fileID: 3642821934183271573}
+  - {fileID: 768819023213271811}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -256,6 +257,187 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1001 &234749476475097899
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 3572110114122833811}
+    m_Modifications:
+    - target: {fileID: 713850427231460278, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 713850427231460278, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 713850427231460278, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -318
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 212
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 788309242610388036, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_Name
+      value: Attack_Ulti_Joystick
+      objectReference: {fileID: 0}
+    - target: {fileID: 820423973550416830, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_Color.a
+      value: 0.3137255
+      objectReference: {fileID: 0}
+    - target: {fileID: 820423973550416830, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_Color.b
+      value: 0.1462264
+      objectReference: {fileID: 0}
+    - target: {fileID: 820423973550416830, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_Color.g
+      value: 0.70870113
+      objectReference: {fileID: 0}
+    - target: {fileID: 820423973550416830, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 820423973550416830, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 820445632043657762, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 820445632043657762, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 820445632043657762, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 820445632043657762, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 820729166650462044, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: thumb
+      value: 
+      objectReference: {fileID: 586366884521867529}
+    - target: {fileID: 820729166650462044, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: canFollowPointer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 820729166650462044, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: isDynamicJoystick
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 820729166650462044, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: joystickButtonType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 820729166650462044, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: dynamicJoystickMovementArea
+      value: 
+      objectReference: {fileID: 768819023213271811}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+--- !u!114 &586366884521867529 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 820445632043657762, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+  m_PrefabInstance: {fileID: 234749476475097899}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &768819023213271811 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 714554687007836200, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+  m_PrefabInstance: {fileID: 234749476475097899}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3974543931779760265
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -350,6 +532,14 @@ PrefabInstance:
     - target: {fileID: 486306560917957469, guid: bd8c05067c48fbb43baa6d0982f496aa, type: 3}
       propertyPath: m_Name
       value: MovementJoystick
+      objectReference: {fileID: 0}
+    - target: {fileID: 517006851171625029, guid: bd8c05067c48fbb43baa6d0982f496aa, type: 3}
+      propertyPath: canFollowPointer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 517006851171625029, guid: bd8c05067c48fbb43baa6d0982f496aa, type: 3}
+      propertyPath: isDynamicJoystick
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 517006851171625029, guid: bd8c05067c48fbb43baa6d0982f496aa, type: 3}
       propertyPath: dynamicJoystickMovementArea
@@ -455,7 +645,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788309242610388036, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
       propertyPath: m_Name
-      value: AttackJoystick
+      value: Attack_Basic_Joystick
+      objectReference: {fileID: 0}
+    - target: {fileID: 788309242610388036, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 820729166650462044, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
       propertyPath: canFollowPointer
@@ -464,6 +658,10 @@ PrefabInstance:
     - target: {fileID: 820729166650462044, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
       propertyPath: isDynamicJoystick
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 820729166650462044, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
+      propertyPath: joystickButtonType
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 820729166650462044, guid: 62df5ed1ac9a7934a80402676049df8f, type: 3}
       propertyPath: dynamicJoystickMovementArea

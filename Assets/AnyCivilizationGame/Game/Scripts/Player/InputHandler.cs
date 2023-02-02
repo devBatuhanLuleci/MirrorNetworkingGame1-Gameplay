@@ -9,12 +9,18 @@ public class InputHandler : Singleton<InputHandler>
 {
     #region Public Fields
     [SerializeField] private Joystick MovementJoystick;
-    [SerializeField] private Joystick AttackJoystick;
+    [SerializeField] private Joystick AttackBasicJoystick;
+    [SerializeField] private Joystick AttackUltiJoystick;
+
+    public enum AttackType {Basic,Ulti }
+    public AttackType attackType=AttackType.Basic;
+    public bool ultiActive = false;
+    public bool ultideActive = false;
     #endregion
 
     #region Private Fields
     [SerializeField]
-    private PlayerController PlayerController;
+    public PlayerController PlayerController;
     #endregion
 
 
@@ -35,22 +41,76 @@ public class InputHandler : Singleton<InputHandler>
         base.Awake();
         gameObject.SetActive(false);
 
+
+      
+
+
+    }
+    private void Start()
+    {
+        //if (attackType == AttackType.Basic)
+        //{
+        //    AttackUltiJoystick.Activate();
+        //}
     }
     private void Update()
     {
         if (PlayerController == null || !PlayerController.IsLive) return;
         Move();
-        MainAttack();
-    }
 
-    private void MainAttack()
+        //if (ultiActive)
+        //{
+        //    ultiActive = false;
+        //    if (attackType == AttackType.Basic)
+        //    {
+        //        AttackUltiJoystick.Activate();
+        //    }
+        //}
+        //if (ultideActive)
+        //{
+        //    ultideActive = false;
+        //    if (attackType == AttackType.Basic)
+        //    {
+        //        AttackUltiJoystick.Deactivate();
+        //    }
+        //}
+        //  BasicAttack();
+        //   UltiAttack();
+        Attack();
+    }
+    private void Attack()
     {
-        var targetingDirection = AttackJoystick.Value;
-        var held = AttackJoystick.joystickHeld;
-        PlayerController.Targeting(targetingDirection, held);
+       
+        var basicAttackHeld = AttackBasicJoystick.joystickHeld;
+        var ultiAttackHeld = AttackUltiJoystick.joystickHeld;
+        var targetingDirection =Vector2.zero;
+        if (basicAttackHeld)
+        {
+            
+            targetingDirection = AttackBasicJoystick.Value;
+
+
+        }
+        else if (ultiAttackHeld)
+        {
+
+            targetingDirection = AttackUltiJoystick.Value;
+
+           
+        }
+        else
+        {
+            targetingDirection = Vector2.zero;
+        }
+
+        if ((ultiAttackHeld && AttackBasicJoystick.gameObject.activeSelf) || (!ultiAttackHeld && !AttackBasicJoystick.gameObject.activeSelf))
+            AttackBasicJoystick.gameObject.SetActive(!ultiAttackHeld);
+
+        PlayerController.Targeting(targetingDirection, basicAttackHeld,ultiAttackHeld);
 
     }
 
+  
     private void Move()
     {
         var moveValue = MovementJoystick.Value;

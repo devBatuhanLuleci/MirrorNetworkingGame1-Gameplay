@@ -45,5 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MovementJoystick: {fileID: 0}
-  AttackJoystick: {fileID: 0}
+  AttackBasicJoystick: {fileID: 0}
+  AttackUltiJoystick: {fileID: 0}
   PlayerController: {fileID: 0}

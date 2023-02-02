@@ -45,14 +45,28 @@ public class PlayerController : NetworkBehaviour
     public float StartFireAnimationWaitTime = .2f;
     public float FinishFireAnimationWaitTime = .2f;
 
+
+    public enum BasicAttackType { Straight,Parabolic}
+    public BasicAttackType basicAttackType;
+
+
+    public enum UltiAttackType { Straight, Parabolic }
+    public UltiAttackType ultiAttackType;
+
+
+    public enum CurrentAttackType { Basic,Ulti}
+    [SyncVar]
+    public CurrentAttackType currentAttackType;
+
+
     #endregion
 
 
 
 
 
-    
- 
+
+
     private float TrailDistance;
 
 
@@ -76,7 +90,38 @@ public class PlayerController : NetworkBehaviour
 
     }
 
+    public virtual void DetectJoystickButton(SimpleInputNamespace.Joystick.JoystickButtonType joystickButtonType)
+    {
+        
+        switch (joystickButtonType)
+        {
+            case SimpleInputNamespace.Joystick.JoystickButtonType.movement:
 
+                break;
+
+            case SimpleInputNamespace.Joystick.JoystickButtonType.ultiAttack:
+
+                //  (int)ultiAttackType;
+
+                playerUIHandler.projectileType = (PlayerUIHandler.ProjectileType)(int)ultiAttackType;
+                currentAttackType = CurrentAttackType.Ulti;
+
+                break;
+            case SimpleInputNamespace.Joystick.JoystickButtonType.basicAttack:
+
+
+                playerUIHandler.projectileType = (PlayerUIHandler.ProjectileType)(int)basicAttackType;
+                currentAttackType = CurrentAttackType.Basic;
+
+
+                break;
+            default:
+                break;
+
+
+        }
+
+    }
 
 
     public void SpawnBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime)
@@ -90,7 +135,14 @@ public class PlayerController : NetworkBehaviour
     }
 
   
+    [Command]
+    public void SendAttackType(CurrentAttackType currentAttackType)
+    {
 
+        this.currentAttackType = currentAttackType;
+
+
+    }
 
     //public void SpawnIntervalBullet(int BulletCount, float BulletIntervalTime)
     //{
@@ -166,6 +218,7 @@ public class PlayerController : NetworkBehaviour
 
     public virtual void Fire(bool isAutoattack, Vector3 dir)
     {
+
         // Inherited classes are overriding this method.
     }
 
@@ -292,9 +345,9 @@ public class PlayerController : NetworkBehaviour
         }
         //Debug.Log($"<b> sqrM: {move.sqrMagnitude} </b> move:" + move);
     }
-    public void Targeting(Vector2 targetingDirection, bool held = false)
+    public void Targeting(Vector2 targetingDirection, bool basicButtonheld = false, bool ultiButtonheld = false)
     {
-        attack.Targeting(targetingDirection, held);
+        attack.Targeting(targetingDirection, basicButtonheld, ultiButtonheld);
     }
     #endregion
 
