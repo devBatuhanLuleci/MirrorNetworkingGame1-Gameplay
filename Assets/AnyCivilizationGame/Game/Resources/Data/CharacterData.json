@@ -1,0 +1,38 @@
+{
+    "Ellen": {
+        "Id": 0,
+        "Name": "Ellen",
+        "Attributes": {
+            "Speed": {
+                "Name": "speed",
+                "Level": 2,
+                "Levels": [
+                    1.0,
+                    2.0,
+                    3.0
+                ],
+                "Value": 3.0
+            },
+            "Damage": {
+                "Name": "damage",
+                "Level": 0,
+                "Levels": [
+                    1.0,
+                    2.0,
+                    3.0
+                ],
+                "Value": 1.0
+            },
+            "MovmentSpeed": {
+                "Name": "movmentSpeed",
+                "Level": 2,
+                "Levels": [
+                    15,
+                    30,
+                    45
+                ],
+                "Value": 1.0
+            }
+        }
+    }
+}

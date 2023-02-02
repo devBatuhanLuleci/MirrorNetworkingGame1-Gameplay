@@ -1,31 +1,78 @@
 using kcp2k;
 using Mirror;
+using Newtonsoft.Json;
 using Oddworm.Framework;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEditor.Progress;
+
 
 public class ACGDataManager : MonoBehaviour
 {
-    [Header("Test Area")]
-    [SerializeField] private string BootArgs = "";
 
-
+    #region Singleton
 
     private static ACGDataManager instance;
     public static ACGDataManager Instance { get { return instance; } }
+    #endregion
+
+    [Header("Test Area")]
+    [SerializeField] private string BootArgs = "";
+
+    [Space]
+    public DataAdaptorType AdapterType;
     [SerializeField]
     private string gameSceneName = "GameScene";
 
     public GameData GameData;
     public LobbyPlayer LobbyPlayer { get; set; }
-    KcpTransport transport;
+    [SerializeField]
+    public Dictionary<string, CharacterData> Characters;
+    [SerializeField]
+    public Profile profile;
+
+    private DataAdaptor DataAdaptor;
+
+
+
     public void Start()
     {
         Setup();
+        GetData();
+        DataAdaptor = DataAdaptorFactory.Get(AdapterType);
     }
+    private async void GetData()
+    {
+        try
+        {
+            Characters = await DataAdaptor.GetDataAsync();
+            profile = await DataAdaptor.GetProfileAsync();
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex.Message);
+            Characters = new Dictionary<string, CharacterData>();
+        }
 
+        // logs.  
+        Debug.Log("--------------------Start------------------------------");
+        Debug.Log("UserName:" + profile.UserName);
+        foreach (var charcter in profile.Characters)
+        {
+            foreach (var attribute in charcter.Value.Attributes)
+            {
+                var att = Characters[charcter.Key].Attributes[attribute.Key];
+                att.Level = attribute.Value;
+                Debug.Log($" {charcter.Key} - {attribute.Key} Level:{attribute.Value} value: {att.Value}");
+            }
+        }
+        Debug.Log("--------------------End------------------------------");
+
+    }
     private void Setup()
     {
         InitSingleton();
