@@ -61,7 +61,8 @@ public class PlayerAttack : NetworkBehaviour
 
 
 
-    public GameObject Bullet;
+    public GameObject BasicAttackBullet;
+    public GameObject UltiAttackBullet;
 
     private PlayerMovement playerMovement;
 

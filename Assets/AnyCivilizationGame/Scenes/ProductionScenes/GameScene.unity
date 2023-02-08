@@ -27221,6 +27221,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: ObjectPooler
       objectReference: {fileID: 0}
+    - target: {fileID: 7167353221741499809, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
+      propertyPath: pools.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7167353221741499809, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
+      propertyPath: pools.Array.data[2].tag
+      value: Turret
+      objectReference: {fileID: 0}
+    - target: {fileID: 7167353221741499809, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
+      propertyPath: pools.Array.data[2].size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7167353221741499809, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
+      propertyPath: pools.Array.data[2].prefab
+      value: 
+      objectReference: {fileID: 7995885019731338434, guid: cdd6bd88d7bb58a4e8db951390b3f7cf, type: 3}
     - target: {fileID: 7167353221741499814, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
       propertyPath: m_RootOrder
       value: 7

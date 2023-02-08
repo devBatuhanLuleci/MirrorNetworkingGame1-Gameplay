@@ -1523,12 +1523,12 @@ MonoBehaviour:
   targetPoint: {fileID: 250576153}
   attackJoystick: {fileID: 1312194524}
   Range: 4
-  bulletSpeed: 1
+  bulletSpeed: 15
   radialOffset: 0.7
   minAttackLimit: 0.2
   throwableObj: {fileID: 1040778118}
   projectileType: 1
-  type: 1
+  type: 0
 --- !u!1 &2090548911
 GameObject:
   m_ObjectHideFlags: 0

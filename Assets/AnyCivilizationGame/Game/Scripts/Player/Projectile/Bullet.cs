@@ -20,7 +20,7 @@ public class Bullet : Throwable, INetworkPooledObject
 
     private void Awake()
     {
-        timeOld = speed;
+        base.speed = speed;
     }
 
     /// <summary>

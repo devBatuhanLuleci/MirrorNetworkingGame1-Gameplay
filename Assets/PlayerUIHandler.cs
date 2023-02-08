@@ -293,6 +293,8 @@ public class PlayerUIHandler : MonoBehaviour
         CalculateProjectile(targetPos);
         CalculateProjectile2(targetPos2);
         tempDir = dir.normalized;
+      //  Debug.Log("PlayerUI dir normalized: " + dir.normalized);
+
         DrawPath(dir.normalized, player, v0, angle, timeNew, step);
         //DrawPath2(dir.normalized, player, v02, angle2, timeNew2, step2);
 
@@ -322,6 +324,7 @@ public class PlayerUIHandler : MonoBehaviour
     }
     IEnumerator Coroutine_Movement(Vector3 direction, float v0, float angle, float time, float initialVelocity)
     {
+
         var yOffSet = 0f;
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         go.transform.localScale = Vector3.one * .5f;
@@ -329,17 +332,19 @@ public class PlayerUIHandler : MonoBehaviour
 
         yOffSet = playerController.BulletSpawnPoints[2].spawnPoint.y;
 
-        var startPos = transform.position + new Vector3(0, yOffSet, 0) + StartPosOffSet2(direction);
+        var startPos = transform.position + new Vector3(0,/* yOffSet*/0, 0) /*+ StartPosOffSet2(direction)*/;
 
       //  var FirePoint = transform.position + StartPosOffSet(direction);
 
         float t = 0;
+        float a = 0f;
         // Debug.Log(time / (initialVelocity ));
         // Debug.Log(BulletObj.transform.name);
         while (t < time)
         {
 
             float x = v0 * t * Mathf.Cos(angle);
+            a = x;
             float y = v0 * t * Mathf.Sin(angle) - (1f / 2f) * -Physics.gravity.y * Mathf.Pow(t, 2);
 
             var upValue = projectileType == ProjectileType.Parabolic ? (Vector3.up * y) : Vector3.zero;
@@ -348,14 +353,20 @@ public class PlayerUIHandler : MonoBehaviour
 
 
 
-            t += Time.deltaTime * (initialVelocity);
+            t += Time.fixedDeltaTime* (initialVelocity);
 
            
 
             yield return null;
 
         }
-        Destroy(go, 1f);
+        //Debug.Log("height2:" + height2);
+        //Debug.Log("VO2:" + v02);
+        //Debug.Log("angle2:" + angle2);
+        //Debug.Log("timeNew2:" + timeNew2);
+       //  Debug.Log("posy: " + (v0 * t));
+
+        //  Destroy(go, 1f);
         //burası hedefe vardığında bir kez çalışır.
         //   OnArrived();
     }
@@ -502,10 +513,12 @@ public class PlayerUIHandler : MonoBehaviour
     public void CalculateProjectile2(Vector3 dir)
     {
 
-        var targetPos = new Vector3(new Vector3(dir.x, 0, dir.z).magnitude, dir.y, 0);
+        var targetPos = new Vector3(new Vector3(dir.x, 0, dir.z).magnitude, 0, 0);
+        height2 = projectileType == ProjectileType.Parabolic ? (0 + new Vector3(dir.x, 0, dir.z).magnitude / 2f) : 0;
+        //height2 = projectileType == ProjectileType.Parabolic ? (dir.y + dir.magnitude / 2f) : 0;
 
-        height2 = projectileType == ProjectileType.Parabolic ? (dir.y + dir.magnitude / 2f) : 0;
         height2 = Mathf.Max(0.01f, height2);
+        Debug.Log("height2: "+ height2);
 
         var dist = new Vector3(dir.x, 0, dir.z).magnitude;
 

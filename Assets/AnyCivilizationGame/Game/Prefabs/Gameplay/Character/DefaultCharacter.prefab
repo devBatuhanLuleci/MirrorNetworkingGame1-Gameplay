@@ -1650,7 +1650,8 @@ MonoBehaviour:
   lookPos: {x: 0, y: 0, z: 0}
   attackLookAtPoint: {fileID: 6626824537031914589}
   player: {fileID: 0}
-  Bullet: {fileID: 7995885019731338434, guid: ed3358c4efc259f4980810956bb328e9, type: 3}
+  BasicAttackBullet: {fileID: 7995885019731338434, guid: ed3358c4efc259f4980810956bb328e9, type: 3}
+  UltiAttackBullet: {fileID: 7995885019731338434, guid: cdd6bd88d7bb58a4e8db951390b3f7cf, type: 3}
 --- !u!114 &1847445832484111781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1759,6 +1760,7 @@ MonoBehaviour:
   FinishFireAnimationWaitTime: 0.583
   basicAttackType: 0
   ultiAttackType: 1
+  currentAttackType: 0
 --- !u!114 &-1678189773969174488
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4961,7 +4961,7 @@ MonoBehaviour:
   damage: 5
   OwnerName: 
   OwnerNetId: 0
-  speed: 0.5
+  speed: 2
 --- !u!114 &353920031375251631
 MonoBehaviour:
   m_ObjectHideFlags: 0

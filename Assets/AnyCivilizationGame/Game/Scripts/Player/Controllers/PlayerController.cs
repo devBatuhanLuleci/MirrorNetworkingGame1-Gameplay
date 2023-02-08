@@ -183,7 +183,20 @@ public class PlayerController : NetworkBehaviour
 
                 var offsetVector = Vector3.Cross(Vector3.up, dir);
                 offsetVector.Normalize();
-                var spawnedBullet = ObjectPooler.Instance.Get(attack.Bullet.transform.name, transform.position + offsetVector * spawnPoint[i % spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + dir * spawnPoint[i % spawnPoint.Length].z, Quaternion.Euler(0, CalculationManager.GetAngle(dir), 0)).GetComponent<Bullet>();
+
+                string name = "";
+                if(currentAttackType== CurrentAttackType.Ulti)
+                {
+
+                    name = attack.UltiAttackBullet.transform.name;
+                }
+                else if(currentAttackType == CurrentAttackType.Basic)
+                {
+
+                    name = attack.BasicAttackBullet.transform.name;
+
+                }
+                var spawnedBullet = ObjectPooler.Instance.Get(name, transform.position + offsetVector * spawnPoint[i % spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + dir * spawnPoint[i % spawnPoint.Length].z, Quaternion.Euler(0, CalculationManager.GetAngle(dir), 0)).GetComponent<Bullet>();
                 spawnedBullet.Init("Debug User " + netId, netId);
                 spawnedBullet.Throw(dir,Range);
                 NetworkServer.Spawn(spawnedBullet.gameObject);
