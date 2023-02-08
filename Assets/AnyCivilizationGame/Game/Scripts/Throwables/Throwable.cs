@@ -93,7 +93,7 @@ public class Throwable : NetworkBehaviour
 
         float dist = Mathf.Abs(/*playerController.BulletSpawnPoints[2].spawnPoint.z */-0.4f  - /*radialOffset*/0.6f);
 
-        var targetPos2 = new Vector3(dir.magnitude * Range + (dist), /*-playerController.BulletSpawnPoints[0].spawnPoint.y*//*-1f*/ -transform.position.y, 0);
+        var targetPos2 = new Vector3(dir.magnitude * Range + (dist),  -transform.position.y, 0);
       //  Debug.Log("Throwable targetPos2: " + targetPos2);
 
 

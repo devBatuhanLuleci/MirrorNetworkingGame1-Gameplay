@@ -15,12 +15,12 @@ public class Ellen : PlayerController
         {
             case CurrentAttackType.Basic:
 
-                SpawnBullet(new Vector3[] { BulletSpawnPoints[0].BulletInitPos, BulletSpawnPoints[1].BulletInitPos }, dir, BulletCount, BulletIntervalTime);
+                SpawnBullet(new Vector3[] { BulletSpawnPoints[0].spawnPoint, BulletSpawnPoints[1].spawnPoint }, dir, BulletCount, BulletIntervalTime);
 
                 break;
             case CurrentAttackType.Ulti:
 
-                SpawnBullet(new Vector3[] { BulletSpawnPoints[2].BulletInitPos, }, dir, 1, .1f);
+                SpawnBullet(new Vector3[] { BulletSpawnPoints[2].spawnPoint, }, dir, 1, .1f);
 
 
                 break;

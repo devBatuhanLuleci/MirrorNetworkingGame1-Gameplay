@@ -518,7 +518,7 @@ public class PlayerUIHandler : MonoBehaviour
         //height2 = projectileType == ProjectileType.Parabolic ? (dir.y + dir.magnitude / 2f) : 0;
 
         height2 = Mathf.Max(0.01f, height2);
-        Debug.Log("height2: "+ height2);
+       
 
         var dist = new Vector3(dir.x, 0, dir.z).magnitude;
 
