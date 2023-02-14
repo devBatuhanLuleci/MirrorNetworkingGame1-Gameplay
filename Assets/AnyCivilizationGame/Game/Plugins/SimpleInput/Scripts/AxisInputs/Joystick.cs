@@ -141,8 +141,11 @@ namespace SimpleInputNamespace
 		{
 			joystickHeld = true;
 
+            if (FindObjectOfType<InputHandler>() != null)
+            {
+				FindObjectOfType<InputHandler>().PlayerController.DetectJoystickButton(joystickButtonType);
 
-			FindObjectOfType<InputHandler>().PlayerController.DetectJoystickButton(joystickButtonType);
+            }
 
 
 

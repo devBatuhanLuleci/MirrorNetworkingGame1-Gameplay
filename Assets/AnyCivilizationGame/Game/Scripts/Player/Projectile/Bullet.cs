@@ -10,8 +10,6 @@ public class Bullet : Throwable, INetworkPooledObject
     public int damage = 50;
 
 
-    public string OwnerName = "";
-    public uint OwnerNetId = 0;
 
     [SerializeField]
     private float speed = 0.5f;
@@ -27,19 +25,17 @@ public class Bullet : Throwable, INetworkPooledObject
     /// This method calls from when the bullet spawn from pool.
     /// </summary>
     /// <param name="rotAngle"></param>
-    public void OnObjectSpawn(float rotAngle)
+    public override void OnObjectSpawn()
     {
-      //  Debug.Log("rotangle: " + rotAngle);
-        SetRotationOffThisObject(rotAngle);
+        //  Debug.Log("rotangle: " + rotAngle);
+        base.OnObjectSpawn();
+      
     }
     /// <summary>
     /// This function sets the rotation of bullet when it is spawn.
     /// </summary>
     /// <param name="rotAngle"></param>
-    public void SetRotationOffThisObject(float rotAngle)
-    {
-        transform.rotation = Quaternion.Euler(0, rotAngle, 0);
-    }
+ 
 
     private void OnTriggerEnter(Collider other)
     {
@@ -59,12 +55,7 @@ public class Bullet : Throwable, INetworkPooledObject
         return OwnerNetId != 0 && playerController.netIdentity.netId != OwnerNetId && netIdentity.isServer;
     }
 
-    public void Init(string ownerName, uint ownerNetId)
-    {
-        OwnerName = ownerName;
-        OwnerNetId = ownerNetId;
-    }
-
+   
 
     public override void OnArrived()
     {

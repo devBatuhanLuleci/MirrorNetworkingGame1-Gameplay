@@ -15,7 +15,7 @@ public class Ellen : PlayerController
         {
             case CurrentAttackType.Basic:
 
-                SpawnBullet(new Vector3[] { BulletSpawnPoints[0].spawnPoint, BulletSpawnPoints[1].spawnPoint }, dir, BulletCount, BulletIntervalTime);
+                SpawnBullet(new Vector3[] { BulletSpawnPoints[0].spawnPoint, BulletSpawnPoints[1].spawnPoint }, dir.normalized, BulletCount, BulletIntervalTime);
 
                 break;
             case CurrentAttackType.Ulti:

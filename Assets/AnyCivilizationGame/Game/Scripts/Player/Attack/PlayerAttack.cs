@@ -50,7 +50,7 @@ public class PlayerAttack : NetworkBehaviour
     private Transform attackLookAtPoint;
 
 
-  
+
 
     [HideInInspector]
     public Transform player;
@@ -81,7 +81,7 @@ public class PlayerAttack : NetworkBehaviour
     {
         if (isShooting)
         {
-         //   playerController.DoSomething();
+            //   playerController.DoSomething();
         }
 
         //Debug.LogError($"Targeting attackDirection: {attackDirection} attackHeld: {attackHeld}");
@@ -90,7 +90,7 @@ public class PlayerAttack : NetworkBehaviour
         BasicAttackHeld = basicAttackButtonHeld;
         UltiAttackHeld = ultiAttackButtonheld;
 
-   
+
 
 
         //HandleAttackIndicator();
@@ -187,7 +187,7 @@ public class PlayerAttack : NetworkBehaviour
     public void ConfigureAttackState()
     {
 
-        
+
         // If Attack Button is pressing and it is not aiming.
         if ((BasicAttackHeld || UltiAttackHeld) && AttackDirection.magnitude <= playerController.ClampedAttackJoystickOffset)
         {
@@ -248,7 +248,6 @@ public class PlayerAttack : NetworkBehaviour
 
                 var startPos = player.transform.position + ((lookPos.normalized));
                 var targetPos = player.transform.position + ((lookPos.normalized) * 2);
-
                 var direction = targetPos - startPos;
 
                 var finalDir = new Vector3(direction.x, 0, direction.z).normalized;
@@ -259,7 +258,8 @@ public class PlayerAttack : NetworkBehaviour
                 // playerController.playerUIHandler.CalculateProjectile(dir);
                 playerController.SendAttackType(playerController.currentAttackType);
 
-                CmdFire(false, dir);
+                Debug.Log("dir x lookpos magnitude: " + dir * lookPos.magnitude);
+                CmdFire(false, dir * lookPos.magnitude);
 
             }
 
@@ -292,8 +292,9 @@ public class PlayerAttack : NetworkBehaviour
 
                     //  playerController.playerUIHandler.CalculateProjectile(dir);
                     playerController.SendAttackType(playerController.currentAttackType);
+                    Debug.Log("dir x lookpos magnitude: " + dir * lookPos.magnitude);
 
-                    CmdFire(true, dir);
+                    CmdFire(true, dir * lookPos.magnitude);
 
                 }
 
@@ -360,7 +361,7 @@ public class PlayerAttack : NetworkBehaviour
 
             if (splatType == SplatType.BasicIndicator)
             {
-               // BasicIndicator.RotateProjector(player, lookPos, playerController.TargetPoint, hit, Range);
+                // BasicIndicator.RotateProjector(player, lookPos, playerController.TargetPoint, hit, Range);
                 playerController.playerUIHandler.RotateProjector(player, dir, playerController.TargetPoint, hit, playerController.Range);
             }
             else
@@ -392,9 +393,10 @@ public class PlayerAttack : NetworkBehaviour
 
         }
 
+        Debug.Log("dir " + dir);
 
-        dir.Normalize();
-        var angle = CalculationManager.GetAngle(dir);
+        var normalizedDir = dir.normalized;
+        var angle = CalculationManager.GetAngle(normalizedDir);
         //Debug.Log("angle "+ CalculateAngle(BasicIndicator.AttackBasicIndicator.GetPosition(0), BasicIndicator.AttackBasicIndicator.GetPosition(1)));
 
         // Debug.Log("değer : "+ CalculateAngle(player, dir));
@@ -420,15 +422,15 @@ public class PlayerAttack : NetworkBehaviour
         //};
         RotateSpine(angle);
         //Rotate character to bullet thrown rotation and spawnBullet.
-        AttackAnimationOtherClients(dir);
-        AttackAnimationOtherClients2(dir);
+        AttackAnimationOtherClients(normalizedDir);
+        AttackAnimationOtherClients2(normalizedDir);
 
         // Debug.Log(angle);
 
 
         // TODO: Multiple bullet spawn system.
 
-
+        Debug.Log("dir " + dir);
         playerController.Fire(isAutoattack, dir);
 
     }
@@ -442,7 +444,17 @@ public class PlayerAttack : NetworkBehaviour
     {
         if (playerController.energy.HaveEnergy())
         {
-            playerController.PlayerAnimatorController.SetTrigger("Shoot");
+            if (playerController.currentAttackType == PlayerController.CurrentAttackType.Basic)
+            {
+                playerController.PlayerAnimatorController.SetTrigger("Shoot");
+
+            }
+            else if (playerController.currentAttackType == PlayerController.CurrentAttackType.Ulti)
+            {
+                playerController.PlayerAnimatorController.SetTrigger("ShootUlti");
+
+
+            }
 
         }
         //   playerController.PlayerAnimatorController.Play("FatBoyFireLoopSequence");
@@ -453,9 +465,17 @@ public class PlayerAttack : NetworkBehaviour
     {
         if (playerController.energy.HaveEnergy())
         {
-          // playerController.SetLowerBodyAnimation(dir);
-            playerController.PlayerAnimatorController.SetTrigger("Shoot");
-            //  playerController.PlayerAnimatorController.Play("FatBoyFireLoopSequence");
+            if (playerController.currentAttackType == PlayerController.CurrentAttackType.Basic)
+            {
+                playerController.PlayerAnimatorController.SetTrigger("Shoot");
+
+            }
+            else if (playerController.currentAttackType == PlayerController.CurrentAttackType.Ulti)
+            {
+                playerController.PlayerAnimatorController.SetTrigger("ShootUlti");
+
+
+            }
         }
     }
     [ClientRpc(includeOwner = true)]
@@ -463,9 +483,9 @@ public class PlayerAttack : NetworkBehaviour
     {
         if (playerController.energy.HaveEnergy())
         {
-            
+
             playerController.SetLowerBodyAnimation(dir);
-           // playerController.PlayerAnimatorController.SetTrigger("Shoot");
+            // playerController.PlayerAnimatorController.SetTrigger("Shoot");
             //  playerController.PlayerAnimatorController.Play("FatBoyFireLoopSequence");
         }
     }

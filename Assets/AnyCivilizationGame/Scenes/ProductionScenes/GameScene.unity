@@ -27227,7 +27227,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7167353221741499809, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
       propertyPath: pools.Array.data[2].tag
-      value: Turret
+      value: FatboyTurret
       objectReference: {fileID: 0}
     - target: {fileID: 7167353221741499809, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
       propertyPath: pools.Array.data[2].size

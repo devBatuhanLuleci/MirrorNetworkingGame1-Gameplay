@@ -4,8 +4,7 @@ using UnityEngine;
 public interface IPooledObject 
 {
    
-    void OnObjectSpawn(float rotAngle);
-
+  
    
 }
 public interface INetworkPooledObject : IPooledObject

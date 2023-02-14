@@ -11,6 +11,8 @@ public class Throwable : NetworkBehaviour
     protected float movemenTime = 0;
 
 
+    public string OwnerName = "";
+    public uint OwnerNetId = 0;
 
     #region new
 
@@ -44,12 +46,26 @@ public class Throwable : NetworkBehaviour
     //        movemenTime += Time.deltaTime;
     //    }
     //}
+   
     public virtual void OnArrived()
     {
         gameObject.SetActive(false);
-
         //  Debug.Log("we arrived.");
     }
+  
+    public virtual void OnObjectSpawn()
+    {
+        
+        //Inherited.
+    }
+   
+
+    public void Init(string ownerName, uint ownerNetId)
+    {
+        OwnerName = ownerName;
+        OwnerNetId = ownerNetId;
+    }
+
 
     //IEnumerator Coroutine_Movement(Vector3[] path)
     //{
@@ -194,7 +210,7 @@ public class Throwable : NetworkBehaviour
       
         //Destroy(go, 1f);
         //burası hedefe vardığında bir kez çalışır.
-          // OnArrived();
+           OnArrived();
 
     }
     public Vector3 StartPosOffSet2(Vector3 dir)

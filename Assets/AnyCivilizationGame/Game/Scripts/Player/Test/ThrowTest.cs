@@ -96,6 +96,12 @@ public class ThrowTest : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 throwableObj.SetActive(true);
+               if(throwableObj.TryGetComponent(out Animator anim))
+                {
+                    Debug.Log("hmm");
+                    anim.SetTrigger("Setup");
+
+                }
                 Throw(dir.normalized);
 
             }
