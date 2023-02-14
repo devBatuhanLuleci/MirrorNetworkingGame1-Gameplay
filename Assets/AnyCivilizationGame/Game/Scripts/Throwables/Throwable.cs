@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Throwable : NetworkBehaviour
 {
-    protected float speed;
+    protected float speed= 1;
 
     private Coroutine throwingCoroutine;
     protected float movemenTime = 0;
@@ -47,6 +47,7 @@ public class Throwable : NetworkBehaviour
     //    }
     //}
    
+
     public virtual void OnArrived()
     {
         gameObject.SetActive(false);
@@ -188,8 +189,9 @@ public class Throwable : NetworkBehaviour
         while (t < time)
         {
 
-            t = Time.time - startTime;
-            t = Mathf.Min(t, time);
+            t = (Time.time - startTime)* initialVelocity;
+            
+            t = Mathf.Min(t, time) ;
 
             float x = v0 * t * Mathf.Cos(angle);
    

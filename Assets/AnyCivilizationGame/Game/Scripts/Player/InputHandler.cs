@@ -14,8 +14,7 @@ public class InputHandler : Singleton<InputHandler>
 
     public enum AttackType {Basic,Ulti }
     public AttackType attackType=AttackType.Basic;
-    public bool ultiActive = false;
-    public bool ultideActive = false;
+
     #endregion
 
     #region Private Fields

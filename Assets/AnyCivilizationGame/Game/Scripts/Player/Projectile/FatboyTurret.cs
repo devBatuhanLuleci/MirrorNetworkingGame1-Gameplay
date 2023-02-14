@@ -1,4 +1,4 @@
-using Mirror;
+﻿using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +10,7 @@ public class FatboyTurret : Throwable
     public NetworkAnimator NetworkAnimator;
     public bool shoot = false;
     public Transform TurretRotatePivot;
+    public Transform BulletThrowPoint;
     public List<Transform> playerTransforms = new List<Transform>();
     Collider[] playersInsideZone;
     Collider[] playersOutsideZone;
@@ -17,14 +18,17 @@ public class FatboyTurret : Throwable
     public bool isLandedSurface = false;
     public float TurretIntervalTimeToShoot = 1f;
     public float TurretSetupTime = .5f;
-    public enum TurretShootStatus { Setup,Shootable, Reloading, Shooting }
+    public enum TurretShootStatus { Setup, Idle, Shootable, Reloading, Shooting }
     public TurretShootStatus turretShootStatus;
     public bool isDetecting = false;
-
+    public float BulletSpawnIntervalTime = 1f;
     public enum TurretRotation { Idle, Rotating, Focused }
     public TurretRotation turretRotation;
     public Transform CurrentTarget;
     public Coroutine coroutine;
+    public float bulletRange = 4f;
+    Vector3 dirToTarget;
+    float DotValue;
 
     private void Awake()
     {
@@ -34,8 +38,9 @@ public class FatboyTurret : Throwable
 
         }
 
-
+       
     }
+    
 
     public override void OnArrived()
     {
@@ -44,6 +49,13 @@ public class FatboyTurret : Throwable
         turretShootStatus = TurretShootStatus.Setup;
         StartCoroutine(SetupTurret(TurretSetupTime));
 
+    }
+    IEnumerator SetupTurret(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        turretShootStatus = TurretShootStatus.Shootable;
+
+
         if (isLandedSurface)
         {
 
@@ -51,11 +63,7 @@ public class FatboyTurret : Throwable
 
 
         }
-    }
-    IEnumerator SetupTurret(float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
-        turretShootStatus = TurretShootStatus.Shootable;
+
 
     }
 
@@ -66,38 +74,103 @@ public class FatboyTurret : Throwable
     }
     IEnumerator ShootInterval(float waitTime)
     {
+
         // IEnumurtor yerine update'de Time.time ile yap.
+
         while (true)
         {
-            
-            if (CurrentTarget != null && turretShootStatus == TurretShootStatus.Shootable)
-            {
 
-                Shoot();
-                Debug.Log("Boom");
-                turretShootStatus = TurretShootStatus.Reloading;
+            if (turretShootStatus == TurretShootStatus.Shootable && turretRotation == TurretRotation.Focused)
+            {
+                if (CheckAnyEnemy())
+                {
+                    StartCoroutine(Shoot(waitTime));
+
+                }
+                //  Debug.Log("Boom");
             }
-            yield return new WaitForSeconds(waitTime);
-            turretShootStatus = TurretShootStatus.Shootable;
+            yield return new WaitForEndOfFrame();
 
         }
     }
+
+    private bool CheckAnyEnemy()
+    {
+        bool isSomebodyAroundHere = false;
+
+
+        playersInsideZone = Physics.OverlapSphere(TurretRotatePivot.position, TurretRadius);
+    
+
+
+        foreach (var obj in playersInsideZone)
+        {
+            if (obj.TryGetComponent(out PlayerController pc) && pc.netId != OwnerNetId)
+            {
+                isSomebodyAroundHere = true;
+
+            }
+
+
+        }
+
+
+        return isSomebodyAroundHere;
+
+    }
+    public List<Transform> AllEnemiesInCircle()
+    {
+
+        List<Transform> players = new List<Transform>();
+
+        playersInsideZone = Physics.OverlapSphere(TurretRotatePivot.position, TurretRadius);
+
+
+
+        foreach (var obj in playersInsideZone)
+        {
+            if (obj.TryGetComponent(out PlayerController pc) && pc.netId != OwnerNetId)
+            {
+
+                players.Add(obj.transform);
+
+            }
+            else
+            {
+
+
+            }
+
+        }
+        if (players.Count < 1)
+        {
+            turretRotation = TurretRotation.Idle;
+            CurrentTarget = null;
+
+        }
+
+        return players;
+
+    }
+
     private void Update()
     {
         if (!isServer)
         {
             return;
         }
-     
+
 
 
         if (turretShootStatus == TurretShootStatus.Shootable || turretShootStatus == TurretShootStatus.Reloading)
-            RotateToTarget(TurretRotatePivot, GetClosestEnemy(GetEnemies()));
+            RotateToTarget(TurretRotatePivot, GetClosestEnemy(AllEnemiesInCircle()));
 
 
     }
     Transform GetClosestEnemy(List<Transform> enemies)
     {
+        if (enemies.Count < 1) { return null; }
+
         Transform tMin = null;
         float minDist = Mathf.Infinity;
         Vector3 currentPos = transform.position;
@@ -121,12 +194,46 @@ public class FatboyTurret : Throwable
             var rotation = Quaternion.LookRotation(target.position - current.position, Vector3.up);
             current.rotation = Quaternion.Slerp(current.rotation, rotation, Time.deltaTime * 5f);
 
-            if (current.rotation.eulerAngles.magnitude - rotation.eulerAngles.magnitude <1f)
+            //float angle = Quaternion.Angle(current.rotation, rotation);
+
+            dirToTarget = Vector3.Normalize(target.position - current.position);
+
+            DotValue = Vector3.Dot(current.forward, dirToTarget);
+
+            float currentTime = 0f;
+            var starttime = Time.time;
+            if (target != CurrentTarget)
             {
-                turretRotation = TurretRotation.Focused;
-                CurrentTarget = target;
-               
+                currentTime = Time.time- starttime;
+                Debug.Log("CurrentTime: " + currentTime);
+                if (currentTime > 1.5f)
+                {
+                    turretRotation = TurretRotation.Focused;
+                    CurrentTarget = target;
+                    starttime = 0f;
+                    currentTime = 0f;
+                }
+
+                if (DotValue == 1f)
+                {
+                    turretRotation = TurretRotation.Focused;
+                    CurrentTarget = target;
+
+                }
+
+
             }
+            else
+            {
+                if (DotValue >0.8f)
+                {
+                    turretRotation = TurretRotation.Focused;
+                }
+            }
+           
+
+            //  Debug.Log($" distance : {angle}  ");
+          
 
             Debug.DrawLine(current.position, current.position + current.forward * 5, Color.blue);
             Debug.DrawLine(current.position, current.position + current.up * 2, Color.green);
@@ -151,59 +258,80 @@ public class FatboyTurret : Throwable
 
 
     }
-    public void Shoot()
+    public IEnumerator Shoot(float waitTime)
     {
-        turretShootStatus = TurretShootStatus.Shooting;
         NetworkAnimator.SetTrigger("Shoot");
+        Debug.Log("SHOOT!");
+        SpawnBullet(new Vector3[] { TurretRotatePivot.position }, transform.forward, 1, .1f);
 
+        turretShootStatus = TurretShootStatus.Reloading;
+
+
+        yield return new WaitForSeconds(waitTime);
+        turretShootStatus = TurretShootStatus.Shootable;
 
 
 
     }
-    public List<Transform> GetEnemies()
+    public void SpawnBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime)
     {
-        List<Transform> playerControllers = new List<Transform>();
-
-        playersInsideZone = Physics.OverlapSphere(TurretRotatePivot.position, TurretRadius);
-
+       
+        StartCoroutine(SpawnIntervalBullet(spawnPoint, dir, BulletCount, BulletIntervalTime));
 
 
-        //    Physics.CheckSphere(TurretRotatePivot.position,TurretRadius)
+    }
+    public IEnumerator SpawnIntervalBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float MultiplBulletIntervalTime)
+    {
+        //TODO : burası fire  loop animasyonu entegre edileceği zaman değiecek.
 
-        foreach (var obj in playersInsideZone)
+
+     
+
+
+
+        int currentBulletCount = BulletCount;
+
+        while (currentBulletCount > 0)
         {
-            if (obj.TryGetComponent(out PlayerController pc))
+            for (int i = 0; i < spawnPoint.Length; i++)
             {
 
-                playerControllers.Add(obj.transform);
+                yield return new WaitForSeconds(MultiplBulletIntervalTime);
 
-            }
-            else
-            {
-                if (CurrentTarget != null)
-                {
-                    CurrentTarget = null;
+                var offsetVector = Vector3.Cross(Vector3.up, dir);
+                offsetVector.Normalize();
 
-                }
-                turretShootStatus = TurretShootStatus.Shootable;
-                turretRotation = TurretRotation.Idle;
+                string name = "";
+                Vector3 pos = Vector3.zero;
+              
+
+               
+                   // name = attack.BasicAttackBullet.transform.name;
+                    name = "FatboyTurret_Bullet";
+                    pos = BulletThrowPoint.position /*+ offsetVector * spawnPoint[i % spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + dir * spawnPoint[i % spawnPoint.Length].z*/;
+               
+                var spawnedBullet = ObjectPooler.Instance.Get(name, pos, Quaternion.Euler(0, CalculationManager.GetAngle(dir), 0)).GetComponent<Throwable>();
+
+                spawnedBullet.Init("Debug User " + netId, netId);
+                spawnedBullet.Throw(dir, bulletRange);
+                NetworkServer.Spawn(spawnedBullet.gameObject);
+               // spawnedBullet.OnObjectSpawn();
+
+
+                currentBulletCount--;
+                // Debug.Log($"Shoot, currentBulletCount:{currentBulletCount}");
+
             }
 
         }
-
-
-        return playerControllers.ToList();
-
-
-
-
-        //foreach (var player in playerControllers)
-        //{
-        //   // if(player.is)
-        //    playerTransforms.Add(player.transform);
-        //}
+        yield return new WaitForSeconds(BulletSpawnIntervalTime);
+        //attack.isShooting = false;
+        //attack.shootingState = PlayerAttack.ShootingState.Idle;
+        //RotateSpineResetter();
+        //SetShootingParameter(false);
 
     }
+
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(TurretRotatePivot.position, TurretRadius);

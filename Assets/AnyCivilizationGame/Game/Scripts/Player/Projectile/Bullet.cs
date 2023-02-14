@@ -7,19 +7,15 @@ using System;
 
 public class Bullet : Throwable, INetworkPooledObject
 {
-    public int damage = 50;
+    public int damage = 5;
 
 
 
-    [SerializeField]
-    private float speed = 0.5f;
+ 
 
     public Action ReturnHandler { get; set; }
 
-    private void Awake()
-    {
-        base.speed = speed;
-    }
+  
 
     /// <summary>
     /// This method calls from when the bullet spawn from pool.
