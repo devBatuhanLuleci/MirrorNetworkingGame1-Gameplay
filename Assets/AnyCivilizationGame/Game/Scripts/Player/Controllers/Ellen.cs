@@ -6,10 +6,15 @@ using UnityEngine;
 
 public class Ellen : PlayerController
 {
+
+    public GameObject UltiTurret;
+    public float dist ;
+
     public override void Fire(bool isAutoattack, Vector3 dir)
     {
-        base.Fire(isAutoattack, dir);
+        dist = Mathf.Abs(BulletSpawnPoints[2].spawnPoint.z */*-0.4f*/ -radialOffset/*0.6f*/);
 
+        base.Fire(isAutoattack, dir);
 
         switch (currentAttackType)
         {
@@ -20,7 +25,7 @@ public class Ellen : PlayerController
                 break;
             case CurrentAttackType.Ulti:
 
-                SpawnBullet(new Vector3[] { BulletSpawnPoints[2].spawnPoint, }, dir, 1, .1f);
+                SpawnBullet(new Vector3[] { BulletSpawnPoints[2].spawnPoint, }, dir, 1, .1f, dist );
 
 
                 break;
@@ -36,9 +41,41 @@ public class Ellen : PlayerController
 
 
     //    base.DetectJoystickButton(joystickButtonType);
-      
+
 
 
     //}
+    public override void OnBulletObjectSpawned(Throwable obj)
+    {
+        base.OnBulletObjectSpawned(obj);
+
+
+        if (currentAttackType == CurrentAttackType.Ulti)
+        {
+
+
+            if (UltiTurret != null)
+            {
+                //if (UltiTurret != obj.gameObject)
+                //{
+                if (UltiTurret.TryGetComponent<TurretController>(out TurretController fatboyTurretController))
+                {
+                    MatchNetworkManager.Instance.DestroyThis(fatboyTurretController);
+
+                }
+
+                // }
+
+            }
+
+            UltiTurret = obj.gameObject;
+        }
+    }
+
+    public override void OnThisObjectDestroyed()
+    {
+        base.OnThisObjectDestroyed();
+        UltiTurret = null;
+    }
 
 }

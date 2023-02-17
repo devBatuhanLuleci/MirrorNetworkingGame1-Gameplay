@@ -840,7 +840,7 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 0.5686275}
+      key0: {r: 0.9811321, g: 0.087931626, b: 0.087931626, a: 0.5686275}
       key1: {r: 1, g: 1, b: 1, a: 0.5686275}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
@@ -1863,6 +1863,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  health: {fileID: 0}
   attack: {fileID: 0}
   energy: {fileID: 0}
   SpineRotator: {fileID: 0}
@@ -1880,11 +1881,12 @@ MonoBehaviour:
     BulletInitPos: {x: 0, y: 0, z: 0}
     BulletInitRot: {x: 0, y: 0, z: 0}
   - SpawnPointName: UltiSpawnPoint
-    spawnPoint: {x: 0, y: 1.5, z: -0.4}
+    spawnPoint: {x: 0, y: 1.5, z: -5}
     BulletInitPos: {x: 0, y: 0, z: 0}
     BulletInitRot: {x: 0, y: 0, z: 0}
   TargetPoint: {fileID: 6626824535964682116}
   Range: 5
+  radialOffset: 0.6
   BulletCount: 6
   BulletIntervalTime: 0.1165
   StartFireAnimationWaitTime: 0.315
@@ -1892,6 +1894,8 @@ MonoBehaviour:
   basicAttackType: 0
   ultiAttackType: 1
   currentAttackType: 0
+  UltiTurret: {fileID: 0}
+  dist: 0
 --- !u!114 &-1678189773969174488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1936,6 +1940,9 @@ MonoBehaviour:
   canvas: {fileID: 7088220065192873312}
   healthSlider: {fileID: 4278209783912643684}
   healthText: {fileID: 2861483722735202810}
+  canvas: {fileID: 7088220065192873312}
+  healthSlider: {fileID: 4278209783912643684}
+  healthText: {fileID: 2861483722735202810}
   EnergyBarGeneral: {fileID: 7252856717436117146}
   EnergyBarGray: {fileID: 1812087662656104925}
   EnergyBarOrange: {fileID: 2012995256201610146}
@@ -1955,7 +1962,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4096
   bulletSpeed: 1
-  radialOffset: 0.6
+  radialOffset: 0.75
   minAttackLimit: 0.2
 --- !u!114 &5942264606546606850
 MonoBehaviour:

@@ -10,12 +10,12 @@ public class Health : NetworkBehaviour
     [SyncVar(hook = nameof(RefreshUI))]
     public int Value;
 
-    private PlayerController playerController;
-
-    private void Awake()
+   
+   public virtual void Awake()
     {
-        playerController = GetComponent<PlayerController>();
+
     }
+
 
     public bool TakeDamage(int damage)
     {
@@ -37,9 +37,9 @@ public class Health : NetworkBehaviour
         Value = MaxHealth = value;
     }
 
-    public void RefreshUI(int oldValue, int newValue)
+    public virtual void RefreshUI(int oldValue, int newValue)
     {
-        playerController.HealthChanged(newValue);
+      
     }
 
 }

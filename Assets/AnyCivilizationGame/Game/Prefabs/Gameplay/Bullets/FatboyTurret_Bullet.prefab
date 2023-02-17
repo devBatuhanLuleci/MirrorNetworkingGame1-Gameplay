@@ -5010,6 +5010,7 @@ MonoBehaviour:
   syncInterval: 0.1
   OwnerName: 
   OwnerNetId: 0
+  RootNetId: 0
   projectileType: 0
-  damage: 5
+  damage: 20
   Speed: 0.5

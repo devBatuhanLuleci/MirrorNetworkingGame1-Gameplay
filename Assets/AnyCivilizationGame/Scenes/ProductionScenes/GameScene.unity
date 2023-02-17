@@ -17856,7 +17856,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 7607
+    m_Bits: 40375
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -27221,34 +27221,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ObjectPooler
       objectReference: {fileID: 0}
-    - target: {fileID: 7167353221741499809, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
-      propertyPath: pools.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167353221741499809, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
-      propertyPath: pools.Array.data[2].tag
-      value: FatboyTurret
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167353221741499809, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
-      propertyPath: pools.Array.data[3].tag
-      value: FatboyTurret_Bullet
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167353221741499809, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
-      propertyPath: pools.Array.data[2].size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167353221741499809, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
-      propertyPath: pools.Array.data[3].size
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167353221741499809, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
-      propertyPath: pools.Array.data[2].prefab
-      value: 
-      objectReference: {fileID: 7995885019731338434, guid: cdd6bd88d7bb58a4e8db951390b3f7cf, type: 3}
-    - target: {fileID: 7167353221741499809, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
-      propertyPath: pools.Array.data[3].prefab
-      value: 
-      objectReference: {fileID: 7995885019731338434, guid: 7128de1226798634f9e62ef57e04a93a, type: 3}
     - target: {fileID: 7167353221741499814, guid: 25edaaddcc280274b9fe645c50c59114, type: 3}
       propertyPath: m_RootOrder
       value: 7

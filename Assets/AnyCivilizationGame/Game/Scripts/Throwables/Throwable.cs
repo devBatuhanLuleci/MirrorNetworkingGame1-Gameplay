@@ -13,6 +13,7 @@ public class Throwable : NetworkBehaviour
 
     public string OwnerName = "";
     public uint OwnerNetId = 0;
+    public uint RootNetId = 0;
 
     #region new
 
@@ -22,16 +23,11 @@ public class Throwable : NetworkBehaviour
 
     #endregion
 
+
     float height;
     float v0;
     float angle;
-    float timeNew;
-
-
-    float height2;
-    float v02;
-    float angle2;
-    float timeNew2;
+    float time;
 
 
     //public void Throw(Vector3[] path)
@@ -61,10 +57,24 @@ public class Throwable : NetworkBehaviour
     }
    
 
-    public void Init(string ownerName, uint ownerNetId)
+    public void Init(string ownerName, uint ownerNetId, uint RootId = 0, bool isRooted =false  )
     {
         OwnerName = ownerName;
         OwnerNetId = ownerNetId;
+
+
+        //TODO :  RootNetId  o objeyi oluşturan root player'in netID sini getirir.  Takım olayları devreye girdiğinde bunu kaldırabiliriz. 
+        if (isRooted)
+        {
+        RootNetId = ownerNetId;
+
+
+        }
+        else
+        {
+            RootNetId = RootId;
+        }
+
     }
 
 
@@ -105,85 +115,60 @@ public class Throwable : NetworkBehaviour
     #region new
 
 
-    public void Throw(Vector3 dir, float Range)
+    public void Throw(Vector3 dir, float Range, float offSetZValue =0)
     {
-
-        float dist = Mathf.Abs(/*playerController.BulletSpawnPoints[2].spawnPoint.z */-0.4f  - /*radialOffset*/0.6f);
-
-        var targetPos2 = new Vector3(dir.magnitude * Range + (dist),  -transform.position.y, 0);
-      //  Debug.Log("Throwable targetPos2: " + targetPos2);
-
-
-        //CalculateProjectile(dir, Range);
-        CalculateProjectile2(targetPos2, Range);
+        Vector3 groundDir = new Vector3(dir.x, 0, dir.z);
+        //float dist = Mathf.Abs(/*playerController.BulletSpawnPoints[2].spawnPoint.z */-0.4f  - /*radialOffset*/0.6f);
+        
+        var targetPos = new Vector3(groundDir.magnitude * (Range+ offSetZValue), /*dir.y*/ - transform.position.y, 0);
+        Debug.Log("targetPos: " + targetPos);
+      //  var targetPos = new Vector3(dir.magnitude * Range + (offSetZValue),  -transform.position.y, 0);
+        
+       
+        CalculateProjectile(targetPos);
         if (throwingCoroutine != null)
             StopCoroutine(throwingCoroutine);
 
-        // throwingCoroutine= StartCoroutine(Coroutine_Movement(this.gameObject, groundDirection.normalized, v0, angle, timeNew));
-        //throwingCoroutine = StartCoroutine(Coroutine_Movement(dir, v0, angle, timeNew, .1f));
+ 
+        throwingCoroutine = StartCoroutine(Coroutine_Movement(dir.normalized, v0, angle, time, speed));
 
-        //  Debug.Log("Throwable dir normalized: " + dir.normalized);
-       
-        throwingCoroutine = StartCoroutine(Coroutine_Movement(dir.normalized, v02, angle2, timeNew2, speed));
-        //Debug.Log("height2:" + height2);
-        //Debug.Log("VO2:" + v02);
-        //Debug.Log("angle2:" + angle2);
-        //Debug.Log("timeNew2:" + timeNew2);
 
     }
 
 
 
-    //IEnumerator Coroutine_Movement(Vector3 direction, float v0, float angle, float time, float initialVelocity)
-    //{
-
-    //    var FirePoint = transform.position;
-
-    //    float t = 0;
-    //    // Debug.Log(time / (initialVelocity ));
-    //    // Debug.Log(BulletObj.transform.name);
-    //    while (t < time)
-    //    {
-
-    //        float x = v0 * t * Mathf.Cos(angle);
-    //        float y = v0 * t * Mathf.Sin(angle) - (1f / 2f) * -Physics.gravity.y * Mathf.Pow(t, 2);
-
-    //        var upValue = projectileType == ProjectileType.Parabolic ? (Vector3.up * y) : Vector3.zero;
-
-    //        //BulletObj.transform.position = FirePoint + direction * x + upValue;
-    //        transform.position = FirePoint + direction * x + upValue;
-
-
-
-    //        t += Time.deltaTime * (initialVelocity);
-
-    //        yield return null;
-
-    //    }
-
-    //    //burası hedefe vardığında bir kez çalışır.
-    //    OnArrived();
-    //}
     IEnumerator Coroutine_Movement(Vector3 direction, float v0, float angle, float time, float initialVelocity)
     {
+        direction.y = 0;
         var yOffSet = 0f;
-        //GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        //Destroy(go.GetComponent<Collider>());
-        //go.transform.localScale = Vector3.one * .5f;
-        //go.GetComponent<Renderer>().material.color = Color.red;
 
         yOffSet = /*playerController.BulletSpawnPoints[2].spawnPoint.y*/ -0.5f;
 
         var startPos = transform.position /*+ new Vector3(0, yOffSet, 0) + StartPosOffSet2(direction)*/;
 
-        //  var FirePoint = transform.position + StartPosOffSet(direction);
-
-        // Debug.Log(time / (initialVelocity ));
-        // Debug.Log(BulletObj.transform.name);
 
         float startTime = 0;
         startTime = Time.time;
         float t = Time.time - startTime;
+
+
+
+        #region SpawnObject
+        float x1 = v0 * time * Mathf.Cos(angle);
+      // Debug.Log("direction:" + direction);
+        float y1 = v0 * time * Mathf.Sin(angle) - (1f / 2f) * -Physics.gravity.y * Mathf.Pow(time, 2);
+        y1 = (float)Math.Round(y1, 4);
+        var upValue2 = projectileType == ProjectileType.Parabolic ? (Vector3.up * y1) : Vector3.zero;
+
+        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //Debug.Log("1: " + direction * x1);
+        //Debug.Log("2: " + upValue2);
+       //Debug.Log("distance: " + Vector3.Distance(startPos, startPos + direction * x1/* + upValue2*/));
+
+        go.transform.position = startPos + direction * x1 + upValue2;
+        go.transform.localScale = Vector3.one * .4f;
+        go.transform.GetComponent<Renderer>().material.color = Color.red;
+        #endregion
 
 
         while (t < time)
@@ -259,58 +244,38 @@ public class Throwable : NetworkBehaviour
     }
 
 
-    public void CalculateProjectile(Vector3 dir, float Range)
+   
+    public void CalculateProjectile(Vector3 dir)
     {
+
+        Debug.Log("dir.y : " + dir.y);
+      //  var targetPos = new Vector3(new Vector3(dir.x, 0, dir.z).magnitude, dir.y, 0);
 
         height = projectileType == ProjectileType.Parabolic ? (dir.y + dir.magnitude / 2f) : 0;
         height = Mathf.Max(0.01f, height);
 
-        var targetPos = new Vector3(dir.magnitude, dir.y, 0);
-
-        // DrawPath(groundDirection.normalized, v0, angle, timeNew, _step);
-
-      // Debug.Log("TargetPosRange: " + (targetPos * Range));
-        // Debug.Log(dir);
-        CalculatePathWithHeight(targetPos * Range, height, out v0, out angle, out timeNew);
+        var dist = new Vector3(dir.x, 0, dir.z);
 
 
+        //if (targetPos.x < 0.02f)
+        //{
+     
+        //}
+        //else
+        //{
+
+            //GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+
+            //go.transform.position = targetPos;
+            //go.transform.localScale = Vector3.one * .4f;
+            //go.transform.GetComponent<Renderer>().material.color = Color.red;
 
 
-
-    }
-    public void CalculateProjectile2(Vector3 dir, float Range)
-    {
-
-    
-        var targetPos = new Vector3(new Vector3(dir.x, 0, dir.z).magnitude, dir.y, 0);
-
-        height2 = projectileType == ProjectileType.Parabolic ? (dir.y + dir.magnitude / 2f) : 0;
-        height2 = Mathf.Max(0.01f, height2);
-
-        var dist = new Vector3(dir.x, 0, dir.z).magnitude;
-
-
-        if (targetPos.x < 0.02f)
-        {
-            //   AttackBasicIndicator.enabled = false;
-
-
-        }
-        else
-        {
-            //  AttackBasicIndicator.enabled = true;
-
-            //if (dist <= playerController.Range)
-            //{
-            //   Debug.Log("lineRange: " + (dir.normalized * targetPos.magnitude /*- StartPosOffSet(targetPos)*/));
-
-            CalculatePathWithHeight(dir.normalized * targetPos.magnitude /** Range *//*- StartPosOffSet2(targetPos)*4*/, height2, out v02, out angle2, out timeNew2);
+            //CalculatePathWithHeight(dir.normalized * targetPos.magnitude , height, out v0, out angle, out time);
+        CalculatePathWithHeight(dir , height, out v0, out angle, out time);
           
-            // CalculatePathWithHeight(targetPos * Range /*- StartPosOffSet2(targetPos)*4*/, height2, out v02, out angle2, out timeNew2);
-
-            //}
-
-        }
+          
+      //  }
 
 
 

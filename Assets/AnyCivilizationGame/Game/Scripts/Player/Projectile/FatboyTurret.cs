@@ -4,9 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-public class FatboyTurret : Throwable
+public class FatboyTurret : Throwable,IDamagable
 {
-
+    private ObjectController objectController;
     public NetworkAnimator NetworkAnimator;
     public bool shoot = false;
     public Transform TurretRotatePivot;
@@ -29,6 +29,8 @@ public class FatboyTurret : Throwable
     public float bulletRange = 4f;
     Vector3 dirToTarget;
     float DotValue;
+    public float waitForIt = 1.5f;
+    public float InitwaitForIt;
 
     private void Awake()
     {
@@ -38,14 +40,17 @@ public class FatboyTurret : Throwable
 
         }
 
-       
+
     }
-    
+
 
     public override void OnArrived()
     {
         //base.OnArrived();
         isLandedSurface = true;
+        InitwaitForIt = waitForIt;
+        objectController = GetComponent<ObjectController>();
+
         turretShootStatus = TurretShootStatus.Setup;
         StartCoroutine(SetupTurret(TurretSetupTime));
 
@@ -54,7 +59,6 @@ public class FatboyTurret : Throwable
     {
         yield return new WaitForSeconds(waitTime);
         turretShootStatus = TurretShootStatus.Shootable;
-
 
         if (isLandedSurface)
         {
@@ -100,16 +104,36 @@ public class FatboyTurret : Throwable
 
 
         playersInsideZone = Physics.OverlapSphere(TurretRotatePivot.position, TurretRadius);
-    
+
 
 
         foreach (var obj in playersInsideZone)
         {
             if (obj.TryGetComponent(out PlayerController pc) && pc.netId != OwnerNetId)
             {
-                isSomebodyAroundHere = true;
+                if (pc.TryGetComponent(out Health health))
+                {
+                    if (health.Value > 0)
+                    {
+                        isSomebodyAroundHere = true;
+                    }
+                }
 
             }
+            else if (obj.TryGetComponent(out TurretController tc) && tc.netId != netId)
+            {
+                if (tc.TryGetComponent(out Health health))
+                {
+                    if (health.Value > 0)
+                    {
+
+                        isSomebodyAroundHere = true;
+
+                    }
+                }
+
+            }
+
 
 
         }
@@ -121,8 +145,9 @@ public class FatboyTurret : Throwable
     public List<Transform> AllEnemiesInCircle()
     {
 
-        List<Transform> players = new List<Transform>();
+        List<Transform> EnemyObjects = new List<Transform>();
 
+      
         playersInsideZone = Physics.OverlapSphere(TurretRotatePivot.position, TurretRadius);
 
 
@@ -131,29 +156,43 @@ public class FatboyTurret : Throwable
         {
             if (obj.TryGetComponent(out PlayerController pc) && pc.netId != OwnerNetId)
             {
+                if (pc.TryGetComponent(out Health health))
+                {
+                    if (health.Value > 0)
+                    {
 
-                players.Add(obj.transform);
+                        EnemyObjects.Add(obj.transform);
+                    }
+                }
 
             }
-            else
+            else if (obj.TryGetComponent(out TurretController tc) && tc.netId != netId)
             {
+                if (tc.TryGetComponent(out Health health))
+                {
+                    if (health.Value > 0)
+                    {
 
+                        EnemyObjects.Add(obj.transform);
+                    }
+                }
 
             }
 
         }
-        if (players.Count < 1)
+        if (EnemyObjects.Count < 1)
         {
             turretRotation = TurretRotation.Idle;
+            waitForIt = InitwaitForIt;
             CurrentTarget = null;
 
         }
 
-        return players;
+        return EnemyObjects;
 
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (!isServer)
         {
@@ -163,11 +202,11 @@ public class FatboyTurret : Throwable
 
 
         if (turretShootStatus == TurretShootStatus.Shootable || turretShootStatus == TurretShootStatus.Reloading)
-            RotateToTarget(TurretRotatePivot, GetClosestEnemy(AllEnemiesInCircle()));
+            RotateToTarget(TurretRotatePivot, GetClosestEnemyObject(AllEnemiesInCircle()));
 
 
     }
-    Transform GetClosestEnemy(List<Transform> enemies)
+    Transform GetClosestEnemyObject(List<Transform> enemies)
     {
         if (enemies.Count < 1) { return null; }
 
@@ -191,7 +230,7 @@ public class FatboyTurret : Throwable
         {
             turretRotation = TurretRotation.Rotating;
             //var lookPos = new Vector3(moveDirection.x, 0f, moveDirection.y).normalized;
-            var rotation = Quaternion.LookRotation(target.position - current.position, Vector3.up);
+            var rotation = Quaternion.LookRotation(new Vector3((target.position - current.position).x,0, (target.position - current.position).z), Vector3.up);
             current.rotation = Quaternion.Slerp(current.rotation, rotation, Time.deltaTime * 5f);
 
             //float angle = Quaternion.Angle(current.rotation, rotation);
@@ -200,18 +239,21 @@ public class FatboyTurret : Throwable
 
             DotValue = Vector3.Dot(current.forward, dirToTarget);
 
-            float currentTime = 0f;
-            var starttime = Time.time;
+
+
             if (target != CurrentTarget)
             {
-                currentTime = Time.time- starttime;
-                Debug.Log("CurrentTime: " + currentTime);
-                if (currentTime > 1.5f)
+                waitForIt -= Time.fixedDeltaTime;
+
+                //currentTime = Time.time- starttime;
+             
+                if (waitForIt <= 0f)
                 {
                     turretRotation = TurretRotation.Focused;
                     CurrentTarget = target;
-                    starttime = 0f;
-                    currentTime = 0f;
+                    waitForIt = InitwaitForIt;
+                    //starttime = 0f;
+                    //currentTime = 0f;
                 }
 
                 if (DotValue == 1f)
@@ -225,15 +267,15 @@ public class FatboyTurret : Throwable
             }
             else
             {
-                if (DotValue >0.8f)
+                if (DotValue > 0.8f)
                 {
                     turretRotation = TurretRotation.Focused;
                 }
             }
-           
+
 
             //  Debug.Log($" distance : {angle}  ");
-          
+
 
             Debug.DrawLine(current.position, current.position + current.forward * 5, Color.blue);
             Debug.DrawLine(current.position, current.position + current.up * 2, Color.green);
@@ -275,7 +317,7 @@ public class FatboyTurret : Throwable
     }
     public void SpawnBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime)
     {
-       
+
         StartCoroutine(SpawnIntervalBullet(spawnPoint, dir, BulletCount, BulletIntervalTime));
 
 
@@ -285,7 +327,7 @@ public class FatboyTurret : Throwable
         //TODO : burası fire  loop animasyonu entegre edileceği zaman değiecek.
 
 
-     
+
 
 
 
@@ -303,19 +345,19 @@ public class FatboyTurret : Throwable
 
                 string name = "";
                 Vector3 pos = Vector3.zero;
-              
 
-               
-                   // name = attack.BasicAttackBullet.transform.name;
-                    name = "FatboyTurret_Bullet";
-                    pos = BulletThrowPoint.position /*+ offsetVector * spawnPoint[i % spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + dir * spawnPoint[i % spawnPoint.Length].z*/;
-               
+
+
+                // name = attack.BasicAttackBullet.transform.name;
+                name = "FatboyTurret_Bullet";
+                pos = BulletThrowPoint.position /*+ offsetVector * spawnPoint[i % spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + dir * spawnPoint[i % spawnPoint.Length].z*/;
+
                 var spawnedBullet = ObjectPooler.Instance.Get(name, pos, Quaternion.Euler(0, CalculationManager.GetAngle(dir), 0)).GetComponent<Throwable>();
 
-                spawnedBullet.Init("Debug User " + netId, netId);
+                spawnedBullet.Init("Debug User " + netId, netId,RootNetId,false);
                 spawnedBullet.Throw(dir, bulletRange);
                 NetworkServer.Spawn(spawnedBullet.gameObject);
-               // spawnedBullet.OnObjectSpawn();
+                // spawnedBullet.OnObjectSpawn();
 
 
                 currentBulletCount--;
@@ -325,10 +367,7 @@ public class FatboyTurret : Throwable
 
         }
         yield return new WaitForSeconds(BulletSpawnIntervalTime);
-        //attack.isShooting = false;
-        //attack.shootingState = PlayerAttack.ShootingState.Idle;
-        //RotateSpineResetter();
-        //SetShootingParameter(false);
+
 
     }
 
@@ -336,5 +375,11 @@ public class FatboyTurret : Throwable
     {
         Gizmos.DrawWireSphere(TurretRotatePivot.position, TurretRadius);
 
+    }
+
+    public void GetDamage(int damageTaken)
+    {
+        objectController.TakeDamage(damageTaken);
+        Debug.Log($"{damageTaken} Damage taken ");
     }
 }

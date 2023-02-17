@@ -51,3 +51,9 @@ MonoBehaviour:
   - tag: Muzzle
     prefab: {fileID: 2896612344358668398, guid: 90b13473aaf1abe4f83702be58ae42b6, type: 3}
     size: 5
+  - tag: FatboyTurret
+    prefab: {fileID: 7995885019731338434, guid: cdd6bd88d7bb58a4e8db951390b3f7cf, type: 3}
+    size: 20
+  - tag: FatboyTurret_Bullet
+    prefab: {fileID: 7995885019731338434, guid: 7128de1226798634f9e62ef57e04a93a, type: 3}
+    size: 20

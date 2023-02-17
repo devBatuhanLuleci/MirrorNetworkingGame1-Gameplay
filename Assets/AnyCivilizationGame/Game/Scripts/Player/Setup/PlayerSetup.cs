@@ -1,10 +1,10 @@
+
 using Mirror;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSetup : NetworkBehaviour
+public class PlayerSetup : ObjectSetup
 {
 
     #region Public Fields
@@ -12,40 +12,36 @@ public class PlayerSetup : NetworkBehaviour
     #endregion
 
     #region Private Fields
-    private Health health;
+  
     private Energy energy;
-    private PlayerUIHandler playerUIHandler;
     private PlayerMovement playerMovement;
     private GameObject characterMesh;
 
     private PlayerController playerController;
 
-    private NetworkIdentity NetworkIdentity;
+  
 
     #endregion
 
 
-    private void Awake()
+    public override void Awake()
     {
-        NetworkIdentity = GetComponent<NetworkIdentity>();
+        base.Awake();
 
         playerController = GetComponent<PlayerController>();
 
-        health = GetComponent<Health>();
+       
         energy = GetComponent<Energy>();
-        playerUIHandler = GetComponent<PlayerUIHandler>();
+    
         playerMovement = GetComponent<PlayerMovement>();
 
-        if (!NetworkIdentity.isServer)
-        {
-
-        }
-
+       
     }
 
-    public void Start()
+    public override  void Start()
     {
         // Do anything on all client but not server
+        base.Start();
         if (!NetworkIdentity.isServer)
         {
 
@@ -55,14 +51,12 @@ public class PlayerSetup : NetworkBehaviour
             playerController.PlayerAnimatorController = characterMesh.GetComponent<Animator>();
             GetSpine(characterMesh.transform);
 
-            health.ResetValues(100);
-            playerUIHandler.Initialize(health.MaxHealth);
+          
+           
 
         }
         else // Do anything on server
         {
-            health.ResetValues(100);
-            playerUIHandler.enabled = false;
             energy.MakeEnergyBarsFull();
         }
 
@@ -91,7 +85,7 @@ public class PlayerSetup : NetworkBehaviour
     private void InitOtherPlayers()
     {
         var playerController = GetComponent<PlayerController>();
-        playerUIHandler.DisablePanel();
+        objectUIHandler.DisablePanel();
 
 
     }

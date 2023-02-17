@@ -326,6 +326,7 @@ public class PlayerAttack : NetworkBehaviour
         if (splatType == SplatType.BasicIndicator)
         {
             playerController.playerUIHandler.AttackBasicIndicator.gameObject.SetActive(true);
+            playerController.playerUIHandler.AttackBasicIndicator2.gameObject.SetActive(true);
         }
         else
         {
@@ -393,8 +394,7 @@ public class PlayerAttack : NetworkBehaviour
 
         }
 
-        Debug.Log("dir " + dir);
-
+      
         var normalizedDir = dir.normalized;
         var angle = CalculationManager.GetAngle(normalizedDir);
         //Debug.Log("angle "+ CalculateAngle(BasicIndicator.AttackBasicIndicator.GetPosition(0), BasicIndicator.AttackBasicIndicator.GetPosition(1)));
@@ -430,7 +430,6 @@ public class PlayerAttack : NetworkBehaviour
 
         // TODO: Multiple bullet spawn system.
 
-        Debug.Log("dir " + dir);
         playerController.Fire(isAutoattack, dir);
 
     }

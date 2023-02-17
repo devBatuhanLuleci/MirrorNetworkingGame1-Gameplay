@@ -5,20 +5,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class PlayerController : NetworkBehaviour
+
+public class PlayerController : ObjectController
 {
 
     #region     Private Fields
     private PlayerMovement movement;
     [HideInInspector]
     public PlayerAttack attack;
-    private Health health;
+   
 
     [HideInInspector]
     public Energy energy;
-    [SerializeField]
-    public bool IsLive { get; private set; } = true;
+
 
     private InfoPopup infoPopup;
     #endregion
@@ -28,7 +27,6 @@ public class PlayerController : NetworkBehaviour
     public PlayerUIHandler playerUIHandler;
     [HideInInspector]
     public Animator PlayerAnimatorController;
-
     public float AttackTurnSpeed = 0.25f;
     public float ClampedAttackJoystickOffset = 0.005f;
     public List<BulletSpawnPoints> BulletSpawnPoints;
@@ -38,6 +36,7 @@ public class PlayerController : NetworkBehaviour
     public Transform TargetPoint;
 
     public float Range = 5f;
+    public float radialOffset = .6f;
 
     public int BulletCount = 1;
     public float BulletIntervalTime = .2f;
@@ -71,11 +70,12 @@ public class PlayerController : NetworkBehaviour
 
 
 
-    private void Awake()
+    public  override void Awake()
     {
+        base.Awake();
         movement = GetComponent<PlayerMovement>();
         attack = GetComponent<PlayerAttack>();
-        health = GetComponent<Health>();
+      
         energy = GetComponent<Energy>();
         playerUIHandler = GetComponent<PlayerUIHandler>();
         
@@ -124,12 +124,12 @@ public class PlayerController : NetworkBehaviour
     }
 
 
-    public void SpawnBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime)
+    public void SpawnBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime, float offSetZvalue = 0)
     {
         var lobbyPlayer = ACGDataManager.Instance.LobbyPlayer;
 
         energy.CastEnergy();
-        StartCoroutine(SpawnIntervalBullet(spawnPoint, dir, BulletCount, BulletIntervalTime));
+        StartCoroutine(SpawnIntervalBullet(spawnPoint, dir , BulletCount, BulletIntervalTime, offSetZvalue ));
 
 
     }
@@ -162,7 +162,13 @@ public class PlayerController : NetworkBehaviour
     //    }
 
     //}
-    public IEnumerator SpawnIntervalBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime)
+    public virtual void OnBulletObjectSpawned(Throwable obj)
+    {
+
+        obj.OnObjectSpawn();
+
+    }
+    public IEnumerator SpawnIntervalBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime, float offSetZvalue = 0)
     {
         //TODO : burası fire  loop animasyonu entegre edileceği zaman değiecek.
 
@@ -190,22 +196,21 @@ public class PlayerController : NetworkBehaviour
                 {
 
                     name = attack.UltiAttackBullet.transform.name;
-                    pos = transform.position + offsetVector * spawnPoint[i % spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + dir * spawnPoint[i % spawnPoint.Length].z;
-                    Debug.Log("pos y  : " +  spawnPoint[i % spawnPoint.Length].y);
+                    pos = transform.position + offsetVector * spawnPoint[i % spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + dir *( spawnPoint[i % spawnPoint.Length].z );
+                 //   Debug.Log("pos y  : " +  spawnPoint[i % spawnPoint.Length].y);  
                 }
                 else if(currentAttackType == CurrentAttackType.Basic)
                 {
 
                     name = attack.BasicAttackBullet.transform.name;
-                    pos = transform.position + offsetVector * spawnPoint[i % spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + dir * spawnPoint[i % spawnPoint.Length].z;
+                    pos = transform.position + offsetVector * spawnPoint[i % spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + dir * (spawnPoint[i % spawnPoint.Length].z );
                 }
                 var spawnedBullet = ObjectPooler.Instance.Get(name, pos , Quaternion.Euler(0, CalculationManager.GetAngle(dir), 0)).GetComponent<Throwable>();
            
-                spawnedBullet.Init("Debug User " + netId, netId);
-                spawnedBullet.Throw(dir,Range);
+                spawnedBullet.Init("Debug User " + netId, netId,0,true);
+                spawnedBullet.Throw(dir,Range, offSetZvalue );
                 NetworkServer.Spawn(spawnedBullet.gameObject);
-                spawnedBullet.OnObjectSpawn();
-
+                OnBulletObjectSpawned(spawnedBullet);   
 
                 currentBulletCount--;
                 // Debug.Log($"Shoot, currentBulletCount:{currentBulletCount}");
@@ -245,24 +250,7 @@ public class PlayerController : NetworkBehaviour
     /// <summary>
     /// this method must call from server
     /// </summary>
-    public virtual void TakeDamage(int damage)
-    {
-        if (health.TakeDamage(damage))
-        {
-            // TODO: Player is death 
-            // respawn player
-            Death();
-        }
-    }
-    /// <summary>
-    /// this method must call from server
-    /// </summary>
-    private void Death()
-    {
-        IsLive = false;
-        MatchNetworkManager.Instance.Respawn(this);
-        DeathRPC();
-    }
+  
 
     public void RotateSpine(float value)
     {
@@ -279,11 +267,12 @@ public class PlayerController : NetworkBehaviour
         health.ResetValues();
         RespawnRPC();
     }
-
-    public void HealthChanged(int health)
+    public override void HealthChanged(int health)
     {
-        playerUIHandler.ChangeHealth(health);
+        base.HealthChanged(health);
+         playerUIHandler.ChangeHealth(health);
     }
+
     public void EnergyChanged(float energyAmount)
     {
         playerUIHandler.ChangeEnergy(energyAmount);
@@ -375,16 +364,25 @@ public class PlayerController : NetworkBehaviour
     {
         movement.Move(move);
     }
+    public override void Death()
+    {
+        base.Death();
+        MatchNetworkManager.Instance.Respawn(this);
+     
+    }
 
 
     [ClientRpc]
-    public void DeathRPC()
+    public override void DeathRPC()
     {
-        IsLive = false;
+
+        base.DeathRPC();
+    
         // TODO: show death panel if localplayer
         if (netIdentity.isLocalPlayer)
         {
             infoPopup = InfoPopup.Show("Loser! You will respawn in 3 second.");
+       
         }
     }
     [ClientRpc]

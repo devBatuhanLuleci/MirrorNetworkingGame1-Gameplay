@@ -48,6 +48,14 @@ public class MatchNetworkManager : NetworkManager
     {
         StartCoroutine(IERespawn(player));
     }
+    public void DestroyThis(ObjectController obj)
+    {
+        if (obj != null)
+        {
+
+            obj.DestroyThisObject();
+        }
+    }
     /// <summary>
     /// this method must call from server
     /// </summary>

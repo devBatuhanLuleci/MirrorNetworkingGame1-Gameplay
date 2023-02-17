@@ -6,7 +6,7 @@ using TMPro;
 using System;
 using DG.Tweening;
 
-public class PlayerUIHandler : MonoBehaviour
+public class PlayerUIHandler : ObjectUIHandler
 {
     #region UI fields
     [Header("Setup")]
@@ -94,34 +94,19 @@ public class PlayerUIHandler : MonoBehaviour
     private Transform camera;
     #endregion
     #endregion
-    public void Initialize(int value)
+
+    public override void  DisablePanel()
     {
-        camera = Camera.main.transform;
-        initialized = true;
-        maxHelath = value;
-        ChangeHealth(value);
-        var dir = transform.position - camera.position;
-        look = Quaternion.LookRotation(dir, Vector3.up);
-    }
-    public void DisablePanel()
-    {
+        base.DisablePanel();
         EnergyBarGeneral.SetActive(false);
     }
 
     Quaternion look;
-    private void Update()
+    public override void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            MakeEnergyBarsFull();
-
-
-        }
-
-        if (!initialized) return;
-        UILook();
-        // CalculateProjectile();
-
+        base.Update();
+      
+      
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -132,22 +117,11 @@ public class PlayerUIHandler : MonoBehaviour
 
     }
 
-    private void UILook()
-    {
-        if (canvas != null && camera != null)
-        {
-            canvas.transform.rotation = look;
-        }
-    }
-
+  
 
     #region  Health Bar
 
-    public void ChangeHealth(int health)
-    {
-        healthText.text = health.ToString();
-        healthSlider.value = (float)maxHelath / (float)health;
-    }
+  
     #endregion
 
 
@@ -296,7 +270,7 @@ public class PlayerUIHandler : MonoBehaviour
       //  Debug.Log("PlayerUI dir normalized: " + dir.normalized);
 
         DrawPath(dir.normalized, player, v0, angle, timeNew, step);
-        //DrawPath2(dir.normalized, player, v02, angle2, timeNew2, step2);
+        DrawPath2(dir.normalized, player, v02, angle2, timeNew2, step2);
 
 
 
@@ -332,7 +306,7 @@ public class PlayerUIHandler : MonoBehaviour
 
         yOffSet = playerController.BulletSpawnPoints[2].spawnPoint.y;
 
-        var startPos = transform.position + new Vector3(0,/* yOffSet*/0, 0) /*+ StartPosOffSet2(direction)*/;
+        var startPos = transform.position + new Vector3(0,/* yOffSet*/0, 0) + StartPosOffSet2(direction);
 
       //  var FirePoint = transform.position + StartPosOffSet(direction);
 

@@ -2,18 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EllenHealth : Health
+public class TurretHealth : Health
 {
-    private PlayerController playerController;
+    private TurretController turretController;
 
     public override void Awake()
     {
         base.Awake();
-        playerController = GetComponent<PlayerController>();
+        turretController = GetComponent<TurretController>();
     }
     public override void RefreshUI(int oldValue, int newValue)
     {
         base.RefreshUI(oldValue, newValue);
-        playerController.HealthChanged(newValue);
+        turretController.HealthChanged(newValue);
     }
+
 }
