@@ -288,11 +288,12 @@ public class PlayerUIHandler : ObjectUIHandler
     public void Throw(Vector3 dir)
     {
 
-
+         //TODO : Burada kaldın space 'e basınca topun hareketine bak.
         if (throwingCoroutine != null)
             StopCoroutine(throwingCoroutine);
 
-        throwingCoroutine = StartCoroutine(Coroutine_Movement(dir, v02, angle2, timeNew2, bulletSpeed));
+      //  throwingCoroutine = StartCoroutine(Coroutine_Movement(dir, v0, angle, timeNew, bulletSpeed));
+        throwingCoroutine = StartCoroutine(Coroutine_Movement2(dir, v02, angle2, timeNew2, bulletSpeed));
 
 
     }
@@ -304,11 +305,22 @@ public class PlayerUIHandler : ObjectUIHandler
         go.transform.localScale = Vector3.one * .5f;
         go.GetComponent<Renderer>().material.color = Color.red;
 
-        yOffSet = playerController.BulletSpawnPoints[2].spawnPoint.y;
+        Vector3 startPos;
+        switch (projectileType)
+        {
+            case ProjectileType.Lineer:
+                yOffSet = 0f;
+                break;
+            case ProjectileType.Parabolic:
+                yOffSet = playerController.BulletSpawnPoints[0].spawnPoint.y;
+                break;
+            default:
+                break;
+        }
+        //ar startPos = transform.position + new Vector3(0,/* yOffSet*/0, 0) + StartPosOffSet2(direction);
 
-        var startPos = transform.position + new Vector3(0,/* yOffSet*/0, 0) + StartPosOffSet2(direction);
-
-      //  var FirePoint = transform.position + StartPosOffSet(direction);
+         startPos = transform.position + new Vector3(0, yOffSet, 0) + StartPosOffSet(direction);
+        //  var FirePoint = transform.position + StartPosOffSet(direction);
 
         float t = 0;
         float a = 0f;
@@ -346,7 +358,63 @@ public class PlayerUIHandler : ObjectUIHandler
     }
 
 
+    IEnumerator Coroutine_Movement2(Vector3 direction, float v0, float angle, float time, float initialVelocity)
+    {
 
+        var yOffSet = 0f;
+        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        go.transform.localScale = Vector3.one * .5f;
+        go.GetComponent<Renderer>().material.color = Color.red;
+
+        switch (projectileType)
+        {
+            case ProjectileType.Lineer:
+                yOffSet = 0f;
+                break;
+            case ProjectileType.Parabolic:
+                yOffSet = playerController.BulletSpawnPoints[2].spawnPoint.y;
+
+                break;
+            default:
+                break;
+        }
+        var startPos = transform.position + new Vector3(0, yOffSet, 0) + StartPosOffSet2(direction);
+        //  var FirePoint = transform.position + StartPosOffSet(direction);
+
+        float t = 0;
+        float a = 0f;
+        // Debug.Log(time / (initialVelocity ));
+        // Debug.Log(BulletObj.transform.name);
+        while (t < time)
+        {
+
+            float x = v0 * t * Mathf.Cos(angle);
+            a = x;
+            float y = v0 * t * Mathf.Sin(angle) - (1f / 2f) * -Physics.gravity.y * Mathf.Pow(t, 2);
+
+            var upValue = projectileType == ProjectileType.Parabolic ? (Vector3.up * y) : Vector3.zero;
+
+            go.transform.position = startPos + direction * x + upValue;
+
+
+
+            t += Time.fixedDeltaTime * (initialVelocity);
+
+
+
+            yield return null;
+
+        }
+        //Debug.Log("height2:" + height2);
+        //Debug.Log("VO2:" + v02);
+        //Debug.Log("angle2:" + angle2);
+        //Debug.Log("timeNew2:" + timeNew2);
+        //  Debug.Log("posy: " + (v0 * t));
+
+        //  Destroy(go, 1f);
+        //burası hedefe vardığında bir kez çalışır.
+        //   OnArrived();
+    }
 
     private void DrawPath(Vector3 direction, Transform player, float v0, float angle, float time, float step)
     {
