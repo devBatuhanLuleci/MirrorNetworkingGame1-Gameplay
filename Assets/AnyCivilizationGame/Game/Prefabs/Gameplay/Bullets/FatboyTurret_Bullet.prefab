@@ -5013,4 +5013,4 @@ MonoBehaviour:
   RootNetId: 0
   projectileType: 0
   damage: 20
-  Speed: 0.5
+  Speed: 0.1

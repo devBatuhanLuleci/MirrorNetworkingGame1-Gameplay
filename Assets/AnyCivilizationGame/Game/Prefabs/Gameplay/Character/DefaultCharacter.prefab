@@ -1750,7 +1750,7 @@ MonoBehaviour:
     BulletInitPos: {x: 0, y: 0, z: 0}
     BulletInitRot: {x: 0, y: 0, z: 0}
   - SpawnPointName: UltiSpawnPoint
-    spawnPoint: {x: 0, y: 1.5, z: -5}
+    spawnPoint: {x: 0, y: 1, z: -1.5}
     BulletInitPos: {x: 0, y: 0, z: 0}
     BulletInitRot: {x: 0, y: 0, z: 0}
   TargetPoint: {fileID: 6626824535964682116}
@@ -1764,7 +1764,8 @@ MonoBehaviour:
   ultiAttackType: 1
   currentAttackType: 0
   UltiTurret: {fileID: 0}
-  dist: 0
+  ZValue: 0
+  YValue: 0
 --- !u!114 &-1678189773969174488
 MonoBehaviour:
   m_ObjectHideFlags: 0

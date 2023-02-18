@@ -8,11 +8,15 @@ public class Ellen : PlayerController
 {
 
     public GameObject UltiTurret;
-    public float dist ;
+    public float ZValue ;
+    public float YValue;
 
     public override void Fire(bool isAutoattack, Vector3 dir)
     {
-        dist = Mathf.Abs(BulletSpawnPoints[2].spawnPoint.z */*-0.4f*/ -radialOffset/*0.6f*/);
+       
+
+        ZValue = Mathf.Abs(BulletSpawnPoints[2].spawnPoint.z  -radialOffset);
+        YValue = Mathf.Abs(BulletSpawnPoints[2].spawnPoint.y);
 
         base.Fire(isAutoattack, dir);
 
@@ -25,7 +29,7 @@ public class Ellen : PlayerController
                 break;
             case CurrentAttackType.Ulti:
 
-                SpawnBullet(new Vector3[] { BulletSpawnPoints[2].spawnPoint, }, dir, 1, .1f, dist );
+                SpawnBullet(new Vector3[] { BulletSpawnPoints[2].spawnPoint, }, dir, 1, .1f, ZValue, YValue);
 
 
                 break;

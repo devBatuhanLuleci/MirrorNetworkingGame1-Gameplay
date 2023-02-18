@@ -8,4 +8,8 @@ public class FatboyBasicBullet : Bullet
     {
         base.OnArrived();
     }
+    public override void OnObjectSpawn()
+    {
+        base.OnObjectSpawn();
+    }
 }

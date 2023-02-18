@@ -8,7 +8,7 @@ using System;
 public class Bullet : Throwable, INetworkPooledObject
 {
     public int damage = 5;
-
+    public float speed = .2f;
 
 
 
@@ -25,7 +25,7 @@ public class Bullet : Throwable, INetworkPooledObject
     {
         //  Debug.Log("rotangle: " + rotAngle);
         base.OnObjectSpawn();
-
+        
     }
     /// <summary>
     /// This function sets the rotation of bullet when it is spawn.

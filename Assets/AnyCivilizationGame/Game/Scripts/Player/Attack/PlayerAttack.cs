@@ -79,6 +79,11 @@ public class PlayerAttack : NetworkBehaviour
     }
     public void Targeting(Vector2 attackDirection, bool basicAttackButtonHeld = false, bool ultiAttackButtonheld = false)
     {
+        if (!isLocalPlayer || isServer)
+        {
+            return;
+        }
+
         if (isShooting)
         {
             //   playerController.DoSomething();
@@ -87,20 +92,97 @@ public class PlayerAttack : NetworkBehaviour
         //Debug.LogError($"Targeting attackDirection: {attackDirection} attackHeld: {attackHeld}");
         //if (!netIdentity.isLocalPlayer) return;
         AttackDirection = attackDirection;
+
         BasicAttackHeld = basicAttackButtonHeld;
         UltiAttackHeld = ultiAttackButtonheld;
 
 
 
+        GetDir(AttackDirection);
+
 
         //HandleAttackIndicator();
-        ConfigureAttackState();
+        ConfigureAttackState(AttackDirection);
         SetLookPosition();
-        RotateIndicator(attackDirection);
+        RotateIndicator(AttackDirection);
         //SetBulletSpawnPointPosition();
         playerController.TargetPoint.position = player.transform.position + ((lookPos.normalized) * playerController.Range);
     }
+    public void Shoot(Vector2 attackDirection)
+    {
+            
 
+            if (attackJoystickState == AttackJoystickState.Holding)
+            {
+                //Shoot here!
+
+
+
+                //Deactivate Projectile line.
+
+                //var angle = CalculateAngle(player, attackLookAtPoint);
+                //Debug.Log(angle);
+                CancelAttackProjectile();
+                if (!isShooting)
+                {
+                    AttackAnimationLocalPlayer();
+
+                }
+                //Spawn the bullet object.
+
+                Vector3 dir = new Vector3(attackDirection.x, 0, attackDirection.y);
+
+                // playerController.playerUIHandler.CalculateProjectile(dir);
+                playerController.SendAttackType(playerController.currentAttackType);
+
+                CmdFire(false, dir);
+
+            }
+
+            if (attackJoystickState == AttackJoystickState.Idle)
+            {
+                if (shootingState == ShootingState.Cancelled)
+                {
+
+                    // attackState = ShootingState.Idle;
+                }
+                else if (shootingState == ShootingState.Idle)
+                {
+
+                    //Auto-Attack
+                    if (!isShooting)
+                    {
+                        AttackAnimationLocalPlayer();
+
+                    }
+                    //Auto spawn bullet on current player direction.
+
+                    Vector3 dir = new Vector3(attackDirection.x, 0, attackDirection.y);
+
+                    //  playerController.playerUIHandler.CalculateProjectile(dir);
+                    playerController.SendAttackType(playerController.currentAttackType);
+                    CmdFire(true, dir);
+
+                }
+
+
+            }
+
+            //Reset bullet spawn point positions.
+            // ResetBulletSpawnPointPosition();
+            attackJoystickState = AttackJoystickState.Up;
+            shootingState = ShootingState.Idle;
+
+        
+
+    }
+    [Command]
+    public void GetDir(Vector2 dir)
+    {
+       // Debug.Log("dir: " + dir);
+
+
+    }
     /// <summary>
     /// We initilize some variables in the begining.
     /// </summary>
@@ -184,10 +266,10 @@ public class PlayerAttack : NetworkBehaviour
     }
 
 
-    public void ConfigureAttackState()
+    public void ConfigureAttackState(Vector2 dir3)
     {
-
-
+        float a = dir3.x;
+       
         // If Attack Button is pressing and it is not aiming.
         if ((BasicAttackHeld || UltiAttackHeld) && AttackDirection.magnitude <= playerController.ClampedAttackJoystickOffset)
         {
@@ -226,87 +308,70 @@ public class PlayerAttack : NetworkBehaviour
             }
         }
         // If touch has released on attack button
-        else if (!(BasicAttackHeld || UltiAttackHeld) && AttackDirection.magnitude == 0)
-        {
-            if (attackJoystickState == AttackJoystickState.Holding)
-            {
-                //Shoot here!
+        //else if (!(BasicAttackHeld || UltiAttackHeld) && AttackDirection.magnitude == 0)
+        //{
+        //    if (attackJoystickState == AttackJoystickState.Holding)
+        //    {
+        //        //Shoot here!
 
 
 
-                //Deactivate Projectile line.
+        //        //Deactivate Projectile line.
 
-                //var angle = CalculateAngle(player, attackLookAtPoint);
-                //Debug.Log(angle);
-                CancelAttackProjectile();
-                if (!isShooting)
-                {
-                    AttackAnimationLocalPlayer();
+        //        //var angle = CalculateAngle(player, attackLookAtPoint);
+        //        //Debug.Log(angle);
+        //        CancelAttackProjectile();
+        //        if (!isShooting)
+        //        {
+        //            AttackAnimationLocalPlayer();
 
-                }
-                //Spawn the bullet object.
+        //        }
+        //        //Spawn the bullet object.
 
-                var startPos = player.transform.position + ((lookPos.normalized));
-                var targetPos = player.transform.position + ((lookPos.normalized) * 2);
-                var direction = targetPos - startPos;
+        //        Vector3 dir = new Vector3(dir3.x, 0, dir3.y);
 
-                var finalDir = new Vector3(direction.x, 0, direction.z).normalized;
+        //        // playerController.playerUIHandler.CalculateProjectile(dir);
+        //        playerController.SendAttackType(playerController.currentAttackType);
 
+        //        CmdFire(false, dir, a);
 
-                var dir = finalDir;
+        //    }
 
-                // playerController.playerUIHandler.CalculateProjectile(dir);
-                playerController.SendAttackType(playerController.currentAttackType);
+        //    if (attackJoystickState == AttackJoystickState.Idle)
+        //    {
+        //        if (shootingState == ShootingState.Cancelled)
+        //        {
 
-                Debug.Log("dir x lookpos magnitude: " + dir * lookPos.magnitude);
-                CmdFire(false, dir * lookPos.magnitude);
+        //            // attackState = ShootingState.Idle;
+        //        }
+        //        else if (shootingState == ShootingState.Idle)
+        //        {
 
-            }
+        //            //Auto-Attack
+        //            if (!isShooting)
+        //            {
+        //                AttackAnimationLocalPlayer();
 
-            if (attackJoystickState == AttackJoystickState.Idle)
-            {
-                if (shootingState == ShootingState.Cancelled)
-                {
+        //            }
+        //            //Auto spawn bullet on current player direction.
 
-                    // attackState = ShootingState.Idle;
-                }
-                else if (shootingState == ShootingState.Idle)
-                {
-                    //Auto-Attack
-                    if (!isShooting)
-                    {
-                        AttackAnimationLocalPlayer();
+        //            Vector3 dir = new Vector3(dir3.x, 0, dir3.y);
 
-                    }
-                    //Auto spawn bullet on current player direction.
+        //            //  playerController.playerUIHandler.CalculateProjectile(dir);
+        //            playerController.SendAttackType(playerController.currentAttackType);
+        //            CmdFire(true, dir, a);
 
-                    var startPos = player.transform.position + ((lookPos.normalized));
-                    var targetPos = player.transform.position + ((lookPos.normalized) * 2);
-
-                    var direction = targetPos - startPos;
-
-                    var finalDir = new Vector3(direction.x, 0, direction.z).normalized;
+        //        }
 
 
-                    var dir = finalDir;
+        //    }
 
-                    //  playerController.playerUIHandler.CalculateProjectile(dir);
-                    playerController.SendAttackType(playerController.currentAttackType);
-                    Debug.Log("dir x lookpos magnitude: " + dir * lookPos.magnitude);
+        //    //Reset bullet spawn point positions.
+        //    // ResetBulletSpawnPointPosition();
+        //    attackJoystickState = AttackJoystickState.Up;
+        //    shootingState = ShootingState.Idle;
 
-                    CmdFire(true, dir * lookPos.magnitude);
-
-                }
-
-
-            }
-
-            //Reset bullet spawn point positions.
-            // ResetBulletSpawnPointPosition();
-            attackJoystickState = AttackJoystickState.Up;
-            shootingState = ShootingState.Idle;
-
-        }
+        //}
 
     }
 
@@ -386,16 +451,18 @@ public class PlayerAttack : NetworkBehaviour
     /// </summary>
     /// 
     [Command]
-    public void CmdFire(bool isAutoattack, Vector3 dir)
+    public void CmdFire(bool isAutoattack, Vector3 lookPos )
     {
+
         if (!playerController.energy.HaveEnergy() || isShooting)
         {
             return;
 
         }
+       
 
-      
-        var normalizedDir = dir.normalized;
+
+        var normalizedDir = lookPos.normalized;
         var angle = CalculationManager.GetAngle(normalizedDir);
         //Debug.Log("angle "+ CalculateAngle(BasicIndicator.AttackBasicIndicator.GetPosition(0), BasicIndicator.AttackBasicIndicator.GetPosition(1)));
 
@@ -430,7 +497,7 @@ public class PlayerAttack : NetworkBehaviour
 
         // TODO: Multiple bullet spawn system.
 
-        playerController.Fire(isAutoattack, dir);
+        playerController.Fire(isAutoattack, lookPos);
 
     }
 

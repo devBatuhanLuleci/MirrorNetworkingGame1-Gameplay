@@ -124,12 +124,12 @@ public class PlayerController : ObjectController
     }
 
 
-    public void SpawnBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime, float offSetZvalue = 0)
+    public void SpawnBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime, float offSetZvalue = 0, float offSetYvalue = 0)
     {
         var lobbyPlayer = ACGDataManager.Instance.LobbyPlayer;
 
         energy.CastEnergy();
-        StartCoroutine(SpawnIntervalBullet(spawnPoint, dir , BulletCount, BulletIntervalTime, offSetZvalue ));
+        StartCoroutine(SpawnIntervalBullet(spawnPoint, dir , BulletCount, BulletIntervalTime, offSetZvalue, offSetYvalue));
 
 
     }
@@ -168,7 +168,23 @@ public class PlayerController : ObjectController
         obj.OnObjectSpawn();
 
     }
-    public IEnumerator SpawnIntervalBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime, float offSetZvalue = 0)
+    public Vector3 StartPosOffSet2(Vector3 dir, float radialOffSet)
+    {
+
+        var direction = new Vector3(dir.x, 0, dir.z);
+        direction.Normalize();
+
+        var offsetVector = Vector3.Cross(Vector3.up, direction);
+        offsetVector.Normalize();
+        var startPosition = direction * (-radialOffSet);
+
+
+        return startPosition;
+
+
+    }
+
+    public IEnumerator SpawnIntervalBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime, float offSetZvalue = 0, float offSetYvalue = 0)
     {
         //TODO : burası fire  loop animasyonu entegre edileceği zaman değiecek.
 
@@ -187,8 +203,8 @@ public class PlayerController : ObjectController
                 SetShootingParameter(true);
                 yield return new WaitForSeconds(BulletIntervalTime);
 
-                var offsetVector = Vector3.Cross(Vector3.up, dir);
-                offsetVector.Normalize();
+                var direction = new Vector3(dir.x, 0, dir.z);
+                direction.Normalize();
 
                 string name = "";
                 Vector3 pos = Vector3.zero;
@@ -196,19 +212,29 @@ public class PlayerController : ObjectController
                 {
 
                     name = attack.UltiAttackBullet.transform.name;
-                    pos = transform.position + offsetVector * spawnPoint[i % spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + dir *( spawnPoint[i % spawnPoint.Length].z );
-                 //   Debug.Log("pos y  : " +  spawnPoint[i % spawnPoint.Length].y);  
+                    pos = transform.position + (direction * spawnPoint[i % spawnPoint.Length].x) 
+                                            + (Vector3.up * spawnPoint[i % spawnPoint.Length].y ) 
+                                            +  (direction *  spawnPoint[i % spawnPoint.Length].z ) ;
+
+
+              //      Debug.Log("targetPos: " + (direction * spawnPoint[i % spawnPoint.Length].x + direction * spawnPoint[i % spawnPoint.Length].z));
+
+
+                    // pos = transform.position + Vector3.up * spawnPoint[i % spawnPoint.Length].y +  StartPosOffSet2(dir,radialOffset);
+                    //   Debug.Log("pos y  : " +  spawnPoint[i % spawnPoint.Length].y);  
                 }
                 else if(currentAttackType == CurrentAttackType.Basic)
                 {
 
                     name = attack.BasicAttackBullet.transform.name;
-                    pos = transform.position + offsetVector * spawnPoint[i % spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + dir * (spawnPoint[i % spawnPoint.Length].z );
+                    pos = transform.position + direction * spawnPoint[i % spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + direction * (spawnPoint[i % spawnPoint.Length].z );
                 }
+
+                
                 var spawnedBullet = ObjectPooler.Instance.Get(name, pos , Quaternion.Euler(0, CalculationManager.GetAngle(dir), 0)).GetComponent<Throwable>();
            
                 spawnedBullet.Init("Debug User " + netId, netId,0,true);
-                spawnedBullet.Throw(dir,Range, offSetZvalue );
+                spawnedBullet.Throw(dir,Range, offSetZvalue, offSetYvalue,radialOffset);
                 NetworkServer.Spawn(spawnedBullet.gameObject);
                 OnBulletObjectSpawned(spawnedBullet);   
 
@@ -354,6 +380,7 @@ public class PlayerController : ObjectController
     }
     public void Targeting(Vector2 targetingDirection, bool basicButtonheld = false, bool ultiButtonheld = false)
     {
+
         attack.Targeting(targetingDirection, basicButtonheld, ultiButtonheld);
     }
     #endregion

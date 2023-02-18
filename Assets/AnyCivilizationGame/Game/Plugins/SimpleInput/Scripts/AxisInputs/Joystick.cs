@@ -193,6 +193,11 @@ namespace SimpleInputNamespace
 
 		public void OnPointerUp( PointerEventData eventData )
 		{
+			if (FindObjectOfType<InputHandler>() != null)
+			{
+				FindObjectOfType<InputHandler>().AttackButtonUp(this);
+
+			}
 			joystickHeld = false;
 			m_value = Vector2.zero;
 

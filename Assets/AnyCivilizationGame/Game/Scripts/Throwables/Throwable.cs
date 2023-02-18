@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Throwable : NetworkBehaviour
 {
-    protected float speed= 1;
+    protected float speed= .2f;
 
     private Coroutine throwingCoroutine;
     protected float movemenTime = 0;
@@ -115,13 +115,17 @@ public class Throwable : NetworkBehaviour
     #region new
 
 
-    public void Throw(Vector3 dir, float Range, float offSetZValue =0)
+    public void Throw(Vector3 dir, float Range, float offSetZValue =0, float offSetYValue = 0, float radialOffSet=0f)
     {
+
+
+
+
         Vector3 groundDir = new Vector3(dir.x, 0, dir.z);
         //float dist = Mathf.Abs(/*playerController.BulletSpawnPoints[2].spawnPoint.z */-0.4f  - /*radialOffset*/0.6f);
-        
-        var targetPos = new Vector3(groundDir.magnitude * (Range+ offSetZValue), /*dir.y*/ - transform.position.y, 0);
-        Debug.Log("targetPos: " + targetPos);
+
+        var targetPos = new Vector3(groundDir.magnitude * (Range)+ offSetZValue, /*dir.y*/ -offSetYValue, 0);
+     
       //  var targetPos = new Vector3(dir.magnitude * Range + (offSetZValue),  -transform.position.y, 0);
         
        
@@ -129,22 +133,35 @@ public class Throwable : NetworkBehaviour
         if (throwingCoroutine != null)
             StopCoroutine(throwingCoroutine);
 
- 
-        throwingCoroutine = StartCoroutine(Coroutine_Movement(dir.normalized, v0, angle, time, speed));
+
+
+
+        throwingCoroutine = StartCoroutine(Coroutine_Movement(groundDir.normalized, v0, angle, time, speed,  radialOffSet, offSetYValue));
 
 
     }
 
 
 
-    IEnumerator Coroutine_Movement(Vector3 direction, float v0, float angle, float time, float initialVelocity)
+    IEnumerator Coroutine_Movement(Vector3 direction, float v0, float angle, float time, float initialVelocity, float radialOffSet, float offSetYValue)
     {
-        direction.y = 0;
-        var yOffSet = 0f;
 
-        yOffSet = /*playerController.BulletSpawnPoints[2].spawnPoint.y*/ -0.5f;
+      //  Debug.Log("targetPos: " + direction);
 
-        var startPos = transform.position /*+ new Vector3(0, yOffSet, 0) + StartPosOffSet2(direction)*/;
+      
+        //switch (projectileType)
+        //{
+        //    case ProjectileType.Linear:
+        //        yOffSet = 0f;
+        //        break;
+        //    case ProjectileType.Parabolic:
+        //        yOffSet = bullet[0].spawnPoint.y;
+        //        break;
+        //    default:
+        //        break;
+        //}
+
+        var startPos = transform.position + new Vector3(0, 0, 0) /*+ StartPosOffSet2(direction,radialOffSet)*/;
 
 
         float startTime = 0;
@@ -153,22 +170,22 @@ public class Throwable : NetworkBehaviour
 
 
 
-        #region SpawnObject
-        float x1 = v0 * time * Mathf.Cos(angle);
-      // Debug.Log("direction:" + direction);
-        float y1 = v0 * time * Mathf.Sin(angle) - (1f / 2f) * -Physics.gravity.y * Mathf.Pow(time, 2);
-        y1 = (float)Math.Round(y1, 4);
-        var upValue2 = projectileType == ProjectileType.Parabolic ? (Vector3.up * y1) : Vector3.zero;
+      //  #region SpawnObject
+      //  float x1 = v0 * time * Mathf.Cos(angle);
+      //// Debug.Log("direction:" + direction);
+      //  float y1 = v0 * time * Mathf.Sin(angle) - (1f / 2f) * -Physics.gravity.y * Mathf.Pow(time, 2);
+      //  y1 = (float)Math.Round(y1, 4);
+      //  var upValue2 = projectileType == ProjectileType.Parabolic ? (Vector3.up * y1) : Vector3.zero;
 
-        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        //Debug.Log("1: " + direction * x1);
-        //Debug.Log("2: " + upValue2);
-       //Debug.Log("distance: " + Vector3.Distance(startPos, startPos + direction * x1/* + upValue2*/));
+      //  GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+      //  //Debug.Log("1: " + direction * x1);
+      //  //Debug.Log("2: " + upValue2);
+      // //Debug.Log("distance: " + Vector3.Distance(startPos, startPos + direction * x1/* + upValue2*/));
 
-        go.transform.position = startPos + direction * x1 + upValue2;
-        go.transform.localScale = Vector3.one * .4f;
-        go.transform.GetComponent<Renderer>().material.color = Color.red;
-        #endregion
+      //  go.transform.position = startPos + direction * x1 + upValue2;
+      //  go.transform.localScale = Vector3.one * .4f;
+      //  go.transform.GetComponent<Renderer>().material.color = Color.red;
+      //  #endregion
 
 
         while (t < time)
@@ -200,7 +217,7 @@ public class Throwable : NetworkBehaviour
            OnArrived();
 
     }
-    public Vector3 StartPosOffSet2(Vector3 dir)
+    public Vector3 StartPosOffSet2(Vector3 dir, float radialOffSet)
     {
 
         var direction = new Vector3(dir.x, 0, dir.z);
@@ -208,7 +225,7 @@ public class Throwable : NetworkBehaviour
 
         var offsetVector = Vector3.Cross(Vector3.up, direction);
         offsetVector.Normalize();
-        var startPosition =  direction /** playerController.BulletSpawnPoints[2].spawnPoint.z*/ * (-0.4f);
+        var startPosition =  direction  * (-radialOffSet);
 
 
         return startPosition;
@@ -248,10 +265,11 @@ public class Throwable : NetworkBehaviour
     public void CalculateProjectile(Vector3 dir)
     {
 
-        Debug.Log("dir.y : " + dir.y);
-      //  var targetPos = new Vector3(new Vector3(dir.x, 0, dir.z).magnitude, dir.y, 0);
+        //  var targetPos = new Vector3(new Vector3(dir.x, 0, dir.z).magnitude, dir.y, 0);
+        var targetPos = new Vector3(new Vector3(dir.x, 0, dir.z).magnitude, dir.y, 0);
 
-        height = projectileType == ProjectileType.Parabolic ? (dir.y + dir.magnitude / 2f) : 0;
+        height = projectileType == ProjectileType.Parabolic ? (0 + new Vector3(dir.x, 0, dir.z).magnitude / 2f) : 0;
+
         height = Mathf.Max(0.01f, height);
 
         var dist = new Vector3(dir.x, 0, dir.z);
@@ -259,20 +277,21 @@ public class Throwable : NetworkBehaviour
 
         //if (targetPos.x < 0.02f)
         //{
-     
+
         //}
         //else
         //{
 
-            //GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
 
-            //go.transform.position = targetPos;
-            //go.transform.localScale = Vector3.one * .4f;
-            //go.transform.GetComponent<Renderer>().material.color = Color.red;
+        //go.transform.position = targetPos;
+        //go.transform.localScale = Vector3.one * .4f;
+        //go.transform.GetComponent<Renderer>().material.color = Color.red;
 
 
-            //CalculatePathWithHeight(dir.normalized * targetPos.magnitude , height, out v0, out angle, out time);
-        CalculatePathWithHeight(dir , height, out v0, out angle, out time);
+        //CalculatePathWithHeight(dir.normalized * targetPos.magnitude , height, out v0, out angle, out time);
+
+        CalculatePathWithHeight(dir.normalized * targetPos.magnitude, height, out v0, out angle, out time);
           
           
       //  }

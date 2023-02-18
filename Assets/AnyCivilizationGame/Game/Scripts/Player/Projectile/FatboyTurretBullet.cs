@@ -11,7 +11,10 @@ public class FatboyTurretBullet : Bullet
         base.speed = Speed;
     }
 
-
+    public override void OnObjectSpawn()
+    {
+        base.OnObjectSpawn();
+    }
     public override void OnArrived()
     {
        base.OnArrived();
