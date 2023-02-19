@@ -8,8 +8,7 @@ using System;
 public class Bullet : Throwable, INetworkPooledObject
 {
     public int damage = 5;
-    public float speed = .2f;
-
+   
 
 
 

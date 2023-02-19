@@ -13,7 +13,7 @@ public class PlayerController : ObjectController
     private PlayerMovement movement;
     [HideInInspector]
     public PlayerAttack attack;
-   
+
 
     [HideInInspector]
     public Energy energy;
@@ -45,7 +45,7 @@ public class PlayerController : ObjectController
     public float FinishFireAnimationWaitTime = .2f;
 
 
-    public enum BasicAttackType { Straight,Parabolic}
+    public enum BasicAttackType { Straight, Parabolic }
     public BasicAttackType basicAttackType;
 
 
@@ -53,7 +53,7 @@ public class PlayerController : ObjectController
     public UltiAttackType ultiAttackType;
 
 
-    public enum CurrentAttackType { Basic,Ulti}
+    public enum CurrentAttackType { Basic, Ulti }
     [SyncVar]
     public CurrentAttackType currentAttackType;
 
@@ -70,15 +70,15 @@ public class PlayerController : ObjectController
 
 
 
-    public  override void Awake()
+    public override void Awake()
     {
         base.Awake();
         movement = GetComponent<PlayerMovement>();
         attack = GetComponent<PlayerAttack>();
-      
+
         energy = GetComponent<Energy>();
         playerUIHandler = GetComponent<PlayerUIHandler>();
-        
+
 
     }
     private void Start()
@@ -92,7 +92,7 @@ public class PlayerController : ObjectController
 
     public virtual void DetectJoystickButton(SimpleInputNamespace.Joystick.JoystickButtonType joystickButtonType)
     {
-        
+
         switch (joystickButtonType)
         {
             case SimpleInputNamespace.Joystick.JoystickButtonType.movement:
@@ -129,12 +129,12 @@ public class PlayerController : ObjectController
         var lobbyPlayer = ACGDataManager.Instance.LobbyPlayer;
 
         energy.CastEnergy();
-        StartCoroutine(SpawnIntervalBullet(spawnPoint, dir , BulletCount, BulletIntervalTime, offSetZvalue, offSetYvalue));
+        StartCoroutine(SpawnIntervalBullet(spawnPoint, dir, BulletCount, BulletIntervalTime, offSetZvalue, offSetYvalue));
 
 
     }
 
-  
+
     [Command]
     public void SendAttackType(CurrentAttackType currentAttackType)
     {
@@ -203,40 +203,136 @@ public class PlayerController : ObjectController
                 SetShootingParameter(true);
                 yield return new WaitForSeconds(BulletIntervalTime);
 
-                var direction = new Vector3(dir.x, 0, dir.z);
-                direction.Normalize();
+
+
+
+
+
+
 
                 string name = "";
                 Vector3 pos = Vector3.zero;
-                if(currentAttackType== CurrentAttackType.Ulti)
+                Vector3 tempDir=Vector3.zero;
+                if (currentAttackType == CurrentAttackType.Ulti)
                 {
+
+                    var direction = new Vector3(dir.x, 0, dir.z);
+                    direction.Normalize();
+
+
+                    //tempDir = new Vector3(dir.x, 0, dir.z);
+
+                    //tempDir.Normalize();
 
                     name = attack.UltiAttackBullet.transform.name;
-                    pos = transform.position + (direction * spawnPoint[i % spawnPoint.Length].x) 
-                                            + (Vector3.up * spawnPoint[i % spawnPoint.Length].y ) 
-                                            +  (direction *  spawnPoint[i % spawnPoint.Length].z ) ;
+                    pos = transform.position
+                                           + (direction * spawnPoint[i % spawnPoint.Length].x)
+                                            + (Vector3.up * spawnPoint[i % spawnPoint.Length].y)
+                                            + (direction * spawnPoint[i % spawnPoint.Length].z);
 
 
-              //      Debug.Log("targetPos: " + (direction * spawnPoint[i % spawnPoint.Length].x + direction * spawnPoint[i % spawnPoint.Length].z));
 
-
-                    // pos = transform.position + Vector3.up * spawnPoint[i % spawnPoint.Length].y +  StartPosOffSet2(dir,radialOffset);
-                    //   Debug.Log("pos y  : " +  spawnPoint[i % spawnPoint.Length].y);  
                 }
-                else if(currentAttackType == CurrentAttackType.Basic)
+                else if (currentAttackType == CurrentAttackType.Basic)
                 {
 
+                    var offsetVector = Vector3.Cross(Vector3.up, dir);
+                    offsetVector.Normalize();
+
+                    //tempDir = Vector3.Cross(Vector3.up, dir);
+                    //tempDir.Normalize();
+
+
                     name = attack.BasicAttackBullet.transform.name;
-                    pos = transform.position + direction * spawnPoint[i % spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + direction * (spawnPoint[i % spawnPoint.Length].z );
+                    pos = transform.position
+                        + offsetVector * spawnPoint[i % spawnPoint.Length].x
+                        + transform.up * spawnPoint[i % spawnPoint.Length].y
+                        + dir * (spawnPoint[i % spawnPoint.Length].z);
+                    // pos = transform.position + direction * spawnPoint[i % spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + direction * (spawnPoint[i % spawnPoint.Length].z );
                 }
 
+
+                var spawnedBullet = ObjectPooler.Instance.Get(name, pos, Quaternion.Euler(0, CalculationManager.GetAngle(dir), 0)).GetComponent<Throwable>();
+
+                spawnedBullet.Init("Debug User " + netId, netId, 0, true);
+
+
+                tempDir = new Vector3(dir.x, 0, dir.z);
+
+                tempDir.Normalize();
+
+                var targetPos = new Vector3(pos.x, 0, pos.z);
+                var playerPos = new Vector3(transform.position.x, 0, transform.position.z);
+
+
+                var dirToTarget = targetPos - playerPos;
+
+                //dir yerine tempDir olabilir. 
+                var Dot = Vector3.Dot(tempDir, dirToTarget);
+
+                var ex = tempDir * Dot;
+
                 
-                var spawnedBullet = ObjectPooler.Instance.Get(name, pos , Quaternion.Euler(0, CalculationManager.GetAngle(dir), 0)).GetComponent<Throwable>();
-           
-                spawnedBullet.Init("Debug User " + netId, netId,0,true);
-                spawnedBullet.Throw(dir,Range, offSetZvalue, offSetYvalue,radialOffset);
+                var relativePos = transform.InverseTransformPoint(playerPos + ex);
+                var value = 0f;
+               
+                var simpleZOffSet = value;
+
+
+                if (relativePos.z > 0)
+                {
+                    value = relativePos.magnitude;
+                    simpleZOffSet = -value;
+
+                }
+                else
+                {
+                    value = -relativePos.magnitude;
+                    simpleZOffSet = Mathf.Abs(value);
+                }
+
+                Debug.Log("value:" + value);
+                var startPosition = playerPos + ex/*+ offsetVector * localHorizontalOffset + direction * radialOffset*/;
+
+
+
+
+                      GameObject result =  gameObject.CreatePrimitiveObject(Vector3.zero,Color.green, .4f);
+
+                //   result.transform.position =new Vector3( Vector3.Project(a, dir).x,0, Vector3.Project(a, dir).z);
+                    result.transform.position = startPosition;
+                //   Debug.DrawRay(tosun.transform.position, result.transform.position, Color.blue,100f);
+
+                //   var relativePos = tosun.transform.InverseTransformPoint(result.transform.position);
+                //var value = 0f;
+
+                //if (relativePos.z > 0)
+                //{
+                //    value = relativePos.magnitude;
+
+                //}
+                //else
+                //{
+                //    value = -relativePos.magnitude;
+
+                //}
+
+                //Debug.Log("value:" + value);
+
+
+
+
+
+
+
+
+
+                //  Debug.DrawRay(d)
+
+                //     Debug.Log("distance: " + simpleZOffSet);
+                  spawnedBullet.Throw(dir, Range, offSetZvalue+  simpleZOffSet, offSetYvalue, radialOffset);
                 NetworkServer.Spawn(spawnedBullet.gameObject);
-                OnBulletObjectSpawned(spawnedBullet);   
+                OnBulletObjectSpawned(spawnedBullet);
 
                 currentBulletCount--;
                 // Debug.Log($"Shoot, currentBulletCount:{currentBulletCount}");
@@ -276,7 +372,7 @@ public class PlayerController : ObjectController
     /// <summary>
     /// this method must call from server
     /// </summary>
-  
+
 
     public void RotateSpine(float value)
     {
@@ -296,7 +392,7 @@ public class PlayerController : ObjectController
     public override void HealthChanged(int health)
     {
         base.HealthChanged(health);
-         playerUIHandler.ChangeHealth(health);
+        playerUIHandler.ChangeHealth(health);
     }
 
     public void EnergyChanged(float energyAmount)
@@ -306,7 +402,7 @@ public class PlayerController : ObjectController
 
     public void SetLowerBodyAnimation(Vector3 dir)
     {
-        attackDir= CalculateVectors(dir);
+        attackDir = CalculateVectors(dir);
 
     }
     public Vector3 CalculateVectors(Vector3 dir)
@@ -395,7 +491,7 @@ public class PlayerController : ObjectController
     {
         base.Death();
         MatchNetworkManager.Instance.Respawn(this);
-     
+
     }
 
 
@@ -404,12 +500,12 @@ public class PlayerController : ObjectController
     {
 
         base.DeathRPC();
-    
+
         // TODO: show death panel if localplayer
         if (netIdentity.isLocalPlayer)
         {
             infoPopup = InfoPopup.Show("Loser! You will respawn in 3 second.");
-       
+
         }
     }
     [ClientRpc]

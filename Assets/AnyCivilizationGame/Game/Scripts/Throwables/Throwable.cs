@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Throwable : NetworkBehaviour
 {
-    protected float speed= .2f;
+    public float speed= .2f;
 
     private Coroutine throwingCoroutine;
     protected float movemenTime = 0;
@@ -170,22 +170,25 @@ public class Throwable : NetworkBehaviour
 
 
 
-      //  #region SpawnObject
-      //  float x1 = v0 * time * Mathf.Cos(angle);
-      //// Debug.Log("direction:" + direction);
-      //  float y1 = v0 * time * Mathf.Sin(angle) - (1f / 2f) * -Physics.gravity.y * Mathf.Pow(time, 2);
-      //  y1 = (float)Math.Round(y1, 4);
-      //  var upValue2 = projectileType == ProjectileType.Parabolic ? (Vector3.up * y1) : Vector3.zero;
+        //  #region SpawnObject
+          float x1 = v0 * t * Mathf.Cos(angle);
+        //// Debug.Log("direction:" + direction);
+          float y1 = v0 * t * Mathf.Sin(angle) - (1f / 2f) * -Physics.gravity.y * Mathf.Pow(t, 2);
+          y1 = (float)Math.Round(y1, 4);
+          var upValue2 = projectileType == ProjectileType.Parabolic ? (Vector3.up * y1) : Vector3.zero;
 
-      //  GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-      //  //Debug.Log("1: " + direction * x1);
-      //  //Debug.Log("2: " + upValue2);
-      // //Debug.Log("distance: " + Vector3.Distance(startPos, startPos + direction * x1/* + upValue2*/));
+        //  GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //  //Debug.Log("1: " + direction * x1);
+        //  //Debug.Log("2: " + upValue2);
+      //  Debug.Log("distance: " + Vector3.Distance(startPos, startPos + direction * x1 + upValue2));
 
-      //  go.transform.position = startPos + direction * x1 + upValue2;
-      //  go.transform.localScale = Vector3.one * .4f;
-      //  go.transform.GetComponent<Renderer>().material.color = Color.red;
-      //  #endregion
+        //  go.transform.position = startPos + direction * x1 + upValue2;
+        //  go.transform.localScale = Vector3.one * .4f;
+        //  go.transform.GetComponent<Renderer>().material.color = Color.red;
+        //  #endregion
+
+   //    gameObject.CreatePrimitiveObject(startPos + direction * x1 + upValue2, .4f);
+
 
 
         while (t < time)
@@ -211,10 +214,11 @@ public class Throwable : NetworkBehaviour
             yield return null;
 
         }
-      
+     //   gameObject.CreatePrimitiveObject(startPos + direction * x1 + upValue2, .4f);
+//
         //Destroy(go, 1f);
         //burası hedefe vardığında bir kez çalışır.
-           OnArrived();
+        OnArrived();
 
     }
     public Vector3 StartPosOffSet2(Vector3 dir, float radialOffSet)
