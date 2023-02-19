@@ -22,17 +22,17 @@ public class VectorTest : MonoBehaviour
 
         var ex = player.transform.forward * Dot;
 
-        var relativePos = player.transform.InverseTransformPoint(playerPos + ex);
+      //  var relativePos = player.transform.InverseTransformPoint(playerPos + ex);
         var value = 0f;
 
-        if (relativePos.z > 0)
+        if (Dot > 0)
         {
-            value = relativePos.magnitude;
+            value = ex.magnitude;
 
         }
         else
         {
-            value = -relativePos.magnitude;
+            value = -ex.magnitude;
 
         }
 

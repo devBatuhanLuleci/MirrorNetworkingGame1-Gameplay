@@ -124,6 +124,8 @@ public class Throwable : NetworkBehaviour
         Vector3 groundDir = new Vector3(dir.x, 0, dir.z);
         //float dist = Mathf.Abs(/*playerController.BulletSpawnPoints[2].spawnPoint.z */-0.4f  - /*radialOffset*/0.6f);
 
+                 //    Debug.Log("   offSetZvalue: "+  (groundDir.magnitude * (Range)+ offSetZValue  ));
+
         var targetPos = new Vector3(groundDir.magnitude * (Range)+ offSetZValue, /*dir.y*/ -offSetYValue, 0);
      
       //  var targetPos = new Vector3(dir.magnitude * Range + (offSetZValue),  -transform.position.y, 0);
@@ -170,13 +172,15 @@ public class Throwable : NetworkBehaviour
 
 
 
+
         //  #region SpawnObject
-          float x1 = v0 * t * Mathf.Cos(angle);
+        float x1 = v0 * time * Mathf.Cos(angle);
         //// Debug.Log("direction:" + direction);
-          float y1 = v0 * t * Mathf.Sin(angle) - (1f / 2f) * -Physics.gravity.y * Mathf.Pow(t, 2);
+          float y1 = v0 * time * Mathf.Sin(angle) - (1f / 2f) * -Physics.gravity.y * Mathf.Pow(time, 2);
           y1 = (float)Math.Round(y1, 4);
           var upValue2 = projectileType == ProjectileType.Parabolic ? (Vector3.up * y1) : Vector3.zero;
 
+      //  gameObject.CreatePrimitiveObject(startPos + direction * x1 + upValue2, Color.black, 0.4f);
         //  GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         //  //Debug.Log("1: " + direction * x1);
         //  //Debug.Log("2: " + upValue2);
@@ -295,6 +299,7 @@ public class Throwable : NetworkBehaviour
 
         //CalculatePathWithHeight(dir.normalized * targetPos.magnitude , height, out v0, out angle, out time);
 
+       
         CalculatePathWithHeight(dir.normalized * targetPos.magnitude, height, out v0, out angle, out time);
           
           

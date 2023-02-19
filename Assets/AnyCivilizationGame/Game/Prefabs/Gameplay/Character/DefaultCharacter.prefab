@@ -1739,7 +1739,7 @@ MonoBehaviour:
   playerUIHandler: {fileID: 9098212380682637946}
   PlayerAnimatorController: {fileID: 0}
   AttackTurnSpeed: 0.25
-  ClampedAttackJoystickOffset: 0.02
+  ClampedAttackJoystickOffset: 0.2
   BulletSpawnPoints:
   - SpawnPointName: LeftSpawnPoint
     spawnPoint: {x: -0.55, y: 1, z: 0.8}

@@ -15,7 +15,8 @@ public class Ellen : PlayerController
     {
        
 
-        ZValue = Mathf.Abs(BulletSpawnPoints[2].spawnPoint.z  -radialOffset);
+    //    ZValue = Mathf.Abs(BulletSpawnPoints[2].spawnPoint.z  -radialOffset);
+        ZValue = Mathf.Abs(-radialOffset);
         YValue = Mathf.Abs(BulletSpawnPoints[2].spawnPoint.y);
 
         base.Fire(isAutoattack, dir);
@@ -24,7 +25,7 @@ public class Ellen : PlayerController
         {
             case CurrentAttackType.Basic:
 
-                SpawnBullet(new Vector3[] { BulletSpawnPoints[0].spawnPoint, BulletSpawnPoints[1].spawnPoint }, dir.normalized, BulletCount, BulletIntervalTime);
+                SpawnBullet(new Vector3[] { BulletSpawnPoints[0].spawnPoint, BulletSpawnPoints[1].spawnPoint }, dir.normalized, BulletCount, BulletIntervalTime, ZValue,0);
 
                 break;
             case CurrentAttackType.Ulti:

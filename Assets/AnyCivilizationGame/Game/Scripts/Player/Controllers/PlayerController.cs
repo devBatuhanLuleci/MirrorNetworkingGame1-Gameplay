@@ -273,34 +273,41 @@ public class PlayerController : ObjectController
                 var ex = tempDir * Dot;
 
                 
-                var relativePos = transform.InverseTransformPoint(playerPos + ex);
+
+                //var relativePos = transform.InverseTransformPoint(playerPos + ex);
                 var value = 0f;
                
-                var simpleZOffSet = value;
 
 
-                if (relativePos.z > 0)
+                if (Dot > 0)
                 {
-                    value = relativePos.magnitude;
-                    simpleZOffSet = -value;
+                    Debug.Log("büyüğüm");
+
+                    value = -ex.magnitude;
+                    
 
                 }
                 else
                 {
-                    value = -relativePos.magnitude;
-                    simpleZOffSet = Mathf.Abs(value);
+
+                    Debug.Log("küçüküm");
+
+                    value = Mathf.Abs( -ex.magnitude);
+                  
                 }
 
-                Debug.Log("value:" + value);
+                var simpleZOffSet = value;
+                Debug.Log("value" + simpleZOffSet);
+
                 var startPosition = playerPos + ex/*+ offsetVector * localHorizontalOffset + direction * radialOffset*/;
 
 
 
 
-                      GameObject result =  gameObject.CreatePrimitiveObject(Vector3.zero,Color.green, .4f);
+                    //  GameObject result =  gameObject.CreatePrimitiveObject(Vector3.zero,Color.green, .4f);
 
                 //   result.transform.position =new Vector3( Vector3.Project(a, dir).x,0, Vector3.Project(a, dir).z);
-                    result.transform.position = startPosition;
+                  //  result.transform.position = startPosition;
                 //   Debug.DrawRay(tosun.transform.position, result.transform.position, Color.blue,100f);
 
                 //   var relativePos = tosun.transform.InverseTransformPoint(result.transform.position);
@@ -329,8 +336,9 @@ public class PlayerController : ObjectController
 
                 //  Debug.DrawRay(d)
 
-                //     Debug.Log("distance: " + simpleZOffSet);
-                  spawnedBullet.Throw(dir, Range, offSetZvalue+  simpleZOffSet, offSetYvalue, radialOffset);
+                     Debug.Log($"   offSetZvalue: {offSetZvalue}  simpleZOffSet: {simpleZOffSet} " );
+                
+                  spawnedBullet.Throw(dir, Range, offSetZvalue +  simpleZOffSet, offSetYvalue, radialOffset);
                 NetworkServer.Spawn(spawnedBullet.gameObject);
                 OnBulletObjectSpawned(spawnedBullet);
 
