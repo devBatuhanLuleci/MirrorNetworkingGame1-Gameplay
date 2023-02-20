@@ -27,6 +27,8 @@ public class InputHandler : Singleton<InputHandler>
     {
         PlayerController = player;
         gameObject.SetActive(true);
+        DeactivateUlti();
+
     }
 
     protected override void Awake()
@@ -39,7 +41,6 @@ public class InputHandler : Singleton<InputHandler>
 
         base.Awake();
         gameObject.SetActive(false);
-
 
 
 
@@ -78,6 +79,19 @@ public class InputHandler : Singleton<InputHandler>
         //   UltiAttack();
         Attack();
     }
+    public void DeactivateUlti()
+    {
+
+        AttackUltiJoystick.Deactivate();
+    }
+    public void ActivateUlti()
+    {
+        AttackUltiJoystick.Activate();
+
+    }
+
+
+
     public void AttackButtonUp(Joystick joystick)
     {
         if (joystick.joystickButtonType == Joystick.JoystickButtonType.ultiAttack || joystick.joystickButtonType == Joystick.JoystickButtonType.basicAttack)

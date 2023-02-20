@@ -8,7 +8,7 @@ using System;
 public class Bullet : Throwable, INetworkPooledObject
 {
     public int damage = 5;
-   
+
 
 
 
@@ -24,7 +24,7 @@ public class Bullet : Throwable, INetworkPooledObject
     {
         //  Debug.Log("rotangle: " + rotAngle);
         base.OnObjectSpawn();
-        
+
     }
     /// <summary>
     /// This function sets the rotation of bullet when it is spawn.
@@ -37,17 +37,27 @@ public class Bullet : Throwable, INetworkPooledObject
         if (other.TryGetComponent<PlayerController>(out var otherPlayerController) && CanAttack(otherPlayerController))
         {
             otherPlayerController.TakeDamage(damage);
-          //  gameObject.SetActive(false);
+
+             PlayerController OurPlayer = MatchNetworkManager.Instance.GetPlayerByNetID(RootNetId);
+
+            // if (OurPlayer != null)
+            ActivateUltiOnTargetObject(OurPlayer.netIdentity.connectionToClient, OurPlayer);
+
+            //  gameObject.SetActive(false);
             Debug.Log("some one hited by " + OwnerName);
             NetworkServer.UnSpawn(gameObject);
             ReturnHandler();
 
+            //foreach (var player in MatchNetworkManager.Instance.players)
+            //{
+            //    Debug.Log($"  1: { player.Key}       2: { player.Value}");
+            //}
         }
-     
-            if (other.TryGetComponent<IDamagable>(out IDamagable damagableObject)/* && CanAttack(damagableObject.)*/)
+
+        if (other.TryGetComponent<IDamagable>(out IDamagable damagableObject)/* && CanAttack(damagableObject.)*/)
         {
             //TODO: buraya girmiyor. bak
-          //  Debug.Log("hello hawagi ");
+            //  Debug.Log("hello hawagi ");
             if (other.TryGetComponent<FatboyTurret>(out FatboyTurret fatboyTurret))
             {
 
@@ -56,7 +66,7 @@ public class Bullet : Throwable, INetworkPooledObject
                     //TODO: burada server'da nul referance hatası alıyoruz düzelt.
                     damagableObject.GetDamage(10);
                     // otherPlayerController.TakeDamage(damage);
-                  //  gameObject.SetActive(false);
+                    //  gameObject.SetActive(false);
                     // Debug.Log("some one hited by " + OwnerName);
                     NetworkServer.UnSpawn(gameObject);
                     ReturnHandler();
@@ -65,11 +75,20 @@ public class Bullet : Throwable, INetworkPooledObject
 
             }
 
-         
+
 
         }
 
     }
+    [TargetRpc]
+    public void ActivateUltiOnTargetObject(NetworkConnection target, PlayerController player)
+    {
+       //TODO : Burada ultiyi aktive ediyoruz değiştir. burada kullanıcının attack barını doldur.
+        player.ActivateUlti();
+        // This will appear on the opponent's client, not the attacking player's
+        Debug.Log("Magic Damage  sb =");
+    }
+
     private bool isEnemy(FatboyTurret fatboyTurret)
     {
         var isEnemy = false;

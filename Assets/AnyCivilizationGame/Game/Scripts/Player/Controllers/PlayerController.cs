@@ -27,6 +27,11 @@ public class PlayerController : ObjectController
     public PlayerUIHandler playerUIHandler;
     [HideInInspector]
     public Animator PlayerAnimatorController;
+
+    public bool isUltiThrowable = false;
+
+
+
     public float AttackTurnSpeed = 0.25f;
     public float ClampedAttackJoystickOffset = 0.005f;
     public List<BulletSpawnPoints> BulletSpawnPoints;
@@ -127,7 +132,7 @@ public class PlayerController : ObjectController
     public void SpawnBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime, float offSetZvalue = 0, float offSetYvalue = 0)
     {
         var lobbyPlayer = ACGDataManager.Instance.LobbyPlayer;
-
+        MatchNetworkManager.Instance.GetAllPlayerList();    
         energy.CastEnergy();
         StartCoroutine(SpawnIntervalBullet(spawnPoint, dir, BulletCount, BulletIntervalTime, offSetZvalue, offSetYvalue));
 
@@ -212,7 +217,7 @@ public class PlayerController : ObjectController
 
                 string name = "";
                 Vector3 pos = Vector3.zero;
-                Vector3 tempDir=Vector3.zero;
+                Vector3 tempDir = Vector3.zero;
                 if (currentAttackType == CurrentAttackType.Ulti)
                 {
 
@@ -272,73 +277,35 @@ public class PlayerController : ObjectController
 
                 var ex = tempDir * Dot;
 
-                
+
 
                 //var relativePos = transform.InverseTransformPoint(playerPos + ex);
                 var value = 0f;
-               
+
 
 
                 if (Dot > 0)
                 {
-                    Debug.Log("büyüğüm");
-
+             
                     value = -ex.magnitude;
-                    
+
 
                 }
                 else
                 {
 
-                    Debug.Log("küçüküm");
+                 
+                    value = Mathf.Abs(-ex.magnitude);
 
-                    value = Mathf.Abs( -ex.magnitude);
-                  
                 }
 
                 var simpleZOffSet = value;
-                Debug.Log("value" + simpleZOffSet);
-
+             
                 var startPosition = playerPos + ex/*+ offsetVector * localHorizontalOffset + direction * radialOffset*/;
 
 
-
-
-                    //  GameObject result =  gameObject.CreatePrimitiveObject(Vector3.zero,Color.green, .4f);
-
-                //   result.transform.position =new Vector3( Vector3.Project(a, dir).x,0, Vector3.Project(a, dir).z);
-                  //  result.transform.position = startPosition;
-                //   Debug.DrawRay(tosun.transform.position, result.transform.position, Color.blue,100f);
-
-                //   var relativePos = tosun.transform.InverseTransformPoint(result.transform.position);
-                //var value = 0f;
-
-                //if (relativePos.z > 0)
-                //{
-                //    value = relativePos.magnitude;
-
-                //}
-                //else
-                //{
-                //    value = -relativePos.magnitude;
-
-                //}
-
-                //Debug.Log("value:" + value);
-
-
-
-
-
-
-
-
-
-                //  Debug.DrawRay(d)
-
-                     Debug.Log($"   offSetZvalue: {offSetZvalue}  simpleZOffSet: {simpleZOffSet} " );
-                
-                  spawnedBullet.Throw(dir, Range, offSetZvalue +  simpleZOffSet, offSetYvalue, radialOffset);
+           
+                spawnedBullet.Throw(dir, Range, offSetZvalue + simpleZOffSet, offSetYvalue, radialOffset);
                 NetworkServer.Spawn(spawnedBullet.gameObject);
                 OnBulletObjectSpawned(spawnedBullet);
 
@@ -420,6 +387,14 @@ public class PlayerController : ObjectController
 
         //Debug.Log("attackDir: " + dir);
         return dir;
+
+    }
+
+  
+    public void ActivateUlti()
+    {
+
+        FindObjectOfType<InputHandler>().ActivateUlti();
 
     }
     //public void DoSomething()

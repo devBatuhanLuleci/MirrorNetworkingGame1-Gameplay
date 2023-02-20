@@ -302,7 +302,7 @@ public class FatboyTurret : Throwable,IDamagable
     }
     public IEnumerator Shoot(float waitTime)
     {
-        NetworkAnimator.SetTrigger("Shoot");
+        NetworkAnimator.SetTrigger("Fly");
         Debug.Log("SHOOT!");
         SpawnBullet(new Vector3[] { TurretRotatePivot.position }, transform.forward, 1, .1f);
 

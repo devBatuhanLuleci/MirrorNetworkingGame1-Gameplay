@@ -25,6 +25,7 @@ public class PlayerAttack : NetworkBehaviour
     public enum ShootingState { Idle, Aiming, Reloading, Cancelled }
 
 
+
     [SyncVar]
     public ShootingState shootingState;
     [SyncVar/*(hook =nameof(PlayAttackAnimation))*/]
