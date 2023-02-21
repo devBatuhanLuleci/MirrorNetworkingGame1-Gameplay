@@ -8,9 +8,12 @@ using UnityEngine;
 public class InputHandler : Singleton<InputHandler>
 {
     #region Public Fields
-    [SerializeField] private Joystick MovementJoystick;
-    [SerializeField] private Joystick AttackBasicJoystick;
-    [SerializeField] private Joystick AttackUltiJoystick;
+    [HideInInspector]
+    public Joystick MovementJoystick;
+    [HideInInspector]
+    public Joystick AttackBasicJoystick;
+    [HideInInspector]
+    public Joystick AttackUltiJoystick;
 
     public enum AttackType { Basic, Ulti }
     public AttackType attackType = AttackType.Basic;
@@ -27,8 +30,12 @@ public class InputHandler : Singleton<InputHandler>
     {
         PlayerController = player;
         gameObject.SetActive(true);
-        DeactivateUlti();
+        JoystickCanvas joystickCanvas = GameUIManager.Instance.joystickCanvas.GetComponent<JoystickCanvas>();
 
+        joystickCanvas.joystickCanvasUIController.DeactivateUlti();
+                MovementJoystick = joystickCanvas.MovementJoystick;
+        AttackBasicJoystick = joystickCanvas.AttackBasicJoystick;
+        AttackUltiJoystick = joystickCanvas.AttackUltiJoystick;
     }
 
     protected override void Awake()
@@ -79,16 +86,6 @@ public class InputHandler : Singleton<InputHandler>
         //   UltiAttack();
         Attack();
     }
-    public void DeactivateUlti()
-    {
-
-        AttackUltiJoystick.Deactivate();
-    }
-    public void ActivateUlti()
-    {
-        AttackUltiJoystick.Activate();
-
-    }
 
 
 
@@ -98,7 +95,7 @@ public class InputHandler : Singleton<InputHandler>
         {
 
             Debug.Log("woww");
-        
+
             var targetingDirection = Vector2.zero;
 
             if (joystick.joystickButtonType == Joystick.JoystickButtonType.basicAttack)

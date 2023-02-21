@@ -56,7 +56,7 @@ public class NetworkedGameManager : NetworkBehaviour
     private void SetupClient()
     {
         // TODO: open character select panel
-
+        //    GameUIManager.Instance.DeactivateJoystickButtons();
         GameUIManager.Instance.SelectCharacter();
         ClientStarted();
         CmdReady();
@@ -82,8 +82,14 @@ public class NetworkedGameManager : NetworkBehaviour
     public void StartGame()
     {
         Info("StartGame");
+        OnGameStarted();
     }
+    private void OnGameStarted()
+    {
+        GameUIManager.Instance.DeactivateUltiButton();
 
+
+    }
     public void Info(string msg)
     {
         msg = "[MatchNetworkManager]: " + msg;

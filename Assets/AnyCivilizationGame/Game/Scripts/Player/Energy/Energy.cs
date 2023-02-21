@@ -24,7 +24,11 @@ public class Energy : NetworkBehaviour
     {
         playerController = GetComponent<PlayerController>();
 
-        CurrentEnergyAmount = TotalEnergyAmount;
+        if (netIdentity.isServer)
+        {
+
+            CurrentEnergyAmount = TotalEnergyAmount;
+        }
     }
 
 

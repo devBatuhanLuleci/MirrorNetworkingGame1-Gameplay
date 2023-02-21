@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JoyistickCanvas : Panel
+public class FatboyEnergy : Energy
 {
+
+
+
 
 }

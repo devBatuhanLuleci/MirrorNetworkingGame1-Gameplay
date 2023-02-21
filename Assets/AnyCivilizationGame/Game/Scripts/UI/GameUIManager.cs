@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,6 +38,7 @@ public class GameUIManager : Panel
     public void SelectCharacter()
     {
         Show(characterSelect);
+        joystickCanvas.Close();
     }
 
     internal void CharacterSlected()
@@ -45,5 +46,23 @@ public class GameUIManager : Panel
         joystickCanvas.Show();
         if (currentPanel != null)
             currentPanel.Close();
+    }
+   
+    public void DeactivateUltiButton()
+    {
+        if (joystickCanvas.TryGetComponent(out JoystickCanvasUIController joystickUIController))
+        {
+            joystickUIController.DeactivateUlti();
+        }
+
+    }
+    public void ActivateUltiButton()
+    {
+        if (joystickCanvas.TryGetComponent(out JoystickCanvasUIController joystickUIController))
+        {
+
+            joystickUIController.ActivateUlti();
+        }
+
     }
 }

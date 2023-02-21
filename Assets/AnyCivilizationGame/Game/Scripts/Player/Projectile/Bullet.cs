@@ -41,8 +41,8 @@ public class Bullet : Throwable, INetworkPooledObject
              PlayerController OurPlayer = MatchNetworkManager.Instance.GetPlayerByNetID(RootNetId);
 
             // if (OurPlayer != null)
-            ActivateUltiOnTargetObject(OurPlayer.netIdentity.connectionToClient, OurPlayer);
-
+        //    ActivateUltiOnTargetObject(OurPlayer.netIdentity.connectionToClient, OurPlayer);
+            OurPlayer.ultimateSkill.IncreaseCurrentUltimateFillAmount(OurPlayer.netIdentity.connectionToClient,10);
             //  gameObject.SetActive(false);
             Debug.Log("some one hited by " + OwnerName);
             NetworkServer.UnSpawn(gameObject);
@@ -80,14 +80,14 @@ public class Bullet : Throwable, INetworkPooledObject
         }
 
     }
-    [TargetRpc]
-    public void ActivateUltiOnTargetObject(NetworkConnection target, PlayerController player)
-    {
-       //TODO : Burada ultiyi aktive ediyoruz değiştir. burada kullanıcının attack barını doldur.
-        player.ActivateUlti();
-        // This will appear on the opponent's client, not the attacking player's
-        Debug.Log("Magic Damage  sb =");
-    }
+    //[TargetRpc]
+    //public void ActivateUltiOnTargetObject(NetworkConnection target, PlayerController player)
+    //{
+    //   //TODO : Burada ultiyi aktive ediyoruz değiştir. burada kullanıcının attack barını doldur.
+    //    player.ActivateUlti();
+    //    // This will appear on the opponent's client, not the attacking player's
+    //    Debug.Log("Magic Damage  sb =");
+    //}
 
     private bool isEnemy(FatboyTurret fatboyTurret)
     {

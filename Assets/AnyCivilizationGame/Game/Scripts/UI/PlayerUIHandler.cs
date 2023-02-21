@@ -25,12 +25,24 @@ public class PlayerUIHandler : ObjectUIHandler
     [SerializeField]
     private Image EnergyBarGray;
 
+
+
+
     #endregion
     [SerializeField]
     private Image EnergyBarOrange;
 
     [SerializeField]
     private Image EnergyBarRed;
+
+
+
+
+    [SerializeField]
+    private Image ULtimateFillImage;
+
+
+
 
     #region ShakeParameters
     public bool isShaking = false;
@@ -147,6 +159,23 @@ public class PlayerUIHandler : ObjectUIHandler
 
         if (fillAmount > perBarAmount * value)
             EnergyBarOrange.fillAmount = perBarAmount * value;
+
+
+
+
+    }
+    public void ChangeUltimateFillRate(float fillAmount)
+    {
+
+      //  float perBarAmount = 0.333f;
+
+       // int value = Mathf.FloorToInt(fillAmount / perBarAmount);
+
+        ULtimateFillImage.fillAmount = (fillAmount/100f);
+
+      //  if (fillAmount > perBarAmount * value)
+        //    EnergyBarOrange.fillAmount = perBarAmount * value;
+
 
 
 

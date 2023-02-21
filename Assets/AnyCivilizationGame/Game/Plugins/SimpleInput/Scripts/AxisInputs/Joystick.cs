@@ -88,7 +88,9 @@ namespace SimpleInputNamespace
 		public void Deactivate()
         {
 
+
 			goGraphic.raycastTarget = false;
+
 		}
 		public void Activate()
         {

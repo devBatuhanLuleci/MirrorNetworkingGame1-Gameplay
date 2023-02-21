@@ -19,6 +19,9 @@ public class PlayerController : ObjectController
     public Energy energy;
 
 
+    [HideInInspector]
+    public UltimateSkill ultimateSkill;
+
     private InfoPopup infoPopup;
     #endregion
 
@@ -68,9 +71,6 @@ public class PlayerController : ObjectController
 
 
 
-
-
-
     private float TrailDistance;
 
 
@@ -80,9 +80,9 @@ public class PlayerController : ObjectController
         base.Awake();
         movement = GetComponent<PlayerMovement>();
         attack = GetComponent<PlayerAttack>();
-
         energy = GetComponent<Energy>();
         playerUIHandler = GetComponent<PlayerUIHandler>();
+        ultimateSkill = GetComponent<UltimateSkill>();
 
 
     }
@@ -132,7 +132,7 @@ public class PlayerController : ObjectController
     public void SpawnBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime, float offSetZvalue = 0, float offSetYvalue = 0)
     {
         var lobbyPlayer = ACGDataManager.Instance.LobbyPlayer;
-        MatchNetworkManager.Instance.GetAllPlayerList();    
+        MatchNetworkManager.Instance.GetAllPlayerList();
         energy.CastEnergy();
         StartCoroutine(SpawnIntervalBullet(spawnPoint, dir, BulletCount, BulletIntervalTime, offSetZvalue, offSetYvalue));
 
@@ -188,7 +188,12 @@ public class PlayerController : ObjectController
 
 
     }
+    public void DeactivateUlti()
+    {
 
+        ultimateSkill.ResetCurrentFillAmount();
+        DeactivateUltiUI(netIdentity.connectionToClient);
+    }
     public IEnumerator SpawnIntervalBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime, float offSetZvalue = 0, float offSetYvalue = 0)
     {
         //TODO : burası fire  loop animasyonu entegre edileceği zaman değiecek.
@@ -220,7 +225,7 @@ public class PlayerController : ObjectController
                 Vector3 tempDir = Vector3.zero;
                 if (currentAttackType == CurrentAttackType.Ulti)
                 {
-
+                    DeactivateUlti();
                     var direction = new Vector3(dir.x, 0, dir.z);
                     direction.Normalize();
 
@@ -286,7 +291,7 @@ public class PlayerController : ObjectController
 
                 if (Dot > 0)
                 {
-             
+
                     value = -ex.magnitude;
 
 
@@ -294,17 +299,17 @@ public class PlayerController : ObjectController
                 else
                 {
 
-                 
+
                     value = Mathf.Abs(-ex.magnitude);
 
                 }
 
                 var simpleZOffSet = value;
-             
+
                 var startPosition = playerPos + ex/*+ offsetVector * localHorizontalOffset + direction * radialOffset*/;
 
 
-           
+
                 spawnedBullet.Throw(dir, Range, offSetZvalue + simpleZOffSet, offSetYvalue, radialOffset);
                 NetworkServer.Spawn(spawnedBullet.gameObject);
                 OnBulletObjectSpawned(spawnedBullet);
@@ -369,6 +374,15 @@ public class PlayerController : ObjectController
         base.HealthChanged(health);
         playerUIHandler.ChangeHealth(health);
     }
+    public void OnCurrentUltimateFillRateChanged(float ultimateFillRate)
+    {
+        if(GameUIManager.Instance.joystickCanvas.TryGetComponent(out JoystickCanvasUIController joystickCanvasUIController))
+        {
+
+            joystickCanvasUIController.ChangeUltimateFillRate(ultimateFillRate);
+        }
+     
+    }
 
     public void EnergyChanged(float energyAmount)
     {
@@ -390,11 +404,21 @@ public class PlayerController : ObjectController
 
     }
 
-  
-    public void ActivateUlti()
+
+    [TargetRpc]
+    public void ActivateUlti(NetworkConnection target)
     {
 
-        FindObjectOfType<InputHandler>().ActivateUlti();
+        GameUIManager.Instance.ActivateUltiButton();
+
+    }
+    [TargetRpc]
+    public void DeactivateUltiUI(NetworkConnection target)
+    {
+
+        GameUIManager.Instance.DeactivateUltiButton();
+
+
 
     }
     //public void DoSomething()

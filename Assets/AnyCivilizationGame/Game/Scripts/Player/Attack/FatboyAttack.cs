@@ -2,10 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EllenEnergy : Energy
+public class FatboyAttack : PlayerAttack
 {
-
-
-
-
+   
 }

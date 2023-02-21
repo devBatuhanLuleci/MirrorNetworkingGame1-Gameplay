@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ellen : PlayerController
+public class Fatboy : PlayerController
 {
 
     public GameObject UltiTurret;

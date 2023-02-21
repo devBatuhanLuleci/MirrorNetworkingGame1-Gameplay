@@ -1573,6 +1573,7 @@ GameObject:
   - component: {fileID: 2062106847119599058}
   - component: {fileID: 9098212380682637946}
   - component: {fileID: 5942264606546606850}
+  - component: {fileID: -7035957365121625340}
   m_Layer: 6
   m_Name: DefaultCharacter
   m_TagString: Untagged
@@ -1735,9 +1736,11 @@ MonoBehaviour:
   health: {fileID: 0}
   attack: {fileID: 0}
   energy: {fileID: 0}
+  ultimateSkill: {fileID: 0}
   SpineRotator: {fileID: 0}
   playerUIHandler: {fileID: 9098212380682637946}
   PlayerAnimatorController: {fileID: 0}
+  isUltiThrowable: 0
   AttackTurnSpeed: 0.25
   ClampedAttackJoystickOffset: 0.2
   BulletSpawnPoints:
@@ -1851,6 +1854,22 @@ MonoBehaviour:
   TotalEnergyAmount: 3
   CurrentEnergyAmount: 0
   fillSpeed: 0.1
+  CurrentFillAmount: 0
+--- !u!114 &-7035957365121625340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6626824536947155891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17942e33b9ee6684b966b14e822966e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  TotalFillAmount: 100
   CurrentFillAmount: 0
 --- !u!1 &6626824537031914590
 GameObject:
