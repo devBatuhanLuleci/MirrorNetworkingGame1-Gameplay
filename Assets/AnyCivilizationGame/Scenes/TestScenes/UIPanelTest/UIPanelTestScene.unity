@@ -1978,7 +1978,7 @@ GameObject:
   - component: {fileID: 268040995}
   - component: {fileID: 268040994}
   m_Layer: 5
-  m_Name: Stats_Button (19)
+  m_Name: Team1_Stats_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2002,8 +2002,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -142.2063, y: -434.5}
-  m_SizeDelta: {x: 285, y: 315}
+  m_AnchoredPosition: {x: -154, y: -434.5}
+  m_SizeDelta: {x: 285, y: 307}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &268040994
 MonoBehaviour:
@@ -3168,8 +3168,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -132}
+  m_SizeDelta: {x: 0, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &330561752
 MonoBehaviour:
@@ -5862,7 +5862,7 @@ GameObject:
   - component: {fileID: 601325497}
   - component: {fileID: 601325496}
   m_Layer: 5
-  m_Name: Stats_Button (11)
+  m_Name: Team1_Stats_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5886,8 +5886,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -142.2063, y: -119.5}
-  m_SizeDelta: {x: 285, y: 315}
+  m_AnchoredPosition: {x: -154, y: -119.5}
+  m_SizeDelta: {x: 285, y: 307}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &601325496
 MonoBehaviour:
@@ -8279,7 +8279,7 @@ GameObject:
   - component: {fileID: 912536027}
   - component: {fileID: 912536026}
   m_Layer: 5
-  m_Name: Stats_Button (12)
+  m_Name: Team2_Stats_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8303,8 +8303,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 142.7937, y: -119.5}
-  m_SizeDelta: {x: 285, y: 315}
+  m_AnchoredPosition: {x: 150, y: -119.5}
+  m_SizeDelta: {x: 285, y: 307}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &912536026
 MonoBehaviour:
@@ -8536,7 +8536,7 @@ GameObject:
   - component: {fileID: 997532074}
   - component: {fileID: 997532073}
   m_Layer: 5
-  m_Name: Stats_Button (3)
+  m_Name: Team1_Stats_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8560,8 +8560,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -142.2063, y: 195.5}
-  m_SizeDelta: {x: 285, y: 315}
+  m_AnchoredPosition: {x: -154, y: 195.5}
+  m_SizeDelta: {x: 285, y: 307}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &997532073
 MonoBehaviour:
@@ -9037,7 +9037,7 @@ GameObject:
   - component: {fileID: 1052258705}
   - component: {fileID: 1052258704}
   m_Layer: 5
-  m_Name: Stats_Button (20)
+  m_Name: Team2_Stats_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9061,8 +9061,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 142.7937, y: -434.5}
-  m_SizeDelta: {x: 285, y: 315}
+  m_AnchoredPosition: {x: 150, y: -434.5}
+  m_SizeDelta: {x: 285, y: 307}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1052258704
 MonoBehaviour:
@@ -9451,8 +9451,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -132}
+  m_SizeDelta: {x: 0, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1091656961
 MonoBehaviour:
@@ -12882,8 +12882,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 712.7937, y: -434.5}
-  m_SizeDelta: {x: 285, y: 315}
+  m_AnchoredPosition: {x: 712.7937, y: -425}
+  m_SizeDelta: {x: 220, y: 240}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1397087138
 MonoBehaviour:
@@ -14039,7 +14039,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -427.2063, y: -425}
+  m_AnchoredPosition: {x: -446, y: -425}
   m_SizeDelta: {x: 220, y: 240}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1486035185
@@ -15878,8 +15878,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 997.7937, y: -434.5}
-  m_SizeDelta: {x: 285, y: 315}
+  m_AnchoredPosition: {x: 997.7937, y: -425}
+  m_SizeDelta: {x: 220, y: 240}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1659289007
 MonoBehaviour:
@@ -18869,7 +18869,7 @@ GameObject:
   - component: {fileID: 1997515528}
   - component: {fileID: 1997515527}
   m_Layer: 5
-  m_Name: Stats_Button (4)
+  m_Name: Team2_Stats_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18893,8 +18893,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 142.7937, y: 195.5}
-  m_SizeDelta: {x: 285, y: 315}
+  m_AnchoredPosition: {x: 150, y: 195.5}
+  m_SizeDelta: {x: 285, y: 307}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1997515527
 MonoBehaviour:
