@@ -26,6 +26,7 @@ namespace SimpleInputNamespace
 
 		public void OnPointerDown( PointerEventData eventData )
 		{
+
 			Listener.OnPointerDown( eventData );
 			pointerId = eventData.pointerId;
 		}

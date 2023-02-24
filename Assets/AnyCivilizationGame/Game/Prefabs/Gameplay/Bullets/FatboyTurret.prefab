@@ -1379,6 +1379,7 @@ MonoBehaviour:
   RootNetId: 0
   projectileType: 1
   NetworkAnimator: {fileID: 3218230185255235510}
+  NetworkAnimationInitSpeed: 0.7
   shoot: 0
   TurretRotatePivot: {fileID: 7997798162607837542}
   BulletThrowPoint: {fileID: 2643898660373022999}

@@ -8,6 +8,7 @@ public class FatboyTurret : Throwable,IDamagable
 {
     private ObjectController objectController;
     public NetworkAnimator NetworkAnimator;
+    public float NetworkAnimationInitSpeed =0.5f;
     public bool shoot = false;
     public Transform TurretRotatePivot;
     public Transform BulletThrowPoint;
@@ -50,11 +51,19 @@ public class FatboyTurret : Throwable,IDamagable
         isLandedSurface = true;
         InitwaitForIt = waitForIt;
         objectController = GetComponent<ObjectController>();
+        // Debug.Log("  NetworkAnimator.animator.speed: " + NetworkAnimator.animator.speed);
 
         turretShootStatus = TurretShootStatus.Setup;
         StartCoroutine(SetupTurret(TurretSetupTime));
 
     }
+    //public override void OnAlmostArrived()
+    //{
+    //    //This method calls when the calculation hit 80 percent of its arrival time.
+    //    base.OnAlmostArrived();
+
+
+    //}
     IEnumerator SetupTurret(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
@@ -93,7 +102,8 @@ public class FatboyTurret : Throwable,IDamagable
                 }
                 //  Debug.Log("Boom");
             }
-            yield return new WaitForEndOfFrame();
+        //    yield return new WaitForEndOfFrame();
+            yield return  null;
 
         }
     }
@@ -285,15 +295,24 @@ public class FatboyTurret : Throwable,IDamagable
     {
         base.OnObjectSpawn();
         ActivateFatBoyTurretAnimation();
+
     }
 
     public void ActivateFatBoyTurretAnimation()
     {
+        Debug.Log("val:" + currentThrowRateValue);
+       
+
+
         if (NetworkAnimator != null)
         {
 
+        //    Debug.Log("hesaplanan değer:" + ((float)NetworkAnimationInitSpeed / (currentThrowRateValue)));
+
+     //      NetworkAnimator.animator.speed = (1f/ currentThrowRateValue);
+        //    Debug.Log("  NetworkAnimator.animator.speed: " + NetworkAnimator.animator.speed);
             Debug.Log($"IsClient : {isClient} , IsServer : {isServer}");
-            NetworkAnimator.SetTrigger("Setup");
+            NetworkAnimator.SetTrigger("Fly");
         }
 
 
@@ -302,7 +321,7 @@ public class FatboyTurret : Throwable,IDamagable
     }
     public IEnumerator Shoot(float waitTime)
     {
-        NetworkAnimator.SetTrigger("Fly");
+        NetworkAnimator.SetTrigger("Shoot");
         Debug.Log("SHOOT!");
         SpawnBullet(new Vector3[] { TurretRotatePivot.position }, transform.forward, 1, .1f);
 

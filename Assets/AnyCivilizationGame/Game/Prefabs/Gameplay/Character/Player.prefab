@@ -1892,8 +1892,9 @@ MonoBehaviour:
   radialOffset: 0.6
   BulletCount: 6
   BulletIntervalTime: 0.1165
-  StartFireAnimationWaitTime: 0.315
+  StartFireBasickAttackAnimationWaitTime: 0.315
   FinishFireAnimationWaitTime: 0.583
+  StartFireUltiAttackAnimationWaitTime: 0.366
   basicAttackType: 0
   ultiAttackType: 1
   currentAttackType: 0
@@ -1951,6 +1952,7 @@ MonoBehaviour:
   EnergyBarGray: {fileID: 1812087662656104925}
   EnergyBarOrange: {fileID: 2012995256201610146}
   EnergyBarRed: {fileID: 229713845479618470}
+  ULtimateFillImage: {fileID: 0}
   isShaking: 0
   duration: 0.8
   strength: {x: 40, y: 0, z: 0}

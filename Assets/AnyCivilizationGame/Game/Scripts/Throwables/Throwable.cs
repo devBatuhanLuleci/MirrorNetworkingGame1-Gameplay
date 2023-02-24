@@ -28,7 +28,7 @@ public class Throwable : NetworkBehaviour
     float v0;
     float angle;
     float time;
-
+  protected  float currentThrowRateValue;
 
     //public void Throw(Vector3[] path)
     //{
@@ -77,6 +77,11 @@ public class Throwable : NetworkBehaviour
 
     }
 
+    //public virtual void OnAlmostArrived()
+    //{
+    //    Debug.Log("80 percent has reached.");
+    //}
+
 
     //IEnumerator Coroutine_Movement(Vector3[] path)
     //{
@@ -120,11 +125,12 @@ public class Throwable : NetworkBehaviour
 
 
 
-
         Vector3 groundDir = new Vector3(dir.x, 0, dir.z);
+
+        currentThrowRateValue = groundDir.magnitude;
         //float dist = Mathf.Abs(/*playerController.BulletSpawnPoints[2].spawnPoint.z */-0.4f  - /*radialOffset*/0.6f);
 
-                 //    Debug.Log("   offSetZvalue: "+  (groundDir.magnitude * (Range)+ offSetZValue  ));
+        //    Debug.Log("   offSetZvalue: "+  (groundDir.magnitude * (Range)+ offSetZValue  ));
 
         var targetPos = new Vector3(groundDir.magnitude * (Range)+ offSetZValue, /*dir.y*/ -offSetYValue, 0);
      
@@ -147,7 +153,10 @@ public class Throwable : NetworkBehaviour
 
     IEnumerator Coroutine_Movement(Vector3 direction, float v0, float angle, float time, float initialVelocity, float radialOffSet, float offSetYValue)
     {
+     
 
+       
+       // Debug.Log("zaman:" + time);
       //  Debug.Log("targetPos: " + direction);
 
       
@@ -174,26 +183,26 @@ public class Throwable : NetworkBehaviour
 
 
         //  #region SpawnObject
-        float x1 = v0 * time * Mathf.Cos(angle);
-        //// Debug.Log("direction:" + direction);
-          float y1 = v0 * time * Mathf.Sin(angle) - (1f / 2f) * -Physics.gravity.y * Mathf.Pow(time, 2);
-          y1 = (float)Math.Round(y1, 4);
-          var upValue2 = projectileType == ProjectileType.Parabolic ? (Vector3.up * y1) : Vector3.zero;
+        //float x1 = v0 * time * Mathf.Cos(angle);
+        ////// Debug.Log("direction:" + direction);
+        //  float y1 = v0 * time * Mathf.Sin(angle) - (1f / 2f) * -Physics.gravity.y * Mathf.Pow(time, 2);
+        //  y1 = (float)Math.Round(y1, 4);
+        //  var upValue2 = projectileType == ProjectileType.Parabolic ? (Vector3.up * y1) : Vector3.zero;
 
-      //  gameObject.CreatePrimitiveObject(startPos + direction * x1 + upValue2, Color.black, 0.4f);
+        //  gameObject.CreatePrimitiveObject(startPos + direction * x1 + upValue2, Color.black, 0.4f);
         //  GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         //  //Debug.Log("1: " + direction * x1);
         //  //Debug.Log("2: " + upValue2);
-      //  Debug.Log("distance: " + Vector3.Distance(startPos, startPos + direction * x1 + upValue2));
+        //  Debug.Log("distance: " + Vector3.Distance(startPos, startPos + direction * x1 + upValue2));
 
         //  go.transform.position = startPos + direction * x1 + upValue2;
         //  go.transform.localScale = Vector3.one * .4f;
         //  go.transform.GetComponent<Renderer>().material.color = Color.red;
         //  #endregion
 
-   //    gameObject.CreatePrimitiveObject(startPos + direction * x1 + upValue2, .4f);
+        //    gameObject.CreatePrimitiveObject(startPos + direction * x1 + upValue2, .4f);
 
-
+        var TotalXPos = (v0 * time * Mathf.Cos(angle));
 
         while (t < time)
         {
@@ -211,6 +220,15 @@ public class Throwable : NetworkBehaviour
             /*go.*/transform.position = startPos + direction * x + upValue;
 
 
+
+            //var rate = (x / TotalXPos) * 100f;
+
+            //if (rate >= 80)
+            //{
+
+
+            //}
+            //Debug.Log("rate: " + rate);
 
          
 

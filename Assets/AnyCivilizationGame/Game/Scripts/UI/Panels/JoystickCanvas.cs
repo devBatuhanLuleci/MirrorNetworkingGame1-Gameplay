@@ -8,7 +8,7 @@ public class JoystickCanvas : Panel
 {
     public Joystick MovementJoystick;
     public Joystick AttackBasicJoystick;
-    public Joystick AttackUltiJoystick;
+    public UltiJoystick AttackUltiJoystick;
 
     [HideInInspector]
     public JoystickCanvasUIController joystickCanvasUIController;

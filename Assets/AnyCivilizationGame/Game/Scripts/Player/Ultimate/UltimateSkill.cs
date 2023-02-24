@@ -9,7 +9,7 @@ public class UltimateSkill : NetworkBehaviour
 
     public float TotalFillAmount = 100;
 
-    [SyncVar(hook = nameof(RefreshUI))]
+    [SyncVar(/*hook = nameof(RefreshUI)*/)]
     public float CurrentFillAmount;
 
     private PlayerController playerController;
@@ -29,10 +29,13 @@ public class UltimateSkill : NetworkBehaviour
     public void IncreaseCurrentUltimateFillAmount(NetworkConnection target, float UltimateFillAmountRate)
     {
 
-        if (CurrentFillAmount == TotalFillAmount) return;
+        if (CurrentFillAmount < TotalFillAmount)
+        {
+            CurrentFillAmount += UltimateFillAmountRate;
+            playerController.HandleUltiFillAmount(target, CurrentFillAmount);
 
+        }
 
-        CurrentFillAmount += UltimateFillAmountRate;
 
         if (CurrentFillAmount >= TotalFillAmount)
         {
@@ -42,17 +45,19 @@ public class UltimateSkill : NetworkBehaviour
 
     }
     
-    public void ResetCurrentFillAmount()
+    public void ResetCurrentFillAmount(NetworkConnection target)
     {
 
    
         CurrentFillAmount = 0;
+        playerController.HandleUltiFillAmount(target, CurrentFillAmount);
+
 
     }
-    public void RefreshUI(float oldValue, float newValue)
-    {
-        playerController.OnCurrentUltimateFillRateChanged(newValue);
-    }
+    //public void RefreshUI(float oldValue, float newValue)
+    //{
+    //    playerController.OnCurrentUltimateFillRateChanged(newValue);
+    //}
 
 
 }

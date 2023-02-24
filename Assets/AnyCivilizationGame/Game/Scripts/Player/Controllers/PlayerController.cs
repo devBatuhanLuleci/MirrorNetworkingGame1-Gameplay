@@ -49,9 +49,10 @@ public class PlayerController : ObjectController
     public int BulletCount = 1;
     public float BulletIntervalTime = .2f;
 
-    public float StartFireAnimationWaitTime = .2f;
+    public float StartFireBasickAttackAnimationWaitTime = .2f;
     public float FinishFireAnimationWaitTime = .2f;
 
+    public float StartFireUltiAttackAnimationWaitTime = 1f;
 
     public enum BasicAttackType { Straight, Parabolic }
     public BasicAttackType basicAttackType;
@@ -188,19 +189,25 @@ public class PlayerController : ObjectController
 
 
     }
-    public void DeactivateUlti()
+    public void ResetUltiStats()
     {
 
-        ultimateSkill.ResetCurrentFillAmount();
+        ultimateSkill.ResetCurrentFillAmount(netIdentity.connectionToClient);
         DeactivateUltiUI(netIdentity.connectionToClient);
     }
     public IEnumerator SpawnIntervalBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime, float offSetZvalue = 0, float offSetYvalue = 0)
     {
         //TODO : burası fire  loop animasyonu entegre edileceği zaman değiecek.
 
-
-        yield return new WaitForSeconds(StartFireAnimationWaitTime);
-
+        if (currentAttackType == CurrentAttackType.Ulti)
+        {
+            yield return new WaitForSeconds(StartFireUltiAttackAnimationWaitTime);
+        }
+        else if 
+        (currentAttackType == CurrentAttackType.Basic)
+        {
+            yield return new WaitForSeconds(StartFireBasickAttackAnimationWaitTime);
+        }
 
 
 
@@ -225,7 +232,9 @@ public class PlayerController : ObjectController
                 Vector3 tempDir = Vector3.zero;
                 if (currentAttackType == CurrentAttackType.Ulti)
                 {
-                    DeactivateUlti();
+
+
+                    ResetUltiStats();
                     var direction = new Vector3(dir.x, 0, dir.z);
                     direction.Normalize();
 
@@ -245,6 +254,8 @@ public class PlayerController : ObjectController
                 }
                 else if (currentAttackType == CurrentAttackType.Basic)
                 {
+
+
 
                     var offsetVector = Vector3.Cross(Vector3.up, dir);
                     offsetVector.Normalize();
@@ -376,12 +387,12 @@ public class PlayerController : ObjectController
     }
     public void OnCurrentUltimateFillRateChanged(float ultimateFillRate)
     {
-        if(GameUIManager.Instance.joystickCanvas.TryGetComponent(out JoystickCanvasUIController joystickCanvasUIController))
+        if (GameUIManager.Instance.joystickCanvas.TryGetComponent(out JoystickCanvasUIController joystickCanvasUIController))
         {
 
             joystickCanvasUIController.ChangeUltimateFillRate(ultimateFillRate);
         }
-     
+
     }
 
     public void EnergyChanged(float energyAmount)
@@ -402,6 +413,13 @@ public class PlayerController : ObjectController
         //Debug.Log("attackDir: " + dir);
         return dir;
 
+    }
+
+    [TargetRpc]
+    public void HandleUltiFillAmount(NetworkConnection target, float ultimateFillRate)
+    {
+
+        OnCurrentUltimateFillRateChanged(ultimateFillRate);
     }
 
 

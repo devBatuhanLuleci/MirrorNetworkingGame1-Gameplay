@@ -59,14 +59,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5254902, g: 0, b: 0.029075146, a: 0.36078432}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4f096e35fcb86584bad89e7f3c154b41, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 621cc140126349a4a941eee9ff17ed0f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 820423973550416830}
   - component: {fileID: 820729166650462044}
   m_Layer: 5
-  m_Name: AttackJoystick
+  m_Name: AttackBasicJoystick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.20392157}
+  m_Color: {r: 0.9622642, g: 0.69684535, b: 0.40396938, a: 0.8666667}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -178,9 +178,10 @@ MonoBehaviour:
   thumb: {fileID: 820445632043657762}
   movementAreaRadius: 64
   isDynamicJoystick: 1
-  dynamicJoystickMovementArea: {fileID: 0}
-  canFollowPointer: 1
+  dynamicJoystickMovementArea: {fileID: 714554687007836200}
+  canFollowPointer: 0
   joystickHeld: 0
+  joystickButtonType: 1
 --- !u!1 &789770085481097344
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,14 +241,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5254902, g: 0, b: 0, a: 0.19215687}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4f096e35fcb86584bad89e7f3c154b41, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 959dd85af64208542ad22245df5bdbd3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

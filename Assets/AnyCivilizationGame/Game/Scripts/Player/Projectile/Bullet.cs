@@ -36,18 +36,24 @@ public class Bullet : Throwable, INetworkPooledObject
     {
         if (other.TryGetComponent<PlayerController>(out var otherPlayerController) && CanAttack(otherPlayerController))
         {
-            otherPlayerController.TakeDamage(damage);
+            if (otherPlayerController.IsLive)
+            {
 
-             PlayerController OurPlayer = MatchNetworkManager.Instance.GetPlayerByNetID(RootNetId);
 
-            // if (OurPlayer != null)
-        //    ActivateUltiOnTargetObject(OurPlayer.netIdentity.connectionToClient, OurPlayer);
-            OurPlayer.ultimateSkill.IncreaseCurrentUltimateFillAmount(OurPlayer.netIdentity.connectionToClient,10);
-            //  gameObject.SetActive(false);
-            Debug.Log("some one hited by " + OwnerName);
-            NetworkServer.UnSpawn(gameObject);
-            ReturnHandler();
 
+                otherPlayerController.TakeDamage(damage);
+
+                PlayerController OurPlayer = MatchNetworkManager.Instance.GetPlayerByNetID(RootNetId);
+
+                // if (OurPlayer != null)
+                //    ActivateUltiOnTargetObject(OurPlayer.netIdentity.connectionToClient, OurPlayer);
+                OurPlayer.ultimateSkill.IncreaseCurrentUltimateFillAmount(OurPlayer.netIdentity.connectionToClient, damage * 4);
+                //  gameObject.SetActive(false);
+                Debug.Log("some one hited by " + OwnerName);
+                NetworkServer.UnSpawn(gameObject);
+                ReturnHandler();
+
+            }
             //foreach (var player in MatchNetworkManager.Instance.players)
             //{
             //    Debug.Log($"  1: { player.Key}       2: { player.Value}");
@@ -56,6 +62,7 @@ public class Bullet : Throwable, INetworkPooledObject
 
         if (other.TryGetComponent<IDamagable>(out IDamagable damagableObject)/* && CanAttack(damagableObject.)*/)
         {
+
             //TODO: buraya girmiyor. bak
             //  Debug.Log("hello hawagi ");
             if (other.TryGetComponent<FatboyTurret>(out FatboyTurret fatboyTurret))
@@ -63,7 +70,10 @@ public class Bullet : Throwable, INetworkPooledObject
 
                 if (isEnemy(fatboyTurret))
                 {
-                    //TODO: burada server'da nul referance hatası alıyoruz düzelt.
+
+                    PlayerController OurPlayer = MatchNetworkManager.Instance.GetPlayerByNetID(RootNetId);
+                    OurPlayer.ultimateSkill.IncreaseCurrentUltimateFillAmount(OurPlayer.netIdentity.connectionToClient, damage * 4);
+
                     damagableObject.GetDamage(10);
                     // otherPlayerController.TakeDamage(damage);
                     //  gameObject.SetActive(false);

@@ -8,7 +8,6 @@ public class JoystickCanvasUIController : MonoBehaviour
 {
     private JoystickCanvas joystickCanvas;
 
-    public Image AttackUlti_OutFill_Orange_Image;
 
 
     private void Awake()
@@ -18,10 +17,14 @@ public class JoystickCanvasUIController : MonoBehaviour
     public void DeactivateUlti()
     {
 
-        joystickCanvas.AttackUltiJoystick.Deactivate();
+        joystickCanvas.AttackUltiJoystick.ultiJoystickUIController.ShowPassiveUltiPanel();
+
+        //joystickCanvas.AttackUltiJoystick.Deactivate();
 
 
     }
+   
+
     public void DeactivateButtons()
     {
         joystickCanvas.AttackUltiJoystick.Deactivate();
@@ -44,6 +47,11 @@ public class JoystickCanvasUIController : MonoBehaviour
 
     public void ChangeUltimateFillRate(float ultimateFillRate)
     {
-        AttackUlti_OutFill_Orange_Image.fillAmount = ultimateFillRate/100f;
+        if (joystickCanvas.AttackUltiJoystick.TryGetComponent(out UltiJoystickUIController ultiJoystickUIController))
+            {
+
+            ultiJoystickUIController.ChangeUltimateFillRate(ultimateFillRate);
+        }
+
     }
 }

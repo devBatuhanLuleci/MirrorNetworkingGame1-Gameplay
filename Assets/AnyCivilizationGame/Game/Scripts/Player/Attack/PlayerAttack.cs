@@ -103,7 +103,7 @@ public class PlayerAttack : NetworkBehaviour
 
 
         //HandleAttackIndicator();
-        ConfigureAttackState(AttackDirection);
+        ConfigureAttackState();
         SetLookPosition();
         RotateIndicator(AttackDirection);
         //SetBulletSpawnPointPosition();
@@ -267,10 +267,9 @@ public class PlayerAttack : NetworkBehaviour
     }
 
 
-    public void ConfigureAttackState(Vector2 dir3)
+    public void ConfigureAttackState()
     {
-        float a = dir3.x;
-       
+ 
         // If Attack Button is pressing and it is not aiming.
         if ((BasicAttackHeld || UltiAttackHeld) && AttackDirection.magnitude <= playerController.ClampedAttackJoystickOffset)
         {
@@ -281,6 +280,8 @@ public class PlayerAttack : NetworkBehaviour
                 {
 
                     shootingState = ShootingState.Cancelled;
+
+                 
                 }
                 else if (shootingState != ShootingState.Aiming && shootingState != ShootingState.Cancelled)
                 {
