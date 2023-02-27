@@ -1143,6 +1143,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1540893007755302097}
   - component: {fileID: 4864581193059700395}
+  - component: {fileID: 7833456867307397452}
   m_Layer: 0
   m_Name: FatBoy
   m_TagString: Untagged
@@ -1186,6 +1187,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7833456867307397452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2173420759384526443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea3ab86082dfb9b43b6a10086676f532, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BackTurret: {fileID: 7895383386622402733}
 --- !u!1 &2435827324461056784
 GameObject:
   m_ObjectHideFlags: 0

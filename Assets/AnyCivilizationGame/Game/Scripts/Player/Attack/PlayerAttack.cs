@@ -520,6 +520,7 @@ public class PlayerAttack : NetworkBehaviour
             else if (playerController.currentAttackType == PlayerController.CurrentAttackType.Ulti)
             {
                 playerController.PlayerAnimatorController.SetTrigger("ShootUlti");
+                playerController.CharacterSpecificStats.Handle_Specific_Object_On_Ulti_AttackButtonPressed();
 
 
             }
@@ -541,7 +542,7 @@ public class PlayerAttack : NetworkBehaviour
             else if (playerController.currentAttackType == PlayerController.CurrentAttackType.Ulti)
             {
                 playerController.PlayerAnimatorController.SetTrigger("ShootUlti");
-
+                playerController.CharacterSpecificStats.Handle_Specific_Object_On_Ulti_AttackButtonPressed();
 
             }
         }

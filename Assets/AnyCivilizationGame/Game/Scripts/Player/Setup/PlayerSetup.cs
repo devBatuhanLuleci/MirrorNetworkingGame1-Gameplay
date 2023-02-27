@@ -18,6 +18,7 @@ public class PlayerSetup : ObjectSetup
     private GameObject characterMesh;
 
     private PlayerController playerController;
+  //  private CharacterSpecificStats characterSpecificStats;
 
   
 
@@ -49,6 +50,8 @@ public class PlayerSetup : ObjectSetup
             characterMesh = CreateCharacterMesh();
 
             playerController.PlayerAnimatorController = characterMesh.GetComponent<Animator>();
+            playerController.CharacterSpecificStats = characterMesh.GetComponent<CharacterSpecificStats>();
+           
             GetSpine(characterMesh.transform);
 
           

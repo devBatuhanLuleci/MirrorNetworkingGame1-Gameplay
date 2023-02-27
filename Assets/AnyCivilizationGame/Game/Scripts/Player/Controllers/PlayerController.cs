@@ -30,6 +30,7 @@ public class PlayerController : ObjectController
     public PlayerUIHandler playerUIHandler;
     [HideInInspector]
     public Animator PlayerAnimatorController;
+    public CharacterSpecificStats CharacterSpecificStats;
 
     public bool isUltiThrowable = false;
 
