@@ -64,7 +64,7 @@ public class PlayerController : ObjectController
 
 
     public enum CurrentAttackType { Basic, Ulti }
-    [SyncVar]
+
     public CurrentAttackType currentAttackType;
 
 
@@ -145,6 +145,15 @@ public class PlayerController : ObjectController
     [Command]
     public void SendAttackType(CurrentAttackType currentAttackType)
     {
+        if (currentAttackType == CurrentAttackType.Ulti)
+        {
+            if (!isUltiThrowable)
+            {
+                //Hack detected.
+                return;
+            }
+
+        }
 
         this.currentAttackType = currentAttackType;
 
@@ -175,6 +184,12 @@ public class PlayerController : ObjectController
         obj.OnObjectSpawn();
 
     }
+    public virtual void Activate_Something_OnBulletObjectSpawned_Before()
+    {
+        //Inherited
+      
+
+    }
     public Vector3 StartPosOffSet2(Vector3 dir, float radialOffSet)
     {
 
@@ -192,19 +207,22 @@ public class PlayerController : ObjectController
     }
     public void ResetUltiStats()
     {
+        isUltiThrowable = false;
 
         ultimateSkill.ResetCurrentFillAmount(netIdentity.connectionToClient);
         DeactivateUltiUI(netIdentity.connectionToClient);
     }
     public IEnumerator SpawnIntervalBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime, float offSetZvalue = 0, float offSetYvalue = 0)
     {
-        //TODO : burası fire  loop animasyonu entegre edileceği zaman değiecek.
+      
+        Activate_Something_OnBulletObjectSpawned_Before();
+
 
         if (currentAttackType == CurrentAttackType.Ulti)
         {
             yield return new WaitForSeconds(StartFireUltiAttackAnimationWaitTime);
         }
-        else if 
+        else if
         (currentAttackType == CurrentAttackType.Basic)
         {
             yield return new WaitForSeconds(StartFireBasickAttackAnimationWaitTime);
@@ -425,11 +443,19 @@ public class PlayerController : ObjectController
 
 
     [TargetRpc]
-    public void ActivateUlti(NetworkConnection target)
+    public void OnUltiActivated(NetworkConnection target)
     {
+
 
         GameUIManager.Instance.ActivateUltiButton();
 
+
+    }
+
+    public void ActivateUlti(NetworkConnection target)
+    {
+        isUltiThrowable = true;
+        OnUltiActivated(target);
     }
     [TargetRpc]
     public void DeactivateUltiUI(NetworkConnection target)

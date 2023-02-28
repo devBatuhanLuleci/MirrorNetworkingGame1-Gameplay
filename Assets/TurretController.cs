@@ -21,9 +21,9 @@ public class TurretController : ObjectController
     }
     public override void Death()
     {
+        ActivateTurret();
         base.Death();
         MatchNetworkManager.Instance.DestroyThis(this);
-
     }
 
 
@@ -42,14 +42,14 @@ public class TurretController : ObjectController
     }
     public override void DestroyThisObject()
     {
-      
+
         foreach (var item in FindObjectsOfType<NetworkIdentity>(true))
         {
-            if(item.netId== fatboyTurret.OwnerNetId)
+            if (item.netId == fatboyTurret.OwnerNetId)
             {
-                if(item.transform.TryGetComponent(out ObjectController objectController))
+                if (item.transform.TryGetComponent(out ObjectController objectController))
                 {
-                objectController.OnThisObjectDestroyed();
+                    objectController.OnThisObjectDestroyed();
 
                 }
 
@@ -64,5 +64,44 @@ public class TurretController : ObjectController
 
         base.DestroyThisObject();
 
+    }
+
+
+    public void ActivateTurret()
+    {
+        PlayerController player = MatchNetworkManager.Instance.GetPlayerByNetID(fatboyTurret.RootNetId);
+        Activate(player);
+
+    }
+    public void DeactivateTurret()
+    {
+        PlayerController player = MatchNetworkManager.Instance.GetPlayerByNetID(fatboyTurret.RootNetId);
+        Deactivate(player);
+
+    }
+    //[ClientRpc(includeOwner = true)]
+    //public override void DestroyThisObjectRPC()
+    //{
+
+    //    base.DestroyThisObjectRPC();
+    //    ActivateTurretOnDestroy();
+    //}
+    [ClientRpc]
+    public void Activate(PlayerController player)
+    {
+
+        var stats = player.CharacterSpecificStats as FatboySpecificStats;
+        //Debug.Log(stats.name);
+
+        stats.Activate_BackTurret();
+    }
+    [ClientRpc]
+    public void Deactivate(PlayerController player)
+    {
+
+        var stats = player.CharacterSpecificStats as FatboySpecificStats;
+        //Debug.Log(stats.name);
+
+        stats.Dectivate_BackTurret();
     }
 }

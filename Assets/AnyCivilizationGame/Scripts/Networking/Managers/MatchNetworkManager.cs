@@ -188,7 +188,7 @@ public class MatchNetworkManager : NetworkManager
         foreach (var item in players.Values)
         {
 
-            Debug.Log( $"isim: { item.identity.name}  id:     {item.identity.netId}");
+        //    Debug.Log( $"isim: { item.identity.name}  id:     {item.identity.netId}");
         }
 
     }
@@ -200,7 +200,7 @@ public class MatchNetworkManager : NetworkManager
         {
             if(item.identity.netId== netID)
             {
-            Debug.Log($"isim: { item.identity.name}  id:     {item.identity.netId}");
+           // Debug.Log($"isim: { item.identity.name}  id:     {item.identity.netId}");
                 return item.identity.GetComponent<PlayerController>();
             }
         }
@@ -213,7 +213,7 @@ public class MatchNetworkManager : NetworkManager
         {
             if (item.identity.netId == netID)
             {
-                Debug.Log($"isim: { item.identity.name}  id:     {item.identity.netId}");
+              //  Debug.Log($"isim: { item.identity.name}  id:     {item.identity.netId}");
                 return item.identity.GetComponent<PlayerController>();
             }
         }

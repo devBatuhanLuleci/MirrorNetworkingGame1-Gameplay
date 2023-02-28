@@ -62,6 +62,7 @@ public class GameUIManager : Panel
         {
 
             joystickUIController.ActivateUlti();
+           
         }
 
     }

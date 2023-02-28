@@ -43,6 +43,12 @@ public class JoystickCanvasUIController : MonoBehaviour
     {
         joystickCanvas.AttackUltiJoystick.Activate();
 
+        if (joystickCanvas.AttackUltiJoystick.TryGetComponent(out UltiJoystickUIController ultiJoystickUIController))
+        {
+
+            ultiJoystickUIController.ShowActiveUltiPanel();
+        }
+
     }
 
     public void ChangeUltimateFillRate(float ultimateFillRate)

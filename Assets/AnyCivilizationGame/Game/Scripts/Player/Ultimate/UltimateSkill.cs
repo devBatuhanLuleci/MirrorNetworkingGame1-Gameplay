@@ -31,24 +31,33 @@ public class UltimateSkill : NetworkBehaviour
 
         if (CurrentFillAmount < TotalFillAmount)
         {
+
             CurrentFillAmount += UltimateFillAmountRate;
             playerController.HandleUltiFillAmount(target, CurrentFillAmount);
 
+            if (CurrentFillAmount >= TotalFillAmount)
+            {
+
+
+                CurrentFillAmount = TotalFillAmount;
+                playerController.ActivateUlti(target);
+             
+            }
         }
 
 
-        if (CurrentFillAmount >= TotalFillAmount)
-        {
-            CurrentFillAmount = TotalFillAmount;
-            playerController.ActivateUlti(target);
-        }
+
+
 
     }
-    
+    public bool IsUltiCanShootable()
+    {
+        return playerController.isUltiThrowable;
+    }
+
     public void ResetCurrentFillAmount(NetworkConnection target)
     {
 
-   
         CurrentFillAmount = 0;
         playerController.HandleUltiFillAmount(target, CurrentFillAmount);
 

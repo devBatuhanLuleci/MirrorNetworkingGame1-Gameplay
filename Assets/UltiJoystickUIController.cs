@@ -74,12 +74,7 @@ public class UltiJoystickUIController : Panel
 
         AttackUlti_Passive_Fill_Orange_Image.fillAmount = ultimateFillRate / 100f;
 
-        if (ultimateFillRate == 100)
-        {
-            ShowActiveUltiPanel();
-
-
-        }
+     
 
     }
 

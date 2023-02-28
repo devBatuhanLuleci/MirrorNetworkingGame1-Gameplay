@@ -300,7 +300,7 @@ public class FatboyTurret : Throwable,IDamagable
 
     public void ActivateFatBoyTurretAnimation()
     {
-        Debug.Log("val:" + currentThrowRateValue);
+       // Debug.Log("val:" + currentThrowRateValue);
        
 
 
@@ -400,6 +400,6 @@ public class FatboyTurret : Throwable,IDamagable
     public void GetDamage(int damageTaken)
     {
         objectController.TakeDamage(damageTaken);
-        Debug.Log($"{damageTaken} Damage taken ");
+      // Debug.Log($"{damageTaken} Damage taken ");
     }
 }

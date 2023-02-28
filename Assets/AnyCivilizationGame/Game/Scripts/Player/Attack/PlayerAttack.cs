@@ -111,76 +111,76 @@ public class PlayerAttack : NetworkBehaviour
     }
     public void Shoot(Vector2 attackDirection)
     {
-            
 
-            if (attackJoystickState == AttackJoystickState.Holding)
+
+        if (attackJoystickState == AttackJoystickState.Holding)
+        {
+            //Shoot here!
+
+
+
+            //Deactivate Projectile line.
+
+            //var angle = CalculateAngle(player, attackLookAtPoint);
+            //Debug.Log(angle);
+            CancelAttackProjectile();
+            if (!isShooting)
             {
-                //Shoot here!
+                AttackAnimationLocalPlayer();
 
+            }
+            //Spawn the bullet object.
 
+            Vector3 dir = new Vector3(attackDirection.x, 0, attackDirection.y);
 
-                //Deactivate Projectile line.
+            // playerController.playerUIHandler.CalculateProjectile(dir);
+            playerController.SendAttackType(playerController.currentAttackType);
 
-                //var angle = CalculateAngle(player, attackLookAtPoint);
-                //Debug.Log(angle);
-                CancelAttackProjectile();
+            CmdFire(false, dir);
+
+        }
+
+        if (attackJoystickState == AttackJoystickState.Idle)
+        {
+            if (shootingState == ShootingState.Cancelled)
+            {
+
+                // attackState = ShootingState.Idle;
+            }
+            else if (shootingState == ShootingState.Idle)
+            {
+
+                //Auto-Attack
                 if (!isShooting)
                 {
                     AttackAnimationLocalPlayer();
 
                 }
-                //Spawn the bullet object.
+                //Auto spawn bullet on current player direction.
 
                 Vector3 dir = new Vector3(attackDirection.x, 0, attackDirection.y);
 
-                // playerController.playerUIHandler.CalculateProjectile(dir);
+                //  playerController.playerUIHandler.CalculateProjectile(dir);
                 playerController.SendAttackType(playerController.currentAttackType);
-
-                CmdFire(false, dir);
-
-            }
-
-            if (attackJoystickState == AttackJoystickState.Idle)
-            {
-                if (shootingState == ShootingState.Cancelled)
-                {
-
-                    // attackState = ShootingState.Idle;
-                }
-                else if (shootingState == ShootingState.Idle)
-                {
-
-                    //Auto-Attack
-                    if (!isShooting)
-                    {
-                        AttackAnimationLocalPlayer();
-
-                    }
-                    //Auto spawn bullet on current player direction.
-
-                    Vector3 dir = new Vector3(attackDirection.x, 0, attackDirection.y);
-
-                    //  playerController.playerUIHandler.CalculateProjectile(dir);
-                    playerController.SendAttackType(playerController.currentAttackType);
-                    CmdFire(true, dir);
-
-                }
-
+                CmdFire(true, dir);
 
             }
 
-            //Reset bullet spawn point positions.
-            // ResetBulletSpawnPointPosition();
-            attackJoystickState = AttackJoystickState.Up;
-            shootingState = ShootingState.Idle;
 
-        
+        }
+
+        //Reset bullet spawn point positions.
+        // ResetBulletSpawnPointPosition();
+        attackJoystickState = AttackJoystickState.Up;
+        shootingState = ShootingState.Idle;
+
+
 
     }
     [Command]
     public void GetDir(Vector2 dir)
     {
-       // Debug.Log("dir: " + dir);
+        // Debug.Log("dir: " + dir);
 
 
     }
@@ -269,7 +269,7 @@ public class PlayerAttack : NetworkBehaviour
 
     public void ConfigureAttackState()
     {
- 
+
         // If Attack Button is pressing and it is not aiming.
         if ((BasicAttackHeld || UltiAttackHeld) && AttackDirection.magnitude <= playerController.ClampedAttackJoystickOffset)
         {
@@ -281,7 +281,7 @@ public class PlayerAttack : NetworkBehaviour
 
                     shootingState = ShootingState.Cancelled;
 
-                 
+
                 }
                 else if (shootingState != ShootingState.Aiming && shootingState != ShootingState.Cancelled)
                 {
@@ -453,7 +453,7 @@ public class PlayerAttack : NetworkBehaviour
     /// </summary>
     /// 
     [Command]
-    public void CmdFire(bool isAutoattack, Vector3 lookPos )
+    public void CmdFire(bool isAutoattack, Vector3 lookPos)
     {
 
         if (!playerController.energy.HaveEnergy() || isShooting)
@@ -461,7 +461,7 @@ public class PlayerAttack : NetworkBehaviour
             return;
 
         }
-       
+
 
 
         var normalizedDir = lookPos.normalized;
@@ -491,7 +491,7 @@ public class PlayerAttack : NetworkBehaviour
         //};
         RotateSpine(angle);
         //Rotate character to bullet thrown rotation and spawnBullet.
-        AttackAnimationOtherClients(normalizedDir);
+        AttackAnimationOtherClients(normalizedDir, playerController.currentAttackType);
         AttackAnimationOtherClients2(normalizedDir);
 
         // Debug.Log(angle);
@@ -520,7 +520,7 @@ public class PlayerAttack : NetworkBehaviour
             else if (playerController.currentAttackType == PlayerController.CurrentAttackType.Ulti)
             {
                 playerController.PlayerAnimatorController.SetTrigger("ShootUlti");
-                playerController.CharacterSpecificStats.Handle_Specific_Object_On_Ulti_AttackButtonPressed();
+              //  playerController.CharacterSpecificStats.Handle_Specific_Object_On_Ulti_AttackButtonPressed();
 
 
             }
@@ -530,22 +530,21 @@ public class PlayerAttack : NetworkBehaviour
 
     }
     [ClientRpc(includeOwner = false)]
-    public void AttackAnimationOtherClients(Vector3 dir)
+    public void AttackAnimationOtherClients(Vector3 dir, PlayerController.CurrentAttackType currentAttackType)
     {
-        if (playerController.energy.HaveEnergy())
+
+        if (currentAttackType == PlayerController.CurrentAttackType.Basic)
         {
-            if (playerController.currentAttackType == PlayerController.CurrentAttackType.Basic)
-            {
-                playerController.PlayerAnimatorController.SetTrigger("Shoot");
+            playerController.PlayerAnimatorController.SetTrigger("Shoot");
 
-            }
-            else if (playerController.currentAttackType == PlayerController.CurrentAttackType.Ulti)
-            {
-                playerController.PlayerAnimatorController.SetTrigger("ShootUlti");
-                playerController.CharacterSpecificStats.Handle_Specific_Object_On_Ulti_AttackButtonPressed();
-
-            }
         }
+        else if (currentAttackType == PlayerController.CurrentAttackType.Ulti)
+        {
+            playerController.PlayerAnimatorController.SetTrigger("ShootUlti");
+         //   playerController.CharacterSpecificStats.Handle_Specific_Object_On_Ulti_AttackButtonPressed();
+
+        }
+
     }
     [ClientRpc(includeOwner = true)]
     public void AttackAnimationOtherClients2(Vector3 dir)

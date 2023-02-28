@@ -1,4 +1,4 @@
-using Mirror;
+﻿using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -50,6 +50,41 @@ public class Fatboy : PlayerController
 
 
     //}
+    public override void Activate_Something_OnBulletObjectSpawned_Before()
+    {
+        base.Activate_Something_OnBulletObjectSpawned_Before();
+
+        switch (currentAttackType)
+        {
+            case CurrentAttackType.Basic:
+
+                break;
+            case CurrentAttackType.Ulti:
+
+                if (UltiTurret != null)
+                {
+                    
+                    //if (UltiTurret != obj.gameObject)
+                    //{
+                    if (UltiTurret.TryGetComponent<TurretController>(out TurretController fatboyTurretController))
+                    {
+                        fatboyTurretController.ActivateTurret();
+                        //MatchNetworkManager.Instance.DestroyThis(fatboyTurretController);
+
+                    }
+
+                    // }
+
+                }
+
+                break;
+            default:
+                break;
+        }
+
+   
+
+    }
     public override void OnBulletObjectSpawned(Throwable obj)
     {
         base.OnBulletObjectSpawned(obj);
@@ -58,6 +93,8 @@ public class Fatboy : PlayerController
         if (currentAttackType == CurrentAttackType.Ulti)
         {
 
+          
+            DeactivateBackTurret();
 
             if (UltiTurret != null)
             {
@@ -65,6 +102,8 @@ public class Fatboy : PlayerController
                 //{
                 if (UltiTurret.TryGetComponent<TurretController>(out TurretController fatboyTurretController))
                 {
+                    //fatboyTurretController.DeactivateTurret();
+
                     MatchNetworkManager.Instance.DestroyThis(fatboyTurretController);
 
                 }
@@ -72,9 +111,22 @@ public class Fatboy : PlayerController
                 // }
 
             }
+            else
+            {
+                
+            }
+
 
             UltiTurret = obj.gameObject;
         }
+    }
+    [ClientRpc]
+    public void DeactivateBackTurret()
+    {
+      
+
+        var stats = CharacterSpecificStats as FatboySpecificStats;
+        stats.Dectivate_BackTurret();
     }
 
     public override void OnThisObjectDestroyed()

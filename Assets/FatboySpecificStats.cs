@@ -9,7 +9,7 @@ public class FatboySpecificStats : CharacterSpecificStats
     public override void Handle_Specific_Object_On_Ulti_AttackButtonPressed()
     {
         base.Handle_Specific_Object_On_Ulti_AttackButtonPressed();
-        Handle_BackTurret();
+        Dectivate_BackTurret();
 
     }
     public override void Handle_Specific_Object_On_Basic_AttackButtonPressed()
@@ -17,8 +17,12 @@ public class FatboySpecificStats : CharacterSpecificStats
         base.Handle_Specific_Object_On_Basic_AttackButtonPressed();
     }
 
-    public void Handle_BackTurret()
+    public void Activate_BackTurret()
     {
-        BackTurret.SetActive(!BackTurret.activeSelf);
+        BackTurret.SetActive(true);
+    }
+    public void Dectivate_BackTurret()
+    {
+        BackTurret.SetActive(false);
     }
 }

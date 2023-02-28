@@ -26,8 +26,8 @@ public class ObjectController : NetworkBehaviour, INetworkPooledObject
     {
         if (health.TakeDamage(damage))
         {
-            // TODO: Player is death 
-            // respawn player
+            // TODO: Object is death 
+            // respawn object
             Death();
         }
     }
@@ -80,11 +80,11 @@ public class ObjectController : NetworkBehaviour, INetworkPooledObject
 
     public virtual void OnThisObjectDestroyed()
     {
-
+        //Inherited
     }
 
     [ClientRpc]
-    public void DestroyThisObjectRPC()
+    public virtual void DestroyThisObjectRPC()
     {
 
         IsLive = true;
