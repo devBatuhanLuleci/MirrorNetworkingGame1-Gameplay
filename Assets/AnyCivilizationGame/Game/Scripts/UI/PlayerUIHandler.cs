@@ -8,16 +8,7 @@ using DG.Tweening;
 
 public class PlayerUIHandler : ObjectUIHandler
 {
-    #region UI fields
-    [Header("Setup")]
-    [SerializeField]
-    private Canvas canvas;
-    [SerializeField]
-    private Slider healthSlider;
 
-
-    [SerializeField]
-    private TMP_Text healthText;
 
     [SerializeField]
     private GameObject EnergyBarGeneral;
@@ -28,7 +19,7 @@ public class PlayerUIHandler : ObjectUIHandler
 
 
 
-    #endregion
+
     [SerializeField]
     private Image EnergyBarOrange;
 
@@ -75,6 +66,7 @@ public class PlayerUIHandler : ObjectUIHandler
 
 
 
+    #region  Private Fields 
 
     public float bulletSpeed = 0.1f;
     public float radialOffset = .75f;
@@ -98,9 +90,6 @@ public class PlayerUIHandler : ObjectUIHandler
     #endregion
 
 
-    #region  Private Fields 
-    private int maxHelath = 100;
-    private bool initialized = false;
 
     #region  Components 
     private Transform camera;
@@ -167,13 +156,13 @@ public class PlayerUIHandler : ObjectUIHandler
     public void ChangeUltimateFillRate(float fillAmount)
     {
 
-      //  float perBarAmount = 0.333f;
+        //  float perBarAmount = 0.333f;
 
-       // int value = Mathf.FloorToInt(fillAmount / perBarAmount);
+        // int value = Mathf.FloorToInt(fillAmount / perBarAmount);
 
-        ULtimateFillImage.fillAmount = (fillAmount/100f);
+        ULtimateFillImage.fillAmount = (fillAmount / 100f);
 
-      //  if (fillAmount > perBarAmount * value)
+        //  if (fillAmount > perBarAmount * value)
         //    EnergyBarOrange.fillAmount = perBarAmount * value;
 
 
@@ -279,7 +268,7 @@ public class PlayerUIHandler : ObjectUIHandler
                     targetPos = new Vector3(dir.magnitude * playerController.Range, -playerController.BulletSpawnPoints[0].spawnPoint.y, 0);
                     targetPos2 = new Vector3(dir.magnitude * (playerController.Range) + (dist), -playerController.BulletSpawnPoints[2].spawnPoint.y, 0);
 
-                  
+
 
                     if (!BombIndicator.gameObject.activeSelf)
                     {
@@ -301,7 +290,7 @@ public class PlayerUIHandler : ObjectUIHandler
 
 
         CalculateProjectile2(targetPos2);
-       // Debug.Log("targetPos: " + dir.normalized);
+        // Debug.Log("targetPos: " + dir.normalized);
 
         tempDir = dir.normalized;
         //  Debug.Log("PlayerUI dir normalized: " + dir.normalized);
@@ -338,7 +327,7 @@ public class PlayerUIHandler : ObjectUIHandler
 
 
 
-    
+
 
         //  throwingCoroutine = StartCoroutine(Coroutine_Movement(dir, v0, angle, timeNew, bulletSpeed));
         throwingCoroutine = StartCoroutine(Coroutine_Movement2(dir, v02, angle2, timeNew2, bulletSpeed));
@@ -409,7 +398,7 @@ public class PlayerUIHandler : ObjectUIHandler
     IEnumerator Coroutine_Movement2(Vector3 direction, float v0, float angle, float time, float initialVelocity)
     {
 
-    //    Debug.Log("bana gelen : " + direction);
+        //    Debug.Log("bana gelen : " + direction);
 
 
         var yOffSet = 0f;
@@ -430,7 +419,7 @@ public class PlayerUIHandler : ObjectUIHandler
                 break;
         }
         var startPos = transform.position + new Vector3(0, yOffSet, 0) + StartPosOffSet2(direction);
-       // Debug.Log("bana gelen : " + (transform.position + new Vector3(0, yOffSet, 0)));
+        // Debug.Log("bana gelen : " + (transform.position + new Vector3(0, yOffSet, 0)));
         Debug.Log("bana gelen : " + StartPosOffSet2(direction));
 
 
