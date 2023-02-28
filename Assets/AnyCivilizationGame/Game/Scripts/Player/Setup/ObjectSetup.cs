@@ -20,10 +20,9 @@ public class ObjectSetup : NetworkBehaviour
     {
 
         if (!NetworkIdentity.isServer)
-        { 
-        
-         objectUIHandler.Initialize(health.MaxHealth);
-            health.ResetValues(100);
+        {
+
+            objectUIHandler.Initialize(health.MaxHealth);
         }
         else
         {

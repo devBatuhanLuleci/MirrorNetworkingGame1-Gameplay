@@ -10,15 +10,12 @@ public class PlayerUIHandler : ObjectUIHandler
 {
 
 
+    #region Energy
     [SerializeField]
     private GameObject EnergyBarGeneral;
 
     [SerializeField]
     private Image EnergyBarGray;
-
-
-
-
 
     [SerializeField]
     private Image EnergyBarOrange;
@@ -27,12 +24,14 @@ public class PlayerUIHandler : ObjectUIHandler
     private Image EnergyBarRed;
 
 
+    #endregion
 
 
+    #region Ulti
     [SerializeField]
     private Image ULtimateFillImage;
 
-
+    #endregion
 
 
     #region ShakeParameters
@@ -120,13 +119,11 @@ public class PlayerUIHandler : ObjectUIHandler
 
 
 
-    #region  Health Bar
-
-
-    #endregion
+  
 
 
     #region Energy Bar
+
 
 
     public void MakeEnergyBarsFull()

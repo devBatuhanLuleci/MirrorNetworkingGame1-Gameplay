@@ -10,9 +10,19 @@ public class ObjectUIHandler : MonoBehaviour
     [SerializeField]
     private Canvas canvas;
 
-    [SerializeField]
-    private Slider healthSlider;
+    //[SerializeField]
+    //private Slider healthSlider;
 
+    #region Health
+
+    [SerializeField]
+    private Image HealthBarBackground;
+
+
+    [SerializeField]
+    private Image HealthBarFill;
+
+    #endregion
 
     [SerializeField]
     private TMP_Text healthText;
@@ -52,12 +62,23 @@ public class ObjectUIHandler : MonoBehaviour
 
 
     }
+
+
+
     #region  Health Bar
 
+    public void MakeHealthBarFull()
+    {
+
+        HealthBarFill.fillAmount = 1;
+
+
+    }
+ 
     public void ChangeHealth(int health)
     {
         healthText.text = health.ToString();
-        healthSlider.value = (float)maxHelath / (float)health;
+        HealthBarFill.fillAmount = health / 100f;
     }
     #endregion
 
