@@ -209,10 +209,7 @@ public class PlayerController : NetworkBehaviour
         RespawnRPC();
     }
 
-    public void HealthChanged(int health)
-    {
-        playerUIHandler.ChangeHealth(health);
-    }
+   
     public void EnergyChanged(float energyAmount)
     {
         playerUIHandler.ChangeEnergy(energyAmount);
@@ -334,6 +331,18 @@ public class PlayerController : NetworkBehaviour
         movement.GetCurrentRotateSpine(movement.angle);
 
     }
+
+    #region Health
+    internal void HealthRateChanged(float newValue)
+    {
+        playerUIHandler.ChangeHealthRate(newValue);
+
+    }
+    public void HealthChanged(int health)
+    {
+        playerUIHandler.ChangeHealth(health);
+    }
+    #endregion
 
 
     #endregion

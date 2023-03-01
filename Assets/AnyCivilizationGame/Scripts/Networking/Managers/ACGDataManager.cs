@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEditor.Progress;
 
 
 public class ACGDataManager : MonoBehaviour
@@ -41,9 +40,15 @@ public class ACGDataManager : MonoBehaviour
 
     public void Start()
     {
+        DataAdaptor = DataAdaptorFactory.Get(AdapterType);
+
         Setup();
         GetData();
-        DataAdaptor = DataAdaptorFactory.Get(AdapterType);
+    }
+    public CharacterData GetCharacterData()
+    {
+        var characterProfileData = profile.Characters.ElementAt(0).Value;
+        return Characters[characterProfileData.Name];
     }
     private async void GetData()
     {
@@ -70,6 +75,8 @@ public class ACGDataManager : MonoBehaviour
                 Debug.Log($" {charcter.Key} - {attribute.Key} Level:{attribute.Value} value: {att.Value}");
             }
         }
+        var charcterData = GetCharacterData();
+        Debug.LogError($"charcterData name: {charcterData.Name}");
         Debug.Log("--------------------End------------------------------");
 
     }

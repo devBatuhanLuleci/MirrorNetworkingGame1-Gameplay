@@ -6,9 +6,11 @@ using UnityEngine;
 public class Health : NetworkBehaviour
 {
     public int MaxHealth { get; private set; } = 100;
+    [SyncVar(hook = nameof(RefreshCurrentHealth))]
+    public int currentHealht = 100;
 
-    [SyncVar(hook = nameof(RefreshUI))]
-    public int Value;
+    [SyncVar(hook = nameof(RefreshHealthRate))]
+    public float HealthRate;
 
     private PlayerController playerController;
 
@@ -19,27 +21,31 @@ public class Health : NetworkBehaviour
 
     public bool TakeDamage(int damage)
     {
-        var newHealth = Value - damage;
-        Value = Mathf.Clamp(newHealth, 0, 100);
-        if (Value <= 0)
-        {
-            Debug.LogError("Dath");
-            return true;
-        }
+        var newHealth = currentHealht - damage;
+        currentHealht = Mathf.Clamp(newHealth, 0, MaxHealth);
+        HealthRate = currentHealht / (float)MaxHealth;
+        if (currentHealht <= 0) return true;
         return false;
     }
     public void ResetValues()
     {
-        Value = MaxHealth;
+        currentHealht = MaxHealth;
+        HealthRate = 1;
     }
     public void ResetValues(int value)
     {
-        Value = MaxHealth = value;
+        currentHealht = MaxHealth = value;
+        HealthRate = 1;
     }
 
-    public void RefreshUI(int oldValue, int newValue)
+    #region Hooks
+    public void RefreshCurrentHealth(int oldValue, int newValue)
     {
         playerController.HealthChanged(newValue);
     }
-
+    public void RefreshHealthRate(float oldValue, float newValue)
+    {
+        playerController.HealthRateChanged(newValue);
+    }
+    #endregion
 }

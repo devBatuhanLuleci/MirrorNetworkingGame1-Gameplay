@@ -2,6 +2,7 @@ using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerSetup : NetworkBehaviour
@@ -35,12 +36,6 @@ public class PlayerSetup : NetworkBehaviour
         energy = GetComponent<Energy>();
         playerUIHandler = GetComponent<PlayerUIHandler>();
         playerMovement = GetComponent<PlayerMovement>();
-
-        if (!NetworkIdentity.isServer)
-        {
-
-        }
-
     }
 
     public void Start()
@@ -48,22 +43,15 @@ public class PlayerSetup : NetworkBehaviour
         // Do anything on all client but not server
         if (!NetworkIdentity.isServer)
         {
-
-
             characterMesh = CreateCharacterMesh();
 
             playerController.PlayerAnimatorController = characterMesh.GetComponent<Animator>();
             GetSpine(characterMesh.transform);
-
-            health.ResetValues(100);
-            playerUIHandler.Initialize(health.MaxHealth);
-
+            SetPlayerDataForAllClient();
         }
         else // Do anything on server
         {
-            health.ResetValues(100);
-            playerUIHandler.enabled = false;
-            energy.MakeEnergyBarsFull();
+            SetPlayerDataForServer();
         }
 
         // Do anything on only local client
@@ -80,6 +68,29 @@ public class PlayerSetup : NetworkBehaviour
 
     }
 
+    private void SetPlayerDataForAllClient()
+    {        
+        playerUIHandler.Initialize();
+
+    }
+
+    private void SetPlayerDataForServer()
+    {
+        var data = ACGDataManager.Instance.GetCharacterData().Attributes;
+        try
+        {
+            if (data.TryGetValue("Health", out var healthAttribute))
+            {
+                health.ResetValues((int)healthAttribute.Value);
+                playerUIHandler.enabled = false;
+            }
+            if (data.TryGetValue("Energy", out var energyAttribute))
+            {
+                energy.MakeEnergyBarsFull((int)healthAttribute.Value);
+            }
+        }
+        catch (Exception ex) { Debug.LogError(ex.Message); }
+    }
 
     private void InitLocalPlayer()
     {

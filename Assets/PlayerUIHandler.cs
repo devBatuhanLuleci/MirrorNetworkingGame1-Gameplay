@@ -82,19 +82,16 @@ public class PlayerUIHandler : MonoBehaviour
 
 
     #region  Private Fields 
-    private int maxHelath = 100;
     private bool initialized = false;
 
     #region  Components 
-    private Transform camera;
+    private new Transform camera;
     #endregion
     #endregion
-    public void Initialize(int value)
+    public void Initialize()
     {
         camera = Camera.main.transform;
         initialized = true;
-        maxHelath = value;
-        ChangeHealth(value);
         var dir = transform.position - camera.position;
         look = Quaternion.LookRotation(dir, Vector3.up);
     }
@@ -135,8 +132,13 @@ public class PlayerUIHandler : MonoBehaviour
     public void ChangeHealth(int health)
     {
         healthText.text = health.ToString();
-        healthSlider.value = (float)maxHelath / (float)health;
     }
+    internal void ChangeHealthRate(float newValue)
+    {
+        healthSlider.value = newValue;
+    }
+
+
     #endregion
 
 
@@ -219,13 +221,13 @@ public class PlayerUIHandler : MonoBehaviour
         var hitOffSet = (Vector3.up * 0.5f);
         //   Debug.DrawRay(player.transform.position + hitOffSet, new Vector3(lookPos.normalized.x, 0, lookPos.normalized.y) * Range, Color.green, .1f);
 
-        if (Physics.Raycast(player.transform.position + hitOffSet, new Vector3(lookPos.normalized.x, 0, lookPos.normalized.y), out hit,playerController.Range, LayerMask))
+        if (Physics.Raycast(player.transform.position + hitOffSet, new Vector3(lookPos.normalized.x, 0, lookPos.normalized.y), out hit, playerController.Range, LayerMask))
         {
 
             var dist = (hit.point - (player.transform.position + StartPosOffSet(dir.normalized))).magnitude;
-          //  Debug.DrawRay(player.transform.position + hitOffSet + StartPosOffSet(dir.normalized), new Vector3(lookPos.normalized.x, 0, lookPos.normalized.y) * dist, Color.green, .1f);
+            //  Debug.DrawRay(player.transform.position + hitOffSet + StartPosOffSet(dir.normalized), new Vector3(lookPos.normalized.x, 0, lookPos.normalized.y) * dist, Color.green, .1f);
             var bombPos = Vector3.zero;
-         
+
             switch (projectileType)
             {
                 case ProjectileType.StaticBullet:
@@ -247,7 +249,7 @@ public class PlayerUIHandler : MonoBehaviour
                     }
 
 
-                        BombIndicator.transform.position = hit.point;
+                    BombIndicator.transform.position = hit.point;
                     break;
                 default:
                     break;
@@ -257,19 +259,19 @@ public class PlayerUIHandler : MonoBehaviour
 
         else
         {
-           
-           // Debug.DrawRay(player.transform.position + hitOffSet +StartPosOffSet(dir.normalized), new Vector3(lookPos.normalized.x, 0, lookPos.normalized.y) * playerController.Range, Color.red, .1f);
+
+            // Debug.DrawRay(player.transform.position + hitOffSet +StartPosOffSet(dir.normalized), new Vector3(lookPos.normalized.x, 0, lookPos.normalized.y) * playerController.Range, Color.red, .1f);
 
             switch (projectileType)
             {
                 case ProjectileType.StaticBullet:
-                  //  Debug.Log(dir.normalized);
+                    //  Debug.Log(dir.normalized);
                     targetPos = new Vector3(dir.normalized.magnitude * playerController.Range, -playerController.BulletSpawnPoints[0].spawnPoint.y, 0);
 
                     break;
                 case ProjectileType.Bomb:
 
-                   
+
 
                     targetPos = new Vector3(dir.magnitude * playerController.Range, -playerController.BulletSpawnPoints[0].spawnPoint.y, 0);
                     if (!BombIndicator.gameObject.activeSelf)
@@ -286,7 +288,7 @@ public class PlayerUIHandler : MonoBehaviour
 
         }
 
-       
+
 
         CalculateProjectile(targetPos);
         DrawPath(dir.normalized, player, v0, angle, timeNew, step);
@@ -318,7 +320,7 @@ public class PlayerUIHandler : MonoBehaviour
                 break;
             default:
                 break;
-        } 
+        }
         var startPos = player.transform.position + new Vector3(0, yOffSet, 0) + StartPosOffSet(direction);
         step = Mathf.Max(0.01f, step);
 
@@ -380,9 +382,9 @@ public class PlayerUIHandler : MonoBehaviour
 
             //if (dist <= playerController.Range)
             //{
-                //   Debug.Log("lineRange: " + (dir.normalized * targetPos.magnitude /*- StartPosOffSet(targetPos)*/));
-               
-                CalculatePathWithHeight(dir.normalized * targetPos.magnitude /*- StartPosOffSet(targetPos)*/, height, out v0, out angle, out timeNew);
+            //   Debug.Log("lineRange: " + (dir.normalized * targetPos.magnitude /*- StartPosOffSet(targetPos)*/));
+
+            CalculatePathWithHeight(dir.normalized * targetPos.magnitude /*- StartPosOffSet(targetPos)*/, height, out v0, out angle, out timeNew);
 
             //}
 
@@ -433,6 +435,7 @@ public class PlayerUIHandler : MonoBehaviour
         return startPosition;
 
     }
+
 
     #endregion
 

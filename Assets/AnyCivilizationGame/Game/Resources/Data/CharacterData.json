@@ -3,36 +3,28 @@
         "Id": 0,
         "Name": "Ellen",
         "Attributes": {
-            "Speed": {
-                "Name": "speed",
-                "Level": 2,
-                "Levels": [
-                    1.0,
-                    2.0,
-                    3.0
-                ],
-                "Value": 3.0
-            },
-            "Damage": {
-                "Name": "damage",
+            "Energy": {
+                "Name": "Energy",
                 "Level": 0,
                 "Levels": [
-                    1.0,
-                    2.0,
-                    3.0
+                    3,
+                    5,
+                    7
                 ],
-                "Value": 1.0
+                "Value": 0.0
             },
-            "MovmentSpeed": {
-                "Name": "movmentSpeed",
-                "Level": 2,
+            "Health": {
+                "Name": "Health",
+                "Level": 0,
                 "Levels": [
-                    15,
-                    30,
-                    45
+                    100,
+                    300,
+                    500
                 ],
-                "Value": 1.0
+                "Value": 0.0
             }
+
+            
         }
     }
 }
