@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
+using DG.Tweening;
 public class ObjectUIHandler : MonoBehaviour
 {
     #region UI fields
@@ -20,7 +20,13 @@ public class ObjectUIHandler : MonoBehaviour
 
 
     [SerializeField]
-    private Image HealthBarFill;
+    private Image HealthBarFill_Green;
+
+
+
+    [SerializeField]
+    private Image HealthBarFill_Red;
+
 
     #endregion
 
@@ -48,40 +54,79 @@ public class ObjectUIHandler : MonoBehaviour
         camera = Camera.main.transform;
         initialized = true;
         maxHelath = value;
-        ChangeHealth(value);
+        MakeHealthBarFull(maxHelath);
+        //ChangeHealth(value);
         var dir = transform.position - camera.position;
         look = Quaternion.LookRotation(dir, Vector3.up);
     }
 
-    public virtual void Update()
+    private void Awake()
     {
 
+        //TODO : Remove this Awake
+        MakeHealthBarFull();
+    }
+    public virtual void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            maxHelath -= 20;
+            ChangeHealth(maxHelath);
+        }
 
         if (!initialized) return;
         UILook();
 
 
+
+    }
+    public void GetDamage(int damage)
+    {
+        //TODO : Remove this GetDamage
+        maxHelath -= damage;
     }
 
 
 
     #region  Health Bar
 
-    public void MakeHealthBarFull()
+    public void MakeHealthBarFull(int value = 100)
     {
 
-        HealthBarFill.fillAmount = 1;
+        HealthBarFill_Green.fillAmount = maxHelath / 100f;
+        HealthBarFill_Red.fillAmount = maxHelath / 100f;
 
 
     }
- 
+
+
     public void ChangeHealth(int health)
     {
         healthText.text = health.ToString();
-        HealthBarFill.fillAmount = health / 100f;
-    }
-    #endregion
+        HealthBarFill_Green.fillAmount = health / 100f;
 
+        Animate_HealthBarFill_Red(health / 100f);
+    }
+
+    #endregion
+    public void Animate_HealthBarFill_Red(float value)
+    {
+
+        float duration = 1f;
+        float angle = HealthBarFill_Red.fillAmount;
+        DOTween.To(() => angle, x => angle = x, value, duration).SetEase(Ease.InSine)
+            .OnUpdate(() =>
+            {
+                Debug.Log("angle: "+ angle);
+                HealthBarFill_Red.fillAmount = angle;
+
+            }
+            )
+            ;
+
+      // HealthBarFill_Red.fillAmount
+
+    }
     private void UILook()
     {
         if (canvas != null && camera != null)
@@ -95,6 +140,6 @@ public class ObjectUIHandler : MonoBehaviour
     public virtual void DisablePanel()
     {
 
-      
+
     }
 }
