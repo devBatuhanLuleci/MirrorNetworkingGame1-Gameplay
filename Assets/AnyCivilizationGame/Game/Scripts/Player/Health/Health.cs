@@ -16,7 +16,12 @@ public class Health : NetworkBehaviour
 
     }
 
+    public virtual void Update()
+    {
+        //Inherited
 
+
+    }
     public bool TakeDamage(int damage)
     {
         var newHealth = Value - damage;

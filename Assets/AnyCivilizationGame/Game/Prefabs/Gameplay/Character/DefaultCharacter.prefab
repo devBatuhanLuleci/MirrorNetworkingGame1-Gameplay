@@ -819,8 +819,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 8525149217216136281}
+  HealthBarFill_Gradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 0, b: 0, a: 1}
+    key1: {r: 0.9433962, g: 0.8705481, b: 0.084549636, a: 1}
+    key2: {r: 0.08627451, g: 1, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 21781
+    ctime1: 39321
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 1
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2
+  targetColor: {r: 0.08627451, g: 1, b: 0, a: 1}
+  HealthBar: {fileID: 7950311472868055376}
   HealthBarBackground: {fileID: 8721149395990234809}
-  HealthBarFill: {fileID: 2850486477929666904}
+  HealthBarFill_Green: {fileID: 2850486477929666904}
+  HealthBarFill_Red: {fileID: 3527359226874935417}
+  HealthBarFill_Blur_Effect: {fileID: 8167642698692074681}
   healthText: {fileID: 3721953356536723651}
   EnergyBarGeneral: {fileID: 8121769492420618659}
   EnergyBarGray: {fileID: 951619288773173476}
@@ -1377,6 +1410,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3527359226874935417 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 640956543, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
+  m_PrefabInstance: {fileID: 3527359226440024070}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3721953356536723651 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 240021587440842949, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
@@ -1404,11 +1448,27 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7265529046984112323, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
   m_PrefabInstance: {fileID: 3527359226440024070}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &7950311472868055376 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6820310958668568918, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
+  m_PrefabInstance: {fileID: 3527359226440024070}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8121769492420618659 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4631354999676496293, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
   m_PrefabInstance: {fileID: 3527359226440024070}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8167642698692074681 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4731868436424891583, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
+  m_PrefabInstance: {fileID: 3527359226440024070}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!223 &8525149217216136281 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 5097186975869928543, guid: bea76af98353f61418b5de139b36fb9d, type: 3}

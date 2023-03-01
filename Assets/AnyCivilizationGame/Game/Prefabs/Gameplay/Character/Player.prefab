@@ -950,8 +950,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 7088220065192873312}
+  HealthBarFill_Gradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 0, b: 0, a: 1}
+    key1: {r: 0.9433962, g: 0.8705481, b: 0.084549636, a: 1}
+    key2: {r: 0.08627451, g: 1, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 21781
+    ctime1: 39321
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 1
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2
+  targetColor: {r: 0.08627451, g: 1, b: 0, a: 1}
+  HealthBar: {fileID: 8810218148059107433}
   HealthBarBackground: {fileID: 7860680997084090240}
-  HealthBarFill: {fileID: 3719963165695234145}
+  HealthBarFill_Green: {fileID: 3719963165695234145}
+  HealthBarFill_Red: {fileID: 2657882530947248448}
+  HealthBarFill_Blur_Effect: {fileID: 7298166011530483072}
   healthText: {fileID: 2861483722735202810}
   EnergyBarGeneral: {fileID: 7252856717436117146}
   EnergyBarGray: {fileID: 1812087662656104925}
@@ -1331,6 +1364,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8137149200017533714, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
 --- !u!114 &229713845479618470 stripped
@@ -1358,6 +1395,17 @@ MonoBehaviour:
 --- !u!114 &2012995256201610146 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4543334403049654941, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
+  m_PrefabInstance: {fileID: 2657882530311014719}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2657882530947248448 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 640956543, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
   m_PrefabInstance: {fileID: 2657882530311014719}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -1414,6 +1462,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4631354999676496293, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
   m_PrefabInstance: {fileID: 2657882530311014719}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7298166011530483072 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4731868436424891583, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
+  m_PrefabInstance: {fileID: 2657882530311014719}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7860680997084090240 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5328899292851324607, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
@@ -1425,6 +1484,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &8810218148059107433 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6820310958668568918, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
+  m_PrefabInstance: {fileID: 2657882530311014719}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7713789071101774326
 PrefabInstance:
   m_ObjectHideFlags: 0
