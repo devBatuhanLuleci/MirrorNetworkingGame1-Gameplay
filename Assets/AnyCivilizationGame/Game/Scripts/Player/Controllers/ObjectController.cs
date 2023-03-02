@@ -22,7 +22,7 @@ public class ObjectController : NetworkBehaviour, INetworkPooledObject
     }
 
 
-    public virtual void TakeDamage(int damage)
+    public virtual void TakeDamage( int damage, NetworkConnection target = null)
     {
         if (health.TakeDamage(damage))
         {

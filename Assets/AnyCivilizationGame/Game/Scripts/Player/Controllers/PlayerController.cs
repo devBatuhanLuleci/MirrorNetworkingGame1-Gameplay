@@ -36,6 +36,12 @@ public class PlayerController : ObjectController
 
 
 
+    public enum DamageTakenStatus { Idle, IsTakenDamage, Healing }
+    [SyncVar]
+    public DamageTakenStatus damageTakenStatus;
+
+    private Coroutine damageTakenCoroutine;
+
     public float AttackTurnSpeed = 0.25f;
     public float ClampedAttackJoystickOffset = 0.005f;
     public List<BulletSpawnPoints> BulletSpawnPoints;
@@ -141,6 +147,69 @@ public class PlayerController : ObjectController
 
     }
 
+    public void ChangeDamageTakenStatus(DamageTakenStatus damageTakenStatus)
+    {
+        this.damageTakenStatus = damageTakenStatus;
+        switch (damageTakenStatus)
+        {
+            case DamageTakenStatus.Idle:
+                {
+
+
+                    break;
+                }
+            case DamageTakenStatus.IsTakenDamage:
+                {
+
+                    var playerHealth = health as PlayerHealth;
+                    playerHealth.StopHealthIncreaseCoroutine();
+                    damageTakenCoroutine = StartCoroutine(WaitForHealingTime());
+                    break;
+                }
+            case DamageTakenStatus.Healing:
+
+                {
+
+                    var playerHealth = health as PlayerHealth;
+                    playerHealth.IncreaseHealthOverTime();
+                    break;
+                }
+            default:
+                break;
+        }
+
+    }
+    public IEnumerator WaitForHealingTime()
+    {
+
+
+
+
+        if (damageTakenCoroutine != null)
+        {
+            StopCoroutine(damageTakenCoroutine);
+
+        }
+
+        yield return new WaitForSeconds(4f);
+        ChangeDamageTakenStatus(DamageTakenStatus.Healing);
+
+    }
+
+
+    public override void TakeDamage(int damage, NetworkConnection target)
+    {
+        base.TakeDamage(damage, target);
+       AnimateOtherHealthBarEffects(target);
+    }
+
+    [TargetRpc]
+    public void AnimateOtherHealthBarEffects(NetworkConnection target)
+    {
+        playerUIHandler.AnimateOtherHealthBarEffects();
+        playerUIHandler.Color_Switch_On_Health_Change(health.Value);
+
+    }
 
     [Command]
     public void SendAttackType(CurrentAttackType currentAttackType)
@@ -187,7 +256,7 @@ public class PlayerController : ObjectController
     public virtual void Activate_Something_OnBulletObjectSpawned_Before()
     {
         //Inherited
-      
+
 
     }
     public Vector3 StartPosOffSet2(Vector3 dir, float radialOffSet)
@@ -214,7 +283,7 @@ public class PlayerController : ObjectController
     }
     public IEnumerator SpawnIntervalBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime, float offSetZvalue = 0, float offSetYvalue = 0)
     {
-      
+
         Activate_Something_OnBulletObjectSpawned_Before();
 
 
@@ -403,6 +472,7 @@ public class PlayerController : ObjectController
     {
         base.HealthChanged(health);
         playerUIHandler.ChangeHealth(health);
+     
     }
     public void OnCurrentUltimateFillRateChanged(float ultimateFillRate)
     {

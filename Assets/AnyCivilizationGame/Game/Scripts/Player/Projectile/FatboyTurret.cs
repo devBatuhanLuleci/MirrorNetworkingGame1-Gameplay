@@ -322,7 +322,7 @@ public class FatboyTurret : Throwable,IDamagable
     public IEnumerator Shoot(float waitTime)
     {
         NetworkAnimator.SetTrigger("Shoot");
-        Debug.Log("SHOOT!");
+       
         SpawnBullet(new Vector3[] { TurretRotatePivot.position }, transform.forward, 1, .1f);
 
         turretShootStatus = TurretShootStatus.Reloading;
@@ -397,7 +397,7 @@ public class FatboyTurret : Throwable,IDamagable
 
     }
 
-    public void GetDamage(int damageTaken)
+    public void GetDamage( int damageTaken)
     {
         objectController.TakeDamage(damageTaken);
       // Debug.Log($"{damageTaken} Damage taken ");

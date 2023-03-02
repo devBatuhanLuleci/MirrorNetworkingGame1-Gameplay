@@ -748,6 +748,7 @@ MonoBehaviour:
   PlayerAnimatorController: {fileID: 0}
   CharacterSpecificStats: {fileID: 0}
   isUltiThrowable: 0
+  damageTakenStatus: 0
   AttackTurnSpeed: 0.25
   ClampedAttackJoystickOffset: 0.2
   BulletSpawnPoints:
@@ -890,7 +891,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 0.02
   TotalEnergyAmount: 3
   CurrentEnergyAmount: 0
   fillSpeed: 0.1

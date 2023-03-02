@@ -40,10 +40,14 @@ public class Bullet : Throwable, INetworkPooledObject
             {
 
 
-
-                otherPlayerController.TakeDamage(damage);
-
+              
                 PlayerController OurPlayer = MatchNetworkManager.Instance.GetPlayerByNetID(RootNetId);
+
+
+                otherPlayerController.ChangeDamageTakenStatus(PlayerController.DamageTakenStatus.IsTakenDamage);
+                otherPlayerController.TakeDamage(damage,otherPlayerController.netIdentity.connectionToClient);
+
+
 
                 // if (OurPlayer != null)
                 //    ActivateUltiOnTargetObject(OurPlayer.netIdentity.connectionToClient, OurPlayer);

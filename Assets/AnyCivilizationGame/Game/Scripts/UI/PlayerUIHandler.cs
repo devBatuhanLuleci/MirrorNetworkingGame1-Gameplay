@@ -9,6 +9,21 @@ using DG.Tweening;
 public class PlayerUIHandler : ObjectUIHandler
 {
 
+    #region Health
+
+    [SerializeField]
+    private Image HealthBarFill_Blur_Effect;
+
+
+    [SerializeField]
+    private Gradient HealthBarFill_Gradient;
+
+   
+
+
+
+    private Tween tweenForSmoothColorSwitch;
+    #endregion
 
     #region Energy
     [SerializeField]
@@ -119,7 +134,41 @@ public class PlayerUIHandler : ObjectUIHandler
 
 
 
-  
+    #region HealthBar
+
+
+    public void Color_Switch_On_Health_Change(int health)
+    {
+        tweenForSmoothColorSwitch?.Kill();
+
+
+        tweenForSmoothColorSwitch = HealthBarFill_Green.DOColor(targetColor, Mathf.Max(.25f, (health / 100f) * 1.1f))
+                                                .SetLoops(-1, LoopType.Yoyo)
+                                                .SetEase(Ease.Linear)
+                                                .From(HealthBarFill_Gradient.Evaluate(health / 100f));
+    }
+
+    public void Animate_HealthBarFill_Blur_Effect()
+    {
+
+        //  float duration = 1f;
+        HealthBarFill_Blur_Effect.DOFade(0f, .5f).SetLoops(1, LoopType.Yoyo).From(.2f);
+
+        // HealthBarFill_Red.fillAmount
+
+    }
+
+    public void AnimateOtherHealthBarEffects()
+    {
+
+        Animate_HealthBarFill_Blur_Effect();
+        Animate_HealthBar_On_Hit();
+
+
+    }
+
+
+    #endregion
 
 
     #region Energy Bar
