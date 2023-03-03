@@ -41,7 +41,7 @@ public class Energy : NetworkBehaviour
     public bool HaveEnergy(bool isShooting=false)
     {
         bool haveEnergy = true;
-        if (CurrentEnergyAmount==0)
+        if (CurrentEnergyAmount==0 && !isShooting)
         {
             haveEnergy = false;
             playerController.ShakeEnergyBar();
