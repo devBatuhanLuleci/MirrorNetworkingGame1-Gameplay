@@ -158,9 +158,12 @@ public class PlayerAttack : NetworkBehaviour
                 }
                 //Auto spawn bullet on current player direction.
 
-                Vector3 dir = new Vector3(attackDirection.x, 0, attackDirection.y);
 
-                //  playerController.playerUIHandler.CalculateProjectile(dir);
+                attackLookAtPoint.position = new Vector3(player.position.x + player.forward.x, 0f, player.position.z + player.forward.z);
+              
+                Vector3 dir = attackLookAtPoint.transform.position - player.transform.position;
+               
+             
                 playerController.SendAttackType(playerController.currentAttackType);
                 CmdFire(true, dir);
 

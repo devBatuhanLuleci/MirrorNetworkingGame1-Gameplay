@@ -56,7 +56,8 @@ public class ObjectUIHandler : MonoBehaviour
     private Transform camera;
 
 
-    Quaternion look;
+    Vector3 cameraBackRotation;
+    Vector3 cameraDownRotation;
 
 
     #endregion
@@ -69,9 +70,10 @@ public class ObjectUIHandler : MonoBehaviour
         initialized = true;
         maxHelath = value;
         //MakeHealthBarFull(maxHelath);
-      //  ChangeHealth(value);
-        var dir = transform.position - camera.position;
-        look = Quaternion.LookRotation(dir, Vector3.up);
+        //  ChangeHealth(value);
+
+        cameraBackRotation = camera.transform.rotation * -Vector3.back;
+        cameraDownRotation = camera.transform.rotation * -Vector3.down;
     }
 
     private void Awake()
@@ -196,9 +198,10 @@ public class ObjectUIHandler : MonoBehaviour
     {
         if (canvas != null && camera != null)
         {
-            canvas.transform.rotation = look;
+     //       canvas.transform.rotation = look;
+            canvas.transform.LookAt(canvas.transform.position + cameraBackRotation, cameraDownRotation);
         }
-
+      
 
     }
 

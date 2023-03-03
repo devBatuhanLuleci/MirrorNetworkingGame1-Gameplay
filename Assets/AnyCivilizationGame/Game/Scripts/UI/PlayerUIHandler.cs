@@ -335,19 +335,17 @@ public class PlayerUIHandler : ObjectUIHandler
         CalculateProjectile(targetPos);
 
 
-        CalculateProjectile2(targetPos2);
-        // Debug.Log("targetPos: " + dir.normalized);
-
+      //  CalculateProjectile2(targetPos2);
+      
         tempDir = dir.normalized;
-        //  Debug.Log("PlayerUI dir normalized: " + dir.normalized);
-
+    
         DrawPath(dir.normalized, player, v0, angle, timeNew, step);
 
 
 
 
 
-        DrawPath2(dir.normalized, player, v02, angle2, timeNew2, step2);
+       // DrawPath2(dir.normalized, player, v02, angle2, timeNew2, step2);
 
 
 
