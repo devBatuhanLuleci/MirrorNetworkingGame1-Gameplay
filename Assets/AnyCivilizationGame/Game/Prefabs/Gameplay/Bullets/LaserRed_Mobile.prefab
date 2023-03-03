@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 7796800942049437894}
   - component: {fileID: 7933838309450014090}
   - component: {fileID: 7940715939994353268}
-  - component: {fileID: 7994851973688076417}
   - component: {fileID: 353920031375251631}
   - component: {fileID: -3073779781399797976}
+  - component: {fileID: 4452584017614984904}
   m_Layer: 7
   m_Name: LaserRed_Mobile
   m_TagString: Untagged
@@ -4943,25 +4943,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &7994851973688076417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7995885019731338434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce8b0897d0cbe0446894b8e4fae1cb4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  projectileType: 0
-  damage: 5
-  OwnerName: 
-  OwnerNetId: 0
-  speed: 0.5
 --- !u!114 &353920031375251631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5013,3 +4994,23 @@ MonoBehaviour:
   showGizmos: 0
   showOverlay: 0
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+--- !u!114 &4452584017614984904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7995885019731338434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 364431fae5d4a3049a80202780bb0d70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  OwnerName: 
+  OwnerNetId: 0
+  RootNetId: 0
+  projectileType: 0
+  damage: 5
+  speed: 0.2

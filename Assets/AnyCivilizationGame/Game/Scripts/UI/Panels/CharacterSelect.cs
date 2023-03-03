@@ -9,7 +9,7 @@ public class CharacterSelect : Panel
     {
         var msg = new ReplanceCharacterMessage { name = name };
         NetworkClient.Send(msg);
-        GameUIManager.Instance.CharacterSlected();
+        GameplayPanelUIManager.Instance.CharacterSlected();
         Close();
     }
 }

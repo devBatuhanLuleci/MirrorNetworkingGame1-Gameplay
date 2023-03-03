@@ -56,8 +56,8 @@ public class NetworkedGameManager : NetworkBehaviour
     private void SetupClient()
     {
         // TODO: open character select panel
-
-        GameUIManager.Instance.SelectCharacter();
+        //    GameUIManager.Instance.DeactivateJoystickButtons();
+        GameplayPanelUIManager.Instance.SelectCharacter();
         ClientStarted();
         CmdReady();
         Info("awake: " + MatchNetworkManager.Instance.mode);
@@ -82,12 +82,18 @@ public class NetworkedGameManager : NetworkBehaviour
     public void StartGame()
     {
         Info("StartGame");
+        OnGameStarted();
     }
+    private void OnGameStarted()
+    {
+        GameplayPanelUIManager.Instance.DeactivateUltiButton();
 
+
+    }
     public void Info(string msg)
     {
         msg = "[MatchNetworkManager]: " + msg;
-        GameUIManager.Instance.GetPanel<Waiting>().Info = msg;
+        GameplayPanelUIManager.Instance.GetPanel<Waiting>().Info = msg;
         Debug.LogError(msg);
 
     }

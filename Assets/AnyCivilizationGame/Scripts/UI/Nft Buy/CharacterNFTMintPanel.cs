@@ -19,7 +19,7 @@ public class CharacterNFTMintPanel : Panel
     }
     public void OnClick_BackToPickCharacterPanelButton()
     {
-        MainUIManager.Instance.PickCharacterPanelShow();
+        MainPanelUIManager.Instance.PickCharacterPanelShow();
     }
     private void OnEnable()
     {

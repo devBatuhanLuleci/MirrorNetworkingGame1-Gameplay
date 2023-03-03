@@ -16,6 +16,6 @@ public class ReadyStateChanged : IResponseEvent
         Debug.Log("ReadyStateChanged Invoked");
         var lobbyManager = (LobbyManager)eventManagerBase;
 
-        MainUIManager.Instance.GetPanel<LobbyPanel>().StateChanged(LobbyPlayer);
+        MainPanelUIManager.Instance.GetPanel<LobbyPanel>().StateChanged(LobbyPlayer);
     }
 }

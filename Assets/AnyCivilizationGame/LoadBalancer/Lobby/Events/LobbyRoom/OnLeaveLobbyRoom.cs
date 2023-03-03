@@ -15,7 +15,7 @@ public class OnLeaveLobbyRoom : IResponseEvent
     {
 
         var lobbyManager = eventManagerBase as LobbyManager;
-        MainUIManager.Instance.GetPanel<LobbyPanel>().LeaveRoom(LobbyPlayer.UserName);
+        MainPanelUIManager.Instance.GetPanel<LobbyPanel>().LeaveRoom(LobbyPlayer.UserName);
         if (lobbyManager.LobbyPlayer.UserName == LobbyPlayer.UserName)
         {
             lobbyManager.LobbyPlayer = null;
