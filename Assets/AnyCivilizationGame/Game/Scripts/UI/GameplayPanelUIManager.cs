@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameUIManager : Panel
+public class GameplayPanelUIManager : Panel
 {
     #region Child panels
     [Header("Setup")]
@@ -17,7 +17,7 @@ public class GameUIManager : Panel
     public Panel startPanel = null;
     #endregion
 
-    public static GameUIManager Instance
+    public static GameplayPanelUIManager Instance
     {
         get;   // get method
         private set;

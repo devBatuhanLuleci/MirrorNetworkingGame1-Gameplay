@@ -459,7 +459,7 @@ public class PlayerAttack : NetworkBehaviour
     public void CmdFire(bool isAutoattack, Vector3 lookPos)
     {
 
-        if (!playerController.energy.HaveEnergy() || isShooting)
+        if (!playerController.energy.HaveEnergy(isShooting) || isShooting)
         {
             return;
 
@@ -495,7 +495,7 @@ public class PlayerAttack : NetworkBehaviour
         RotateSpine(angle);
         //Rotate character to bullet thrown rotation and spawnBullet.
         AttackAnimationOtherClients(normalizedDir, playerController.currentAttackType);
-        AttackAnimationOtherClients2(normalizedDir);
+        SetLowerBodyAnimation(normalizedDir);
 
         // Debug.Log(angle);
 
@@ -550,7 +550,7 @@ public class PlayerAttack : NetworkBehaviour
 
     }
     [ClientRpc(includeOwner = true)]
-    public void AttackAnimationOtherClients2(Vector3 dir)
+    public void SetLowerBodyAnimation(Vector3 dir)
     {
         if (playerController.energy.HaveEnergy())
         {

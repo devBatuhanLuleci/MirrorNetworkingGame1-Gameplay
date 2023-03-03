@@ -38,7 +38,7 @@ public class Energy : NetworkBehaviour
 
 
     }
-    public bool HaveEnergy()
+    public bool HaveEnergy(bool isShooting=false)
     {
         bool haveEnergy = true;
         if (CurrentEnergyAmount==0)

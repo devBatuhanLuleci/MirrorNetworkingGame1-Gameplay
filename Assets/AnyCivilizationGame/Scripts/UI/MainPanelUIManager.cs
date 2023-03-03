@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-class MainUIManager : Panel
+class MainPanelUIManager : Panel
 {
     [Header("Setup")]
     public Panel loadingPanel;
@@ -17,7 +17,7 @@ class MainUIManager : Panel
     [SerializeField]
     public Panel startPanel = null;
 
-    public static MainUIManager Instance
+    public static MainPanelUIManager Instance
     {
         get;   // get method
         private set;

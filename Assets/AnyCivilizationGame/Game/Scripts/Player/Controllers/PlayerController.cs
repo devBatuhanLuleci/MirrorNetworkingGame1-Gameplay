@@ -476,7 +476,7 @@ public class PlayerController : ObjectController
     }
     public void OnCurrentUltimateFillRateChanged(float ultimateFillRate)
     {
-        if (GameUIManager.Instance.joystickCanvas.TryGetComponent(out JoystickCanvasUIController joystickCanvasUIController))
+        if (GameplayPanelUIManager.Instance.joystickCanvas.TryGetComponent(out JoystickCanvasUIController joystickCanvasUIController))
         {
 
             joystickCanvasUIController.ChangeUltimateFillRate(ultimateFillRate);
@@ -517,7 +517,7 @@ public class PlayerController : ObjectController
     {
 
 
-        GameUIManager.Instance.ActivateUltiButton();
+        GameplayPanelUIManager.Instance.ActivateUltiButton();
 
 
     }
@@ -531,7 +531,7 @@ public class PlayerController : ObjectController
     public void DeactivateUltiUI(NetworkConnection target)
     {
 
-        GameUIManager.Instance.DeactivateUltiButton();
+        GameplayPanelUIManager.Instance.DeactivateUltiButton();
 
 
 

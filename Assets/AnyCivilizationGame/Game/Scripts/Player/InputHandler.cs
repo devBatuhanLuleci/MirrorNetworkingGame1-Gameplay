@@ -30,7 +30,7 @@ public class InputHandler : Singleton<InputHandler>
     {
         PlayerController = player;
         gameObject.SetActive(true);
-        JoystickCanvas joystickCanvas = GameUIManager.Instance.joystickCanvas.GetComponent<JoystickCanvas>();
+        JoystickCanvas joystickCanvas = GameplayPanelUIManager.Instance.joystickCanvas.GetComponent<JoystickCanvas>();
 
         joystickCanvas.joystickCanvasUIController.DeactivateUlti();
                 MovementJoystick = joystickCanvas.MovementJoystick;
