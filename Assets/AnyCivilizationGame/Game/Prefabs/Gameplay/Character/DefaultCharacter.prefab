@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6479605891448071342}
   - component: {fileID: 7487062201121458870}
+  - component: {fileID: 4871703837997179037}
   m_Layer: 0
-  m_Name: Square
+  m_Name: Team_Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84,6 +85,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4871703837997179037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676618153356857692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3babaf15a470e2d49a4de7473b491857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teamIndicatorStats:
+  - teamType: 0
+    Indicator_Color: {r: 0.2509804, g: 0.7843138, b: 0.20000002, a: 1}
+  - teamType: 1
+    Indicator_Color: {r: 0.35686275, g: 0.7725491, b: 0.9568628, a: 1}
+  - teamType: 2
+    Indicator_Color: {r: 1, g: 0.5137255, b: 0.5254902, a: 1}
+  teamIndicatorRenderer: {fileID: 7487062201121458870}
 --- !u!1 &3314361262793620060
 GameObject:
   m_ObjectHideFlags: 0
@@ -820,6 +841,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 8525149217216136281}
+  targetColor: {r: 0.08627451, g: 1, b: 0, a: 1}
+  HealthBar: {fileID: 7950311472868055376}
+  HealthBarBackground: {fileID: 8721149395990234809}
+  HealthBarFill_Green: {fileID: 2850486477929666904}
+  HealthBarFill_Red: {fileID: 3527359226874935417}
+  healthText: {fileID: 3721953356536723651}
+  HealthBarFill_Blur_Effect: {fileID: 8167642698692074681}
   HealthBarFill_Gradient:
     serializedVersion: 2
     key0: {r: 1, g: 0, b: 0, a: 1}
@@ -849,13 +877,6 @@ MonoBehaviour:
     m_Mode: 1
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
-  targetColor: {r: 0.08627451, g: 1, b: 0, a: 1}
-  HealthBar: {fileID: 7950311472868055376}
-  HealthBarBackground: {fileID: 8721149395990234809}
-  HealthBarFill_Green: {fileID: 2850486477929666904}
-  HealthBarFill_Red: {fileID: 3527359226874935417}
-  HealthBarFill_Blur_Effect: {fileID: 8167642698692074681}
-  healthText: {fileID: 3721953356536723651}
   EnergyBarGeneral: {fileID: 8121769492420618659}
   EnergyBarGray: {fileID: 951619288773173476}
   EnergyBarOrange: {fileID: 1152525776834366107}
@@ -867,6 +888,7 @@ MonoBehaviour:
   vibrato: 8
   randomness: 0
   nameText: {fileID: 5767846879200815514}
+  teamIndicatorHandler: {fileID: 4871703837997179037}
   playerController: {fileID: -6845222926521172771}
   projectileType: 1
   BombIndicator: {fileID: 5936946434980951897}

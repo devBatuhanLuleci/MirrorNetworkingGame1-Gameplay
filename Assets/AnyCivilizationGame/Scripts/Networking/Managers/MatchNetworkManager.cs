@@ -22,6 +22,11 @@ public class MatchNetworkManager : NetworkManager
     private Dictionary<int, NetworkConnectionToClient> players;
 
     public List<PlayerController> playerList;
+
+
+    public enum TeamTypes { Team1, Team2 }
+    public List<Team> Teams;
+
     #endregion
     public override void Awake()
     {
@@ -151,8 +156,10 @@ public class MatchNetworkManager : NetworkManager
         StartServer();
 
         players = new Dictionary<int, NetworkConnectionToClient>();
-       
-         playerList = new List<PlayerController>();
+
+        playerList = new List<PlayerController>();
+
+        CreateTeam();
         LoadBalancer.Instance.SpawnServer.SendClientRequestToServer(new OnReadyEvent(ACGDataManager.Instance.GameData.Port));
         Debug.LogError("OnReadyEvent msg sended to master server.");
     }
@@ -171,9 +178,11 @@ public class MatchNetworkManager : NetworkManager
 
     public override void OnServerConnect(NetworkConnectionToClient conn)
     {
-       
+
         base.OnServerConnect(conn);
         players.Add(conn.connectionId, conn);
+        playerList.Add(conn.identity.GetComponent<PlayerController>());
+        GetIntoTeam(playerList, playerList.Count % 2);
         Debug.LogError("OnServerConnect players count:" + players.Count);
         if (players.Count >= ACGDataManager.Instance.GameData.MaxPlayerCount && NetworkedGameManager.Instance == null)
         {
@@ -182,25 +191,37 @@ public class MatchNetworkManager : NetworkManager
 
         }
     }
-
-    public void GetAllPlayerList()
+    public void GetIntoTeam(List<PlayerController> PlayerList, int teamIndex)
     {
-        foreach (var item in players.Values)
-        {
-
-        //    Debug.Log( $"isim: { item.identity.name}  id:     {item.identity.netId}");
-        }
+        //  Teams.
 
     }
+    public void CreateTeam(/*List<PlayerController> PlayerList*/)
+    {
+        Teams = new List<Team>();
+        Teams.Add(new Team("Team1"));
+        Teams.Add(new Team("Team2"));
+
+    }
+    //public void GetAllPlayerList()
+    //{
+    //    foreach (var item in players.Values)
+    //    {
+    //        playerList.Add(item.identity.GetComponent<PlayerController>());
+
+    //        //    Debug.Log( $"isim: { item.identity.name}  id:     {item.identity.netId}");
+    //    }
+
+    //}
 
     public PlayerController GetPlayerByNetID(uint netID)
     {
 
         foreach (var item in players.Values)
         {
-            if(item.identity.netId== netID)
+            if (item.identity.netId == netID)
             {
-           // Debug.Log($"isim: { item.identity.name}  id:     {item.identity.netId}");
+                // Debug.Log($"isim: { item.identity.name}  id:     {item.identity.netId}");
                 return item.identity.GetComponent<PlayerController>();
             }
         }
@@ -213,7 +234,7 @@ public class MatchNetworkManager : NetworkManager
         {
             if (item.identity.netId == netID)
             {
-              //  Debug.Log($"isim: { item.identity.name}  id:     {item.identity.netId}");
+                //  Debug.Log($"isim: { item.identity.name}  id:     {item.identity.netId}");
                 return item.identity.GetComponent<PlayerController>();
             }
         }

@@ -51,7 +51,7 @@ public class PlayerSetup : ObjectSetup
 
             playerController.PlayerAnimatorController = characterMesh.GetComponent<Animator>();
             playerController.CharacterSpecificStats = characterMesh.GetComponent<CharacterSpecificStats>();
-           
+            //playerController.team
             GetSpine(characterMesh.transform);
 
           

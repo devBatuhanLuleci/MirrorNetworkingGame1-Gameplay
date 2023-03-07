@@ -58,10 +58,17 @@ public class PlayerUIHandler : ObjectUIHandler
 
 
 
+    #endregion
     [SerializeField]
     private TMP_Text nameText;
-    #endregion
 
+    #region Indicator
+
+    [SerializeField]
+    private TeamIndicatorHandler teamIndicatorHandler;
+
+
+    #endregion
     #region Shoot projectile fields
     [Space]
     [Header("Projectile")]
@@ -110,6 +117,28 @@ public class PlayerUIHandler : ObjectUIHandler
     #endregion
     #endregion
 
+
+
+
+    public override void Awake()
+    {
+
+        base.Awake();
+        Fill_Name_Text();
+    
+
+    }
+    public void Fill_Name_Text()
+    {
+
+        nameText.text = transform.name.ToString();
+
+    }
+    public void Change_TeamIndicator_Color()
+    {
+
+        teamIndicatorHandler.ChangeTeamIndicatorType("Ally");
+    }
     public override void DisablePanel()
     {
         base.DisablePanel();

@@ -76,11 +76,9 @@ public class ObjectUIHandler : MonoBehaviour
         cameraDownRotation = camera.transform.rotation * -Vector3.down;
     }
 
-    private void Awake()
+    public virtual void Awake()
     {
 
-        //TODO : Remove this Awake
-        // MakeHealthBarFull();
     }
     public virtual void Update()
     {
