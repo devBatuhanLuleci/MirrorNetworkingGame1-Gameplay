@@ -134,10 +134,10 @@ public class PlayerUIHandler : ObjectUIHandler
         nameText.text = transform.name.ToString();
 
     }
-    public void Change_TeamIndicator_Color()
+    public void Change_TeamIndicator_Color(string teamType)
     {
 
-        teamIndicatorHandler.ChangeTeamIndicatorType("Ally");
+        teamIndicatorHandler.ChangeTeamIndicatorType(teamType);
     }
     public override void DisablePanel()
     {

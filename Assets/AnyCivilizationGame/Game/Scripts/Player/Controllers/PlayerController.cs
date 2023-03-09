@@ -25,10 +25,7 @@ public class PlayerController : ObjectController
     private InfoPopup infoPopup;
     #endregion
 
-
-    public enum TeamType {Me,Ally,Enemy }
-    public TeamType teamType;
-
+  
 
     public Transform SpineRotator;
     [HideInInspector]
@@ -86,8 +83,7 @@ public class PlayerController : ObjectController
 
     private float TrailDistance;
 
-
-
+ 
     public override void Awake()
     {
         base.Awake();
@@ -97,6 +93,7 @@ public class PlayerController : ObjectController
         playerUIHandler = GetComponent<PlayerUIHandler>();
         ultimateSkill = GetComponent<UltimateSkill>();
 
+        
 
     }
     private void Start()

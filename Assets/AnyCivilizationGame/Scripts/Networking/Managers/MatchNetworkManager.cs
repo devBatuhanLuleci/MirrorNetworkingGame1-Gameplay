@@ -6,13 +6,18 @@ using Mono.Cecil;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MatchNetworkManager : NetworkManager
 {
 
     #region Fields
     public static MatchNetworkManager Instance { get { return instance; } }
+        
+    public OnCharacterReplacedEvent OnPlayerListChanged = new OnCharacterReplacedEvent();
+   
 
     #endregion
 
@@ -21,11 +26,9 @@ public class MatchNetworkManager : NetworkManager
     private static MatchNetworkManager instance;
     private Dictionary<int, NetworkConnectionToClient> players;
 
-    public List<PlayerController> playerList;
 
-
-    public enum TeamTypes { Team1, Team2 }
-    public List<Team> Teams;
+   
+   
 
     #endregion
     public override void Awake()
@@ -85,6 +88,15 @@ public class MatchNetworkManager : NetworkManager
         RegisterNetworkMessages();
     }
 
+    public override void OnServerDisconnect(NetworkConnectionToClient conn)
+    {
+
+        players.Remove(conn.connectionId);
+        OnPlayerListChanged.Invoke(players);
+        base.OnServerDisconnect(conn);
+    }
+
+
     private void RegisterNetworkMessages()
     {
         NetworkServer.RegisterHandler<CharacterCreateMessage>(OnCreateCharacter);
@@ -93,8 +105,9 @@ public class MatchNetworkManager : NetworkManager
 
     public override void OnClientConnect()
     {
-        base.OnClientConnect();
 
+
+        base.OnClientConnect();
         // you can send the message here, or wherever else you want
         var defaultCharacter = CharacterCreateMessage.Default;
         NetworkClient.Send(defaultCharacter);
@@ -107,30 +120,45 @@ public class MatchNetworkManager : NetworkManager
         var characterPrefab = spawnPrefabs.Find(el => el.name == message.name);
         // playerPrefab is the one assigned in the inspector in Network
         // Manager but you can use different prefabs per race for example
-        GameObject gameobject = Instantiate(characterPrefab);
+        GameObject go = Instantiate(characterPrefab);
+
+
+    //    GetIntoTeam(go, players.Count % 2);
+
 
         // Apply data from the message however appropriate for your game
         // Typically Player would be a component you write with syncvars or properties
-        PlayerController player = gameobject.GetComponent<PlayerController>();
+        PlayerController player = go.GetComponent<PlayerController>();
+
 
         // call this to use this gameobject as the primary controller
-        NetworkServer.AddPlayerForConnection(conn, gameobject);
+        NetworkServer.AddPlayerForConnection(conn, go);
+        this.OnPlayerListChanged.Invoke(players);
+
     }
     public void OnReplacePlayer(NetworkConnectionToClient conn, ReplanceCharacterMessage message)
     {
+
+
+
         // Cache a reference to the current player object
         GameObject oldPlayer = conn.identity.gameObject;
+
+    
 
         Debug.LogError("ReplacePlayer message:" + message.ToString());
 
         var characterPrefab = spawnPrefabs.Find(el => el.name == message.name);
         // playerPrefab is the one assigned in the inspector in Network
         // Manager but you can use different prefabs per race for example
-        GameObject gameobject = Instantiate(characterPrefab);
+        GameObject go = Instantiate(characterPrefab);
+
+
 
         // Instantiate the new player object and broadcast to clients
         // Include true for keepAuthority paramater to prevent ownership change
-        NetworkServer.ReplacePlayerForConnection(conn, gameobject, true);
+        NetworkServer.ReplacePlayerForConnection(conn, go, true);
+        this.OnPlayerListChanged.Invoke( players);
 
         // Remove the previous player object that's now been replaced
         // Delay is required to allow replacement to complete.
@@ -157,23 +185,23 @@ public class MatchNetworkManager : NetworkManager
 
         players = new Dictionary<int, NetworkConnectionToClient>();
 
-        playerList = new List<PlayerController>();
 
-        CreateTeam();
+       // CreateTeam();
         LoadBalancer.Instance.SpawnServer.SendClientRequestToServer(new OnReadyEvent(ACGDataManager.Instance.GameData.Port));
         Debug.LogError("OnReadyEvent msg sended to master server.");
     }
 
     private void CreateGameManager()
     {
-
+       
 
         var prefab = Resources.Load<NetworkedGameManager>(nameof(NetworkedGameManager));
         var networkedGameManager = Instantiate(prefab);
         NetworkServer.Spawn(networkedGameManager.gameObject);
         Debug.LogError("NetworkedGameManager spawned.");
 
-        NetworkedGameManager.Instance.ServerStarted();
+        NetworkedGameManager.Instance.ServerStarted(players);
+
     }
 
     public override void OnServerConnect(NetworkConnectionToClient conn)
@@ -181,28 +209,70 @@ public class MatchNetworkManager : NetworkManager
 
         base.OnServerConnect(conn);
         players.Add(conn.connectionId, conn);
-        playerList.Add(conn.identity.GetComponent<PlayerController>());
-        GetIntoTeam(playerList, playerList.Count % 2);
+        OnPlayerListChanged.Invoke(players);
+
         Debug.LogError("OnServerConnect players count:" + players.Count);
         if (players.Count >= ACGDataManager.Instance.GameData.MaxPlayerCount && NetworkedGameManager.Instance == null)
         {
             //Invoke("StartGame", 1);
-            CreateGameManager();
+         Invoke("CreateGameManager",2f);
 
         }
     }
-    public void GetIntoTeam(List<PlayerController> PlayerList, int teamIndex)
-    {
-        //  Teams.
+    //public void GetIntoTeam(GameObject player, int teamIndex)
+    //{
 
-    }
-    public void CreateTeam(/*List<PlayerController> PlayerList*/)
-    {
-        Teams = new List<Team>();
-        Teams.Add(new Team("Team1"));
-        Teams.Add(new Team("Team2"));
 
-    }
+    //    Teams.ElementAt(teamIndex).players.Add(player);
+
+    //}
+
+    ////public void GetIntoTeam(GameObject player)
+    ////{
+    ////    int teamIndex = Teams.IndexOf(player);
+    ////    //  GetPlayerByConnection(conn);
+    ////    Teams.ElementAt(teamIndex).players.Add(player);
+
+    ////}
+
+    //public void RemoveFromTeam(GameObject player)
+    //{
+
+
+
+    //    for (int i = 0; i < Teams.Count; i++)
+    //    {
+
+    //        //  GetPlayerByConnection(conn);
+    //        if (Teams.ElementAt(i).players.Exists(t => t == player))
+    //        {
+    //            Teams.ElementAt(i).players.Remove(player);
+
+
+    //        }
+    //    }
+
+    //}
+    //public int GetOldTeamIndex(GameObject player)
+    //{
+    //    int index = 0;
+    //    for (int i = 0; i < Teams.Count; i++)
+    //    {
+
+    //        //  GetPlayerByConnection(conn);
+    //        if (Teams.ElementAt(i).players.Exists(t => t == player))
+    //        {
+    //            Teams.ElementAt(i).players.Remove(player);
+    //            index = i;
+    //            return index;
+
+
+    //        }
+    //    }
+    //    return 0;
+
+    //}
+   
     //public void GetAllPlayerList()
     //{
     //    foreach (var item in players.Values)
@@ -217,29 +287,46 @@ public class MatchNetworkManager : NetworkManager
     public PlayerController GetPlayerByNetID(uint netID)
     {
 
-        foreach (var item in players.Values)
-        {
-            if (item.identity.netId == netID)
-            {
-                // Debug.Log($"isim: { item.identity.name}  id:     {item.identity.netId}");
-                return item.identity.GetComponent<PlayerController>();
-            }
-        }
-        return null;
-    }
-    public PlayerController GetPlayerByConnection(uint netID)
-    {
+        Debug.Log(netID);
+
+        //if( players.TryGetValue((int)netID,out var item))
+        //{
+        //    Debug.Log("girdim");
+        //    return item.identity.GetComponent<PlayerController>();
+
+        //}
 
         foreach (var item in players.Values)
         {
             if (item.identity.netId == netID)
             {
-                //  Debug.Log($"isim: { item.identity.name}  id:     {item.identity.netId}");
+                 Debug.Log($"isim: { item.identity.name}  id:     {item.identity.netId}");
                 return item.identity.GetComponent<PlayerController>();
             }
         }
         return null;
     }
+    public PlayerController GetPlayerByConnection(NetworkConnectionToClient conn)
+    {
+        // Debug.Log(conn.);
+
+        //foreach (var item in players.Values)
+        //{
+        //    if (item.identity.netId == netID)
+        //    {
+        //        //  Debug.Log($"isim: { item.identity.name}  id:     {item.identity.netId}");
+        //        return item.identity.GetComponent<PlayerController>();
+        //    }
+        //}
+        //if(conn.identity.TryGetComponent<PlayerController>(out PlayerController playerController))
+        //{
+        //    return playerController;
+        //}
+
+        return null;
+    }
+ 
+
     #endregion
 
 
@@ -248,3 +335,9 @@ public class MatchNetworkManager : NetworkManager
 
     #endregion
 }
+[System.Serializable]
+public class OnCharacterReplacedEvent : UnityEvent< Dictionary<int, NetworkConnectionToClient>>
+{
+
+}
+

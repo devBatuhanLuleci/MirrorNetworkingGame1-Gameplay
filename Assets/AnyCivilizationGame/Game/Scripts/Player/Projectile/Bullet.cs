@@ -42,7 +42,7 @@ public class Bullet : Throwable, INetworkPooledObject
 
               
                 PlayerController OurPlayer = MatchNetworkManager.Instance.GetPlayerByNetID(RootNetId);
-
+                Debug.Log(OurPlayer.name);
 
                 otherPlayerController.ChangeDamageTakenStatus(PlayerController.DamageTakenStatus.IsTakenDamage);
                 otherPlayerController.TakeDamage(damage,otherPlayerController.netIdentity.connectionToClient);

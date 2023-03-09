@@ -2,6 +2,8 @@ using kcp2k;
 using Mirror;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using static NetworkedGameManager;
@@ -26,6 +28,11 @@ public class NetworkedGameManager : NetworkBehaviour
 
     private bool IsClient => ACGDataManager.Instance.GameData.TerminalType == TerminalType.Client;
 
+
+    public enum TeamTypes { Team1, Team2 }
+    [SyncVar]
+    public List<Team> Teams = new List<Team>();
+
     #region MonoBehaviour Methods
     private void Awake()
     {
@@ -35,10 +42,31 @@ public class NetworkedGameManager : NetworkBehaviour
     }
     private void Start()
     {
+
         Info("isClient: " + isClient);
         if (IsClient) SetupClient();
-
+        if (isServer)
+        {
+        MatchNetworkManager.Instance.OnPlayerListChanged.AddListener(OnCharacterReplaced);
+       
+        }
     }
+
+
+
+    public void OnDestroy()
+    {
+        if (isServer)
+        {
+        MatchNetworkManager.Instance.OnPlayerListChanged.RemoveListener(OnCharacterReplaced);
+
+        }
+    }
+    private void OnCharacterReplaced(Dictionary<int, NetworkConnectionToClient> players)
+    {
+        CreateTeam(players);
+    }
+
 
     #endregion
 
@@ -64,15 +92,88 @@ public class NetworkedGameManager : NetworkBehaviour
 
     }
 
+    public void CreateTeam(Dictionary<int, NetworkConnectionToClient> players)
+    {
+
+
+        bool isTeam1 = true;
+        Teams = new List<Team>();
+        foreach (var item in players)
+        {
+
+            Teams.Add(new Team()
+            {
+                connectionId = item.Value.connectionId,
+                team = isTeam1 ? TeamTypes.Team1 : TeamTypes.Team2,
+                netIdentity = item.Value.identity
+            });
+            isTeam1 = !isTeam1;
+        }
+
+    }
+    public bool IsInMyTeam(NetworkIdentity localPlayer)
+    {
+       // Debug.Log("localplayer:" + NetworkClient.localPlayer.connectionToServer.connectionId);
+        //  var ourConnectionID = NetworkClient.localPlayer.connectionToServer.connectionId;
+        // var otherPlayerConnectionID = localPlayer.connectionToServer.connectionId;
+         var ourTeam = Teams.Find(item =>item.netIdentity!=null && item.netIdentity.Equals(NetworkClient.localPlayer));
+        Debug.Log(ourTeam.team);
+        var otherTeam = Teams.Find(item => item.netIdentity != null && item.netIdentity.Equals(localPlayer));
+        //var ourTeam = Teams.Find(item => item.netIdentity.Equals(NetworkClient.localPlayer));
+        //var otherTeam = Teams.Find(item => item.netIdentity.Equals(localPlayer));
+
+           Debug.Log($" Our team team: {ourTeam.team }  Other team: {otherTeam.team}");
+
+
+
+
+          return ourTeam.team==otherTeam.team;
+        //return false;
+
+    }
+    [Command/*(requiresAuthority =true)*/]
+    public void GetLocalPlayer(/*NetworkConnectionToClient conn*/)
+    {
+
+        int connectionId = NetworkClient.connection.connectionId;
+        //  Debug.Log("id :" + connectionId);
+        Debug.Log("id :" + NetworkConnection.LocalConnectionId);
+        //foreach (var player in FindObjectsOfType<PlayerController>())
+        //{
+        //    player.c
+        //}
+        // Debug.Log(conn.);
+
+        //foreach (var item in players.Values)
+        //{
+        //    if (item.identity.isLocalPlayer)
+        //    {
+
+
+        //    //if (item.connectionId== conn.connectionId)
+        //    //{
+        //        //  Debug.Log($"isim: { item.identity.name}  id:     {item.identity.netId}");
+        //        return item.identity.GetComponent<PlayerController>();
+        //    //}
+        //    }
+        //}
+        //if(conn.identity.TryGetComponent<PlayerController>(out PlayerController playerController))
+        //{
+        //    return playerController;
+        //}
+
+
+    }
+
     public void ClientStarted()
     {
 
         string msg = $"Client Started. Port: {ACGDataManager.Instance.GameData.Port}";
         Info(msg);
     }
-    public void ServerStarted()
+    public void ServerStarted(Dictionary<int, NetworkConnectionToClient> players)
     {
-
+        CreateTeam(players);
         // Setup();
         string msg = $" <color=green> Server listining on </color> localhost:{ACGDataManager.Instance.GameData.Port}";
         Info(msg);
@@ -114,9 +215,13 @@ public class NetworkedGameManager : NetworkBehaviour
     {
         Info("Ready!");
         playerCount++;
+
+
         SetPlayerCount(playerCount);
+
         if (playerCount >= ACGDataManager.Instance.GameData.MaxPlayerCount)
         {
+
             RpcStartGame();
         }
     }
@@ -127,6 +232,12 @@ public class NetworkedGameManager : NetworkBehaviour
     {
         this.playerCount = value;
     }
+
+
+    #endregion
+
+    #region Team Creation
+
     #endregion
 
 }

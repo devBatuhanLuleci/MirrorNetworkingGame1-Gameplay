@@ -4,28 +4,23 @@ using UnityEngine;
 using System.Linq;
 public class TeamIndicatorHandler : MonoBehaviour
 {
-    public enum TeamIndicatorType { Me,Ally, Enemy }
+    public enum TeamIndicatorType { Me, Ally, Enemy }
     public List<TeamIndicatorStats> teamIndicatorStats = new List<TeamIndicatorStats>();
 
     [SerializeField]
     private SpriteRenderer teamIndicatorRenderer;
 
-   
+
 
     public void ChangeTeamIndicatorType(string teamType)
     {
-        //  int index = teamIndicatorStats.FindIndex(t => t.teamType.Equals(teamType));
-        foreach (var item in teamIndicatorStats)
-        {
-            Debug.Log(item.teamType.ToString());
 
-        }
         var element = teamIndicatorStats.Find(t => t.teamType.ToString().Equals(teamType));
-      //  teamIndicatorStats.
-      if(element!=null)
+
+        if (element != null)
         {
 
-        teamIndicatorRenderer.color = element.Indicator_Color;
+            teamIndicatorRenderer.color = element.Indicator_Color;
 
         }
 

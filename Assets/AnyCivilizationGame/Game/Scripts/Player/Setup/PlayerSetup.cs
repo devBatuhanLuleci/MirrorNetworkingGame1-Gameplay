@@ -1,4 +1,4 @@
-
+﻿
 using Mirror;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,15 +12,14 @@ public class PlayerSetup : ObjectSetup
     #endregion
 
     #region Private Fields
-  
+
     private Energy energy;
     private PlayerMovement playerMovement;
     private GameObject characterMesh;
-
     private PlayerController playerController;
-  //  private CharacterSpecificStats characterSpecificStats;
+    //  private CharacterSpecificStats characterSpecificStats;
 
-  
+
 
     #endregion
 
@@ -31,15 +30,15 @@ public class PlayerSetup : ObjectSetup
 
         playerController = GetComponent<PlayerController>();
 
-       
+
         energy = GetComponent<Energy>();
-    
+
         playerMovement = GetComponent<PlayerMovement>();
 
-       
+
     }
 
-    public override  void Start()
+    public override void Start()
     {
         // Do anything on all client but not server
         base.Start();
@@ -54,8 +53,8 @@ public class PlayerSetup : ObjectSetup
             //playerController.team
             GetSpine(characterMesh.transform);
 
-          
-           
+
+
 
         }
         else // Do anything on server
@@ -84,13 +83,37 @@ public class PlayerSetup : ObjectSetup
 
         CameraController.Instance.Initialize(transform);
         InputHandler.Instance.Init(playerController);
+        playerController.playerUIHandler.Change_TeamIndicator_Color("Me");
+        // playerController.playerUIHandler.Change_TeamIndicator_Color("Me");
+
+
     }
-    private void InitOtherPlayers()
+    private  void InitOtherPlayers()
     {
         var playerController = GetComponent<PlayerController>();
         objectUIHandler.DisablePanel();
+      
+
+        //TODO :  SetTeamColor delaylı olarak çalışıyor, bu methodu direk çalıştırdığımızda referans hatası alıyoruz .
+        Invoke("SetTeamColor", 3);
 
 
+    }
+
+    public void SetTeamColor()
+    {
+      
+
+        if (NetworkedGameManager.Instance.IsInMyTeam(netIdentity))
+        {
+            playerController.playerUIHandler.Change_TeamIndicator_Color("Ally");
+
+        }
+        else
+        {
+            playerController.playerUIHandler.Change_TeamIndicator_Color("Enemy");
+
+        }
     }
     public void GetSpine(Transform characterMesh)
     {
