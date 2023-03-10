@@ -287,15 +287,6 @@ public class MatchNetworkManager : NetworkManager
     public PlayerController GetPlayerByNetID(uint netID)
     {
 
-        Debug.Log(netID);
-
-        //if( players.TryGetValue((int)netID,out var item))
-        //{
-        //    Debug.Log("girdim");
-        //    return item.identity.GetComponent<PlayerController>();
-
-        //}
-
         foreach (var item in players.Values)
         {
             if (item.identity.netId == netID)
@@ -306,6 +297,21 @@ public class MatchNetworkManager : NetworkManager
         }
         return null;
     }
+
+    public PlayerController GetPlayerByConnectionID(int connectionId)
+    {
+
+        if (players.TryGetValue(connectionId, out var item))
+        {
+           
+            return item.identity.GetComponent<PlayerController>();
+
+        }
+
+
+        return null;
+    }
+
     public PlayerController GetPlayerByConnection(NetworkConnectionToClient conn)
     {
         // Debug.Log(conn.);

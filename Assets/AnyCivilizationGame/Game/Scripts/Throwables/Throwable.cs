@@ -14,6 +14,7 @@ public class Throwable : NetworkBehaviour
     public string OwnerName = "";
     public uint OwnerNetId = 0;
     public uint RootNetId = 0;
+    public int OwnerConnectionId = 0;
 
     #region new
 
@@ -57,11 +58,11 @@ public class Throwable : NetworkBehaviour
     }
    
 
-    public void Init(string ownerName, uint ownerNetId, uint RootId = 0, bool isRooted =false  )
+    public void Init(string ownerName, uint ownerNetId,int ownerConnectionId, uint RootId = 0, bool isRooted =false  )
     {
         OwnerName = ownerName;
         OwnerNetId = ownerNetId;
-
+        OwnerConnectionId = ownerConnectionId;
 
         //TODO :  RootNetId  o objeyi oluşturan root player'in netID sini getirir.  Takım olayları devreye girdiğinde bunu kaldırabiliriz. 
         if (isRooted)

@@ -69,13 +69,15 @@ public class TurretController : ObjectController
 
     public void ActivateTurret()
     {
-        PlayerController player = MatchNetworkManager.Instance.GetPlayerByNetID(fatboyTurret.RootNetId);
+     //   PlayerController player = MatchNetworkManager.Instance.GetPlayerByNetID(fatboyTurret.RootNetId);
+        PlayerController player = MatchNetworkManager.Instance.GetPlayerByConnectionID(fatboyTurret.OwnerConnectionId);
         Activate(player);
 
     }
     public void DeactivateTurret()
     {
-        PlayerController player = MatchNetworkManager.Instance.GetPlayerByNetID(fatboyTurret.RootNetId);
+     //   PlayerController player = MatchNetworkManager.Instance.GetPlayerByNetID(fatboyTurret.RootNetId);
+        PlayerController player = MatchNetworkManager.Instance.GetPlayerByConnectionID(fatboyTurret.OwnerConnectionId);
         Deactivate(player);
 
     }

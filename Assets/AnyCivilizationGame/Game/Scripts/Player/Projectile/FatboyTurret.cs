@@ -373,7 +373,7 @@ public class FatboyTurret : Throwable,IDamagable
 
                 var spawnedBullet = ObjectPooler.Instance.Get(name, pos, Quaternion.Euler(0, CalculationManager.GetAngle(dir), 0)).GetComponent<Throwable>();
 
-                spawnedBullet.Init("Debug User " + netId, netId,RootNetId,false);
+                spawnedBullet.Init("Debug User " + netId, netId,OwnerConnectionId,RootNetId,false);
 
                 spawnedBullet.Throw(dir, bulletRange);
                 NetworkServer.Spawn(spawnedBullet.gameObject);

@@ -368,11 +368,11 @@ public class PlayerController : ObjectController
                         + dir * (spawnPoint[i % spawnPoint.Length].z);
                     // pos = transform.position + direction * spawnPoint[i % spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + direction * (spawnPoint[i % spawnPoint.Length].z );
                 }
-
-
+             
+               
                 var spawnedBullet = ObjectPooler.Instance.Get(name, pos, Quaternion.Euler(0, CalculationManager.GetAngle(dir), 0)).GetComponent<Throwable>();
 
-                spawnedBullet.Init("Debug User " + netId, netId, 0, true);
+                spawnedBullet.Init("Debug User " + netId, netId, netIdentity.connectionToClient.connectionId, 0, true);
 
 
                 tempDir = new Vector3(dir.x, 0, dir.z);

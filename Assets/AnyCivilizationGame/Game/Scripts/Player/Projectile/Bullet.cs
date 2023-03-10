@@ -40,9 +40,10 @@ public class Bullet : Throwable, INetworkPooledObject
             {
 
 
-              
-                PlayerController OurPlayer = MatchNetworkManager.Instance.GetPlayerByNetID(RootNetId);
-                Debug.Log(OurPlayer.name);
+              //  Debug.Log("connectionID:"+ netIdentity.connectionToServer.connectionId);
+               // Debug.Log("connectionID:"+ netIdentity.connectionToClient.connectionId);
+               // PlayerController OurPlayer = MatchNetworkManager.Instance.GetPlayerByNetID(RootNetId);
+                PlayerController OurPlayer = MatchNetworkManager.Instance.GetPlayerByConnectionID(OwnerConnectionId);
 
                 otherPlayerController.ChangeDamageTakenStatus(PlayerController.DamageTakenStatus.IsTakenDamage);
                 otherPlayerController.TakeDamage(damage,otherPlayerController.netIdentity.connectionToClient);
@@ -75,7 +76,8 @@ public class Bullet : Throwable, INetworkPooledObject
                 if (isEnemy(fatboyTurret))
                 {
 
-                    PlayerController OurPlayer = MatchNetworkManager.Instance.GetPlayerByNetID(RootNetId);
+                   // PlayerController OurPlayer = MatchNetworkManager.Instance.GetPlayerByNetID(RootNetId);
+                    PlayerController OurPlayer = MatchNetworkManager.Instance.GetPlayerByConnectionID(OwnerConnectionId);
                     OurPlayer.ultimateSkill.IncreaseCurrentUltimateFillAmount(OurPlayer.netIdentity.connectionToClient, damage * 4);
 
                     damagableObject.GetDamage(10);
