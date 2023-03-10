@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -165,16 +167,17 @@ public class PlayerUIHandler : ObjectUIHandler
 
     #region HealthBar
 
+ 
 
-    public void Color_Switch_On_Health_Change(int health)
+    public void Color_Switch_On_Health_Change(float healthRate)
     {
         tweenForSmoothColorSwitch?.Kill();
 
 
-        tweenForSmoothColorSwitch = HealthBarFill_Green.DOColor(targetColor, Mathf.Max(.25f, (health / 100f) * 1.1f))
+        tweenForSmoothColorSwitch = HealthBarFill_Green.DOColor(targetColor, Mathf.Max(.25f, healthRate * 1.1f))
                                                 .SetLoops(-1, LoopType.Yoyo)
                                                 .SetEase(Ease.Linear)
-                                                .From(HealthBarFill_Gradient.Evaluate(health / 100f));
+                                                .From(HealthBarFill_Gradient.Evaluate(healthRate));
     }
 
     public void Animate_HealthBarFill_Blur_Effect()

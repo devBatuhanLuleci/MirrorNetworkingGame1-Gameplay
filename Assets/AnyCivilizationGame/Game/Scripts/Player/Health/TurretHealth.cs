@@ -11,10 +11,15 @@ public class TurretHealth : Health
         base.Awake();
         turretController = GetComponent<TurretController>();
     }
-    public override void RefreshUI(int oldValue, int newValue)
+    public override void RefreshCurrentHealth(int oldValue, int newValue)
     {
-        base.RefreshUI(oldValue, newValue);
+        base.RefreshCurrentHealth(oldValue, newValue);
         turretController.HealthChanged(newValue);
-    }
 
+    }
+    public override void RefreshHealthRate(float oldValue, float newValue)
+    {
+        base.RefreshHealthRate(oldValue, newValue);
+        turretController.HealthRateChanged(newValue);
+    }
 }

@@ -208,7 +208,7 @@ public class PlayerController : ObjectController
     public void AnimateOtherHealthBarEffects(NetworkConnection target)
     {
         playerUIHandler.AnimateOtherHealthBarEffects();
-        playerUIHandler.Color_Switch_On_Health_Change(health.Value);
+        playerUIHandler.Color_Switch_On_Health_Change(health.HealthRate);
 
     }
 
@@ -477,12 +477,7 @@ public class PlayerController : ObjectController
         health.ResetValues();
         RespawnRPC();
     }
-    public override void HealthChanged(int health)
-    {
-        base.HealthChanged(health);
-        playerUIHandler.ChangeHealth(health);
-     
-    }
+  
     public void OnCurrentUltimateFillRateChanged(float ultimateFillRate)
     {
         if (GameplayPanelUIManager.Instance.joystickCanvas.TryGetComponent(out JoystickCanvasUIController joystickCanvasUIController))
@@ -493,6 +488,8 @@ public class PlayerController : ObjectController
 
     }
 
+
+   
     public void EnergyChanged(float energyAmount)
     {
         playerUIHandler.ChangeEnergy(energyAmount);
@@ -657,6 +654,22 @@ public class PlayerController : ObjectController
         movement.GetCurrentRotateSpine(movement.angle);
 
     }
+
+    #region Health
+    public void HealthRateChanged(float newValue)
+    {
+        playerUIHandler.Color_Switch_On_Health_Change(newValue);
+        playerUIHandler.ChangeHealthRate(newValue);
+
+    }
+    public override void HealthChanged(int health)
+    {
+        base.HealthChanged(health);
+        playerUIHandler.ChangeHealth(health);
+
+    }
+
+    #endregion
 
 
     #endregion

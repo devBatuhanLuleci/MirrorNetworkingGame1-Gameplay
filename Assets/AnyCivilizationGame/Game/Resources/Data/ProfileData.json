@@ -1,0 +1,12 @@
+{
+    "UserName": "SkyLost",
+    "Characters": {
+        "Ellen": {
+            "Name": "Ellen",
+            "Attributes": {               
+                "Energy":1,
+                "Health":1
+            }
+        }
+    }
+}

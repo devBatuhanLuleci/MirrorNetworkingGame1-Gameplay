@@ -49,7 +49,6 @@ public class ObjectUIHandler : MonoBehaviour
     private Tween tween;
 
 
-    private int maxHelath = 100;
     private bool initialized = false;
 
     #region  Components 
@@ -64,11 +63,10 @@ public class ObjectUIHandler : MonoBehaviour
     #endregion
 
 
-    public void Initialize(int value)
+    public void Initialize()
     {
         camera = Camera.main.transform;
         initialized = true;
-        maxHelath = value;
         //MakeHealthBarFull(maxHelath);
         //  ChangeHealth(value);
 
@@ -82,41 +80,41 @@ public class ObjectUIHandler : MonoBehaviour
     }
     public virtual void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            maxHelath -= 10;
-            ChangeHealth(maxHelath);
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            StartCoroutine(change());
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    maxHelath -= 10;
+        //    ChangeHealth(maxHelath);
+        //}
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    StartCoroutine(change());
 
-        }
+        //}
         if (!initialized) return;
         UILook();
 
 
 
     }
-    IEnumerator change()
-    {
+    //IEnumerator change()
+    //{
 
 
-        while (maxHelath < 100)
-        {
-            maxHelath += 20;
-            yield return new WaitForSeconds(0.5f);
+    //    while (maxHelath < 100)
+    //    {
+    //        maxHelath += 20;
+    //        yield return new WaitForSeconds(0.5f);
 
 
-            if (maxHelath > 100)
-            {
-                maxHelath = 100;
-            }
-            ChangeHealth(maxHelath, true);
-        }
+    //        if (maxHelath > 100)
+    //        {
+    //            maxHelath = 100;
+    //        }
+    //        ChangeHealth(maxHelath, true);
+    //    }
 
-        yield return null;
-    }
+    //    yield return null;
+    //}
 
 
 
@@ -124,25 +122,34 @@ public class ObjectUIHandler : MonoBehaviour
 
    
 
-    public void ChangeHealth(int health, bool isIncreasing = false)
+    public void ChangeHealth(int health)
     {
 
 
         healthText.text = health.ToString();
-        HealthBarFill_Green.fillAmount = health / 100f;
-        //HealthBarFill_Green.color = HealthBarFill_Gradient.Evaluate(health / 100f);
-        // HealthBarFill_Green.DOGradientColor(HealthBarFill_Gradient2, .5f).SetLoops(2,LoopType.Yoyo);
-
-
-        Animate_HealthBarFill_Red(health / 100f, isIncreasing);
-
-    //    Debug.Log("isinitlized: " + IsInitilized);
+      
 
        
 
      
     }
+    public void ChangeHealthRate( float healthRate, bool isIncreasing = false)
+    {
 
+
+        HealthBarFill_Green.fillAmount = healthRate;
+        //HealthBarFill_Green.color = HealthBarFill_Gradient.Evaluate(health / 100f);
+        // HealthBarFill_Green.DOGradientColor(HealthBarFill_Gradient2, .5f).SetLoops(2,LoopType.Yoyo);
+
+
+        Animate_HealthBarFill_Red(healthRate, isIncreasing);
+
+        //    Debug.Log("isinitlized: " + IsInitilized);
+
+
+
+
+    }
     #endregion
 
 
@@ -202,7 +209,7 @@ public class ObjectUIHandler : MonoBehaviour
       
 
     }
-
+    
     public virtual void DisablePanel()
     {
 

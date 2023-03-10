@@ -1,0 +1,30 @@
+{
+    "Ellen": {
+        "Id": 0,
+        "Name": "Ellen",
+        "Attributes": {
+            "Energy": {
+                "Name": "Energy",
+                "Level": 0,
+                "Levels": [
+                    3,
+                    5,
+                    7
+                ],
+                "Value": 0.0
+            },
+            "Health": {
+                "Name": "Health",
+                "Level": 0,
+                "Levels": [
+                    100,
+                    300,
+                    500
+                ],
+                "Value": 0.0
+            }
+
+            
+        }
+    }
+}

@@ -21,15 +21,11 @@ public class ObjectSetup : NetworkBehaviour
 
         if (!NetworkIdentity.isServer)
         {
-
-            objectUIHandler.Initialize(health.MaxHealth);
+            objectUIHandler.Initialize();
         }
         else
         {
-            health.ResetValues(100);
             objectUIHandler.enabled = false;
-
-
         }
     }
 }

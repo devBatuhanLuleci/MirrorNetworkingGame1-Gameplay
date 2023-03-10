@@ -96,7 +96,7 @@ public class Panel : MonoBehaviour, IPanel
         var props = this.GetType().GetFields();
         for (int i = 0; i < props.Length; i++)
         {
-            var item = props[i].GetValue(this);
+            var item = props[i].GetValue(this) as Panel;
             if (item == panel)
             {
                 return true;
