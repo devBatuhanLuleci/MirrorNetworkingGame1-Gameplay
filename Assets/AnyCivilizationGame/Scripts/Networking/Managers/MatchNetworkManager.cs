@@ -20,6 +20,8 @@ public class MatchNetworkManager : NetworkManager
 
     private static MatchNetworkManager instance;
     private Dictionary<int, NetworkConnectionToClient> players;
+
+    public List<PlayerController> playerList;
     #endregion
     public override void Awake()
     {
@@ -47,6 +49,14 @@ public class MatchNetworkManager : NetworkManager
     public void Respawn(PlayerController player)
     {
         StartCoroutine(IERespawn(player));
+    }
+    public void DestroyThis(ObjectController obj)
+    {
+        if (obj != null)
+        {
+
+            obj.DestroyThisObject();
+        }
     }
     /// <summary>
     /// this method must call from server
@@ -141,7 +151,8 @@ public class MatchNetworkManager : NetworkManager
         StartServer();
 
         players = new Dictionary<int, NetworkConnectionToClient>();
-
+       
+         playerList = new List<PlayerController>();
         LoadBalancer.Instance.SpawnServer.SendClientRequestToServer(new OnReadyEvent(ACGDataManager.Instance.GameData.Port));
         Debug.LogError("OnReadyEvent msg sended to master server.");
     }
@@ -160,6 +171,7 @@ public class MatchNetworkManager : NetworkManager
 
     public override void OnServerConnect(NetworkConnectionToClient conn)
     {
+       
         base.OnServerConnect(conn);
         players.Add(conn.connectionId, conn);
         Debug.LogError("OnServerConnect players count:" + players.Count);
@@ -171,6 +183,42 @@ public class MatchNetworkManager : NetworkManager
         }
     }
 
+    public void GetAllPlayerList()
+    {
+        foreach (var item in players.Values)
+        {
+
+        //    Debug.Log( $"isim: { item.identity.name}  id:     {item.identity.netId}");
+        }
+
+    }
+
+    public PlayerController GetPlayerByNetID(uint netID)
+    {
+
+        foreach (var item in players.Values)
+        {
+            if(item.identity.netId== netID)
+            {
+           // Debug.Log($"isim: { item.identity.name}  id:     {item.identity.netId}");
+                return item.identity.GetComponent<PlayerController>();
+            }
+        }
+        return null;
+    }
+    public PlayerController GetPlayerByConnection(uint netID)
+    {
+
+        foreach (var item in players.Values)
+        {
+            if (item.identity.netId == netID)
+            {
+              //  Debug.Log($"isim: { item.identity.name}  id:     {item.identity.netId}");
+                return item.identity.GetComponent<PlayerController>();
+            }
+        }
+        return null;
+    }
     #endregion
 
 

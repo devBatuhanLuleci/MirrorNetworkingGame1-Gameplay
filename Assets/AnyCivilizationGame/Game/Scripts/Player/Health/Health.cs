@@ -12,13 +12,20 @@ public class Health : NetworkBehaviour
     [SyncVar(hook = nameof(RefreshHealthRate))]
     public float HealthRate;
 
+
     private PlayerController playerController;
 
-    private void Awake()
+    public virtual void Awake()
     {
         playerController = GetComponent<PlayerController>();
     }
 
+    public virtual void Update()
+    {
+        //Inherited
+
+
+    }
     public bool TakeDamage(int damage)
     {
         var newHealth = currentHealht - damage;
@@ -39,11 +46,11 @@ public class Health : NetworkBehaviour
     }
 
     #region Hooks
-    public void RefreshCurrentHealth(int oldValue, int newValue)
+    public virtual void RefreshCurrentHealth(int oldValue, int newValue)
     {
-        playerController.HealthChanged(newValue);
+        currentHealht = newValue;
     }
-    public void RefreshHealthRate(float oldValue, float newValue)
+    public virtual void RefreshHealthRate(float oldValue, float newValue)
     {
         playerController.HealthRateChanged(newValue);
     }

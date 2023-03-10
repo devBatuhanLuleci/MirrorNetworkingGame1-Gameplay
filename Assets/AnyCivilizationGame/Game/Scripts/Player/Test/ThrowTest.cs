@@ -1,4 +1,5 @@
 ﻿using SimpleInputNamespace;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,7 +32,7 @@ public class ThrowTest : MonoBehaviour
     public virtual void OnArrived()
     {
 
-        throwableObj.SetActive(false);
+        //  throwableObj.SetActive(false);
 
         //  Debug.Log("we arrived.");
     }
@@ -77,17 +78,17 @@ public class ThrowTest : MonoBehaviour
 
             }
         }
-       else if (type == Type.Type2)
+        else if (type == Type.Type2)
         {
 
 
-           // Vector3 dist = targetPoint.position - firePoint.position;
+            // Vector3 dist = targetPoint.position - firePoint.position;
 
 
             Vector3 dir = new Vector3(attackJoystick.Value.x, 0, attackJoystick.Value.y);
 
             Vector3 targetPos = new Vector3(dir.magnitude * Range, -firePoint.position.y, 0);
-           
+
 
             CalculateProjectile(targetPos);
             DrawPath(dir.normalized, v0, angle, timeNew, step);
@@ -95,6 +96,12 @@ public class ThrowTest : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 throwableObj.SetActive(true);
+               if(throwableObj.TryGetComponent(out Animator anim))
+                {
+                    Debug.Log("hmm");
+                    anim.SetTrigger("Setup");
+
+                }
                 Throw(dir.normalized);
 
             }
@@ -146,23 +153,27 @@ public class ThrowTest : MonoBehaviour
     {
 
         var FirePoint = firePoint.position + StartPosOffSet(direction);
+        float startTime = 0;
+        startTime = Time.time;
+        float t = Time.time - startTime;
 
-        float t = 0;
-        // Debug.Log(time / (initialVelocity ));
-        // Debug.Log(BulletObj.transform.name);
+        //Debug.Log(time);
+       
         while (t < time)
         {
 
+            t = Time.time - startTime;
+            t = Mathf.Min(t, time);
             float x = v0 * t * Mathf.Cos(angle);
-            float y = v0 * t * Mathf.Sin(angle) - (1f / 2f) * -Physics.gravity.y * Mathf.Pow(t, 2);
-
+            float y = v0 * t * Mathf.Sin(angle) - (0.5f) * -Physics.gravity.y * Mathf.Pow(t, 2);
+            //  Debug.Log($" x{x}: , y {y}");
+            y = (float)Math.Round(y, 4);
             var upValue = projectileType == ProjectileType.Bomb ? (Vector3.up * y) : Vector3.zero;
 
             throwableObj.transform.position = FirePoint + direction * x + upValue;
+          
+            //  t += Time.fixedDeltaTime * (initialVelocity);
 
-
-
-            t += Time.deltaTime * (initialVelocity);
 
             yield return null;
 
@@ -201,7 +212,7 @@ public class ThrowTest : MonoBehaviour
 
     public void CalculateProjectile(Vector3 dir)
     {
-       // Debug.Log("dir: " + dir);
+        // Debug.Log("dir: " + dir);
         var targetPos = new Vector3(new Vector3(dir.x, 0, dir.z).magnitude, dir.y, 0);
 
         height = projectileType == ProjectileType.Bomb ? (dir.y + dir.magnitude / 2f) : 0;
@@ -209,21 +220,21 @@ public class ThrowTest : MonoBehaviour
 
         var dist = new Vector3(dir.x, 0, dir.z).magnitude;
         Debug.Log("targetPos: " + targetPos);
-        Debug.Log("pos: " +( dist - StartPosOffSet(targetPos).magnitude));
+        Debug.Log("pos: " + (dist - StartPosOffSet(targetPos).magnitude));
 
 
         if (targetPos.x < minAttackLimit)
         {
-              line.enabled = false;
+            line.enabled = false;
 
 
         }
         else
         {
-             line.enabled = true;
+            line.enabled = true;
 
-          //  if (dist <= Range)
-                CalculatePathWithHeight(dir.normalized * targetPos.magnitude /*- StartPosOffSet(targetPos)*/, height, out v0, out angle, out timeNew);
+            //  if (dist <= Range)
+            CalculatePathWithHeight(dir.normalized * targetPos.magnitude /*- StartPosOffSet(targetPos)*/, height, out v0, out angle, out timeNew);
 
         }
 

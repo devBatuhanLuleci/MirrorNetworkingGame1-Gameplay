@@ -8,13 +8,21 @@ using UnityEngine;
 public class InputHandler : Singleton<InputHandler>
 {
     #region Public Fields
-    [SerializeField] private Joystick MovementJoystick;
-    [SerializeField] private Joystick AttackJoystick;
+    [HideInInspector]
+    public Joystick MovementJoystick;
+    [HideInInspector]
+    public Joystick AttackBasicJoystick;
+    [HideInInspector]
+    public Joystick AttackUltiJoystick;
+
+    public enum AttackType { Basic, Ulti }
+    public AttackType attackType = AttackType.Basic;
+
     #endregion
 
     #region Private Fields
     [SerializeField]
-    private PlayerController PlayerController;
+    public PlayerController PlayerController;
     #endregion
 
 
@@ -22,6 +30,12 @@ public class InputHandler : Singleton<InputHandler>
     {
         PlayerController = player;
         gameObject.SetActive(true);
+        JoystickCanvas joystickCanvas = GameplayPanelUIManager.Instance.joystickCanvas.GetComponent<JoystickCanvas>();
+
+        joystickCanvas.joystickCanvasUIController.DeactivateUlti();
+                MovementJoystick = joystickCanvas.MovementJoystick;
+        AttackBasicJoystick = joystickCanvas.AttackBasicJoystick;
+        AttackUltiJoystick = joystickCanvas.AttackUltiJoystick;
     }
 
     protected override void Awake()
@@ -35,21 +49,109 @@ public class InputHandler : Singleton<InputHandler>
         base.Awake();
         gameObject.SetActive(false);
 
+
+
+
+
+    }
+    private void Start()
+    {
+        //if (attackType == AttackType.Basic)
+        //{
+        //    AttackUltiJoystick.Activate();
+        //}
     }
     private void Update()
     {
         if (PlayerController == null || !PlayerController.IsLive) return;
         Move();
-        MainAttack();
+
+        //if (ultiActive)
+        //{
+        //    ultiActive = false;
+        //    if (attackType == AttackType.Basic)
+        //    {
+        //        AttackUltiJoystick.Activate();
+        //    }
+        //}
+        //if (ultideActive)
+        //{
+        //    ultideActive = false;
+        //    if (attackType == AttackType.Basic)
+        //    {
+        //        AttackUltiJoystick.Deactivate();
+        //    }
+        //}
+        //  BasicAttack();
+        //   UltiAttack();
+        Attack();
     }
 
-    private void MainAttack()
+
+
+    public void AttackButtonUp(Joystick joystick)
     {
-        var targetingDirection = AttackJoystick.Value;
-        var held = AttackJoystick.joystickHeld;
-        PlayerController.Targeting(targetingDirection, held);
+        if (joystick.joystickButtonType == Joystick.JoystickButtonType.ultiAttack || joystick.joystickButtonType == Joystick.JoystickButtonType.basicAttack)
+        {
+
+            Debug.Log("woww");
+
+            var targetingDirection = Vector2.zero;
+
+            if (joystick.joystickButtonType == Joystick.JoystickButtonType.basicAttack)
+            {
+
+                targetingDirection = AttackBasicJoystick.Value;
+
+
+            }
+            else if (joystick.joystickButtonType == Joystick.JoystickButtonType.ultiAttack)
+            {
+
+                targetingDirection = AttackUltiJoystick.Value;
+
+
+            }
+            else
+            {
+                targetingDirection = Vector2.zero;
+            }
+
+            PlayerController.attack.Shoot(targetingDirection);
+        }
+    }
+    private void Attack()
+    {
+
+        var basicAttackHeld = AttackBasicJoystick.joystickHeld;
+        var ultiAttackHeld = AttackUltiJoystick.joystickHeld;
+        var targetingDirection = Vector2.zero;
+        if (basicAttackHeld)
+        {
+
+            targetingDirection = AttackBasicJoystick.Value;
+
+
+        }
+        else if (ultiAttackHeld)
+        {
+
+            targetingDirection = AttackUltiJoystick.Value;
+
+
+        }
+        else
+        {
+            targetingDirection = Vector2.zero;
+        }
+
+        if ((ultiAttackHeld && AttackBasicJoystick.gameObject.activeSelf) || (!ultiAttackHeld && !AttackBasicJoystick.gameObject.activeSelf))
+            AttackBasicJoystick.gameObject.SetActive(!ultiAttackHeld);
+
+        PlayerController.Targeting(targetingDirection, basicAttackHeld, ultiAttackHeld);
 
     }
+
 
     private void Move()
     {

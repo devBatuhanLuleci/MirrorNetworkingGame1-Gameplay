@@ -12,15 +12,21 @@ namespace SimpleInputNamespace
 
 		private void Awake()
 		{
+			
+		}
+		public void ActivateRaycast()
+        {
 			Graphic graphic = GetComponent<Graphic>();
-			if( !graphic )
+			if (!graphic)
 				graphic = gameObject.AddComponent<NonDrawingGraphic>();
 
 			graphic.raycastTarget = true;
+
 		}
 
 		public void OnPointerDown( PointerEventData eventData )
 		{
+
 			Listener.OnPointerDown( eventData );
 			pointerId = eventData.pointerId;
 		}

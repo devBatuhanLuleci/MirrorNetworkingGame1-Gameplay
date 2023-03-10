@@ -25,7 +25,7 @@ public class LoadingPanel : Panel
     IEnumerator FakeWait(float time)
     {
         yield return new WaitForSeconds(1);
-        MainUIManager.Instance.Login();
+        MainPanelUIManager.Instance.Login();
     }
     #endregion
 }

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -7,70 +7,125 @@ using System;
 
 public class Bullet : Throwable, INetworkPooledObject
 {
-    public int damage = 50;
+    public int damage = 5;
 
 
-    public string OwnerName = "";
-    public uint OwnerNetId = 0;
 
-    [SerializeField]
-    private float speed = 0.5f;
 
     public Action ReturnHandler { get; set; }
 
-    private void Awake()
-    {
-        timeOld = speed;
-    }
+
 
     /// <summary>
     /// This method calls from when the bullet spawn from pool.
     /// </summary>
     /// <param name="rotAngle"></param>
-    public void OnObjectSpawn(float rotAngle)
+    public override void OnObjectSpawn()
     {
-      //  Debug.Log("rotangle: " + rotAngle);
-        SetRotationOffThisObject(rotAngle);
+        //  Debug.Log("rotangle: " + rotAngle);
+        base.OnObjectSpawn();
+
     }
     /// <summary>
     /// This function sets the rotation of bullet when it is spawn.
     /// </summary>
     /// <param name="rotAngle"></param>
-    public void SetRotationOffThisObject(float rotAngle)
-    {
-        transform.rotation = Quaternion.Euler(0, rotAngle, 0);
-    }
+
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent<PlayerController>(out var otherPlayerController) && CanAttack(otherPlayerController))
         {
-            otherPlayerController.TakeDamage(damage);
-            gameObject.SetActive(false);
-            Debug.Log("some one hited by " + OwnerName);
-            NetworkServer.UnSpawn(gameObject);
-            ReturnHandler();
+            if (otherPlayerController.IsLive)
+            {
+
+
+              
+                PlayerController OurPlayer = MatchNetworkManager.Instance.GetPlayerByNetID(RootNetId);
+
+
+                otherPlayerController.ChangeDamageTakenStatus(PlayerController.DamageTakenStatus.IsTakenDamage);
+                otherPlayerController.TakeDamage(damage,otherPlayerController.netIdentity.connectionToClient);
+
+
+
+                // if (OurPlayer != null)
+                //    ActivateUltiOnTargetObject(OurPlayer.netIdentity.connectionToClient, OurPlayer);
+                OurPlayer.ultimateSkill.IncreaseCurrentUltimateFillAmount(OurPlayer.netIdentity.connectionToClient, damage * 4);
+                //  gameObject.SetActive(false);
+                Debug.Log("some one hited by " + OwnerName);
+                NetworkServer.UnSpawn(gameObject);
+                ReturnHandler();
+
+            }
+            //foreach (var player in MatchNetworkManager.Instance.players)
+            //{
+            //    Debug.Log($"  1: { player.Key}       2: { player.Value}");
+            //}
+        }
+
+        if (other.TryGetComponent<IDamagable>(out IDamagable damagableObject)/* && CanAttack(damagableObject.)*/)
+        {
+
+            //TODO: buraya girmiyor. bak
+            //  Debug.Log("hello hawagi ");
+            if (other.TryGetComponent<FatboyTurret>(out FatboyTurret fatboyTurret))
+            {
+
+                if (isEnemy(fatboyTurret))
+                {
+
+                    PlayerController OurPlayer = MatchNetworkManager.Instance.GetPlayerByNetID(RootNetId);
+                    OurPlayer.ultimateSkill.IncreaseCurrentUltimateFillAmount(OurPlayer.netIdentity.connectionToClient, damage * 4);
+
+                    damagableObject.GetDamage(10);
+                    // otherPlayerController.TakeDamage(damage);
+                    //  gameObject.SetActive(false);
+                    // Debug.Log("some one hited by " + OwnerName);
+                    NetworkServer.UnSpawn(gameObject);
+                    ReturnHandler();
+
+                }
+
+            }
+
+
 
         }
-    }
 
+    }
+    //[TargetRpc]
+    //public void ActivateUltiOnTargetObject(NetworkConnection target, PlayerController player)
+    //{
+    //   //TODO : Burada ultiyi aktive ediyoruz değiştir. burada kullanıcının attack barını doldur.
+    //    player.ActivateUlti();
+    //    // This will appear on the opponent's client, not the attacking player's
+    //    Debug.Log("Magic Damage  sb =");
+    //}
+
+    private bool isEnemy(FatboyTurret fatboyTurret)
+    {
+        var isEnemy = false;
+
+        isEnemy = OwnerNetId != 0 && RootNetId != fatboyTurret.RootNetId/* bullet kendi turret'ına mı değdi  */&& fatboyTurret.netIdentity.netId != OwnerNetId && netIdentity.isServer;
+
+
+
+
+        return isEnemy;
+    }
     private bool CanAttack(PlayerController playerController)
     {
-        return OwnerNetId != 0 && playerController.netIdentity.netId != OwnerNetId && netIdentity.isServer;
+        return OwnerNetId != 0 && playerController.netIdentity.netId != OwnerNetId && RootNetId != playerController.netIdentity.netId && netIdentity.isServer;
     }
 
-    public void Init(string ownerName, uint ownerNetId)
-    {
-        OwnerName = ownerName;
-        OwnerNetId = ownerNetId;
-    }
 
 
     public override void OnArrived()
     {
         NetworkServer.UnSpawn(gameObject);
         ReturnHandler();
-      
+
     }
 
 }

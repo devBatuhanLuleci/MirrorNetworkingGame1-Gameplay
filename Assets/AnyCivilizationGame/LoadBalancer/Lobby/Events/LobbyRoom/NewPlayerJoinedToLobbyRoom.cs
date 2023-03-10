@@ -15,6 +15,6 @@ public class NewPlayerJoinedToLobbyRoom : IResponseEvent
     public void Invoke(EventManagerBase eventManagerBase)
     {
         Debug.Log($"{Player.UserName} has been joined");
-        MainUIManager.Instance.GetPanel<LobbyPanel>().JoinRoom(Player.UserName);
+        MainPanelUIManager.Instance.GetPanel<LobbyPanel>().JoinRoom(Player.UserName);
     }
 }

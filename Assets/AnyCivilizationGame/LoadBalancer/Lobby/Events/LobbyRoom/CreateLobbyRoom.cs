@@ -21,6 +21,6 @@ public class LobbyRoomCreated : IResponseEvent
         Debug.Log($"CreateLobbyRoom id: {RoomCode}");
 
         lobbyManager.LobbyPlayer = LobbyPlayer;
-        MainUIManager.Instance.GetPanel<LobbyPanel>().CreateRoom(RoomCode, LobbyPlayer.UserName);
+        MainPanelUIManager.Instance.GetPanel<LobbyPanel>().CreateRoom(RoomCode, LobbyPlayer.UserName);
     }
 }
