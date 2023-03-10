@@ -25,6 +25,8 @@ public class PlayerController : ObjectController
     private InfoPopup infoPopup;
     #endregion
 
+  
+
     public Transform SpineRotator;
     [HideInInspector]
     public PlayerUIHandler playerUIHandler;
@@ -81,8 +83,7 @@ public class PlayerController : ObjectController
 
     private float TrailDistance;
 
-
-
+ 
     public override void Awake()
     {
         base.Awake();
@@ -92,6 +93,7 @@ public class PlayerController : ObjectController
         playerUIHandler = GetComponent<PlayerUIHandler>();
         ultimateSkill = GetComponent<UltimateSkill>();
 
+        
 
     }
     private void Start()
@@ -140,7 +142,6 @@ public class PlayerController : ObjectController
     public void SpawnBullet(Vector3[] spawnPoint, Vector3 dir, int BulletCount, float BulletIntervalTime, float offSetZvalue = 0, float offSetYvalue = 0)
     {
         var lobbyPlayer = ACGDataManager.Instance.LobbyPlayer;
-        MatchNetworkManager.Instance.GetAllPlayerList();
         energy.CastEnergy();
         StartCoroutine(SpawnIntervalBullet(spawnPoint, dir, BulletCount, BulletIntervalTime, offSetZvalue, offSetYvalue));
 
@@ -214,6 +215,14 @@ public class PlayerController : ObjectController
     [Command]
     public void SendAttackType(CurrentAttackType currentAttackType)
     {
+
+        if (!energy.HaveEnergy(attack.isShooting) || attack.isShooting)
+        {
+            return;
+
+        }
+
+
         if (currentAttackType == CurrentAttackType.Ulti)
         {
             if (!isUltiThrowable)
