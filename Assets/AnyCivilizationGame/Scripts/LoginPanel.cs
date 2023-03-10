@@ -7,7 +7,7 @@ using System;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class LoginPanel : MonoBehaviour
+public class LoginPanel : Panel
 {
     public TMP_Text m_EmailTmp;
     public TMP_InputField m_MoralisIdInput;

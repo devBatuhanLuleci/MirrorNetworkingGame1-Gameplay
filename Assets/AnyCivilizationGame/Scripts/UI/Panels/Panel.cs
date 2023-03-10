@@ -7,7 +7,6 @@ public class Panel : MonoBehaviour, IPanel
     protected Panel currentPanel;
 
 
-
     public virtual void Close()
     {
         // if panel already close dont make anything
@@ -26,11 +25,11 @@ public class Panel : MonoBehaviour, IPanel
         {
             time += Time.fixedDeltaTime;
 
-         //   Debug.Log("hmm");
+            //   Debug.Log("hmm");
 
             break;
         }
-     //   Debug.Log("hello");
+        //   Debug.Log("hello");
 
 
         OnPanelClose();
@@ -51,8 +50,9 @@ public class Panel : MonoBehaviour, IPanel
     }
     public virtual void ShowSmoothly()
     {
-     
-      if( TryGetComponent(out CanvasGroup canvasGroup)){
+
+        if (TryGetComponent(out CanvasGroup canvasGroup))
+        {
 
             canvasGroup.DOFade(1, .5f).From(0).SetEase(Ease.Linear);
         }
