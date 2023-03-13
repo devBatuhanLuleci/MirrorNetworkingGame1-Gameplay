@@ -45,7 +45,7 @@ public class PlayerHealth : Health
 
 
             currentHealht = ((currentHealht + 20) > MaxHealth) ? MaxHealth : currentHealht + 20;
-
+            HealthRate = currentHealht / (float)MaxHealth;
             playerController.AnimateOtherHealthBarEffects(netIdentity.connectionToClient);
             if (currentHealht == MaxHealth)
             {
@@ -71,6 +71,16 @@ public class PlayerHealth : Health
         }
 
 
+    }
+
+    public override void RefreshCurrentHealth(int oldValue, int newValue)
+    {
+        base.RefreshCurrentHealth(oldValue, newValue);
+    }
+    public override void RefreshHealthRate(float oldValue, float newValue)
+    {
+        base.RefreshHealthRate(oldValue, newValue);
+        playerController.HealthRateChanged(newValue);
     }
 
 }

@@ -52,7 +52,7 @@ public class Health : NetworkBehaviour
     }
     public virtual void RefreshHealthRate(float oldValue, float newValue)
     {
-        playerController.HealthRateChanged(newValue);
+       
     }
     #endregion
 }

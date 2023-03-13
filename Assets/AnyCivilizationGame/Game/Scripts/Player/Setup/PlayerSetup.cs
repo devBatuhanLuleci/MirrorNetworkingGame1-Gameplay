@@ -1,4 +1,4 @@
-
+﻿
 using Mirror;
 using System;
 using System.Collections;
@@ -56,7 +56,7 @@ public class PlayerSetup : ObjectSetup
         }
         else // Do anything on server
         {
-            SetPlayerDataForServer();
+        //    SetPlayerDataForServer();
         }
 
         // Do anything on only local client
@@ -80,8 +80,9 @@ public class PlayerSetup : ObjectSetup
 
     }
 
-    private void SetPlayerDataForServer()
+    public override void SetPlayerDataForServer()
     {
+        base.SetPlayerDataForServer();
         var data = ACGDataManager.Instance.GetCharacterData().Attributes;
         try
         {
@@ -92,7 +93,7 @@ public class PlayerSetup : ObjectSetup
             }
             if (data.TryGetValue("Energy", out var energyAttribute))
             {
-                energy.MakeEnergyBarsFull((int)healthAttribute.Value);
+                energy.MakeEnergyBarsFull((int)energyAttribute.Value);
             }
         }
         catch (Exception ex) { Debug.LogError(ex.Message); }
@@ -105,14 +106,33 @@ public class PlayerSetup : ObjectSetup
 
         CameraController.Instance.Initialize(transform);
         InputHandler.Instance.Init(playerController);
+        playerController.playerUIHandler.Change_TeamIndicator_Color("Me");
     }
     private void InitOtherPlayers()
     {
         var playerController = GetComponent<PlayerController>();
         base.objectUIHandler.DisablePanel();
 
+        //TODO :  SetTeamColor delaylı olarak çalışıyor, bu methodu direk çalıştırdığımızda referans hatası alıyoruz .
+        Invoke("SetTeamColor", 3);
 
     }
+    public void SetTeamColor()
+    {
+
+
+        if (NetworkedGameManager.Instance.IsInMyTeam(netIdentity))
+        {
+            playerController.playerUIHandler.Change_TeamIndicator_Color("Ally");
+
+        }
+        else
+        {
+            playerController.playerUIHandler.Change_TeamIndicator_Color("Enemy");
+
+        }
+    }
+
     public void GetSpine(Transform characterMesh)
     {
         var SpineObj = characterMesh.FindByName("Spine");

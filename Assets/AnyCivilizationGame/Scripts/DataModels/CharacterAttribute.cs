@@ -8,7 +8,7 @@ public class CharacterAttribute
     public int Level;
     public float[] Levels;
     public float Value { get => Levels[Level]; }
-
+ 
     public CharacterAttribute()
     {
 
