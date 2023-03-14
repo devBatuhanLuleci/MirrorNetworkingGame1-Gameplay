@@ -914,6 +914,7 @@ MonoBehaviour:
   OwnerName: 
   OwnerNetId: 0
   RootNetId: 0
+  OwnerConnectionId: 0
   projectileType: 1
   NetworkAnimator: {fileID: 3218230185255235510}
   NetworkAnimationInitSpeed: 0.7
@@ -979,7 +980,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  Value: 0
+  currentHealht: 40
+  HealthRate: 0
 --- !u!114 &1612212244097783574
 MonoBehaviour:
   m_ObjectHideFlags: 0

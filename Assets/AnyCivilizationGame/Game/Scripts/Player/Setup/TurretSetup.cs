@@ -6,15 +6,16 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class TurretSetup : ObjectSetup
 {
-    public override void SetPlayerDataForServer()
+    public override void SetObjectDataForServer()
     {
-        base.SetPlayerDataForServer();
+        base.SetObjectDataForServer();
 
         var data = ACGDataManager.Instance.GetCharacterData().Attributes;
         try
         {
             if (data.TryGetValue("TurretHealth", out var TurretHealthAttribute))
             {
+
                 health.ResetValues((int)TurretHealthAttribute.Value);
                // objectUIHandler.enabled = false;
             }

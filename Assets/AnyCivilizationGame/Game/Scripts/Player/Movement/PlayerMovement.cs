@@ -172,7 +172,7 @@ public class PlayerMovement : NetworkBehaviour
     }
     public void GetCurrentRotateSpine(float angle)
     {
-        Debug.Log("newAngle : " + angle);
+    
         //   PlayerController.SpineRotator.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(newAngle, newAngle, newAngle)), .1f).SetEase(Ease.InOutQuad);
         var LocalAngle = transform.rotation.eulerAngles.y + PlayerController.SpineRotator.rotation.eulerAngles.x - angle;
 

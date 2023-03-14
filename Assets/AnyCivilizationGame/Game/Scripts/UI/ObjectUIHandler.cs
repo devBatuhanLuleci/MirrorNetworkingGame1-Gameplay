@@ -125,7 +125,7 @@ public class ObjectUIHandler : MonoBehaviour
     public void ChangeHealth(int health)
     {
 
-
+       
         healthText.text = health.ToString();
       
 

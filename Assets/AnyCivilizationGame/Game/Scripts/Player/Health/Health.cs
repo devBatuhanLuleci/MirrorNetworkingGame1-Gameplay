@@ -2,12 +2,14 @@ using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Health : NetworkBehaviour
 {
-    public int MaxHealth { get; private set; } = 100;
+    public int MaxHealth { get; private set; } = 50;
+
     [SyncVar(hook = nameof(RefreshCurrentHealth))]
-    public int currentHealht = 100;
+    public int currentHealht ;
 
     [SyncVar(hook = nameof(RefreshHealthRate))]
     public float HealthRate;
@@ -41,14 +43,16 @@ public class Health : NetworkBehaviour
     }
     public void ResetValues(int value)
     {
+        
         currentHealht = MaxHealth = value;
+       
         HealthRate = 1;
     }
 
     #region Hooks
     public virtual void RefreshCurrentHealth(int oldValue, int newValue)
     {
-        currentHealht = newValue;
+      
     }
     public virtual void RefreshHealthRate(float oldValue, float newValue)
     {

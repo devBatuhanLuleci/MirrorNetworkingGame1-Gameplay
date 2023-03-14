@@ -47,8 +47,8 @@ public class NetworkedGameManager : NetworkBehaviour
         if (IsClient) SetupClient();
         if (isServer)
         {
-        MatchNetworkManager.Instance.OnPlayerListChanged.AddListener(OnCharacterReplaced);
-       
+            MatchNetworkManager.Instance.OnPlayerListChanged.AddListener(OnCharacterReplaced);
+
         }
     }
 
@@ -58,7 +58,7 @@ public class NetworkedGameManager : NetworkBehaviour
     {
         if (isServer)
         {
-        MatchNetworkManager.Instance.OnPlayerListChanged.RemoveListener(OnCharacterReplaced);
+            MatchNetworkManager.Instance.OnPlayerListChanged.RemoveListener(OnCharacterReplaced);
 
         }
     }
@@ -111,26 +111,31 @@ public class NetworkedGameManager : NetworkBehaviour
         }
 
     }
-    public bool IsInMyTeam(NetworkIdentity localPlayer)
+    public bool IsInMyTeam(NetworkIdentity otherPlayer)
     {
-       // Debug.Log("localplayer:" + NetworkClient.localPlayer.connectionToServer.connectionId);
-        //  var ourConnectionID = NetworkClient.localPlayer.connectionToServer.connectionId;
-        // var otherPlayerConnectionID = localPlayer.connectionToServer.connectionId;
-         var ourTeam = Teams.Find(item =>item.netIdentity!=null && item.netIdentity.Equals(NetworkClient.localPlayer));
-        Debug.Log(ourTeam.team);
-        var otherTeam = Teams.Find(item => item.netIdentity != null && item.netIdentity.Equals(localPlayer));
-        //var ourTeam = Teams.Find(item => item.netIdentity.Equals(NetworkClient.localPlayer));
-        //var otherTeam = Teams.Find(item => item.netIdentity.Equals(localPlayer));
-
-           Debug.Log($" Our team team: {ourTeam.team }  Other team: {otherTeam.team}");
+    
+        var ourTeam = Teams.Find(item => item.netIdentity != null && item.netIdentity.Equals(NetworkClient.localPlayer));
+        var otherTeam = Teams.Find(item => item.netIdentity != null && item.netIdentity.Equals(otherPlayer));
+     
 
 
-
-
-          return ourTeam.team==otherTeam.team;
-        //return false;
+        return ourTeam.team == otherTeam.team;
+    
 
     }
+    public bool IsInMyTeam(uint ownerNetID, uint otherPlayerNetID)
+    {
+
+        var ourTeam = Teams.Find(item => item.netIdentity != null && item.netIdentity.netId.Equals(ownerNetID));
+
+        var otherTeam = Teams.Find(item => item.netIdentity != null && item.netIdentity.netId.Equals(otherPlayerNetID));
+
+
+
+        return ourTeam.team == otherTeam.team;
+    
+    }
+
     [Command/*(requiresAuthority =true)*/]
     public void GetLocalPlayer(/*NetworkConnectionToClient conn*/)
     {

@@ -119,7 +119,7 @@ public class FatboyTurret : Throwable,IDamagable
 
         foreach (var obj in playersInsideZone)
         {
-            if (obj.TryGetComponent(out PlayerController pc) && pc.netId != OwnerNetId)
+            if (obj.TryGetComponent(out PlayerController pc)  && !NetworkedGameManager.Instance.IsInMyTeam(RootNetId, pc.netIdentity.netId))
             {
                 if (pc.TryGetComponent(out Health health))
                 {
@@ -130,7 +130,7 @@ public class FatboyTurret : Throwable,IDamagable
                 }
 
             }
-            else if (obj.TryGetComponent(out TurretController tc) && tc.netId != netId)
+            else if (obj.TryGetComponent(out TurretController tc) && tc.netId != netId && !NetworkedGameManager.Instance.IsInMyTeam(RootNetId, tc.fatboyTurret.RootNetId))
             {
                 if (tc.TryGetComponent(out Health health))
                 {
@@ -164,7 +164,7 @@ public class FatboyTurret : Throwable,IDamagable
 
         foreach (var obj in playersInsideZone)
         {
-            if (obj.TryGetComponent(out PlayerController pc) && pc.netId != OwnerNetId)
+            if (obj.TryGetComponent(out PlayerController pc) && !NetworkedGameManager.Instance.IsInMyTeam(RootNetId, pc.netIdentity.netId) )
             {
                 if (pc.TryGetComponent(out Health health))
                 {
@@ -176,7 +176,7 @@ public class FatboyTurret : Throwable,IDamagable
                 }
 
             }
-            else if (obj.TryGetComponent(out TurretController tc) && tc.netId != netId)
+            else if (obj.TryGetComponent(out TurretController tc) && tc.netId != netId /* bu turret ben değilsem kontrolü */ && !NetworkedGameManager.Instance.IsInMyTeam(RootNetId, tc.fatboyTurret.RootNetId))
             {
                 if (tc.TryGetComponent(out Health health))
                 {
@@ -294,6 +294,7 @@ public class FatboyTurret : Throwable,IDamagable
     public override void OnObjectSpawn()
     {
         base.OnObjectSpawn();
+        GetComponent<ObjectSetup>().SetObjectDataForServer();
         ActivateFatBoyTurretAnimation();
 
     }

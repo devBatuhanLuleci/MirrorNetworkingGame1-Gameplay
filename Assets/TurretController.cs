@@ -6,7 +6,8 @@ using UnityEngine;
 public class TurretController : ObjectController
 {
     public ObjectUIHandler turretUIHandler;
-    private FatboyTurret fatboyTurret;
+    [HideInInspector]
+    public FatboyTurret fatboyTurret;
 
     public override void Awake()
     {
@@ -16,6 +17,7 @@ public class TurretController : ObjectController
     public override void HealthChanged(int health)
     {
         base.HealthChanged(health);
+
         turretUIHandler.ChangeHealth(health);
 
     }

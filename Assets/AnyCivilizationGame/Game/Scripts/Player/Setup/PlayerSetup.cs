@@ -56,7 +56,7 @@ public class PlayerSetup : ObjectSetup
         }
         else // Do anything on server
         {
-        //    SetPlayerDataForServer();
+            SetObjectDataForServer();
         }
 
         // Do anything on only local client
@@ -80,9 +80,9 @@ public class PlayerSetup : ObjectSetup
 
     }
 
-    public override void SetPlayerDataForServer()
+    public override void SetObjectDataForServer()
     {
-        base.SetPlayerDataForServer();
+        base.SetObjectDataForServer();
         var data = ACGDataManager.Instance.GetCharacterData().Attributes;
         try
         {
@@ -120,6 +120,7 @@ public class PlayerSetup : ObjectSetup
     public void SetTeamColor()
     {
 
+        Debug.Log("othernetId:" + netIdentity.netId);
 
         if (NetworkedGameManager.Instance.IsInMyTeam(netIdentity))
         {

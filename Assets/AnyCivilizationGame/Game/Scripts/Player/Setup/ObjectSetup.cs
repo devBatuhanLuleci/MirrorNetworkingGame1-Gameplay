@@ -28,10 +28,10 @@ public class ObjectSetup : NetworkBehaviour
         else // Do anything on server
         {
             objectUIHandler.enabled = false;
-            SetPlayerDataForServer();
+      
         }
     }
-    public virtual void SetPlayerDataForServer()
+    public virtual void SetObjectDataForServer()
     {
      
     }

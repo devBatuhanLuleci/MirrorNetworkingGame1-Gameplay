@@ -13,6 +13,7 @@ public class TurretHealth : Health
     }
     public override void RefreshCurrentHealth(int oldValue, int newValue)
     {
+      
         base.RefreshCurrentHealth(oldValue, newValue);
         turretController.HealthChanged(newValue);
 

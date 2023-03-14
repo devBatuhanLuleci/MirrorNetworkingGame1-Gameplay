@@ -944,7 +944,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  Value: 0
+  currentHealht: 0
+  HealthRate: 0
 --- !u!136 &2062106847119599058
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1373,7 +1374,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7265529046984112323, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 4
+      value: 3.26
       objectReference: {fileID: 0}
     - target: {fileID: 7265529046984112323, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
