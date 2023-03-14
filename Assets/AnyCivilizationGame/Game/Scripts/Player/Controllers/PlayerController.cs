@@ -201,13 +201,21 @@ public class PlayerController : ObjectController
     public override void TakeDamage(int damage, NetworkConnection target)
     {
         base.TakeDamage(damage, target);
-       AnimateOtherHealthBarEffects(target);
+       OnTakeDamage_DoSomething_Only_On_This_Client(target);
+        OnTakeDamage_DoSomething_On_Clients();
     }
 
-    [TargetRpc]
-    public void AnimateOtherHealthBarEffects(NetworkConnection target)
+    [ClientRpc]
+    public void OnTakeDamage_DoSomething_On_Clients()
     {
         playerUIHandler.AnimateOtherHealthBarEffects();
+      //  playerUIHandler.Color_Switch_On_Health_Change(health.HealthRate);
+
+    }
+    [TargetRpc]
+    public void OnTakeDamage_DoSomething_Only_On_This_Client(NetworkConnection target)
+    {
+       // playerUIHandler.AnimateOtherHealthBarEffects();
         playerUIHandler.Color_Switch_On_Health_Change(health.HealthRate);
 
     }
@@ -658,7 +666,7 @@ public class PlayerController : ObjectController
     #region Health
     public void HealthRateChanged(float newValue)
     {
-      //  playerUIHandler.Color_Switch_On_Health_Change(newValue);
+  
         playerUIHandler.ChangeHealthRate(newValue);
 
     }
