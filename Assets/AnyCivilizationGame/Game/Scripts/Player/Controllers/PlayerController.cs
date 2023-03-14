@@ -658,7 +658,7 @@ public class PlayerController : ObjectController
     #region Health
     public void HealthRateChanged(float newValue)
     {
-        playerUIHandler.Color_Switch_On_Health_Change(newValue);
+      //  playerUIHandler.Color_Switch_On_Health_Change(newValue);
         playerUIHandler.ChangeHealthRate(newValue);
 
     }
