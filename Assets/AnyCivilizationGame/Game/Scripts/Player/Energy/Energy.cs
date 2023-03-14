@@ -76,20 +76,17 @@ public class Energy : NetworkBehaviour
         
     }
     public void DecreaseEnergy(float energyAmount)
-    {
-      
+    {      
         if (CurrentFillAmount >= energyAmount)
         {
-            CurrentFillAmount -= energyAmount;
-          
+            CurrentFillAmount -= energyAmount;          
             CurrentEnergyAmount--;
-
-        }
-       
+        }       
     }
    
-    public void MakeEnergyBarsFull()
+    public void MakeEnergyBarsFull(int energyAmount)
     {
+        TotalEnergyAmount = energyAmount;
         CurrentFillAmount = 1f;
         CurrentEnergyAmount = TotalEnergyAmount;
 
@@ -124,7 +121,5 @@ public class Energy : NetworkBehaviour
     {
         playerController.EnergyChanged(newValue);
     }
-
-
 
 }

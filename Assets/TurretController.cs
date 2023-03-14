@@ -19,6 +19,11 @@ public class TurretController : ObjectController
         turretUIHandler.ChangeHealth(health);
 
     }
+    public void HealthRateChanged(float newValue)
+    {
+        turretUIHandler.ChangeHealthRate(newValue);
+    }
+ 
     public override void Death()
     {
         ActivateTurret();

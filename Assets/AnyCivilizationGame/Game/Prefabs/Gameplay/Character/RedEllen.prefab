@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6479605891448071342}
   - component: {fileID: 7487062201121458870}
+  - component: {fileID: 7228946273427216565}
   m_Layer: 0
-  m_Name: Square
+  m_Name: Team_Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: c2b1b34108c53404a83fdecc1972b91e, type: 3}
-  m_Color: {r: 0.9056604, g: 0.3972944, b: 0.3972944, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -84,6 +85,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7228946273427216565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676618153356857692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3babaf15a470e2d49a4de7473b491857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teamIndicatorStats:
+  - teamType: 0
+    Indicator_Color: {r: 0.2509804, g: 0.7843138, b: 0.20000002, a: 1}
+  - teamType: 1
+    Indicator_Color: {r: 0.35686275, g: 0.7725491, b: 0.9568628, a: 1}
+  - teamType: 2
+    Indicator_Color: {r: 1, g: 0.5137255, b: 0.5254902, a: 1}
+  teamIndicatorRenderer: {fileID: 7487062201121458870}
 --- !u!1 &3314361262793620060
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,7 +394,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4f096e35fcb86584bad89e7f3c154b41, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 0.6666667}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.6666667}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -951,6 +972,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 6613544721672605837}
+  targetColor: {r: 0.08627451, g: 1, b: 0, a: 1}
+  HealthBar: {fileID: 4887043039277206916}
+  HealthBarBackground: {fileID: 6089098428367164013}
+  HealthBarFill_Green: {fileID: 723280397502762380}
+  HealthBarFill_Red: {fileID: 2122566988696464557}
+  healthText: {fileID: 2170846288950275095}
+  HealthBarFill_Blur_Effect: {fileID: 6691828065530546285}
   HealthBarFill_Gradient:
     serializedVersion: 2
     key0: {r: 1, g: 0, b: 0, a: 1}
@@ -980,13 +1008,6 @@ MonoBehaviour:
     m_Mode: 1
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
-  targetColor: {r: 0.08627451, g: 1, b: 0, a: 1}
-  HealthBar: {fileID: 4887043039277206916}
-  HealthBarBackground: {fileID: 6089098428367164013}
-  HealthBarFill_Green: {fileID: 723280397502762380}
-  HealthBarFill_Red: {fileID: 2122566988696464557}
-  HealthBarFill_Blur_Effect: {fileID: 6691828065530546285}
-  healthText: {fileID: 2170846288950275095}
   EnergyBarGeneral: {fileID: 6715218594386378103}
   EnergyBarGray: {fileID: 2356430828803109936}
   EnergyBarOrange: {fileID: 2484287146892664399}
@@ -998,6 +1019,7 @@ MonoBehaviour:
   vibrato: 8
   randomness: 0
   nameText: {fileID: 9046869378682240334}
+  teamIndicatorHandler: {fileID: 7228946273427216565}
   playerController: {fileID: -6845222926521172771}
   projectileType: 1
   BombIndicator: {fileID: 5936946434980951897}

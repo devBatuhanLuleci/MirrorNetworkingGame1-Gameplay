@@ -10,7 +10,7 @@ public class SettingsPanel : Panel
     public Button MetamaskButton;
     public Button PrivacyPolicyButton;
     public Button TermsofServiceButton;
-    [SerializeField]Panel BackPanel;
+    [SerializeField] Panel BackPanel;
     private void Awake()
     {
         BackButton.onClick.AddListener(OnClick_BackButton);
@@ -25,18 +25,18 @@ public class SettingsPanel : Panel
     }
     public void OnClick_LanguageButton()
     {
-
+        MainPanelUIManager.Instance.LanguagePanel();
     }
     public void OnClick_MetamaskButton()
     {
 
     }
-    public void OnClick_PrivacyPolicyButton()
+    public void OnClick_PrivacyPolicyButton() 
     {
-
+        Application.OpenURL("https://anygamelabs.com/");
     }
     public void OnClick_TermsofServiceButton()
     {
-
+        Application.OpenURL("https://anygamelabs.com/");
     }
 }

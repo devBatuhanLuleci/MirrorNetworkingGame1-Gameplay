@@ -24,6 +24,7 @@ class MainPanelUIManager : Panel
     public Panel clanProfilePanel;
     public Panel settingMenuPanel;
     public Panel settingsPanel;
+    public Panel languagePanel;
     public Panel myProfilePanel;
     public Panel myProfilePhotoPanel;
     public Panel roomCodePanel;
@@ -69,7 +70,7 @@ class MainPanelUIManager : Panel
         // if statPnael not null set startpanel else set LadingPanel
         var currentPanel = startPanel ?? loadingPanel;
         Show(currentPanel);
-        AddListeners(); 
+        AddListeners();
     }
 
 
@@ -211,6 +212,10 @@ class MainPanelUIManager : Panel
     public void RoomCodeDroidChoosePanel()
     {
         Show(roomCodeDroidChoosePanel);
+    }
+    public void LanguagePanel()
+    {
+        Show(languagePanel);
     }
 
     #endregion

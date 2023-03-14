@@ -6,9 +6,9 @@ public class FatboyHealth : PlayerHealth
 {
     float perBarAmount = 0.333f;
   
-    public override void RefreshUI(int oldValue, int newValue)
+    public override void RefreshCurrentHealth(int oldValue, int newValue)
     {
-        base.RefreshUI(oldValue, newValue);
+        base.RefreshCurrentHealth(oldValue, newValue);
         playerController.HealthChanged(newValue);
     }
 

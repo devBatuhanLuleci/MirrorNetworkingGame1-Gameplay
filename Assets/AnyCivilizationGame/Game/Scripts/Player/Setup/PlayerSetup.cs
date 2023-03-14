@@ -1,7 +1,9 @@
 
 using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerSetup : ObjectSetup
@@ -20,7 +22,8 @@ public class PlayerSetup : ObjectSetup
     private PlayerController playerController;
   //  private CharacterSpecificStats characterSpecificStats;
 
-  
+    //private PlayerUIHandler objectUIHandler;
+
 
     #endregion
 
@@ -35,32 +38,25 @@ public class PlayerSetup : ObjectSetup
         energy = GetComponent<Energy>();
     
         playerMovement = GetComponent<PlayerMovement>();
-
-       
     }
 
-    public override  void Start()
+    public override void Start()
     {
         // Do anything on all client but not server
         base.Start();
         if (!NetworkIdentity.isServer)
         {
-
-
             characterMesh = CreateCharacterMesh();
 
             playerController.PlayerAnimatorController = characterMesh.GetComponent<Animator>();
             playerController.CharacterSpecificStats = characterMesh.GetComponent<CharacterSpecificStats>();
            
-            GetSpine(characterMesh.transform);
-
-          
-           
-
+            GetSpine(characterMesh.transform);  
+            SetPlayerDataForAllClient();
         }
         else // Do anything on server
         {
-            energy.MakeEnergyBarsFull();
+            SetPlayerDataForServer();
         }
 
         // Do anything on only local client
@@ -78,6 +74,31 @@ public class PlayerSetup : ObjectSetup
     }
 
 
+    private void SetPlayerDataForAllClient()
+    {
+        objectUIHandler.Initialize();
+
+    }
+
+    private void SetPlayerDataForServer()
+    {
+        var data = ACGDataManager.Instance.GetCharacterData().Attributes;
+        try
+        {
+            if (data.TryGetValue("Health", out var healthAttribute))
+            {
+                health.ResetValues((int)healthAttribute.Value);
+                objectUIHandler.enabled = false;
+            }
+            if (data.TryGetValue("Energy", out var energyAttribute))
+            {
+                energy.MakeEnergyBarsFull((int)healthAttribute.Value);
+            }
+        }
+        catch (Exception ex) { Debug.LogError(ex.Message); }
+    }
+ 
+
     private void InitLocalPlayer()
     {
         var playerController = GetComponent<PlayerController>();
@@ -88,7 +109,7 @@ public class PlayerSetup : ObjectSetup
     private void InitOtherPlayers()
     {
         var playerController = GetComponent<PlayerController>();
-        objectUIHandler.DisablePanel();
+        base.objectUIHandler.DisablePanel();
 
 
     }

@@ -123,7 +123,7 @@ public class FatboyTurret : Throwable,IDamagable
             {
                 if (pc.TryGetComponent(out Health health))
                 {
-                    if (health.Value > 0)
+                    if (health.currentHealht > 0)
                     {
                         isSomebodyAroundHere = true;
                     }
@@ -134,7 +134,7 @@ public class FatboyTurret : Throwable,IDamagable
             {
                 if (tc.TryGetComponent(out Health health))
                 {
-                    if (health.Value > 0)
+                    if (health.currentHealht > 0)
                     {
 
                         isSomebodyAroundHere = true;
@@ -168,7 +168,7 @@ public class FatboyTurret : Throwable,IDamagable
             {
                 if (pc.TryGetComponent(out Health health))
                 {
-                    if (health.Value > 0)
+                    if (health.currentHealht > 0)
                     {
 
                         EnemyObjects.Add(obj.transform);
@@ -180,7 +180,7 @@ public class FatboyTurret : Throwable,IDamagable
             {
                 if (tc.TryGetComponent(out Health health))
                 {
-                    if (health.Value > 0)
+                    if (health.currentHealht > 0)
                     {
 
                         EnemyObjects.Add(obj.transform);

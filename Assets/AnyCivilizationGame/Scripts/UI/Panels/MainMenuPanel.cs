@@ -2,15 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainMenuPanel : Panel
 {
+    [Header("Buttons")]
     public Button DroidsButton;
     public Button ShopButton;
     public Button UpdateButton;
     public Button ClanButton;
     public Button PlayButton;
     public Button SettingsMenuButton;
+
+    [Header("Texts")]
+    public TextMeshProUGUI MyNickName;
 
     private void Awake()
     {
@@ -20,6 +25,10 @@ public class MainMenuPanel : Panel
         ClanButton.onClick.AddListener(OnClick_ClanButton);
         //  PlayButton.onClick.AddListener(OnClick_PlayButton);
         SettingsMenuButton.onClick.AddListener(OnClick_SettingsMenuButton);
+
+        Profile profile = new Profile();
+        MyNickName.text = profile.UserName;
+        
     }
     public void OnClick_DroidsButton()
     {

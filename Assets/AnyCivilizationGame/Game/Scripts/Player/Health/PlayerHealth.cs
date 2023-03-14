@@ -37,17 +37,17 @@ public class PlayerHealth : Health
     {
 
 
-        while (Value < 100)
+        while (currentHealht < MaxHealth)
         {
 
             yield return new WaitForSeconds(0.5f);
 
 
 
-            Value = ((Value + 20) > 100) ? 100 : Value + 20;
+            currentHealht = ((currentHealht + 20) > MaxHealth) ? MaxHealth : currentHealht + 20;
 
             playerController.AnimateOtherHealthBarEffects(netIdentity.connectionToClient);
-            if (Value == 100)
+            if (currentHealht == MaxHealth)
             {
                 playerController.ChangeDamageTakenStatus(PlayerController.DamageTakenStatus.Idle);
                 

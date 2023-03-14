@@ -94,8 +94,6 @@ public class InputHandler : Singleton<InputHandler>
         if (joystick.joystickButtonType == Joystick.JoystickButtonType.ultiAttack || joystick.joystickButtonType == Joystick.JoystickButtonType.basicAttack)
         {
 
-            Debug.Log("woww");
-
             var targetingDirection = Vector2.zero;
 
             if (joystick.joystickButtonType == Joystick.JoystickButtonType.basicAttack)
@@ -145,8 +143,8 @@ public class InputHandler : Singleton<InputHandler>
             targetingDirection = Vector2.zero;
         }
 
-        if ((ultiAttackHeld && AttackBasicJoystick.gameObject.activeSelf) || (!ultiAttackHeld && !AttackBasicJoystick.gameObject.activeSelf))
-            AttackBasicJoystick.gameObject.SetActive(!ultiAttackHeld);
+        //if ((ultiAttackHeld && AttackBasicJoystick.gameObject.activeSelf) || (!ultiAttackHeld && !AttackBasicJoystick.gameObject.activeSelf))
+        //    AttackBasicJoystick.gameObject.SetActive(!ultiAttackHeld);
 
         PlayerController.Targeting(targetingDirection, basicAttackHeld, ultiAttackHeld);
 
