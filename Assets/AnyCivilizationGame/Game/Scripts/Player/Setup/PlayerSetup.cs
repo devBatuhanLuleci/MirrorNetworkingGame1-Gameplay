@@ -107,6 +107,7 @@ public class PlayerSetup : ObjectSetup
         CameraController.Instance.Initialize(transform);
         InputHandler.Instance.Init(playerController);
         playerController.playerUIHandler.Change_TeamIndicator_Color("Me");
+        playerController.playerUIHandler.Change_TeamHealthBar_Color("Me");
     }
     private void InitOtherPlayers()
     {
@@ -125,11 +126,13 @@ public class PlayerSetup : ObjectSetup
         if (NetworkedGameManager.Instance.IsInMyTeam(netIdentity))
         {
             playerController.playerUIHandler.Change_TeamIndicator_Color("Ally");
+            playerController.playerUIHandler.Change_TeamHealthBar_Color("Ally");
 
         }
         else
         {
             playerController.playerUIHandler.Change_TeamIndicator_Color("Enemy");
+            playerController.playerUIHandler.Change_TeamHealthBar_Color("Enemy");
 
         }
     }

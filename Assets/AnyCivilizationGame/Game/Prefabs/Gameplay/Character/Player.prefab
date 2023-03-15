@@ -973,11 +973,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 7088220065192873312}
-  targetColor: {r: 0.08627451, g: 1, b: 0, a: 1}
+  _state: 0
+  Me_HealthBar_BG: {fileID: 21300000, guid: 6113594fd7aae7f49ad7dc7fbec9474b, type: 3}
+  Me_HealthBar_Fill: {fileID: 21300000, guid: 81d8e83de854ca64eb17e6d829024de3, type: 3}
+  Enemy_Or_Ally_HealthBar_BG: {fileID: 21300000, guid: c28ce1cf3ef00fe4c8405b36c474b5e7, type: 3}
+  Enemy_Or_Ally_HealthBar_Fill: {fileID: 21300000, guid: 048c3e044609ff8498bc2e5b12947543, type: 3}
+  HealthBarFill_Front_My_Color: {r: 0.08627451, g: 1, b: 0, a: 1}
+  HealthBarFill_Front_Ally_Color: {r: 0.08627451, g: 1, b: 1, a: 1}
+  HealthBarFill_Front_Enemy_Color: {r: 0.9716981, g: 0, b: 0, a: 1}
+  HealthBarFill_Back_My_Color: {r: 1, g: 0, b: 0, a: 1}
+  HealthBarFill_Back_Ally_Color: {r: 0.9137255, g: 0.42745098, b: 0, a: 1}
+  HealthBarFill_Back_Enemy_Color: {r: 1, g: 0.86463225, b: 0, a: 1}
   HealthBar: {fileID: 8810218148059107433}
   HealthBarBackground: {fileID: 7860680997084090240}
-  HealthBarFill_Green: {fileID: 3719963165695234145}
-  HealthBarFill_Red: {fileID: 2657882530947248448}
+  HealthBarFill_Front: {fileID: 3719963165695234145}
+  HealthBarFill_Back: {fileID: 2657882530947248448}
   healthText: {fileID: 2861483722735202810}
   HealthBarFill_Blur_Effect: {fileID: 7298166011530483072}
   HealthBarFill_Gradient:

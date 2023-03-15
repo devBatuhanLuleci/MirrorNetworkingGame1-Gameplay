@@ -7,11 +7,20 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using DG.Tweening;
+using UnityEditorInternal;
+using Mirror;
 
 public class PlayerUIHandler : ObjectUIHandler
 {
 
     #region Health
+
+
+
+
+
+    
+
 
     [SerializeField]
     private Image HealthBarFill_Blur_Effect;
@@ -140,7 +149,16 @@ public class PlayerUIHandler : ObjectUIHandler
     {
 
         teamIndicatorHandler.ChangeTeamIndicatorType(teamType);
+
     }
+    public void Change_TeamHealthBar_Color(string teamType)
+    {
+
+        PlayerBehaviourStates currentState = (PlayerBehaviourStates)Enum.Parse(typeof(PlayerBehaviourStates), teamType);
+        State = currentState;
+
+    }
+
     public override void DisablePanel()
     {
         base.DisablePanel();
@@ -152,12 +170,13 @@ public class PlayerUIHandler : ObjectUIHandler
     {
         base.Update();
 
-
+        
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-
-            Throw(tempDir);
+            int a = (int)State;
+            a=(a+1)%3;
+            State = (PlayerBehaviourStates)a;
 
         }
 
@@ -167,14 +186,40 @@ public class PlayerUIHandler : ObjectUIHandler
 
     #region HealthBar
 
- 
+    public override void OnPlayerBehaviourStateChanged()
+    {
+        base.OnPlayerBehaviourStateChanged();
+        switch (_state)
+        {
+            case PlayerBehaviourStates.Me:
+
+                HealthBarFill_Blur_Effect.sprite = Me_HealthBar_BG;
+
+                break;
+            case PlayerBehaviourStates.Ally:
+
+                HealthBarFill_Blur_Effect.sprite = Enemy_Or_Ally_HealthBar_Fill;
+
+                break;
+            case PlayerBehaviourStates.Enemy:
+
+                HealthBarFill_Blur_Effect.sprite = Enemy_Or_Ally_HealthBar_Fill;
+
+                break;
+            default:
+                break;
+        }
+        HealthBarFill_Blur_Effect.SetNativeSize();
+
+
+    }
 
     public void Color_Switch_On_Health_Change(float healthRate)
     {
         tweenForSmoothColorSwitch?.Kill();
 
 
-        tweenForSmoothColorSwitch = HealthBarFill_Green.DOColor(targetColor, Mathf.Max(.25f, healthRate * 1.1f))
+        tweenForSmoothColorSwitch = HealthBarFill_Front.DOColor(HealthBarFill_Front_My_Color, Mathf.Max(.25f, healthRate * 1.1f))
                                                 .SetLoops(-1, LoopType.Yoyo)
                                                 .SetEase(Ease.Linear)
                                                 .From(HealthBarFill_Gradient.Evaluate(healthRate));

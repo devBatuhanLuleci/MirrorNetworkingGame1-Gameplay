@@ -15,11 +15,56 @@ public class ObjectUIHandler : MonoBehaviour
 
     #region Health
 
+    public enum PlayerBehaviourStates { Me, Ally, Enemy }
+    [SerializeField]
+    protected PlayerBehaviourStates _state; //this holds the actual value 
+    public PlayerBehaviourStates State
+    { //this is public and accessible, and should be used to change "State"
+        get
+        {
+            return _state;
+        }
+        set
+        {
+            _state = value;
+            OnPlayerBehaviourStateChanged();
+            Debug.Log("Enum just got changed to: " + _state);
+        }
+    }
+    [SerializeField]
+    protected Sprite Me_HealthBar_BG;
 
+    [SerializeField]
+    protected Sprite Me_HealthBar_Fill;
+
+    [SerializeField]
+    protected Sprite Enemy_Or_Ally_HealthBar_BG;
+
+    [SerializeField]
+    protected Sprite Enemy_Or_Ally_HealthBar_Fill;
 
 
     [SerializeField]
-    protected Color targetColor;
+    protected Color HealthBarFill_Front_My_Color;
+
+    [SerializeField]
+    protected Color HealthBarFill_Front_Ally_Color;
+
+    [SerializeField]
+    protected Color HealthBarFill_Front_Enemy_Color;
+
+
+    [Space(5)]
+
+    [SerializeField]
+    protected Color HealthBarFill_Back_My_Color;
+
+    [SerializeField]
+    protected Color HealthBarFill_Back_Ally_Color;
+
+    [SerializeField]
+    protected Color HealthBarFill_Back_Enemy_Color;
+
 
 
     [SerializeField]
@@ -30,12 +75,12 @@ public class ObjectUIHandler : MonoBehaviour
 
 
     [SerializeField]
-    protected Image HealthBarFill_Green;
+    protected Image HealthBarFill_Front;
 
 
 
     [SerializeField]
-    private Image HealthBarFill_Red;
+    private Image HealthBarFill_Back;
 
 
    
@@ -72,6 +117,52 @@ public class ObjectUIHandler : MonoBehaviour
 
         cameraBackRotation = camera.transform.rotation * -Vector3.back;
         cameraDownRotation = camera.transform.rotation * -Vector3.down;
+    }
+    public virtual void OnPlayerBehaviourStateChanged()
+    {
+        switch (_state)
+        {
+            case PlayerBehaviourStates.Me:
+
+                HealthBarBackground.sprite = Me_HealthBar_BG;
+                HealthBarFill_Front.sprite = Me_HealthBar_Fill;
+                HealthBarFill_Back.sprite = Me_HealthBar_Fill;
+
+                HealthBarFill_Front.color = HealthBarFill_Front_My_Color;
+                HealthBarFill_Back.color = HealthBarFill_Back_My_Color;
+
+
+                break;
+            case PlayerBehaviourStates.Ally:
+
+                HealthBarBackground.sprite = Enemy_Or_Ally_HealthBar_BG;
+                HealthBarFill_Front.sprite = Enemy_Or_Ally_HealthBar_Fill;
+                HealthBarFill_Back.sprite = Enemy_Or_Ally_HealthBar_Fill;
+
+                HealthBarFill_Front.color = HealthBarFill_Front_Ally_Color;
+                HealthBarFill_Back.color = HealthBarFill_Back_Ally_Color;
+
+
+                break;
+            case PlayerBehaviourStates.Enemy:
+
+                HealthBarBackground.sprite = Enemy_Or_Ally_HealthBar_BG;
+                HealthBarFill_Front.sprite = Enemy_Or_Ally_HealthBar_Fill;
+                HealthBarFill_Back.sprite = Enemy_Or_Ally_HealthBar_Fill;
+
+
+                HealthBarFill_Front.color = HealthBarFill_Front_Enemy_Color;
+                HealthBarFill_Back.color = HealthBarFill_Back_Enemy_Color;
+
+
+                break;
+            default:
+                break;
+        }
+        
+        HealthBarBackground.SetNativeSize();
+        HealthBarFill_Front.SetNativeSize();
+        HealthBarFill_Back.SetNativeSize();
     }
 
     public virtual void Awake()
@@ -137,7 +228,7 @@ public class ObjectUIHandler : MonoBehaviour
     {
 
 
-        HealthBarFill_Green.fillAmount = healthRate;
+        HealthBarFill_Front.fillAmount = healthRate;
         //HealthBarFill_Green.color = HealthBarFill_Gradient.Evaluate(health / 100f);
         // HealthBarFill_Green.DOGradientColor(HealthBarFill_Gradient2, .5f).SetLoops(2,LoopType.Yoyo);
 
@@ -165,7 +256,7 @@ public class ObjectUIHandler : MonoBehaviour
         if (isIncreasing)
         {
 
-            HealthBarFill_Red.fillAmount = value;
+            HealthBarFill_Back.fillAmount = value;
 
 
         }
@@ -173,12 +264,12 @@ public class ObjectUIHandler : MonoBehaviour
         {
 
             float duration = 1f;
-            float angle = HealthBarFill_Red.fillAmount;
+            float angle = HealthBarFill_Back.fillAmount;
             tween = DOTween.To(() => angle, x => angle = x, value, duration).SetEase(Ease.InSine)
                 .OnUpdate(() =>
                 {
 
-                    HealthBarFill_Red.fillAmount = angle;
+                    HealthBarFill_Back.fillAmount = angle;
 
                 }
                 )
