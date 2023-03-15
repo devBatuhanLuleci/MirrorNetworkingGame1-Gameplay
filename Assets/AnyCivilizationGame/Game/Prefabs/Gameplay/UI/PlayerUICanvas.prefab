@@ -109,11 +109,11 @@ RectTransform:
   m_Father: {fileID: 7265529046984112323}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 160, y: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 91}
   m_SizeDelta: {x: 320, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &3624499509580465336
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -396,10 +396,10 @@ RectTransform:
   m_Father: {fileID: 6820310958668568918}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -28}
-  m_SizeDelta: {x: 0, y: 80}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 320, y: 80}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &1043802824557329563
 CanvasRenderer:
@@ -616,11 +616,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 5097186975869928543}
-  targetColor: {r: 0.08627451, g: 1, b: 0, a: 1}
+  _state: 0
+  Me_HealthBar_BG: {fileID: 0}
+  Me_HealthBar_Fill: {fileID: 0}
+  Enemy_Or_Ally_HealthBar_BG: {fileID: 0}
+  Enemy_Or_Ally_HealthBar_Fill: {fileID: 0}
+  HealthBarFill_Front_My_Color: {r: 0, g: 0, b: 0, a: 0}
+  HealthBarFill_Front_Ally_Color: {r: 0, g: 0, b: 0, a: 0}
+  HealthBarFill_Front_Enemy_Color: {r: 0, g: 0, b: 0, a: 0}
+  HealthBarFill_Back_My_Color: {r: 0, g: 0, b: 0, a: 0}
+  HealthBarFill_Back_Ally_Color: {r: 0, g: 0, b: 0, a: 0}
+  HealthBarFill_Back_Enemy_Color: {r: 0, g: 0, b: 0, a: 0}
   HealthBar: {fileID: 6820310958668568918}
   HealthBarBackground: {fileID: 5328899292851324607}
-  HealthBarFill_Green: {fileID: 1692584757200345438}
-  HealthBarFill_Red: {fileID: 640956543}
+  HealthBarFill_Front: {fileID: 0}
+  HealthBarFill_Back: {fileID: 0}
   healthText: {fileID: 240021587440842949}
 --- !u!1 &3415039720843533741
 GameObject:
@@ -658,7 +668,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -20.833618}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 320, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5275715335658168475
@@ -679,7 +689,7 @@ MonoBehaviour:
     m_Top: 47
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: -160.5
+  m_Spacing: -187.3
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -702,7 +712,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5867539696975943869
 RectTransform:
   m_ObjectHideFlags: 0
@@ -722,11 +732,11 @@ RectTransform:
   m_Father: {fileID: 9092219372589402918}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 160, y: -86.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 320, y: 100}
-  m_Pivot: {x: 0.5, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5866864726328240462
 GameObject:
   m_ObjectHideFlags: 0
@@ -1147,4 +1157,4 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 320, y: 100}
-  m_Pivot: {x: 0.5, y: 0.25}
+  m_Pivot: {x: 0.5, y: 0.5}

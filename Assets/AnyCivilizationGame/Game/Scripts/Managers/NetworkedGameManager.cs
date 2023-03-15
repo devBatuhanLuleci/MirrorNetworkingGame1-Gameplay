@@ -123,6 +123,19 @@ public class NetworkedGameManager : NetworkBehaviour
     
 
     }
+    public bool IsInMyTeam(uint otherPlayerNetId)
+    {
+
+        var ourTeam = Teams.Find(item => item.netIdentity != null && item.netIdentity.netId.Equals(NetworkClient.localPlayer.netId));
+        var otherTeam = Teams.Find(item => item.netIdentity != null && item.netIdentity.netId.Equals(otherPlayerNetId));
+
+
+
+        return ourTeam.team == otherTeam.team;
+
+
+    }
+
     public bool IsInMyTeam(uint ownerNetID, uint otherPlayerNetID)
     {
 

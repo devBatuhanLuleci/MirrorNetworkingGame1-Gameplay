@@ -151,13 +151,7 @@ public class PlayerUIHandler : ObjectUIHandler
         teamIndicatorHandler.ChangeTeamIndicatorType(teamType);
 
     }
-    public void Change_TeamHealthBar_Color(string teamType)
-    {
-
-        PlayerBehaviourStates currentState = (PlayerBehaviourStates)Enum.Parse(typeof(PlayerBehaviourStates), teamType);
-        State = currentState;
-
-    }
+   
 
     public override void DisablePanel()
     {
@@ -176,7 +170,7 @@ public class PlayerUIHandler : ObjectUIHandler
         {
             int a = (int)State;
             a=(a+1)%3;
-            State = (PlayerBehaviourStates)a;
+            State = (ObjectBehaviourStates)a;
 
         }
 
@@ -191,17 +185,17 @@ public class PlayerUIHandler : ObjectUIHandler
         base.OnPlayerBehaviourStateChanged();
         switch (_state)
         {
-            case PlayerBehaviourStates.Me:
+            case ObjectBehaviourStates.Me:
 
                 HealthBarFill_Blur_Effect.sprite = Me_HealthBar_BG;
 
                 break;
-            case PlayerBehaviourStates.Ally:
+            case ObjectBehaviourStates.Ally:
 
                 HealthBarFill_Blur_Effect.sprite = Enemy_Or_Ally_HealthBar_Fill;
 
                 break;
-            case PlayerBehaviourStates.Enemy:
+            case ObjectBehaviourStates.Enemy:
 
                 HealthBarFill_Blur_Effect.sprite = Enemy_Or_Ally_HealthBar_Fill;
 

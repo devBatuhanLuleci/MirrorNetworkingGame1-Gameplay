@@ -966,6 +966,7 @@ MonoBehaviour:
   syncInterval: 0.1
   health: {fileID: 0}
   turretUIHandler: {fileID: 1612212244097783574}
+  fatboyTurret: {fileID: 0}
 --- !u!114 &7789538520228922518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -995,11 +996,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 6757888392509939040}
-  targetColor: {r: 0.08627451, g: 1, b: 0, a: 1}
+  _state: 0
+  Me_HealthBar_BG: {fileID: 21300000, guid: 6113594fd7aae7f49ad7dc7fbec9474b, type: 3}
+  Me_HealthBar_Fill: {fileID: 21300000, guid: 81d8e83de854ca64eb17e6d829024de3, type: 3}
+  Enemy_Or_Ally_HealthBar_BG: {fileID: 21300000, guid: c28ce1cf3ef00fe4c8405b36c474b5e7, type: 3}
+  Enemy_Or_Ally_HealthBar_Fill: {fileID: 21300000, guid: 048c3e044609ff8498bc2e5b12947543, type: 3}
+  HealthBarFill_Front_My_Color: {r: 0.08627451, g: 1, b: 0, a: 1}
+  HealthBarFill_Front_Ally_Color: {r: 0.08627451, g: 1, b: 1, a: 1}
+  HealthBarFill_Front_Enemy_Color: {r: 0.972549, g: 0, b: 0, a: 1}
+  HealthBarFill_Back_My_Color: {r: 1, g: 0, b: 0, a: 1}
+  HealthBarFill_Back_Ally_Color: {r: 0.9137255, g: 0.42745098, b: 0, a: 1}
+  HealthBarFill_Back_Enemy_Color: {r: 1, g: 0.8627451, b: 0, a: 1}
   HealthBar: {fileID: 5031245989740478569}
   HealthBarBackground: {fileID: 5944754325946900352}
-  HealthBarFill_Green: {fileID: 3352107352608394379}
-  HealthBarFill_Red: {fileID: 1392253599247362470}
+  HealthBarFill_Front: {fileID: 3352107352608394379}
+  HealthBarFill_Back: {fileID: 1392253599247362470}
   healthText: {fileID: 1738588884128096762}
 --- !u!114 &3525652458825975950
 MonoBehaviour:

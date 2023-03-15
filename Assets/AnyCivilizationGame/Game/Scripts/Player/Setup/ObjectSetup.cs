@@ -35,4 +35,30 @@ public class ObjectSetup : NetworkBehaviour
     {
      
     }
+    public virtual IEnumerator SetTeamColorLocal( uint netId)
+    {
+    
+        if (NetworkedGameManager.Instance.IsInMyTeam(netId))
+        {
+           // playerController.playerUIHandler.Change_TeamIndicator_Color("Ally");
+            objectUIHandler.Change_TeamHealthBar_Color("Ally");
+
+        }
+        else
+        {
+            //  playerController.playerUIHandler.Change_TeamIndicator_Color("Enemy");
+            objectUIHandler.Change_TeamHealthBar_Color("Enemy");
+        }
+       // yield return new WaitForSeconds(3);
+        yield return null;
+    }
+    [ClientRpc]
+    public void SetTeamColorOfThisObject_RPC(uint netId)
+    {
+      
+        StartCoroutine(SetTeamColorLocal(netId));
+
+
+    }
+
 }

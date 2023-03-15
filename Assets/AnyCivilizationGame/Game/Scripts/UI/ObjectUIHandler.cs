@@ -4,6 +4,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System;
+
 public class ObjectUIHandler : MonoBehaviour
 {
     #region UI fields
@@ -15,10 +17,10 @@ public class ObjectUIHandler : MonoBehaviour
 
     #region Health
 
-    public enum PlayerBehaviourStates { Me, Ally, Enemy }
+    public enum ObjectBehaviourStates { Me, Ally, Enemy }
     [SerializeField]
-    protected PlayerBehaviourStates _state; //this holds the actual value 
-    public PlayerBehaviourStates State
+    protected ObjectBehaviourStates _state; //this holds the actual value 
+    public ObjectBehaviourStates State
     { //this is public and accessible, and should be used to change "State"
         get
         {
@@ -118,11 +120,19 @@ public class ObjectUIHandler : MonoBehaviour
         cameraBackRotation = camera.transform.rotation * -Vector3.back;
         cameraDownRotation = camera.transform.rotation * -Vector3.down;
     }
+    public void Change_TeamHealthBar_Color(string teamType)
+    {
+
+        ObjectBehaviourStates currentState = (ObjectBehaviourStates)Enum.Parse(typeof(ObjectBehaviourStates), teamType);
+        State = currentState;
+
+    }
+
     public virtual void OnPlayerBehaviourStateChanged()
     {
         switch (_state)
         {
-            case PlayerBehaviourStates.Me:
+            case ObjectBehaviourStates.Me:
 
                 HealthBarBackground.sprite = Me_HealthBar_BG;
                 HealthBarFill_Front.sprite = Me_HealthBar_Fill;
@@ -133,7 +143,7 @@ public class ObjectUIHandler : MonoBehaviour
 
 
                 break;
-            case PlayerBehaviourStates.Ally:
+            case ObjectBehaviourStates.Ally:
 
                 HealthBarBackground.sprite = Enemy_Or_Ally_HealthBar_BG;
                 HealthBarFill_Front.sprite = Enemy_Or_Ally_HealthBar_Fill;
@@ -144,7 +154,7 @@ public class ObjectUIHandler : MonoBehaviour
 
 
                 break;
-            case PlayerBehaviourStates.Enemy:
+            case ObjectBehaviourStates.Enemy:
 
                 HealthBarBackground.sprite = Enemy_Or_Ally_HealthBar_BG;
                 HealthBarFill_Front.sprite = Enemy_Or_Ally_HealthBar_Fill;

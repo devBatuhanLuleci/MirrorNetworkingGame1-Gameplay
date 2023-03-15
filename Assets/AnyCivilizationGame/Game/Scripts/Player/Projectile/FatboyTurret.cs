@@ -294,9 +294,10 @@ public class FatboyTurret : Throwable,IDamagable
     public override void OnObjectSpawn()
     {
         base.OnObjectSpawn();
-        GetComponent<ObjectSetup>().SetObjectDataForServer();
+        ObjectSetup objectSetup = GetComponent<ObjectSetup>();
+        objectSetup.SetObjectDataForServer();
+        objectSetup.SetTeamColorOfThisObject_RPC(RootNetId);
         ActivateFatBoyTurretAnimation();
-
     }
 
     public void ActivateFatBoyTurretAnimation()

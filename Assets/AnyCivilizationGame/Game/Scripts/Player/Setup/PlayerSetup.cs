@@ -115,27 +115,31 @@ public class PlayerSetup : ObjectSetup
         base.objectUIHandler.DisablePanel();
 
         //TODO :  SetTeamColor delaylı olarak çalışıyor, bu methodu direk çalıştırdığımızda referans hatası alıyoruz .
-        Invoke("SetTeamColor", 3);
-
+        //  Invoke("SetTeamColor", 3);
+        StartCoroutine(SetTeamColorLocal(netIdentity.netId));
     }
-    public void SetTeamColor()
+    public override IEnumerator SetTeamColorLocal(uint netId)
     {
+       
+       // base.SetTeamColor();
+    //    Debug.Log("othernetId:" + netIdentity.netId);
 
-        Debug.Log("othernetId:" + netIdentity.netId);
-
-        if (NetworkedGameManager.Instance.IsInMyTeam(netIdentity))
+        if (NetworkedGameManager.Instance.IsInMyTeam(netId))
         {
             playerController.playerUIHandler.Change_TeamIndicator_Color("Ally");
-            playerController.playerUIHandler.Change_TeamHealthBar_Color("Ally");
+           playerController.playerUIHandler.Change_TeamHealthBar_Color("Ally");
 
         }
         else
         {
             playerController.playerUIHandler.Change_TeamIndicator_Color("Enemy");
-            playerController.playerUIHandler.Change_TeamHealthBar_Color("Enemy");
+           playerController.playerUIHandler.Change_TeamHealthBar_Color("Enemy");
 
         }
+      //  yield return new WaitForSeconds(3);
+        yield return null;
     }
+  
 
     public void GetSpine(Transform characterMesh)
     {

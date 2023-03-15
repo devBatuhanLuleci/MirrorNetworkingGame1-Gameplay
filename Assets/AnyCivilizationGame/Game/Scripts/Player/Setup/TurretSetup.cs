@@ -1,3 +1,4 @@
+using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ public class TurretSetup : ObjectSetup
             {
 
                 health.ResetValues((int)TurretHealthAttribute.Value);
-               // objectUIHandler.enabled = false;
+                // objectUIHandler.enabled = false;
             }
             //if (data.TryGetValue("Energy", out var energyAttribute))
             //{
@@ -26,6 +27,12 @@ public class TurretSetup : ObjectSetup
         }
         catch (Exception ex) { Debug.LogError(ex.Message); }
 
+    }
+    public override IEnumerator SetTeamColorLocal(uint netId)
+    {
+
+       StartCoroutine( base.SetTeamColorLocal(netId));
+        yield return null;
     }
 
 }

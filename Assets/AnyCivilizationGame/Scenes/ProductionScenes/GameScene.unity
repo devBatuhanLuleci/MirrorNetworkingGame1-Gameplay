@@ -1535,10 +1535,12 @@ MonoBehaviour:
   playerSpawnMethod: 0
   spawnPrefabs:
   - {fileID: 6551596581866087418, guid: 1a0afb373bedba440858f346e5c2a365, type: 3}
-  - {fileID: 6626824536947155891, guid: 309ba93b21877d44b828f9f78d96fd2d, type: 3}
-  - {fileID: 6626824536947155891, guid: 6612a6bdea297b24bbbf8f3b54f43601, type: 3}
-  - {fileID: 6626824536947155891, guid: b2aaeeba695f44f46977f045070d81a7, type: 3}
-  playerList: []
+  - {fileID: 823360584319670671, guid: e48976556b6e9d94793d1e264aba1911, type: 3}
+  - {fileID: 6595198472901467070, guid: 22275f988784ea94cba9042cfb3b1dac, type: 3}
+  - {fileID: 5327921761441919906, guid: ee214b06c8deeea4795d9dc6a641bfbc, type: 3}
+  OnPlayerListChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &111900426
 Transform:
   m_ObjectHideFlags: 0
