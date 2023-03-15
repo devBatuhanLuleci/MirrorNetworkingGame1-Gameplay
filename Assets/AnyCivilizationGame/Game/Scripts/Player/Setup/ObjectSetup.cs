@@ -60,5 +60,23 @@ public class ObjectSetup : NetworkBehaviour
 
 
     }
+    [ClientRpc]
+    public void SetIndicatorColorOfThisObject_RPC(uint netId)
+    {
 
+        if (NetworkedGameManager.Instance.IsInMyTeam(netId))
+        {
+            objectUIHandler.Change_TeamIndicator_Color("Ally");
+          //  objectUIHandler.Change_TeamHealthBar_Color("Ally");
+
+        }
+        else
+        {
+            objectUIHandler.Change_TeamIndicator_Color("Enemy");
+          //  objectUIHandler.Change_TeamHealthBar_Color("Enemy");
+
+        }
+
+
+    }
 }

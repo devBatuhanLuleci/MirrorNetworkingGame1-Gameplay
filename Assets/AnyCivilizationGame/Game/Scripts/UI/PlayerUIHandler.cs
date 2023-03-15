@@ -73,13 +73,7 @@ public class PlayerUIHandler : ObjectUIHandler
     [SerializeField]
     private TMP_Text nameText;
 
-    #region Indicator
 
-    [SerializeField]
-    private TeamIndicatorHandler teamIndicatorHandler;
-
-
-    #endregion
     #region Shoot projectile fields
     [Space]
     [Header("Projectile")]
@@ -145,12 +139,7 @@ public class PlayerUIHandler : ObjectUIHandler
         nameText.text = transform.name.ToString();
 
     }
-    public void Change_TeamIndicator_Color(string teamType)
-    {
-
-        teamIndicatorHandler.ChangeTeamIndicatorType(teamType);
-
-    }
+ 
    
 
     public override void DisablePanel()

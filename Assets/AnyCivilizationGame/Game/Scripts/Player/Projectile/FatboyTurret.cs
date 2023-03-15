@@ -297,6 +297,7 @@ public class FatboyTurret : Throwable,IDamagable
         ObjectSetup objectSetup = GetComponent<ObjectSetup>();
         objectSetup.SetObjectDataForServer();
         objectSetup.SetTeamColorOfThisObject_RPC(RootNetId);
+        objectSetup.SetIndicatorColorOfThisObject_RPC(RootNetId);
         ActivateFatBoyTurretAnimation();
     }
 

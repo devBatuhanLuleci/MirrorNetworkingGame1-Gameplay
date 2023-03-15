@@ -110,6 +110,14 @@ public class ObjectUIHandler : MonoBehaviour
     #endregion
 
 
+    #region Indicator
+
+    [SerializeField]
+    private TeamIndicatorHandler teamIndicatorHandler;
+
+
+    #endregion
+
     public void Initialize()
     {
         camera = Camera.main.transform;
@@ -125,6 +133,12 @@ public class ObjectUIHandler : MonoBehaviour
 
         ObjectBehaviourStates currentState = (ObjectBehaviourStates)Enum.Parse(typeof(ObjectBehaviourStates), teamType);
         State = currentState;
+
+    }
+    public void Change_TeamIndicator_Color(string teamType)
+    {
+
+        teamIndicatorHandler.ChangeTeamIndicatorType(teamType);
 
     }
 
