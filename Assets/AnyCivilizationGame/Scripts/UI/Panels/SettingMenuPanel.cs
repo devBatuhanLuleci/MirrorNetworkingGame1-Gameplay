@@ -14,7 +14,18 @@ public class SettingMenuPanel : Panel
     public Button LeaderBoardButton;
     [SerializeField] Panel BackPanel;
 
-    private void Awake()
+
+    private void OnEnable()
+    {
+        AddListenerCall();
+    }
+    private void OnDisable()
+    {
+        RemoveListenerCall();
+    }
+
+    #region Listeners
+    void AddListenerCall()
     {
         BackButton.onClick.AddListener(OnClick_BackButton);
         MyProfileButton.onClick.AddListener(OnClick_MyProfileButton);
@@ -24,6 +35,19 @@ public class SettingMenuPanel : Panel
         ClanButton.onClick.AddListener(OnClick_ClanButton);
         LeaderBoardButton.onClick.AddListener(OnClick_LeaderBoardButton);
     }
+    void RemoveListenerCall()
+    {
+        BackButton.onClick.RemoveListener(OnClick_BackButton);
+        MyProfileButton.onClick.RemoveListener(OnClick_MyProfileButton);
+        SettingsButton.onClick.RemoveListener(OnClick_SettingsButton);
+        FriendsButton.onClick.RemoveListener(OnClick_FriendsButton);
+        MailboxButton.onClick.RemoveListener(OnClick_MailBoxButton);
+        ClanButton.onClick.RemoveListener(OnClick_ClanButton);
+        LeaderBoardButton.onClick.RemoveListener(OnClick_LeaderBoardButton);
+    }
+    #endregion
+
+    #region Buttons
     public void OnClick_BackButton()
     {
         MainPanelUIManager.Instance.BackButton(BackPanel);
@@ -44,7 +68,7 @@ public class SettingMenuPanel : Panel
     {
         MainPanelUIManager.Instance.MailBoxPanelShow();
     }
-    public void OnClick_ClanButton()  // iki adet var soruluyor
+    public void OnClick_ClanButton()  
     {
         MainPanelUIManager.Instance.ClanPanelShow();
         MainPanelUIManager.Instance.clanPanel.GetComponent<ClanPanel>().isDirectMainMenu = false;
@@ -53,4 +77,5 @@ public class SettingMenuPanel : Panel
     {
         MainPanelUIManager.Instance.LeaderBoardPanelShow();
     }
+    #endregion
 }

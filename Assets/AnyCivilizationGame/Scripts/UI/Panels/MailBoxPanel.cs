@@ -7,11 +7,29 @@ public class MailBoxPanel : Panel
     public Button BackButton;
     public Button ChatSendButton;
     [SerializeField] Panel BackPanel;
-    private void Awake()
+    private void OnEnable()
+    {
+        AddListenerCall();
+    }
+    private void OnDisable()
+    {
+        RemoveListenerCall();
+    }
+
+    #region Listeners
+    void AddListenerCall()
     {
         BackButton.onClick.AddListener(OnClick_BackButton);
         // ChatSendButton.onClick.AddListener(OnClick_ChatSendButton);
     }
+    void RemoveListenerCall()
+    {
+        BackButton.onClick.RemoveListener(OnClick_BackButton);
+        // ChatSendButton.onClick.RemoveListener(OnClick_ChatSendButton);
+    }
+    #endregion
+
+    #region Buttons
     public void OnClick_BackButton()
     {
         MainPanelUIManager.Instance.BackButton(BackPanel);
@@ -25,4 +43,5 @@ public class MailBoxPanel : Panel
         MainPanelUIManager.Instance.FriendProfilePanelShow();
         MainPanelUIManager.Instance.friendProfilePanel.GetComponent<FriendProfilePanel>().isDirectFriendsPanel = false;
     }
+    #endregion
 }

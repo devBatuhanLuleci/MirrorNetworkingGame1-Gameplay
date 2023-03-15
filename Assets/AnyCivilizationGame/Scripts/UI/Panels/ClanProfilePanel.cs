@@ -8,10 +8,28 @@ public class ClanProfilePanel : Panel
     public Button BackButton;
     [SerializeField] Panel BackPanel;
     [SerializeField] public bool isDirectClanPanel = false;
-    private void Awake()
+   
+     private void OnEnable()
+    {
+        AddListenerCall();
+    }
+    private void OnDisable()
+    {
+        RemoveListenerCall();
+    }
+    
+    #region Listeners
+    void AddListenerCall()
     {
         BackButton.onClick.AddListener(OnClick_BackButton);
     }
+    void RemoveListenerCall()
+    {
+        BackButton.onClick.RemoveListener(OnClick_BackButton);
+    }
+    #endregion
+
+    #region Buttons
     public void OnClick_BackButton()
     {
         if (isDirectClanPanel)
@@ -24,4 +42,5 @@ public class ClanProfilePanel : Panel
         }
 
     }
+    #endregion
 }

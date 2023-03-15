@@ -11,7 +11,18 @@ public class SettingsPanel : Panel
     public Button PrivacyPolicyButton;
     public Button TermsofServiceButton;
     [SerializeField] Panel BackPanel;
-    private void Awake()
+   
+    private void OnEnable()
+    {
+        AddListenerCall();
+    }
+    private void OnDisable()
+    {
+        RemoveListenerCall();
+    }
+
+    #region Listeners
+    void AddListenerCall()
     {
         BackButton.onClick.AddListener(OnClick_BackButton);
         LanguageButton.onClick.AddListener(OnClick_LanguageButton);
@@ -19,6 +30,17 @@ public class SettingsPanel : Panel
         PrivacyPolicyButton.onClick.AddListener(OnClick_PrivacyPolicyButton);
         TermsofServiceButton.onClick.AddListener(OnClick_TermsofServiceButton);
     }
+    void RemoveListenerCall()
+    {
+        BackButton.onClick.RemoveListener(OnClick_BackButton);
+        LanguageButton.onClick.RemoveListener(OnClick_LanguageButton);
+        MetamaskButton.onClick.RemoveListener(OnClick_MetamaskButton);
+        PrivacyPolicyButton.onClick.RemoveListener(OnClick_PrivacyPolicyButton);
+        TermsofServiceButton.onClick.RemoveListener(OnClick_TermsofServiceButton);
+    }
+    #endregion
+
+    #region Buttons
     public void OnClick_BackButton()
     {
         MainPanelUIManager.Instance.BackButton(BackPanel);
@@ -31,7 +53,7 @@ public class SettingsPanel : Panel
     {
 
     }
-    public void OnClick_PrivacyPolicyButton() 
+    public void OnClick_PrivacyPolicyButton()
     {
         Application.OpenURL("https://anygamelabs.com/");
     }
@@ -39,4 +61,5 @@ public class SettingsPanel : Panel
     {
         Application.OpenURL("https://anygamelabs.com/");
     }
+    #endregion
 }

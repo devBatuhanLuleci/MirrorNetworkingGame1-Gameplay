@@ -11,14 +11,34 @@ public class LeaderBoardPanel : Panel
     public Button ClanButton;
     public Button ClanProfileButton;
     [SerializeField] Panel BackPanel;
-    private void Awake()
+   
+    private void OnEnable()
+    {
+        AddListenerCall();
+    }
+    private void OnDisable()
+    {
+        RemoveListenerCall();
+    }
+
+    #region Listeners
+    void AddListenerCall()
     {
         BackButton.onClick.AddListener(OnClick_BackButton);
         // GlobalButton.onClick.AddListener(OnClick_GlobalButton);
         //  LocalButton.onClick.AddListener(OnClick_LocalButton);
         // ClanButton.onClick.AddListener(OnClick_ClanButton);
-        
     }
+    void RemoveListenerCall()
+    {
+        BackButton.onClick.RemoveListener(OnClick_BackButton);
+        // GlobalButton.onClick.RemoveListener(OnClick_GlobalButton);
+        //  LocalButton.onClick.RemoveListener(OnClick_LocalButton);
+        // ClanButton.onClick.RemoveListener(OnClick_ClanButton);
+    }
+    #endregion
+
+    #region Buttons
     public void OnClick_BackButton()
     {
         MainPanelUIManager.Instance.BackButton(BackPanel);
@@ -40,4 +60,5 @@ public class LeaderBoardPanel : Panel
         MainPanelUIManager.Instance.ClanProfilePanelShow();
         MainPanelUIManager.Instance.clanProfilePanel.GetComponent<ClanProfilePanel>().isDirectClanPanel = false;
     }
+    #endregion
 }

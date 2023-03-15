@@ -70,7 +70,7 @@ class MainPanelUIManager : Panel
         // if statPnael not null set startpanel else set LadingPanel
         var currentPanel = startPanel ?? loadingPanel;
         Show(currentPanel);
-        AddListeners();
+       // AddListeners();
     }
 
 

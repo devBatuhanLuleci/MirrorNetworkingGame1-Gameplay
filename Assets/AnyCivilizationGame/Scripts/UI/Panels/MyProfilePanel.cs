@@ -7,12 +7,31 @@ public class MyProfilePanel : Panel
 {
     public Button BackButton;
     public Button MyProfilePhotoButton;
-    [SerializeField]Panel BackPanel;
-    private void Awake()
+    [SerializeField] Panel BackPanel;
+   
+    private void OnEnable()
+    {
+        AddListenerCall();
+    }
+    private void OnDisable()
+    {
+        RemoveListenerCall();
+    }
+
+    #region Listeners
+    void AddListenerCall()
     {
         BackButton.onClick.AddListener(OnClick_BackButton);
         MyProfilePhotoButton.onClick.AddListener(OnClick_MyProfilePhotoButton);
     }
+    void RemoveListenerCall()
+    {
+        BackButton.onClick.RemoveListener(OnClick_BackButton);
+        MyProfilePhotoButton.onClick.RemoveListener(OnClick_MyProfilePhotoButton);
+    }
+    #endregion
+
+    #region Buttons
     public void OnClick_BackButton()
     {
         MainPanelUIManager.Instance.BackButton(BackPanel);
@@ -26,5 +45,5 @@ public class MyProfilePanel : Panel
         MainPanelUIManager.Instance.LastMatchPanelShow();
     }
 
-
+    #endregion
 }

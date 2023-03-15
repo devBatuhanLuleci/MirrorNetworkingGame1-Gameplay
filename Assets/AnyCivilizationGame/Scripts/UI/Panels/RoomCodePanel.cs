@@ -14,6 +14,29 @@ public class RoomCodePanel : Panel
         BackButton.onClick.AddListener(OnClick_BackButton);
         ReadyButton.onClick.AddListener(OnClick_ReadyButton);
     }
+     private void OnEnable()
+    {
+        AddListenerCall();
+    }
+    private void OnDisable()
+    {
+        RemoveListenerCall();
+    }
+    
+    #region Listeners
+    void AddListenerCall()
+    {
+        BackButton.onClick.AddListener(OnClick_BackButton);
+        ReadyButton.onClick.AddListener(OnClick_ReadyButton);
+    }
+    void RemoveListenerCall()
+    {
+        BackButton.onClick.RemoveListener(OnClick_BackButton);
+        ReadyButton.onClick.RemoveListener(OnClick_ReadyButton);
+    }
+    #endregion
+
+    #region Buttons
     public void OnClick_BackButton()
     {
         MainPanelUIManager.Instance.BackButton(BackPanel);
@@ -30,5 +53,6 @@ public class RoomCodePanel : Panel
     {
 
     }
+    #endregion
 
 }

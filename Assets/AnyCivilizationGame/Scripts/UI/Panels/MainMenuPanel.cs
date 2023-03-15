@@ -19,17 +19,40 @@ public class MainMenuPanel : Panel
 
     private void Awake()
     {
+        /*  Profile profile = new Profile();
+          MyNickName.text = profile.UserName; */
+    }
+    private void OnEnable()
+    {
+        AddListenerCall();
+    }
+    private void OnDisable()
+    {
+        RemoveListenerCall();
+    }
+    
+    #region Listeners
+    void AddListenerCall()
+    {
         DroidsButton.onClick.AddListener(OnClick_DroidsButton);
         ShopButton.onClick.AddListener(OnClick_ShopButton);
         UpdateButton.onClick.AddListener(OnClick_UpdateButton);
         ClanButton.onClick.AddListener(OnClick_ClanButton);
         //  PlayButton.onClick.AddListener(OnClick_PlayButton);
         SettingsMenuButton.onClick.AddListener(OnClick_SettingsMenuButton);
-
-        Profile profile = new Profile();
-        MyNickName.text = profile.UserName;
-        
     }
+    void RemoveListenerCall()
+    {
+        DroidsButton.onClick.RemoveListener(OnClick_DroidsButton);
+        ShopButton.onClick.RemoveListener(OnClick_ShopButton);
+        UpdateButton.onClick.RemoveListener(OnClick_UpdateButton);
+        ClanButton.onClick.RemoveListener(OnClick_ClanButton);
+        //  PlayButton.onClick.AddListener(OnClick_PlayButton);
+        SettingsMenuButton.onClick.RemoveListener(OnClick_SettingsMenuButton);
+    }
+    #endregion
+
+    #region Buttons
     public void OnClick_DroidsButton()
     {
         MainPanelUIManager.Instance.DroidsPanelShow();
@@ -55,5 +78,5 @@ public class MainMenuPanel : Panel
     {
         MainPanelUIManager.Instance.SettingsMenuPanelShow();
     }
-
+    #endregion
 }

@@ -13,6 +13,27 @@ public class FriendsPanel : Panel
     {
         BackButton.onClick.AddListener(OnClick_BackButton);
     }
+    private void OnEnable()
+    {
+        AddListenerCall();
+    }
+    private void OnDisable()
+    {
+        RemoveListenerCall();
+    }
+
+    #region Listeners
+    void AddListenerCall()
+    {
+        BackButton.onClick.AddListener(OnClick_BackButton);
+    }
+    void RemoveListenerCall()
+    {
+        BackButton.onClick.RemoveListener(OnClick_BackButton);
+    }
+    #endregion
+
+    #region Buttons
     public void OnClick_BackButton()
     {
         MainPanelUIManager.Instance.BackButton(BackPanel);
@@ -26,5 +47,6 @@ public class FriendsPanel : Panel
         MainPanelUIManager.Instance.FriendProfilePanelShow();
         MainPanelUIManager.Instance.friendProfilePanel.GetComponent<FriendProfilePanel>().isDirectFriendsPanel = true;
     }
+    #endregion
 
 }
