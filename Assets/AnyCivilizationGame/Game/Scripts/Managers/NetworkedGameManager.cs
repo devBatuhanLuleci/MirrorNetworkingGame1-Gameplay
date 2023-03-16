@@ -98,16 +98,12 @@ public class NetworkedGameManager : NetworkBehaviour
 
         bool isTeam1 = true;
         Teams = new List<Team>() {
-            new Team(TeamTypes.Team1,new List<GamePlayObject>())
-            {
-                //team=TeamTypes.Team1,
-                //gamePlayObjects=new List<GamePlayObject>()
-            },
-            new Team(TeamTypes.Team2,new List<GamePlayObject>())
+            new Team(TeamTypes.Team1,new List<TeamPlayers>())
             {
 
-             //team=TeamTypes.Team2,
-             //   gamePlayObjects=new List<GamePlayObject>()
+            },
+            new Team(TeamTypes.Team2,new List<TeamPlayers>())
+            {
 
             }
 
@@ -117,23 +113,23 @@ public class NetworkedGameManager : NetworkBehaviour
         foreach (var item in players)
         {
             var team = isTeam1 ? TeamTypes.Team1 : TeamTypes.Team2;
-           
-                var myTeam = Teams.Where(t => t.team == team).FirstOrDefault();
-                myTeam.gamePlayObjects.Add(new GamePlayObject()
-                {
-                    connectionId = item.Value.connectionId,
-                    netIdentity = item.Value.identity
-                });
-            
-            
-            //for (int i = 0; i < Teams.Count; i++)
-            //{
-            //    team = new Team()
-            //    {
-            //        team = isTeam1 ? TeamTypes.Team1 : TeamTypes.Team2,
-            //        connectionId = item.Value.connectionId,
-            //        netIdentity = item.Value.identity
-            //    });
+
+            var myTeam = Teams.Where(t => t.team == team).FirstOrDefault();
+
+            TeamPlayers teamPlayers = new TeamPlayers(new List<ItemTypes>()
+            {
+                new ItemTypes
+                    {
+                    connectionId=item.Value.connectionId,
+                    netIdentity=item.Value.identity,
+                    lalam=ItemTypes.ItemType.Characters
+                    }
+            }
+            );
+
+            myTeam.teamPlayers.Add(teamPlayers);
+       
+
             isTeam1 = !isTeam1;
         }
 
@@ -147,43 +143,47 @@ public class NetworkedGameManager : NetworkBehaviour
 
     public bool IsInMyTeam(NetworkIdentity otherPlayer)
     {
-  
-        var result = from personGroup in Teams
-                     from person in personGroup.gamePlayObjects
-                     where person.netIdentity.Equals(NetworkClient.localPlayer)
+
+        var result3 = from personGroup in Teams
+                     from person in personGroup.teamPlayers
+                     from a in person.itemType
+                     where a.netIdentity.Equals(NetworkClient.localPlayer)
                      select personGroup;
-        var ourTeam = result.First();
 
+        var ourTeam = result3.First();
 
-
-        var result2 = from personGroup in Teams
-                      from person in personGroup.gamePlayObjects
-                      where person.netIdentity.Equals(otherPlayer)
+        var result4 = from personGroup in Teams
+                      from person in personGroup.teamPlayers
+                      from a in person.itemType
+                      where a.netIdentity.Equals(otherPlayer)
                       select personGroup;
-        var otherTeam = result2.First();
+        var otherTeam = result4.First();
 
         return ourTeam.team == otherTeam.team;
-    
+
     }
     public bool IsInMyTeam(uint otherPlayerNetId)
     {
-        var result = from personGroup in Teams
-                     from person in personGroup.gamePlayObjects
-                     where person.netIdentity.netId.Equals(NetworkClient.localPlayer.netId)
-                     select personGroup;
-       var ourTeam= result.First();
+        var result3 = from personGroup in Teams
+                      from person in personGroup.teamPlayers
+                      from a in person.itemType
+                      where a.netIdentity.netId.Equals(NetworkClient.localPlayer.netId)
+                      select personGroup;
+
+        var ourTeam = result3.First();
 
 
+        var result4 = from personGroup in Teams
+                      from person in personGroup.teamPlayers
+                      from a in person.itemType
+                      where a.netIdentity.netId.Equals(otherPlayerNetId)
+                      select personGroup;
 
-        var result2 = from personGroup in Teams
-                     from person in personGroup.gamePlayObjects
-                     where person.netIdentity.netId.Equals(otherPlayerNetId)
-                     select personGroup;
-        var otherTeam = result2.First();
+        var otherTeam = result4.First();
 
 
         return ourTeam.team == otherTeam.team;
- 
+
 
     }
 
@@ -191,17 +191,25 @@ public class NetworkedGameManager : NetworkBehaviour
     {
 
 
-        var result = from personGroup in Teams
-                     from person in personGroup.gamePlayObjects
-                     where person.netIdentity.netId.Equals(ownerNetID)
-                     select personGroup;
-        var ourTeam = result.First();
+        //var result = from personGroup in Teams
+        //             from person in personGroup.teamPlayers
+        //             where person.itemType.Where(t => t.Equals(t.netIdentity.netId)).Equals(ownerNetID)
+        //             select personGroup;
+        //var ourTeam = result.First();
 
 
+        var result3 = from personGroup in Teams
+                      from person in personGroup.teamPlayers
+                      from a in person.itemType
+                      where a.netIdentity.netId.Equals(ownerNetID)
+                      select personGroup;
+
+        var ourTeam = result3.First();
 
         var result2 = from personGroup in Teams
-                      from person in personGroup.gamePlayObjects
-                      where person.netIdentity.netId.Equals(otherPlayerNetID)
+                      from person in personGroup.teamPlayers
+                      from a in person.itemType
+                      where a.netIdentity.netId.Equals(otherPlayerNetID)
                       select personGroup;
         var otherTeam = result2.First();
 
@@ -209,7 +217,7 @@ public class NetworkedGameManager : NetworkBehaviour
 
         return ourTeam.team == otherTeam.team;
 
-     
+
     }
 
     [Command/*(requiresAuthority =true)*/]

@@ -6,12 +6,12 @@ using Mirror;
 public struct Team
 {
     public NetworkedGameManager.TeamTypes team;
-    public List<GamePlayObject> gamePlayObjects;
+    public List<TeamPlayers> teamPlayers;
 
-    public Team(NetworkedGameManager.TeamTypes team, List<GamePlayObject> gamePlayObjects)
+    public Team(NetworkedGameManager.TeamTypes team, List<TeamPlayers> teamPlayers)
     {
         this.team = team;
-        this.gamePlayObjects=gamePlayObjects;
+        this.teamPlayers=teamPlayers;
 
     }
     //public Team(string teamName)
@@ -27,9 +27,25 @@ public struct Team
     //}
 }
 [System.Serializable]
-public class GamePlayObject
+public struct TeamPlayers
 {
+
+   
+
+    public List<ItemTypes> itemType;
+
+    public TeamPlayers(List<ItemTypes> itemType)
+    {
+        this.itemType = itemType;
+    }   
+}
+
+[System.Serializable]
+public struct ItemTypes
+{
+  
+    public enum ItemType { Characters, Objects };
+    public ItemType lalam;
     public int connectionId;
     public NetworkIdentity netIdentity;
-
 }
