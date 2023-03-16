@@ -97,56 +97,119 @@ public class NetworkedGameManager : NetworkBehaviour
 
 
         bool isTeam1 = true;
-        Teams = new List<Team>();
+        Teams = new List<Team>() {
+            new Team(TeamTypes.Team1,new List<GamePlayObject>())
+            {
+                //team=TeamTypes.Team1,
+                //gamePlayObjects=new List<GamePlayObject>()
+            },
+            new Team(TeamTypes.Team2,new List<GamePlayObject>())
+            {
+
+             //team=TeamTypes.Team2,
+             //   gamePlayObjects=new List<GamePlayObject>()
+
+            }
+
+
+        };
+
         foreach (var item in players)
         {
-
-            Teams.Add(new Team()
-            {
-                connectionId = item.Value.connectionId,
-                team = isTeam1 ? TeamTypes.Team1 : TeamTypes.Team2,
-                netIdentity = item.Value.identity
-            });
+            var team = isTeam1 ? TeamTypes.Team1 : TeamTypes.Team2;
+           
+                var myTeam = Teams.Where(t => t.team == team).FirstOrDefault();
+                myTeam.gamePlayObjects.Add(new GamePlayObject()
+                {
+                    connectionId = item.Value.connectionId,
+                    netIdentity = item.Value.identity
+                });
+            
+            
+            //for (int i = 0; i < Teams.Count; i++)
+            //{
+            //    team = new Team()
+            //    {
+            //        team = isTeam1 ? TeamTypes.Team1 : TeamTypes.Team2,
+            //        connectionId = item.Value.connectionId,
+            //        netIdentity = item.Value.identity
+            //    });
             isTeam1 = !isTeam1;
         }
 
+
+
+
+
     }
+
+
+
     public bool IsInMyTeam(NetworkIdentity otherPlayer)
     {
-    
-        var ourTeam = Teams.Find(item => item.netIdentity != null && item.netIdentity.Equals(NetworkClient.localPlayer));
-        var otherTeam = Teams.Find(item => item.netIdentity != null && item.netIdentity.Equals(otherPlayer));
-     
+  
+        var result = from personGroup in Teams
+                     from person in personGroup.gamePlayObjects
+                     where person.netIdentity.Equals(NetworkClient.localPlayer)
+                     select personGroup;
+        var ourTeam = result.First();
 
+
+
+        var result2 = from personGroup in Teams
+                      from person in personGroup.gamePlayObjects
+                      where person.netIdentity.Equals(otherPlayer)
+                      select personGroup;
+        var otherTeam = result2.First();
 
         return ourTeam.team == otherTeam.team;
     
-
     }
     public bool IsInMyTeam(uint otherPlayerNetId)
     {
+        var result = from personGroup in Teams
+                     from person in personGroup.gamePlayObjects
+                     where person.netIdentity.netId.Equals(NetworkClient.localPlayer.netId)
+                     select personGroup;
+       var ourTeam= result.First();
 
-        var ourTeam = Teams.Find(item => item.netIdentity != null && item.netIdentity.netId.Equals(NetworkClient.localPlayer.netId));
-        var otherTeam = Teams.Find(item => item.netIdentity != null && item.netIdentity.netId.Equals(otherPlayerNetId));
 
+
+        var result2 = from personGroup in Teams
+                     from person in personGroup.gamePlayObjects
+                     where person.netIdentity.netId.Equals(otherPlayerNetId)
+                     select personGroup;
+        var otherTeam = result2.First();
 
 
         return ourTeam.team == otherTeam.team;
-
+ 
 
     }
 
     public bool IsInMyTeam(uint ownerNetID, uint otherPlayerNetID)
     {
 
-        var ourTeam = Teams.Find(item => item.netIdentity != null && item.netIdentity.netId.Equals(ownerNetID));
 
-        var otherTeam = Teams.Find(item => item.netIdentity != null && item.netIdentity.netId.Equals(otherPlayerNetID));
+        var result = from personGroup in Teams
+                     from person in personGroup.gamePlayObjects
+                     where person.netIdentity.netId.Equals(ownerNetID)
+                     select personGroup;
+        var ourTeam = result.First();
+
+
+
+        var result2 = from personGroup in Teams
+                      from person in personGroup.gamePlayObjects
+                      where person.netIdentity.netId.Equals(otherPlayerNetID)
+                      select personGroup;
+        var otherTeam = result2.First();
 
 
 
         return ourTeam.team == otherTeam.team;
-    
+
+     
     }
 
     [Command/*(requiresAuthority =true)*/]

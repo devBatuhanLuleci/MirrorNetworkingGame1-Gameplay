@@ -19921,18 +19921,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5472432523209748432, guid: 2b6b2f03839cb1a4dbf01b1d26693676, type: 3}
-      propertyPath: host
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5472432523209748432, guid: 2b6b2f03839cb1a4dbf01b1d26693676, type: 3}
-      propertyPath: startClientOnStart
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5472432523209748433, guid: 2b6b2f03839cb1a4dbf01b1d26693676, type: 3}
-      propertyPath: Port
-      value: 7778
-      objectReference: {fileID: 0}
     - target: {fileID: 5472432523209748435, guid: 2b6b2f03839cb1a4dbf01b1d26693676, type: 3}
       propertyPath: m_Name
       value: LoadBalancer
@@ -19983,24 +19971,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2b6b2f03839cb1a4dbf01b1d26693676, type: 3}
---- !u!1 &5472432522941451920 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5472432523209748435, guid: 2b6b2f03839cb1a4dbf01b1d26693676, type: 3}
-  m_PrefabInstance: {fileID: 5472432522941451919}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5472432522941451921
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5472432522941451920}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 870d9e85eb8111145ada40d978db9519, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent: NetworkManagers
 --- !u!224 &5640527197489137388
 RectTransform:
   m_ObjectHideFlags: 0

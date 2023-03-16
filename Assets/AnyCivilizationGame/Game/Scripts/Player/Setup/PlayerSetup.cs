@@ -120,9 +120,10 @@ public class PlayerSetup : ObjectSetup
     }
     public override IEnumerator SetTeamColorLocal(uint netId)
     {
-       
-       // base.SetTeamColor();
-    //    Debug.Log("othernetId:" + netIdentity.netId);
+
+        // base.SetTeamColor();
+        //    Debug.Log("othernetId:" + netIdentity.netId);
+          yield return new WaitForSeconds(3);
 
         if (NetworkedGameManager.Instance.IsInMyTeam(netId))
         {
