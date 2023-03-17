@@ -7,6 +7,29 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class TurretSetup : ObjectSetup
 {
+    Throwable Throwable;
+    public override void Start()
+    {
+        base.Start();
+
+        if (NetworkIdentity.isServer)
+        {
+            Debug.Log("girdim");
+            SetColor();
+
+        }
+
+    }
+    [Command]
+    public void SetColor()
+    {
+
+       
+            Throwable = GetComponent<Throwable>();
+            Debug.Log($"root net id:  {Throwable.RootNetId}");
+            SetTeamColorOfThisObject_RPC(Throwable.RootNetId);
+      
+    }
     public override void SetObjectDataForServer()
     {
         base.SetObjectDataForServer();
@@ -31,7 +54,7 @@ public class TurretSetup : ObjectSetup
     public override IEnumerator SetTeamColorLocal(uint netId)
     {
 
-       StartCoroutine( base.SetTeamColorLocal(netId));
+        StartCoroutine(base.SetTeamColorLocal(netId));
         yield return null;
     }
 
