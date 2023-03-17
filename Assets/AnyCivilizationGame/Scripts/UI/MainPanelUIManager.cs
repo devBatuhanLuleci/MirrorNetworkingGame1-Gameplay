@@ -41,6 +41,8 @@ class MainPanelUIManager : Panel
     [SerializeField]
     public Panel startPanel = null;
 
+    
+
     public static MainPanelUIManager Instance
     {
         get;   // get method

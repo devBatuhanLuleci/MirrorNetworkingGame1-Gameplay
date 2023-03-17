@@ -13,9 +13,13 @@ public class MainMenuPanel : Panel
     public Button ClanButton;
     public Button PlayButton;
     public Button SettingsMenuButton;
+    public Button ProfileButton;
 
     [Header("Texts")]
     public TextMeshProUGUI MyNickName;
+
+    [Header("Droid")]
+    [SerializeField] GameObject MainDroid;
 
     private void Awake()
     {
@@ -25,12 +29,22 @@ public class MainMenuPanel : Panel
     private void OnEnable()
     {
         AddListenerCall();
+
+        if (MainDroid == null)
+            return;
+
+        MainDroid.SetActive(true);
     }
     private void OnDisable()
     {
         RemoveListenerCall();
+
+        if (MainDroid == null)
+            return;
+
+        MainDroid.SetActive(false);
     }
-    
+
     #region Listeners
     void AddListenerCall()
     {
@@ -40,6 +54,7 @@ public class MainMenuPanel : Panel
         ClanButton.onClick.AddListener(OnClick_ClanButton);
         //  PlayButton.onClick.AddListener(OnClick_PlayButton);
         SettingsMenuButton.onClick.AddListener(OnClick_SettingsMenuButton);
+        ProfileButton.onClick.AddListener(OnClick_ProfileButton);
     }
     void RemoveListenerCall()
     {
@@ -49,6 +64,7 @@ public class MainMenuPanel : Panel
         ClanButton.onClick.RemoveListener(OnClick_ClanButton);
         //  PlayButton.onClick.AddListener(OnClick_PlayButton);
         SettingsMenuButton.onClick.RemoveListener(OnClick_SettingsMenuButton);
+        ProfileButton.onClick.RemoveListener(OnClick_ProfileButton);
     }
     #endregion
 
@@ -77,6 +93,11 @@ public class MainMenuPanel : Panel
     public void OnClick_SettingsMenuButton()
     {
         MainPanelUIManager.Instance.SettingsMenuPanelShow();
+    }
+    public void OnClick_ProfileButton()
+    {
+        MainPanelUIManager.Instance.MyProfilePanelShow();
+        MainPanelUIManager.Instance.myProfilePanel.GetComponent<MyProfilePanel>().isDirectMyProfilePanel = true;
     }
     #endregion
 }

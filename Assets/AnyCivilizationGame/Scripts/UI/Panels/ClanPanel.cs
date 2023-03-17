@@ -7,14 +7,26 @@ using TMPro;
 
 public class ClanPanel : Panel
 {
+    [Header("Buttons")]
     public Button BackButton;
+    public Button ClanProfileView_BackButton;
+    public Button CreateClanProfile_BackButton;
     public Button SearchButton;
     public Button CreateClanButton;
     public Button ClanJoinButton;
     public Button ClanInviteButton;
+
+    [Header("InputFields")]
     [SerializeField] TMP_InputField SearchInputField;
     [SerializeField] TMP_InputField CreateClanInputField;
+
+    [Header("Panels")]
     [SerializeField] Panel BackPanel;
+    [SerializeField] GameObject MainFeatureViews_Panel;
+    [SerializeField] GameObject ClanProfileView_Panel;
+    [SerializeField] GameObject CreateClanProfile_Panel;
+
+    [Header("Others")]
     [SerializeField] public bool isDirectMainMenu = false;
     [SerializeField] GameObject ClanItemPrefab;
     [SerializeField] GameObject List;
@@ -23,6 +35,7 @@ public class ClanPanel : Panel
     int TotalElements = 0;
 
     string[] clanNames = { "ClanZET", "ClanROZ", "ClanPIZ", "ClanKSK", "ClanRET", "ClanLKS", "ClanQWE", "ClanKNG", "ClanFYT", "ClanKES" };
+
     private void OnEnable()
     {
         AddListenerCall();
@@ -39,6 +52,8 @@ public class ClanPanel : Panel
     void AddListenerCall()
     {
         BackButton.onClick.AddListener(OnClick_BackButton);
+        ClanProfileView_BackButton.onClick.AddListener(OnClick_ClanProfileView_BackButton);
+        CreateClanProfile_BackButton.onClick.AddListener(OnClick_CreateClanProfile_BackButton);
         SearchButton.onClick.AddListener(OnClick_SearchButton);
         CreateClanButton.onClick.AddListener(OnClick_CreateClanButton);
         ClanJoinButton.onClick.AddListener(OnClick_ClanJoinButton);
@@ -47,6 +62,8 @@ public class ClanPanel : Panel
     void RemoveListenerCall()
     {
         BackButton.onClick.RemoveListener(OnClick_BackButton);
+        ClanProfileView_BackButton.onClick.RemoveListener(OnClick_ClanProfileView_BackButton);
+        CreateClanProfile_BackButton.onClick.RemoveListener(OnClick_CreateClanProfile_BackButton);
         SearchButton.onClick.RemoveListener(OnClick_SearchButton);
         CreateClanButton.onClick.RemoveListener(OnClick_CreateClanButton);
         ClanJoinButton.onClick.RemoveListener(OnClick_ClanJoinButton);
@@ -66,6 +83,23 @@ public class ClanPanel : Panel
             MainPanelUIManager.Instance.BackButton(MainPanelUIManager.Instance.settingMenuPanel);
         }
 
+        ClearInputField();
+    }
+    public void OnClick_ClanProfileView_BackButton()
+    {
+        ClanProfileView_BackButton.gameObject.SetActive(false);
+        BackButton.gameObject.SetActive(true);
+        List.SetActive(true);
+        ClanProfileView_Panel.SetActive(false);
+        MainFeatureViews_Panel.SetActive(true);
+    }
+    public void OnClick_CreateClanProfile_BackButton()
+    {
+        CreateClanProfile_BackButton.gameObject.SetActive(false);
+        BackButton.gameObject.SetActive(true);
+        List.SetActive(true);
+        CreateClanProfile_Panel.SetActive(false);
+        MainFeatureViews_Panel.SetActive(true);
     }
     public void OnClick_SearchButton()
     {
@@ -83,23 +117,24 @@ public class ClanPanel : Panel
 
         int searchTxtLength = searchText.Length;
 
-        int searchedElements = 0;
+        //int searchedElements = 0;
 
         foreach (GameObject element in Elements)
         {
-            searchedElements += 1;
+            //searchedElements += 1;
 
-            if (element.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text.Length >= searchTxtLength)
+            // if (element.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text.Length >= searchTxtLength)
+            // {
+            //searchText.ToLower() == element.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text.Substring(0, searchTxtLength).ToLower()
+            if (element.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text.Contains(searchText, StringComparison.OrdinalIgnoreCase))
             {
-                if (searchText.ToLower() == element.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text.Substring(0, searchTxtLength).ToLower())
-                {
-                    element.SetActive(true);
-                }
-                else
-                {
-                    element.SetActive(false);
-                }
+                element.SetActive(true);
             }
+            else
+            {
+                element.SetActive(false);
+            }
+            // }
         }
     }
     public void OnClick_CreateClanButton()
@@ -126,7 +161,13 @@ public class ClanPanel : Panel
 
         ClanCreate(CreateClanInputField.text.Trim(), Elements.Length + 1);
 
-        CreateClanInputField.text = string.Empty;
+        ClearInputField();
+
+        BackButton.gameObject.SetActive(false);
+        CreateClanProfile_BackButton.gameObject.SetActive(true);
+        List.SetActive(false);
+        MainFeatureViews_Panel.SetActive(false);
+        CreateClanProfile_Panel.SetActive(true);
 
         ItemLengthControl();
         Debug.Log("Yeni Clan olusturuldu.");
@@ -142,13 +183,23 @@ public class ClanPanel : Panel
     }
     public void OnClick_ClanProfileButton()
     {
-        MainPanelUIManager.Instance.ClanProfilePanelShow();
-        MainPanelUIManager.Instance.clanProfilePanel.GetComponent<ClanProfilePanel>().isDirectClanPanel = true;
+        // MainPanelUIManager.Instance.ClanProfilePanelShow();
+        // MainPanelUIManager.Instance.clanProfilePanel.GetComponent<ClanProfilePanel>().isDirectClanPanel = true;
+        BackButton.gameObject.SetActive(false);
+        ClanProfileView_BackButton.gameObject.SetActive(true);
+        List.SetActive(false);
+        MainFeatureViews_Panel.SetActive(false);
+        ClanProfileView_Panel.SetActive(true);
+
+        ClearInputField();
     }
     #endregion
 
     public void ClansCreator()
     {
+        if (Elements.Length > 0)
+            return;
+
         for (int i = 0; i < clanNames.Length; i++)
         {
             ClanCreate(clanNames[i], i + 1);
@@ -156,7 +207,7 @@ public class ClanPanel : Panel
     }
     void ClanCreate(string _clanName, int i)
     {
-        GameObject _clanItem = Instantiate(ClanItemPrefab);
+        GameObject _clanItem = Instantiate(ClanItemPrefab,ClanItemPrefab.transform.GetComponent<RectTransform>());
         _clanItem.transform.GetComponent<RectTransform>().SetParent(Content.transform.GetComponent<RectTransform>());
         _clanItem.transform.localScale = new Vector3(1, 1, 1);
         _clanItem.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = (i).ToString();
@@ -174,5 +225,10 @@ public class ClanPanel : Panel
         {
             Elements[i - 1] = Content.transform.GetChild(i).gameObject;
         }
+    }
+    void ClearInputField()
+    {
+        SearchInputField.text = string.Empty;
+        CreateClanInputField.text = string.Empty;
     }
 }

@@ -8,7 +8,8 @@ public class MyProfilePanel : Panel
     public Button BackButton;
     public Button MyProfilePhotoButton;
     [SerializeField] Panel BackPanel;
-   
+    [SerializeField] public bool isDirectMyProfilePanel = false;
+
     private void OnEnable()
     {
         AddListenerCall();
@@ -35,6 +36,15 @@ public class MyProfilePanel : Panel
     public void OnClick_BackButton()
     {
         MainPanelUIManager.Instance.BackButton(BackPanel);
+
+        if (isDirectMyProfilePanel)
+        {
+            MainPanelUIManager.Instance.BackButton(MainPanelUIManager.Instance.mainMenuPanel);
+        }
+        else
+        {
+            MainPanelUIManager.Instance.BackButton(BackPanel);
+        }
     }
     public void OnClick_MyProfilePhotoButton()
     {

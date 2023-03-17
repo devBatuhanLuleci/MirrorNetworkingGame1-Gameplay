@@ -55,6 +55,7 @@ public class SettingMenuPanel : Panel
     public void OnClick_MyProfileButton()
     {
         MainPanelUIManager.Instance.MyProfilePanelShow();
+        MainPanelUIManager.Instance.myProfilePanel.GetComponent<MyProfilePanel>().isDirectMyProfilePanel = false;
     }
     public void OnClick_SettingsButton()
     {
@@ -68,7 +69,7 @@ public class SettingMenuPanel : Panel
     {
         MainPanelUIManager.Instance.MailBoxPanelShow();
     }
-    public void OnClick_ClanButton()  
+    public void OnClick_ClanButton()
     {
         MainPanelUIManager.Instance.ClanPanelShow();
         MainPanelUIManager.Instance.clanPanel.GetComponent<ClanPanel>().isDirectMainMenu = false;
