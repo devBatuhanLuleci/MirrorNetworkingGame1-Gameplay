@@ -12,24 +12,24 @@ public class TurretSetup : ObjectSetup
     {
         base.Start();
 
-        if (NetworkIdentity.isServer)
-        {
-            Debug.Log("girdim");
-            SetColor();
+        //if (NetworkIdentity.isServer)
+        //{
+         
+        //    SetColor();
 
-        }
+        //}
 
     }
-    [Command]
-    public void SetColor()
-    {
+    //[Command]
+    //public void SetColor()
+    //{
 
        
-            Throwable = GetComponent<Throwable>();
-            Debug.Log($"root net id:  {Throwable.RootNetId}");
-            SetTeamColorOfThisObject_RPC(Throwable.RootNetId);
+    //        Throwable = GetComponent<Throwable>();
+    //        Debug.Log($"root net id:  {Throwable.RootNetId}");
+    //        SetTeamColorOfThisObject_RPC(Throwable.RootNetId);
       
-    }
+    //}
     public override void SetObjectDataForServer()
     {
         base.SetObjectDataForServer();
