@@ -31,18 +31,19 @@ public class UltimateSkill : NetworkBehaviour
 
         if (CurrentFillAmount < TotalFillAmount)
         {
+            bool isBiggerThenMaxAmount = CurrentFillAmount + UltimateFillAmountRate > TotalFillAmount;
+            CurrentFillAmount = isBiggerThenMaxAmount ? TotalFillAmount : (CurrentFillAmount + UltimateFillAmountRate);
 
-            CurrentFillAmount += UltimateFillAmountRate;
+          
             playerController.HandleUltiFillAmount(target, CurrentFillAmount);
-
-            if (CurrentFillAmount >= TotalFillAmount)
+        
+            if (CurrentFillAmount  == TotalFillAmount)
             {
 
-
-                CurrentFillAmount = TotalFillAmount;
                 playerController.ActivateUlti(target);
              
             }
+            
         }
 
 
