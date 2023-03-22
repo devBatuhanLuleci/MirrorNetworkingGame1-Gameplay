@@ -22,20 +22,14 @@ public struct TeamPlayers
 
    
 
-    public List<ItemTypes> itemType;
+  
+    public int connectionId;
+    public NetworkIdentity netIdentity;
 
-    public TeamPlayers(List<ItemTypes> itemType)
+    public TeamPlayers(int connID,NetworkIdentity netIdentity)
     {
-        this.itemType = itemType;
+        connectionId = connID;
+        this.netIdentity = netIdentity;
     }   
 }
 
-[System.Serializable]
-public struct ItemTypes
-{
-  
-    public enum ItemType { Characters, Objects };
-    public ItemType lalam;
-    public int connectionId;
-    public NetworkIdentity netIdentity;
-}

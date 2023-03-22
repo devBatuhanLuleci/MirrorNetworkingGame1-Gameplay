@@ -124,15 +124,15 @@ public class NetworkedGameManager : NetworkBehaviour
 
             var myTeam = Teams.Where(t => t.team == team).FirstOrDefault();
 
-            TeamPlayers teamPlayers = new TeamPlayers(new List<ItemTypes>()
-            {
-                new ItemTypes
-                    {
-                    connectionId=item.Value.connectionId,
-                    netIdentity=item.Value.identity,
-                    lalam=ItemTypes.ItemType.Characters
-                    }
-            }
+            TeamPlayers teamPlayers = new TeamPlayers(item.Value.connectionId, item.Value.identity
+            //{
+            //    //new ItemTypes
+            //    //    {
+            //    //    connectionId=item.Value.connectionId,
+            //    //    netIdentity=item.Value.identity,
+            //    //    lalam=ItemTypes.ItemType.Characters
+            //    //    }
+            //}
             );
 
             myTeam.teamPlayers.Add(teamPlayers);
@@ -154,16 +154,14 @@ public class NetworkedGameManager : NetworkBehaviour
 
         var result3 = from personGroup in Teams
                      from person in personGroup.teamPlayers
-                     from a in person.itemType
-                     where a.netIdentity.Equals(NetworkClient.localPlayer)
+                     where person.netIdentity.Equals(NetworkClient.localPlayer)
                      select personGroup;
 
         var ourTeam = result3.First();
 
         var result4 = from personGroup in Teams
                       from person in personGroup.teamPlayers
-                      from a in person.itemType
-                      where a.netIdentity.Equals(otherPlayer)
+                      where person.netIdentity.Equals(otherPlayer)
                       select personGroup;
         var otherTeam = result4.First();
 
@@ -174,8 +172,7 @@ public class NetworkedGameManager : NetworkBehaviour
     {
         var result3 = from personGroup in Teams
                       from person in personGroup.teamPlayers
-                      from a in person.itemType
-                      where a.netIdentity.netId.Equals(NetworkClient.localPlayer.netId)
+                      where person.netIdentity.netId.Equals(NetworkClient.localPlayer.netId)
                       select personGroup;
 
         var ourTeam = result3.First();
@@ -183,8 +180,7 @@ public class NetworkedGameManager : NetworkBehaviour
 
         var result4 = from personGroup in Teams
                       from person in personGroup.teamPlayers
-                      from a in person.itemType
-                      where a.netIdentity.netId.Equals(otherPlayerNetId)
+                      where person.netIdentity.netId.Equals(otherPlayerNetId)
                       select personGroup;
 
         var otherTeam = result4.First();
@@ -208,16 +204,14 @@ public class NetworkedGameManager : NetworkBehaviour
 
         var result3 = from personGroup in Teams
                       from person in personGroup.teamPlayers
-                      from a in person.itemType
-                      where a.netIdentity.netId.Equals(ownerNetID)
+                      where person.netIdentity.netId.Equals(ownerNetID)
                       select personGroup;
 
         var ourTeam = result3.First();
 
         var result2 = from personGroup in Teams
                       from person in personGroup.teamPlayers
-                      from a in person.itemType
-                      where a.netIdentity.netId.Equals(otherPlayerNetID)
+                      where person.netIdentity.netId.Equals(otherPlayerNetID)
                       select personGroup;
         var otherTeam = result2.First();
 
