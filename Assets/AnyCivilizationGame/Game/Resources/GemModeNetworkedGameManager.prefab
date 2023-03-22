@@ -85,3 +85,5 @@ MonoBehaviour:
   syncInterval: 0.1
   Teams: []
   playerCount: 0
+  CollectedCrystals: []
+  teamCrystalInfo: []

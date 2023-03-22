@@ -1,24 +1,32 @@
 using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static NetworkedGameManager;
 
 public class GemModeNetworkedGameManager : NetworkedGameManager
 {
 
     private NetworkSpawnObjectInInterval NetworkSpawnObjectInInterval;
-    //public List<playerData> CollectedCrystals = new List<playerData>();   
+ 
+    private Dictionary<TeamTypes, List<GemData>> collectedCrystalDictionary;
+
+ 
+    //TODO: disable custom attribute 'unu yaz.  [Disable]  Unity Learn bak.
+    [TextArea]
+    public string teams ;
+
     public override void Awake()
     {
         base.Awake();
-
+          
         if (TryGetComponent<NetworkSpawnObjectInInterval>(out NetworkSpawnObjectInInterval networkSpawnObjectInInterval))
         {
 
             NetworkSpawnObjectInInterval = networkSpawnObjectInInterval;
 
         }
+      
     }
 
 
@@ -26,25 +34,37 @@ public class GemModeNetworkedGameManager : NetworkedGameManager
     {
         base.ServerStarted(players);
         NetworkSpawnObjectInInterval?.StartSpawnLoop();
+
+
+        collectedCrystalDictionary = new Dictionary<TeamTypes, List<GemData>>();
+     
+
     }
 
     public void OnGemCollected(int connectionID)
     {
-        Debug.Log($"{connectionID} id ");
-     //   CollectedCrystals.Add(new playerData() { connID = connectionID, teamTypes= })
+        var gemData = new GemData(connectionID, GetMyTeam(connectionID));
 
 
-        //connectionID
+        if(collectedCrystalDictionary.TryGetValue(gemData.teamTypes,out var teamList))
+        {
+            teamList.Add(gemData);
+
+        }
+        else
+        {
+            collectedCrystalDictionary.Add(gemData.teamTypes, new List<GemData>() { gemData });
+        }
+        teams = "";
+        foreach (var team in collectedCrystalDictionary)
+        {
+           var message= $"{team.Key} : {team.Value.Count} ";
+            teams += message + "\n" ;
+
+        }
+
+    
     }
-
-}
-[System.Serializable]
-struct playerData
-{
-    public int connID;
-    public NetworkIdentity networkIdentity;
-    public TeamTypes teamTypes;
-
 
 
 }

@@ -93,10 +93,16 @@ public class NetworkedGameManager : NetworkBehaviour
     }
     public TeamTypes GetMyTeam(int connID)
     {
-        TeamTypes teamType=TeamTypes.Team1;
+        TeamTypes teamType;
 
-       // teamType= 
+        var teamEnum = from personGroup in Teams
+                      from person in personGroup.teamPlayers
+                      where person.connectionId.Equals(connID)
+                      select personGroup;
 
+        teamType = teamEnum.First().team;
+
+      //  Debug.Log($" my team: {teamType}");
 
         return teamType;
     }
