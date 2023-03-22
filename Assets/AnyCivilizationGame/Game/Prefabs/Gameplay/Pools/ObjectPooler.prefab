@@ -57,3 +57,6 @@ MonoBehaviour:
   - tag: FatboyTurret_Bullet
     prefab: {fileID: 7995885019731338434, guid: 7128de1226798634f9e62ef57e04a93a, type: 3}
     size: 20
+  - tag: Crystal
+    prefab: {fileID: 1275126349886688, guid: 49f7668e38e658d419250c3e9da25e02, type: 3}
+    size: 30

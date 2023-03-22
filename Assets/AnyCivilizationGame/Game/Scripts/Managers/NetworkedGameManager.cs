@@ -34,7 +34,7 @@ public class NetworkedGameManager : NetworkBehaviour
     public List<Team> Teams = new List<Team>();
 
     #region MonoBehaviour Methods
-    private void Awake()
+    public virtual void Awake()
     {
         instance = this;
         InitAssigments();
@@ -91,7 +91,15 @@ public class NetworkedGameManager : NetworkBehaviour
         Info("awake: " + MatchNetworkManager.Instance.mode);
 
     }
+    public TeamTypes GetMyTeam(int connID)
+    {
+        TeamTypes teamType=TeamTypes.Team1;
 
+       // teamType= 
+
+
+        return teamType;
+    }
     public void CreateTeam(Dictionary<int, NetworkConnectionToClient> players)
     {
 
@@ -260,7 +268,7 @@ public class NetworkedGameManager : NetworkBehaviour
         string msg = $"Client Started. Port: {ACGDataManager.Instance.GameData.Port}";
         Info(msg);
     }
-    public void ServerStarted(Dictionary<int, NetworkConnectionToClient> players)
+    public virtual void ServerStarted(Dictionary<int, NetworkConnectionToClient> players)
     {
         CreateTeam(players);
         // Setup();

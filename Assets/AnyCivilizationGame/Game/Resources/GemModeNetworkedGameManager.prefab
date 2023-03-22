@@ -9,10 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6551596581866087412}
-  - component: {fileID: 6551596581866087419}
   - component: {fileID: 5983179819156135899}
+  - component: {fileID: 4621476746317117340}
+  - component: {fileID: 5799349817508710478}
   m_Layer: 0
-  m_Name: NetworkedGameManager
+  m_Name: GemModeNetworkedGameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,22 +34,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6551596581866087419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6551596581866087418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8831d7ca574d994da848808fc782af2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  Teams: []
-  playerCount: 0
 --- !u!114 &5983179819156135899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,5 +49,39 @@ MonoBehaviour:
   sceneId: 0
   serverOnly: 0
   visible: 0
-  m_AssetId: 1a0afb373bedba440858f346e5c2a365
+  m_AssetId: df5005e092c495148a8287be8af81cd2
   hasSpawned: 0
+--- !u!114 &4621476746317117340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6551596581866087418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c817ce108aa05cb4d925a03c220c014d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  spawnPoint: {fileID: 6551596581866087412}
+  prefabToSpawn: {fileID: 1275126349886688, guid: 49f7668e38e658d419250c3e9da25e02, type: 3}
+  maxDistance: 5
+  spawnInterval: 5
+--- !u!114 &5799349817508710478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6551596581866087418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32320251918c4fe488b7058212e094bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  Teams: []
+  playerCount: 0

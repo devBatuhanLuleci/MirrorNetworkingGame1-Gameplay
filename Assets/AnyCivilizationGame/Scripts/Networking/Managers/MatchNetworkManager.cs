@@ -195,7 +195,7 @@ public class MatchNetworkManager : NetworkManager
     {
        
 
-        var prefab = Resources.Load<NetworkedGameManager>(nameof(NetworkedGameManager));
+        var prefab = Resources.Load<GemModeNetworkedGameManager>(nameof(GemModeNetworkedGameManager));
         var networkedGameManager = Instantiate(prefab);
         NetworkServer.Spawn(networkedGameManager.gameObject);
         Debug.LogError("NetworkedGameManager spawned.");
@@ -219,71 +219,7 @@ public class MatchNetworkManager : NetworkManager
 
         }
     }
-    //public void GetIntoTeam(GameObject player, int teamIndex)
-    //{
-
-
-    //    Teams.ElementAt(teamIndex).players.Add(player);
-
-    //}
-
-    ////public void GetIntoTeam(GameObject player)
-    ////{
-    ////    int teamIndex = Teams.IndexOf(player);
-    ////    //  GetPlayerByConnection(conn);
-    ////    Teams.ElementAt(teamIndex).players.Add(player);
-
-    ////}
-
-    //public void RemoveFromTeam(GameObject player)
-    //{
-
-
-
-    //    for (int i = 0; i < Teams.Count; i++)
-    //    {
-
-    //        //  GetPlayerByConnection(conn);
-    //        if (Teams.ElementAt(i).players.Exists(t => t == player))
-    //        {
-    //            Teams.ElementAt(i).players.Remove(player);
-
-
-    //        }
-    //    }
-
-    //}
-    //public int GetOldTeamIndex(GameObject player)
-    //{
-    //    int index = 0;
-    //    for (int i = 0; i < Teams.Count; i++)
-    //    {
-
-    //        //  GetPlayerByConnection(conn);
-    //        if (Teams.ElementAt(i).players.Exists(t => t == player))
-    //        {
-    //            Teams.ElementAt(i).players.Remove(player);
-    //            index = i;
-    //            return index;
-
-
-    //        }
-    //    }
-    //    return 0;
-
-    //}
-   
-    //public void GetAllPlayerList()
-    //{
-    //    foreach (var item in players.Values)
-    //    {
-    //        playerList.Add(item.identity.GetComponent<PlayerController>());
-
-    //        //    Debug.Log( $"isim: { item.identity.name}  id:     {item.identity.netId}");
-    //    }
-
-    //}
-
+  
     public PlayerController GetPlayerByNetID(uint netID)
     {
 
