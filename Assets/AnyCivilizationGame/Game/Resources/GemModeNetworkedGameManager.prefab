@@ -83,6 +83,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  Teams: []
+  Teams:
+  - team: 0
+    teamPlayers:
+    - connectionId: 0
+      netIdentity: {fileID: 0}
+    - connectionId: 0
+      netIdentity: {fileID: 0}
+  - team: 1
+    teamPlayers:
+    - connectionId: 0
+      netIdentity: {fileID: 0}
+    - connectionId: 0
+      netIdentity: {fileID: 0}
   playerCount: 0
   teams: 

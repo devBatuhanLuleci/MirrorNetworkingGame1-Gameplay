@@ -27,7 +27,7 @@ public class NetworkedGameManager : NetworkBehaviour
     #endregion
 
     private bool IsClient => ACGDataManager.Instance.GameData.TerminalType == TerminalType.Client;
-
+    public TeamTypes myTeam;
 
     public enum TeamTypes { Team1, Team2 }
     [SyncVar]
@@ -81,16 +81,16 @@ public class NetworkedGameManager : NetworkBehaviour
     }
 
 
-    private void SetupClient()
+    public virtual void SetupClient()
     {
-        // TODO: open character select panel
-        //    GameUIManager.Instance.DeactivateJoystickButtons();
+      
         GameplayPanelUIManager.Instance.SelectCharacter();
         ClientStarted();
         CmdReady();
         Info("awake: " + MatchNetworkManager.Instance.mode);
 
     }
+   
     public TeamTypes GetMyTeam(int connID)
     {
         TeamTypes teamType;
@@ -106,6 +106,30 @@ public class NetworkedGameManager : NetworkBehaviour
 
         return teamType;
     }
+
+    public TeamTypes GetMyTeam()
+    {
+
+        return myTeam;
+    }
+
+    public TeamTypes GetMyTeam(NetworkIdentity networkIdentity)
+    {
+        TeamTypes teamType;
+
+        var teamEnum = from personGroup in Teams
+                       from person in personGroup.teamPlayers
+                       where person.netIdentity.Equals(networkIdentity)
+                       select personGroup;
+
+        teamType = teamEnum.First().team;
+
+        //  Debug.Log($" my team: {teamType}");
+
+        return teamType;
+    }
+
+
     public void CreateTeam(Dictionary<int, NetworkConnectionToClient> players)
     {
 
