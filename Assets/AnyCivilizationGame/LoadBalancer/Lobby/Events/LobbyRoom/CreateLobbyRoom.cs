@@ -12,6 +12,7 @@ public class LobbyRoomCreated : IResponseEvent
     {
         RoomCode = roomCode;
         LobbyPlayer = lobbyPlayer;
+
     }
 
     public void Invoke(EventManagerBase eventManagerBase)

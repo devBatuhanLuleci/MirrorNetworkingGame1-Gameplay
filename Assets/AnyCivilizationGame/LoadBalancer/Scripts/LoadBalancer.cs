@@ -189,7 +189,9 @@ public class LoadBalancer : Singleton<LoadBalancer>
     private void OnClientConnected()
     {
         Debug.Log("loadbalancer connected to " + host.GetStringValue() + ":" + transport.ServerUri().Port);
-        ACGDataManager.Instance.OnConnectedToMasterServer();
+
+        if (ACGDataManager.Instance != null)
+            ACGDataManager.Instance.OnConnectedToMasterServer();
     }
     #endregion
 

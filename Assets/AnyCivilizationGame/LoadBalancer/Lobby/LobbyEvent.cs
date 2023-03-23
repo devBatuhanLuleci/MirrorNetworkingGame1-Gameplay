@@ -17,4 +17,6 @@ public enum LobbyEvent : byte
     LeaveRoom = 0xB,
     ThereIsNoRoom = 0xC,
     StartLobbyRoom = 0xD,
+    GetClanNames=0xE, //clan panel icin eklendi
+    OnGetClanNames=0xF
 }

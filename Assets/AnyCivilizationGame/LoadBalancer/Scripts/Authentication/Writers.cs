@@ -185,7 +185,7 @@ namespace ACGAuthentication
         public static LobbyRoomCreated ReadCreateLobbyRoomEvent(this NetworkReader reader)
         {
             // read MyType data here
-            return new LobbyRoomCreated(reader.ReadInt(),reader.ReadLobbyPlayer());
+            return new LobbyRoomCreated(reader.ReadInt(), reader.ReadLobbyPlayer());
 
 
         }
@@ -213,6 +213,32 @@ namespace ACGAuthentication
 
         }
         #endregion
+
+        #region Panel Writers and Read
+        public static void WriteOnGetClanNamesEvent(this NetworkWriter writer, OnGetClanNames req)
+        {
+            // write MyType data here
+            writer.WriteArray<String>(req.ClanNames);
+        }
+
+        public static OnGetClanNames ReadOnGetClanNamesEvent(this NetworkReader reader)
+        {
+            // read MyType data here
+            return new OnGetClanNames(reader.ReadArray<string>()); 
+        }
+         public static void WriteGetClanNamesEvent(this NetworkWriter writer, GetClanNames req)
+        {
+            // write MyType data here
+        }
+
+        public static GetClanNames ReadGetClanNamesEvent(this NetworkReader reader)
+        {
+            // read MyType data here
+            return new GetClanNames();
+        }
+
+        #endregion
+
         #region Authentication Writers
 
         #region RegisterRequest
