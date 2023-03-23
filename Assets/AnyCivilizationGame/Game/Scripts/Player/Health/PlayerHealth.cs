@@ -46,7 +46,7 @@ public class PlayerHealth : Health
 
             currentHealht = ((currentHealht + 20) > MaxHealth) ? MaxHealth : currentHealht + 20;
             HealthRate = currentHealht / (float)MaxHealth;
-            playerController.OnTakeDamage_DoSomething_Only_On_This_Client(netIdentity.connectionToClient);
+            playerController.OnTakeDamage_DoSomething_Only_On_Other_Client(netIdentity.connectionToClient);
             playerController.OnTakeDamage_DoSomething_On_Clients();
             if (currentHealht == MaxHealth)
             {

@@ -43,10 +43,28 @@ public class GemModeNetworkedGameManager : NetworkedGameManager
 
     public void OnGemCollected(int connectionID)
     {
+        AddToCollectedCrystalList(connectionID);
+        ShowTeamGemValuesInInspector();
+
+        var teamType =  GetMyTeam(connectionID);
+
+
+        //OnGemModeCrystalValueChanged()
+        var currentTeam=  Teams.Find(t => t.team.Equals(teamType));
+
+        
+        foreach (var player in currentTeam.teamPlayers)
+        {
+            Debug.Log($" current team: {currentTeam.team} player name:  {player.netIdentity.transform.name}   conneID:{player.connectionId} ");
+        }
+
+    }
+    public void AddToCollectedCrystalList(int connectionID)
+    {
         var gemData = new GemData(connectionID, GetMyTeam(connectionID));
 
 
-        if(collectedCrystalDictionary.TryGetValue(gemData.teamTypes,out var teamList))
+        if (collectedCrystalDictionary.TryGetValue(gemData.teamTypes, out var teamList))
         {
             teamList.Add(gemData);
 
@@ -55,16 +73,33 @@ public class GemModeNetworkedGameManager : NetworkedGameManager
         {
             collectedCrystalDictionary.Add(gemData.teamTypes, new List<GemData>() { gemData });
         }
+    }
+
+    public void ShowTeamGemValuesInInspector()
+    {
         teams = "";
         foreach (var team in collectedCrystalDictionary)
         {
-           var message= $"{team.Key} : {team.Value.Count} ";
-            teams += message + "\n" ;
+            var message = $"{team.Key} : {team.Value.Count} ";
+            teams += message + "\n";
 
         }
 
-    
     }
+    [ClientRpc]
+    public void OnGemModeCrystalValueChanged(bool isAlly, int gemvalue)
+    {
+        if (isAlly)
+        {
+        GameplayPanelUIManager.Instance.GemModeGameplayCanvas.GetComponentInChildren<TeamUIPanelManager>().AllyTeamPanel.ChangeCrystalAmountText(gemvalue);
 
+        }
+        else
+        {
+        GameplayPanelUIManager.Instance.GemModeGameplayCanvas.GetComponentInChildren<TeamUIPanelManager>().EnemyTeamPanel.ChangeCrystalAmountText(gemvalue);
+
+        }
+
+    }
 
 }

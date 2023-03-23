@@ -10,7 +10,7 @@ public class GameplayPanelUIManager : Panel
     public Panel characterSelect;
     public Panel waitingPanel;
     public Panel joystickCanvas;
-
+    public Panel GemModeGameplayCanvas;
 
     [Space]
     [SerializeField]
@@ -44,6 +44,7 @@ public class GameplayPanelUIManager : Panel
     internal void CharacterSlected()
     {
         joystickCanvas.Show();
+        GemModeGameplayCanvas.Show();
         if (currentPanel != null)
             currentPanel.Close();
     }
