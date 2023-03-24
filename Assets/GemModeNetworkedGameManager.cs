@@ -13,6 +13,7 @@ public class GemModeNetworkedGameManager : NetworkedGameManager
 
     private Dictionary<TeamTypes, List<GemData>> collectedCrystalDictionary;
 
+    Dictionary<int, int> playerGems;
 
     //TODO: disable custom attribute 'unu yaz.  [Disable]  Unity Learn bak.
     [TextArea]
@@ -44,7 +45,9 @@ public class GemModeNetworkedGameManager : NetworkedGameManager
 
 
         collectedCrystalDictionary = new Dictionary<TeamTypes, List<GemData>>();
+        playerGems = new Dictionary<int, int>();
 
+        //playerGems = new Dictionary<int, int>();
 
     }
 
@@ -52,76 +55,14 @@ public class GemModeNetworkedGameManager : NetworkedGameManager
     {
         AddToCollectedCrystalList(connectionID);
         ShowTeamGemValuesInInspector();
-
+       
         var teamType = GetMyTeam(connectionID);
 
+
         OnGemModeCrystalValueChanged(teamType, collectedCrystalDictionary[teamType].Count);
-        #region old 
 
-
-        //var currentTeam = Teams.Find(t => t.team.Equals(teamType));
-        //var otherTeam = Teams.Where(t => !t.team.Equals(currentTeam)).First();
-
-        //foreach (var team in Teams)
-        //{
-        //    foreach (var player in team.teamPlayers)
-        //    {
-        //        OnGemModeCrystalValueChanged(player.netIdentity.connectionToClient, team.Equals(teamType), collectedCrystalDictionary[teamType].Count);
-        //    }
-        //}
-
-        //  OnGemModeCrystalValueChanged(player.netIdentity.connectionToClient, true, gems.Count);
-        //foreach (var item in Teams)
-        //{
-
-        //    if (collectedCrystalDictionary.TryGetValue(item.team, out var gems))
-        //    {
-        //        OnGemModeCrystalValueChanged(teamType.Equals(item.team), gems.Count);
-        //    }
-        //    //if ()
-        //    //{
-
-        //    //}
-        //}
-        //foreach (var player in currentTeam.teamPlayers)
-        //{
-        //    Debug.Log($" current team: {currentTeam.team} player name:  {player.netIdentity.transform.name}   conneID:{player.connectionId} ");
-
-        //    if(collectedCrystalDictionary.TryGetValue(currentTeam.team,out var gems)){
-
-        //        OnGemModeCrystalValueChanged(player.netIdentity.connectionToClient, true, gems.Count);
-
-        //    }
-        //}
-
-
-
-        //foreach (var player in currentTeam.teamPlayers)
-        //{
-        //    Debug.Log($" current team: {currentTeam.team} player name:  {player.netIdentity.transform.name}   conneID:{player.connectionId} ");
-
-        //    if(collectedCrystalDictionary.TryGetValue(currentTeam.team,out var gems)){
-
-        //        OnGemModeCrystalValueChanged(player.netIdentity.connectionToClient, true, gems.Count);
-
-        //    }
-        //}
-
-        //foreach (var player in otherTeam.teamPlayers)
-        //{
-        //    Debug.Log($" current team: {otherTeam.team} player name:  {player.netIdentity.transform.name}   conneID:{player.connectionId} ");
-
-        //    if (collectedCrystalDictionary.TryGetValue(otherTeam.team, out var gems))
-        //    {
-
-        //        OnGemModeCrystalValueChanged(player.netIdentity.connectionToClient, false, gems.Count);
-
-        //    }
-        //}
-
-        #endregion
-
-
+        PlayerController player = MatchNetworkManager.Instance.GetPlayerByConnectionID(connectionID);
+        player.OnCrystalCollectedUpdatePlayer(AddGemDataToPlayers().GetValueOrDefault(connectionID));
 
     }
     void SetMyTeam()
@@ -139,11 +80,15 @@ public class GemModeNetworkedGameManager : NetworkedGameManager
         {
             OnGemModeCrystalValueChanged(item.Key, collectedCrystalDictionary[item.Key].Count);
 
-        
+       
 
         }
+        foreach (var item in playerGems)
+        {
+            PlayerController player = MatchNetworkManager.Instance.GetPlayerByConnectionID(item.Key);
+            player.OnCrystalCollectedUpdatePlayer(AddGemDataToPlayers().GetValueOrDefault(item.Key));
 
-
+        }
 
 
     }
@@ -156,6 +101,7 @@ public class GemModeNetworkedGameManager : NetworkedGameManager
         var gemData = new GemData(connectionID, GetMyTeam(connectionID));
 
 
+
         if (collectedCrystalDictionary.TryGetValue(gemData.teamTypes, out var teamList))
         {
             teamList.Add(gemData);
@@ -165,19 +111,71 @@ public class GemModeNetworkedGameManager : NetworkedGameManager
         {
             collectedCrystalDictionary.Add(gemData.teamTypes, new List<GemData>() { gemData });
         }
+
+
+
+        //if (collectedCrystalDictionary.TryGetValue(gemData.teamTypes, out var gemDatas))
+        //{
+        //    // teamList2.Add(gemData);
+        //    foreach (var gemdata in gemDatas)
+        //    {
+        //        playerGems.TryAdd(gemdata.connID, playerGems.GetValueOrDefault(gemdata.connID) + 1);
+        //    }
+
+        //}
+        //foreach (var player in playerGems)
+        //{
+        //    Debug.Log($"playerID: {player.Key}  gemAmount: {player.Value} ");
+        //}
     }
 
     public void ShowTeamGemValuesInInspector()
     {
+        //teams = "";
+        //foreach (var team in collectedCrystalDictionary)
+        //{
+        //    var message = $"{team.Key} : {team.Value.Count} ";
+        //    teams += message + "\n";
+
+        //}
+
+    }
+    public Dictionary<int, int> AddGemDataToPlayers()
+    {
+        playerGems = new Dictionary<int, int>();
+
+
         teams = "";
+
         foreach (var team in collectedCrystalDictionary)
         {
-            var message = $"{team.Key} : {team.Value.Count} ";
+            foreach (var data in team.Value)
+            {
+               // playerGems.TryAdd(data.connID, 0);
+
+                if(playerGems.ContainsKey(data.connID))
+                {
+                    playerGems[data.connID]++;
+                }
+                else
+                {
+                    playerGems.Add(data.connID, 1);
+                }
+
+            }
+
+
+        }
+        foreach (var player in playerGems)
+        {
+            var message = $"{GetMyTeam(player.Key)} : playerID: {player.Key} gemAmount : {player.Value} ";
             teams += message + "\n";
 
         }
+        return playerGems;
 
     }
+
     [ClientRpc]
     public void OnGemModeCrystalValueChanged(TeamTypes team, int gemCount)
     {
@@ -185,12 +183,12 @@ public class GemModeNetworkedGameManager : NetworkedGameManager
 
         if (GetMyTeam() == team)
         {
-            GameplayPanelUIManager.Instance.GemModeGameplayCanvas.GetComponentInChildren<TeamUIPanelManager>().AllyTeamPanel.ChangeCrystalAmountText(gemCount);
+            GameplayPanelUIManager.Instance.GemModeGameplayCanvas.GetComponentInChildren<TeamUIPanelManager>().AllyTeamPanel.ChangeCrystalAmountUI(gemCount);
 
         }
         else
         {
-            GameplayPanelUIManager.Instance.GemModeGameplayCanvas.GetComponentInChildren<TeamUIPanelManager>().EnemyTeamPanel.ChangeCrystalAmountText(gemCount);
+            GameplayPanelUIManager.Instance.GemModeGameplayCanvas.GetComponentInChildren<TeamUIPanelManager>().EnemyTeamPanel.ChangeCrystalAmountUI(gemCount);
 
         }
 

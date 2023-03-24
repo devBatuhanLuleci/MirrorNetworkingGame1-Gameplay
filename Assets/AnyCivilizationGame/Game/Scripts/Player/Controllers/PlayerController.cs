@@ -264,6 +264,15 @@ public class PlayerController : ObjectController
     //    }
 
     //}
+    [ClientRpc]
+    public void OnCrystalCollectedUpdatePlayer(int crystalAmount)
+    {
+        playerUIHandler.ActivatePlayerCrystalPanel();
+        playerUIHandler.IncreasePlayerCrystalAmount(crystalAmount);
+        //  playerUIHandler.Color_Switch_On_Health_Change(health.HealthRate);
+
+    }
+
     public virtual void OnBulletObjectSpawned(Throwable obj)
     {
 

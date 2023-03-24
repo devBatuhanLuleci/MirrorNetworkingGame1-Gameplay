@@ -135,7 +135,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6626824536947155889}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!212 &5936946434980951897
 SpriteRenderer:
@@ -761,8 +761,8 @@ Transform:
   - {fileID: 6626824536168583606}
   - {fileID: 6626824535787233144}
   - {fileID: 6479605891448071342}
-  - {fileID: 4627143194333852156}
   - {fileID: 5472571264836075689}
+  - {fileID: 4627143194333852156}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -989,6 +989,7 @@ MonoBehaviour:
   HealthBarFill_Front: {fileID: 3719963165695234145}
   HealthBarFill_Back: {fileID: 2657882530947248448}
   healthText: {fileID: 2861483722735202810}
+  teamIndicatorHandler: {fileID: 5440001052755170927}
   HealthBarFill_Blur_Effect: {fileID: 7298166011530483072}
   HealthBarFill_Gradient:
     serializedVersion: 2
@@ -1024,13 +1025,14 @@ MonoBehaviour:
   EnergyBarOrange: {fileID: 2012995256201610146}
   EnergyBarRed: {fileID: 229713845479618470}
   ULtimateFillImage: {fileID: 0}
+  PlayerCrystalUI: {fileID: 582395599269261362}
+  PlayerCrystalAmountText: {fileID: 5783406688633410815}
   isShaking: 0
   duration: 0.8
   strength: {x: 40, y: 0, z: 0}
   vibrato: 8
   randomness: 0
   nameText: {fileID: 4907378497591976099}
-  teamIndicatorHandler: {fileID: 5440001052755170927}
   playerController: {fileID: -6845222926521172771}
   projectileType: 1
   BombIndicator: {fileID: 5936946434980951897}
@@ -1324,7 +1326,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7265529046984112323, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 7265529046984112323, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1411,6 +1413,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &582395599269261362 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3240242773103114509, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
+  m_PrefabInstance: {fileID: 2657882530311014719}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1812087662656104925 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4451639132679807202, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
@@ -1474,6 +1481,17 @@ RectTransform:
 --- !u!114 &4907378497591976099 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6987388330559908252, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
+  m_PrefabInstance: {fileID: 2657882530311014719}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5783406688633410815 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8403852873044811200, guid: bea76af98353f61418b5de139b36fb9d, type: 3}
   m_PrefabInstance: {fileID: 2657882530311014719}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

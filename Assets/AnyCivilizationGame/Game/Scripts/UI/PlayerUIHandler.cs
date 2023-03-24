@@ -59,6 +59,12 @@ public class PlayerUIHandler : ObjectUIHandler
 
     #endregion
 
+    #region CrystalUI
+
+    public GameObject PlayerCrystalUI;
+    public TextMeshProUGUI PlayerCrystalAmountText;
+
+    #endregion
 
     #region ShakeParameters
     public bool isShaking = false;
@@ -155,13 +161,6 @@ public class PlayerUIHandler : ObjectUIHandler
 
         
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            int a = (int)State;
-            a=(a+1)%3;
-            State = (ObjectBehaviourStates)a;
-
-        }
 
     }
 
@@ -817,4 +816,24 @@ public class PlayerUIHandler : ObjectUIHandler
 
     #endregion
 
+    #region Crystal
+
+    public void ActivatePlayerCrystalPanel()
+    {
+        if(!PlayerCrystalUI.activeSelf)
+        PlayerCrystalUI.SetActive(true);
+        
+
+    }
+    public void IncreasePlayerCrystalAmount(int amount)
+    {
+        PlayerCrystalAmountText.text=amount.ToString();
+    }
+     public void DeactivatePlayerCrystalPanel()
+    {
+        PlayerCrystalUI.SetActive(false);
+        
+
+    }
+    #endregion
 }

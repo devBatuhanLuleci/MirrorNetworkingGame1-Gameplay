@@ -9,12 +9,17 @@ public class SpawnObject : MonoBehaviour
     public float spawnInterval = 1f;
     private float lastSpawnTime = 0f;
 
-    private void Update()
+
+    private void Start()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             StartSpawnLoop();
         }
+    }
+    private void Update()
+    {
+        
     }
     private void StartSpawnLoop()
     {
