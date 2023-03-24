@@ -17,7 +17,7 @@ public class ThrowTest : MonoBehaviour
     public float radialOffset = .75f;
     public float minAttackLimit = 0.1f;
     public GameObject throwableObj;
-    public enum ProjectileType { Bullet, Bomb }
+    public enum ProjectileType { Bullet, Bomb , GemSpawner }
     public ProjectileType projectileType;
 
     float height;
@@ -26,7 +26,7 @@ public class ThrowTest : MonoBehaviour
     float timeNew;
     float step = .1f;
 
-
+    bool isGemSpawnerOrBomb;
     public enum Type { Type1, Type2 }
     public Type type;
     public virtual void OnArrived()
@@ -49,6 +49,7 @@ public class ThrowTest : MonoBehaviour
     {
         AttackProjectileHandler();
 
+            isGemSpawnerOrBomb = (projectileType == ProjectileType.Bomb || projectileType == ProjectileType.GemSpawner);
 
 
 
@@ -58,7 +59,6 @@ public class ThrowTest : MonoBehaviour
     {
         if (type == Type.Type1)
         {
-
 
             Vector3 dist = targetPoint.position - firePoint.position;
 
@@ -168,7 +168,7 @@ public class ThrowTest : MonoBehaviour
             float y = v0 * t * Mathf.Sin(angle) - (0.5f) * -Physics.gravity.y * Mathf.Pow(t, 2);
             //  Debug.Log($" x{x}: , y {y}");
             y = (float)Math.Round(y, 4);
-            var upValue = projectileType == ProjectileType.Bomb ? (Vector3.up * y) : Vector3.zero;
+            var upValue = isGemSpawnerOrBomb ? (Vector3.up * y) : Vector3.zero;
 
             throwableObj.transform.position = FirePoint + direction * x + upValue;
           
@@ -215,12 +215,12 @@ public class ThrowTest : MonoBehaviour
         // Debug.Log("dir: " + dir);
         var targetPos = new Vector3(new Vector3(dir.x, 0, dir.z).magnitude, dir.y, 0);
 
-        height = projectileType == ProjectileType.Bomb ? (dir.y + dir.magnitude / 2f) : 0;
+        height = isGemSpawnerOrBomb ? (dir.y + dir.magnitude / 2f) : 0;
         height = Mathf.Max(0.01f, height);
 
         var dist = new Vector3(dir.x, 0, dir.z).magnitude;
-        Debug.Log("targetPos: " + targetPos);
-        Debug.Log("pos: " + (dist - StartPosOffSet(targetPos).magnitude));
+        //Debug.Log("targetPos: " + targetPos);
+        //Debug.Log("pos: " + (dist - StartPosOffSet(targetPos).magnitude));
 
 
         if (targetPos.x < minAttackLimit)
@@ -272,7 +272,7 @@ public class ThrowTest : MonoBehaviour
             float x = v0 * i * Mathf.Cos(angle);
             float y = v0 * i * Mathf.Sin(angle) - 0.5f * -Physics.gravity.y * Mathf.Pow(i, 2);
 
-            var FirstUpValue = projectileType == ProjectileType.Bomb ? (Vector3.up * y) : Vector3.zero;
+            var FirstUpValue = isGemSpawnerOrBomb ? (Vector3.up * y) : Vector3.zero;
 
             line.SetPosition(count, startPos + direction * x + FirstUpValue);
 
@@ -283,7 +283,7 @@ public class ThrowTest : MonoBehaviour
         float xFinal = v0 * time * Mathf.Cos(angle);
         float yFinal = v0 * time * Mathf.Sin(angle) - 0.5f * -Physics.gravity.y * Mathf.Pow(time, 2);
 
-        var upValue = projectileType == ProjectileType.Bomb ? (Vector3.up * yFinal) : Vector3.zero;
+        var upValue = isGemSpawnerOrBomb ? (Vector3.up * yFinal) : Vector3.zero;
 
         line.SetPosition(count, startPos + (direction * xFinal + upValue));
 

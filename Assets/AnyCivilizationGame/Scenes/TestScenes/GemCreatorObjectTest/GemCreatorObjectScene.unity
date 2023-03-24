@@ -297,7 +297,7 @@ GameObject:
   m_Component:
   - component: {fileID: 250576153}
   m_Layer: 0
-  m_Name: Target
+  m_Name: TargetPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -316,7 +316,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &278305103
 GameObject:
@@ -348,7 +348,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!120 &278305105
 LineRenderer:
@@ -474,7 +474,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3572110114122833811, guid: c9b1a60902378d443a656ca7b44560cb, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3572110114122833811, guid: c9b1a60902378d443a656ca7b44560cb, type: 3}
       propertyPath: m_AnchorMax.x
@@ -895,7 +895,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1048496160
 GameObject:
@@ -993,7 +993,7 @@ Transform:
   m_Children:
   - {fileID: 409091692}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1203432048
 GameObject:
@@ -1005,7 +1005,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1203432049}
   m_Layer: 0
-  m_Name: ThrowPoint
+  m_Name: SpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1024,7 +1024,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1312194524 stripped
 MonoBehaviour:
@@ -1406,7 +1406,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1553838593
 MonoBehaviour:
@@ -1424,13 +1424,13 @@ MonoBehaviour:
   firePoint: {fileID: 1203432049}
   targetPoint: {fileID: 250576153}
   attackJoystick: {fileID: 1312194524}
-  Range: 4
+  Range: 2
   bulletSpeed: 15
-  radialOffset: 0.7
+  radialOffset: 0
   minAttackLimit: 0.2
   throwableObj: {fileID: 1048496160}
-  projectileType: 1
-  type: 1
+  projectileType: 2
+  type: 0
 --- !u!1 &1733034716
 GameObject:
   m_ObjectHideFlags: 0
@@ -1633,7 +1633,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1001 &1913632106
 PrefabInstance:

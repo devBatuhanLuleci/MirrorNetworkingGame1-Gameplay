@@ -151,8 +151,7 @@ public class GemModeNetworkedGameManager : NetworkedGameManager
         {
             foreach (var data in team.Value)
             {
-               // playerGems.TryAdd(data.connID, 0);
-
+           
                 if(playerGems.ContainsKey(data.connID))
                 {
                     playerGems[data.connID]++;
