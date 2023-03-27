@@ -85,6 +85,11 @@ public class ClanPanel : Panel {
         var ev = new GetClanNames ();
         SendClientRequestToServer (ev);
     }
+    public void SendClan (string clanName) {
+
+        var ev = new SendClanName (clanName);
+        SendClientRequestToServer (ev);
+    }
 
     #region Buttons
     public void OnClick_BackButton () {
@@ -159,6 +164,8 @@ public class ClanPanel : Panel {
 
         ClanCreate (CreateClanInputField.text.Trim (), Elements.Length + 1);
 
+        SendClan (CreateClanInputField.text.Trim ());
+        GetClans ();
         ClearInputField ();
 
         BackButton.gameObject.SetActive (false);
@@ -167,7 +174,7 @@ public class ClanPanel : Panel {
         MainFeatureViews_Panel.SetActive (false);
         CreateClanProfile_Panel.SetActive (true);
 
-        ItemLengthControl ();
+       // ItemLengthControl ();
         Debug.Log ("Yeni Clan olusturuldu.");
 
     }
@@ -191,7 +198,7 @@ public class ClanPanel : Panel {
     #endregion
 
     public void ClansCreator () {
-      
+
         if (Elements.Length > 0)
             return;
 

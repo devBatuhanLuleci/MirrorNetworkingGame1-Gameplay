@@ -215,6 +215,11 @@ namespace ACGAuthentication
         #endregion
 
         #region Panel Writers and Read
+        /// <summary>
+        /// Get ClanNames
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="req"></param>
         public static void WriteOnGetClanNamesEvent(this NetworkWriter writer, OnGetClanNames req)
         {
             // write MyType data here
@@ -235,6 +240,33 @@ namespace ACGAuthentication
         {
             // read MyType data here
             return new GetClanNames();
+        }
+        /// <summary>
+        /// Send ClanName 
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="req"></param>
+        public static void WriteOnSendClanNameEvent(this NetworkWriter writer, OnSendClanName req)
+        {
+            // write MyType data here
+           // writer.WriteString(req.ClanName);
+        }
+
+        public static OnSendClanName ReadOnSendClanNameEvent(this NetworkReader reader)
+        {
+            // read MyType data here
+            return new OnSendClanName(reader.ReadString()); 
+        }
+         public static void WriteSendClanNameEvent(this NetworkWriter writer, SendClanName req)
+        {
+            // write MyType data here
+             writer.WriteString(req.ClanName);
+        }
+
+        public static SendClanName ReadSendClanNamesEvent(this NetworkReader reader)
+        {
+            // read MyType data here
+            return new SendClanName(reader.ReadString());
         }
 
         #endregion

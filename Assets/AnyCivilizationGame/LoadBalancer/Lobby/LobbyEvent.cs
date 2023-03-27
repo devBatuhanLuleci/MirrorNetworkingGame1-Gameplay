@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum LobbyEvent : byte
-{
+public enum LobbyEvent : byte {
     StartMatnch = 0x01,
-    GetPlayers  = 0x2,
+    GetPlayers = 0x2,
     CreateLobbyRoom = 0x3,
     JoinLobbyRoom = 0x4,
     NewJoinedToLobbyRoom = 0x5,
@@ -17,6 +16,8 @@ public enum LobbyEvent : byte
     LeaveRoom = 0xB,
     ThereIsNoRoom = 0xC,
     StartLobbyRoom = 0xD,
-    GetClanNames=0xE, //clan panel icin eklendi
-    OnGetClanNames=0xF
+    GetClanNames = 0xE, //clan panel icin eklendi
+    OnGetClanNames = 0xF,
+    SendClanName = 0x10,
+    OnSendClanName = 0x11
 }
