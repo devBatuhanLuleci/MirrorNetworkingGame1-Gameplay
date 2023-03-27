@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using System.Reflection;
+using UnityEngine;
 
 public static class Extentions
 {
@@ -11,4 +13,12 @@ public static class Extentions
 
         return attributes.Length > 0 ? attributes[0].StringValue : null;
     }
+    public static float RandomRange(this float flo, float minValue, float maxValue)
+    {
+        float angle = UnityEngine.Random.Range(minValue, maxValue) ;
+        return angle;
+
+    
+    }
+
 }

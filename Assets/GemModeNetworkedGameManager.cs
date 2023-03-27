@@ -41,7 +41,7 @@ public class GemModeNetworkedGameManager : NetworkedGameManager
     public override void ServerStarted(Dictionary<int, NetworkConnectionToClient> players)
     {
         base.ServerStarted(players);
-        NetworkSpawnObjectInInterval?.StartSpawnLoop();
+        Invoke("StartSpawnLoop", 3);
 
 
         collectedCrystalDictionary = new Dictionary<TeamTypes, List<GemData>>();
@@ -50,7 +50,12 @@ public class GemModeNetworkedGameManager : NetworkedGameManager
         //playerGems = new Dictionary<int, int>();
 
     }
+    public void StartSpawnLoop()
+    {
+        NetworkSpawnObjectInInterval.StartSpawnLoop();
 
+
+    }
     public void OnGemCollected(int connectionID)
     {
         AddToCollectedCrystalList(connectionID);

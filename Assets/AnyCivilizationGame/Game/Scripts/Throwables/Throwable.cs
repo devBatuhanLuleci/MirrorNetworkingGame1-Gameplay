@@ -47,7 +47,7 @@ public class Throwable : NetworkBehaviour
 
     public virtual void OnArrived()
     {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
         //  Debug.Log("we arrived.");
     }
   

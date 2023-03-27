@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/AnyCivilizationGame/Scenes/TestScenes/GemCreatorObjectTest/GemCreatorObjectScene.unity
-    guid: a6acbedd9caafa64282bf5e4744d4ee3
-  - enabled: 1
     path: Assets/AnyCivilizationGame/Scenes/ProductionScenes/Lobby.unity
     guid: 73f54674197734f46a9e55ba4876a02a
   - enabled: 1

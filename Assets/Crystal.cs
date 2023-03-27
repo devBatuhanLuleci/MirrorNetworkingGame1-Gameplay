@@ -7,7 +7,13 @@ using UnityEngine;
 public class Crystal : Throwable , INetworkPooledObject
 {
     public Action ReturnHandler { get ; set; }
-
+    private Rigidbody rb;
+    private Collider[] colls;
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        colls=gameObject.GetComponentsInChildren<Collider>();
+    }
     private void OnTriggerEnter(Collider other)
     {
 
@@ -35,14 +41,30 @@ public class Crystal : Throwable , INetworkPooledObject
 
         }
     }
+    public void HandleCollider(bool activate)
+    {
+        foreach (var coll in colls)
+        {
+            coll.enabled=activate;
+        }
+
+    }
     public override void OnObjectSpawn()
     {
+        HandleCollider(false);
+        rb.isKinematic=true;
         Debug.Log("I SPAWNED");
         base.OnObjectSpawn();
     }
     public override void OnArrived()
     {
+        
         base.OnArrived();
+        HandleCollider(true);
+
+        rb.isKinematic = false;
+        //gameObject.SetActive(false);
+
     }
 
 

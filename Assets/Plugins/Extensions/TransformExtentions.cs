@@ -17,6 +17,13 @@ public static class TransformExtentions
         return instance;
 
     }
+    public static Vector3 RandomDirection(this Vector3 vector)
+    {
+        float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+        return new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle));
+    }
+
+
 
 
 }

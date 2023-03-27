@@ -34,7 +34,7 @@ public class NetworkSpawnObjectInInterval : NetworkBehaviour
     {
         while (true)
         {
-            SpawnObjectInNear();
+            SpawnObjectWithDiffrentForce();
             yield return new WaitForSeconds(spawnInterval);
         }
     }
@@ -42,11 +42,29 @@ public class NetworkSpawnObjectInInterval : NetworkBehaviour
     public void SpawnObjectInNear()
     {
 
-        
+
         var name = prefabToSpawn.transform.name;
         Vector3 spawnPosition = GetRandomPointNearTransform(spawnPoint.position, maxDistance);
         var spawnedBullet = ObjectPooler.Instance.Get(name, spawnPosition, Quaternion.identity).GetComponent<Throwable>();
-        
+      
+    NetworkServer.Spawn(spawnedBullet.gameObject);
+
+
+        //  Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
+    }
+    public void SpawnObjectWithDiffrentForce()
+    {
+
+
+        var name = prefabToSpawn.transform.name;
+        Vector3 spawnPosition = transform.position;
+        var spawnedBullet = ObjectPooler.Instance.Get(name, spawnPosition, Quaternion.identity).GetComponent<Throwable>();
+        Vector3 randomDir = Vector3.zero.RandomDirection();
+        float randomRange = 0;
+        randomRange= randomRange.RandomRange(1,2);
+        Debug.Log($" dir: {randomDir}  range: {randomRange}");
+        spawnedBullet.OnObjectSpawn();
+        spawnedBullet.Throw(randomDir, randomRange);
     NetworkServer.Spawn(spawnedBullet.gameObject);
 
 
