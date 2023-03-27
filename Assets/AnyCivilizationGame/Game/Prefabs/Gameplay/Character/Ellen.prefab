@@ -11,6 +11,14 @@ PrefabInstance:
       propertyPath: sceneId
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1847445832484111781, guid: 3d845d7b633a2d44f810017a3903690b, type: 3}
+      propertyPath: m_AssetId
+      value: 22275f988784ea94cba9042cfb3b1dac
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936946434980951897, guid: 3d845d7b633a2d44f810017a3903690b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     - target: {fileID: 6626824536947155889, guid: 3d845d7b633a2d44f810017a3903690b, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -57,8 +65,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6626824536947155891, guid: 3d845d7b633a2d44f810017a3903690b, type: 3}
       propertyPath: m_Name
-      value: EllenNew
+      value: Ellen
       objectReference: {fileID: 0}
+    - target: {fileID: 7487062201121458870, guid: 3d845d7b633a2d44f810017a3903690b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     - target: {fileID: 8810218148059107433, guid: 3d845d7b633a2d44f810017a3903690b, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

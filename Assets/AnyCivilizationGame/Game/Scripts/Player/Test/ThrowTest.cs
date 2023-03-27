@@ -11,11 +11,15 @@ public class ThrowTest : MonoBehaviour
     public Transform firePoint;
     public Transform targetPoint;
     public Joystick attackJoystick;
+    private Rigidbody rb;
     private Coroutine throwingCoroutine;
     public float Range = 5;
     public float bulletSpeed = 0.1f;
     public float radialOffset = .75f;
     public float minAttackLimit = 0.1f;
+    public float bounceForwardForceSpeed = 1f;
+    public float bounceupForceSpeed = 1f;
+
     public GameObject throwableObj;
     public enum ProjectileType { Bullet, Bomb , GemSpawner }
     public ProjectileType projectileType;
@@ -29,9 +33,10 @@ public class ThrowTest : MonoBehaviour
     bool isGemSpawnerOrBomb;
     public enum Type { Type1, Type2 }
     public Type type;
-    public virtual void OnArrived()
+    public virtual void OnArrived(Vector3 dir)
     {
-
+        rb.velocity= Vector3.zero;
+        rb?.AddForce(dir * bounceForwardForceSpeed + Vector3.up * bounceupForceSpeed, ForceMode.Force);
         //  throwableObj.SetActive(false);
 
         //  Debug.Log("we arrived.");
@@ -44,7 +49,10 @@ public class ThrowTest : MonoBehaviour
         if (throwingCoroutine != null)
             StopCoroutine(throwingCoroutine);
     }
-
+    private void Awake()
+    {
+        rb = throwableObj.GetComponent<Rigidbody>();
+    }
     private void Update()
     {
         AttackProjectileHandler();
@@ -180,7 +188,7 @@ public class ThrowTest : MonoBehaviour
         }
 
         //burası hedefe vardığında bir kez çalışır.
-        OnArrived();
+        OnArrived(direction);
     }
     private void CalculatePathWithHeight(Vector3 targetPos, float h, out float v0, out float angle, out float time)
     {
@@ -204,6 +212,61 @@ public class ThrowTest : MonoBehaviour
 
 
     }
+    //private void CalculatePathWithHeight(Vector3 targetPos, float h, float bounciness, out float v0, out float angle, out float time)
+    //{
+    //    float xt = targetPos.x;
+    //    float yt = targetPos.y;
+    //    float g = -Physics.gravity.y;
+
+    //    float b = Mathf.Sqrt(2 * g * h);
+    //    float a = (-0.5f * g);
+    //    float c = -yt;
+
+    //    float tplus = QuadraticEquation(a, b, c, 1);
+    //    float tmin = QuadraticEquation(a, b, c, -1);
+    //    time = (tplus > tmin) ? tplus : tmin;
+
+    //    angle = Mathf.Atan(b * time / xt);
+
+    //    Debug.Log("Angle: " + angle);
+
+    //    float n = 0f; // Number of bounces
+    //    float t = time; // Total time
+
+    //    v0 = b / Mathf.Sin(angle);
+
+    //    Debug.Log("Initial Velocity: " + v0);
+
+    //    while (true)
+    //    {
+    //        float x = v0 * Mathf.Cos(angle) * t;
+    //        float y = v0 * Mathf.Sin(angle) * t + 0.5f * g * t * t;
+
+    //        if (y < 0f)
+    //        {
+    //            n++;
+    //            v0 *= -bounciness;
+    //            t = 2f * v0 * Mathf.Sin(angle) / g;
+
+    //            if (v0 < 0.01f)
+    //            {
+    //                Debug.LogWarning("Bounced velocity is too small: " + v0);
+    //                break;
+    //            }
+
+    //            Debug.Log("Bounce " + n + " Velocity: " + v0 + ", Time: " + t);
+    //        }
+    //        else
+    //        {
+    //            break;
+    //        }
+    //    }
+
+    //    time += n * t;
+
+    //    Debug.Log("Total Time: " + time);
+    //}
+
     private float QuadraticEquation(float a, float b, float c, float sign)
     {
         return (-b + sign * Mathf.Sqrt(b * b - 4 * a * c)) / (2 * a);
@@ -234,7 +297,7 @@ public class ThrowTest : MonoBehaviour
             line.enabled = true;
 
             //  if (dist <= Range)
-            CalculatePathWithHeight(dir.normalized * targetPos.magnitude /*- StartPosOffSet(targetPos)*/, height, out v0, out angle, out timeNew);
+            CalculatePathWithHeight(dir.normalized * targetPos.magnitude /*- StartPosOffSet(targetPos)*/, height/*, 0.8f*/, out v0, out angle, out timeNew);
 
         }
 

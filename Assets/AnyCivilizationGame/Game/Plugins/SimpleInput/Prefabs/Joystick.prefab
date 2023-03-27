@@ -181,6 +181,7 @@ MonoBehaviour:
   dynamicJoystickMovementArea: {fileID: 0}
   canFollowPointer: 1
   joystickHeld: 0
+  joystickButtonType: 0
 --- !u!1 &1615126503581138
 GameObject:
   m_ObjectHideFlags: 0

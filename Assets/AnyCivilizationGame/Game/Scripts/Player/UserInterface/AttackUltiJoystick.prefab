@@ -296,7 +296,7 @@ MonoBehaviour:
   canFollowPointer: 0
   joystickHeld: 0
   joystickButtonType: 1
-  AttackUlti_OutFill_Orange_Image: {fileID: 6900901025821711748}
+  ultiJoystickUIController: {fileID: 0}
 --- !u!1 &789770085481097344
 GameObject:
   m_ObjectHideFlags: 0

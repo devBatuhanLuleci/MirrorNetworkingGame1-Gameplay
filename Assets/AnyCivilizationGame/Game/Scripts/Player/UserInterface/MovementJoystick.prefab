@@ -257,3 +257,4 @@ MonoBehaviour:
   dynamicJoystickMovementArea: {fileID: 0}
   canFollowPointer: 1
   joystickHeld: 0
+  joystickButtonType: 0

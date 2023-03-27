@@ -41,6 +41,11 @@ public class SpawnObject : MonoBehaviour
         Vector3 spawnPosition = GetRandomPointNearTransform(spawnPoint.position, maxDistance);
         Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
     }
+    public void SpawnObjectInNearWithTradictor()
+    {
+        Vector3 spawnPosition = GetRandomPointNearTransform(spawnPoint.position, maxDistance);
+        Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
+    }
 
     private Vector3 GetRandomPointNearTransform(Vector3 center, float maxDistance)
     {
