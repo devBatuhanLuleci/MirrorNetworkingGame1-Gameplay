@@ -8,6 +8,7 @@ public class Crystal : Throwable , INetworkPooledObject
 {
     public Action ReturnHandler { get ; set; }
     private Rigidbody rb;
+    private CrystalMovement crystalMovement;
     private Collider[] colls;
     private Vector3 crystalForceDir;
     public float bounceForwardForceSpeed = 100f;
@@ -16,6 +17,7 @@ public class Crystal : Throwable , INetworkPooledObject
     {
         rb = GetComponent<Rigidbody>();
         colls=gameObject.GetComponentsInChildren<Collider>();
+        crystalMovement=GetComponent<CrystalMovement>();    
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -30,11 +32,11 @@ public class Crystal : Throwable , INetworkPooledObject
                 OnHitThisPlayer(otherPlayerController);
                 Debug.Log(" hitted by this man " + OwnerName);
 
-                GemModeNetworkedGameManager gemModeNetworkedGameManager = NetworkedGameManager.Instance as GemModeNetworkedGameManager;
-                gemModeNetworkedGameManager.OnGemCollected(otherPlayerController.connectionToClient.connectionId);
+                //GemModeNetworkedGameManager gemModeNetworkedGameManager = NetworkedGameManager.Instance as GemModeNetworkedGameManager;
+                //gemModeNetworkedGameManager.OnGemCollected(otherPlayerController.connectionToClient.connectionId);
            
-                NetworkServer.UnSpawn(gameObject);
-                ReturnHandler();
+                //NetworkServer.UnSpawn(gameObject);
+                //ReturnHandler();
 
             }
 
@@ -48,8 +50,11 @@ public class Crystal : Throwable , INetworkPooledObject
     }
     public void MoveToPlayerPos(PlayerController otherPlayerController)
     {
-
-
+        var startPos = transform.position;
+        var middlePos = (transform.position + otherPlayerController.transform.position) / 2f + (Vector3.up*2);
+        var endPos = otherPlayerController.transform.position;
+        var points = new Vector3[] { startPos, middlePos, endPos };
+        crystalMovement.InitInfo(points);
 
     }
     public void HandleCollider(bool activate)
