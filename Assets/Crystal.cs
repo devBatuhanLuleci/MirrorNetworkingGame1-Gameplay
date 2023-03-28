@@ -3,12 +3,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 public class Crystal : Throwable , INetworkPooledObject
 {
     public Action ReturnHandler { get ; set; }
     private Rigidbody rb;
     private Collider[] colls;
+    private Vector3 crystalForceDir;
+    public float bounceForwardForceSpeed = 100f;
+    public float bounceupForceSpeed = 100f;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -23,23 +26,31 @@ public class Crystal : Throwable , INetworkPooledObject
         {
             if (otherPlayerController.IsLive)
             {
-               // Debug.Log($"{otherPlayerController.connectionToClient.connectionId} id ");
+            
+                OnHitThisPlayer(otherPlayerController);
+                Debug.Log(" hitted by this man " + OwnerName);
 
                 GemModeNetworkedGameManager gemModeNetworkedGameManager = NetworkedGameManager.Instance as GemModeNetworkedGameManager;
                 gemModeNetworkedGameManager.OnGemCollected(otherPlayerController.connectionToClient.connectionId);
-                //PlayerController OurPlayer =   MatchNetworkManager.Instance.GetPlayerByConnectionID(OwnerConnectionId);
-
-                //   otherPlayerController.ChangeDamageTakenStatus(PlayerController.DamageTakenStatus.IsTakenDamage);
-                //otherPlayerController.TakeDamage(damage, otherPlayerController.netIdentity.connectionToClient);
-
-                // OurPlayer.ultimateSkill.IncreaseCurrentUltimateFillAmount(OurPlayer.netIdentity.connectionToClient, damage * 4);
-                Debug.Log(" hitted by this man " + OwnerName);
+           
                 NetworkServer.UnSpawn(gameObject);
                 ReturnHandler();
 
             }
 
         }
+    }
+    public void OnHitThisPlayer(PlayerController otherPlayerController)
+    {
+        HandleCollider(false);
+        HandleKinematic(true);
+        MoveToPlayerPos(otherPlayerController);
+    }
+    public void MoveToPlayerPos(PlayerController otherPlayerController)
+    {
+
+
+
     }
     public void HandleCollider(bool activate)
     {
@@ -52,7 +63,7 @@ public class Crystal : Throwable , INetworkPooledObject
     public override void OnObjectSpawn()
     {
         HandleCollider(false);
-        rb.isKinematic=true;
+        HandleKinematic(true);
         Debug.Log("I SPAWNED");
         base.OnObjectSpawn();
     }
@@ -61,9 +72,27 @@ public class Crystal : Throwable , INetworkPooledObject
         
         base.OnArrived();
         HandleCollider(true);
+        OnArrived_AddForce();
 
-        rb.isKinematic = false;
-        //gameObject.SetActive(false);
+
+
+    }
+    void HandleKinematic(bool isKinematic)
+    {
+        rb.isKinematic=isKinematic;
+    }
+    private void OnArrived_AddForce()
+    {
+        HandleKinematic(false);
+        rb.velocity = Vector3.zero;
+        rb?.AddForce(crystalForceDir * bounceForwardForceSpeed + Vector3.up * bounceupForceSpeed, ForceMode.Force);
+    }
+   
+    public override void InitInfo(Vector3 dir)
+    {
+        Vector3 groundDir = new Vector3(dir.x, 0, dir.z);
+        crystalForceDir = groundDir.normalized;
+        base.InitInfo(dir);
 
     }
 

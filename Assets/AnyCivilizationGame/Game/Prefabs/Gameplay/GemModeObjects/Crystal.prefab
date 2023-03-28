@@ -154,12 +154,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  speed: 1
+  speed: 1.5
   OwnerName: 
   OwnerNetId: 0
   RootNetId: 0
   OwnerConnectionId: 0
   projectileType: 1
+  bounceForwardForceSpeed: 50
+  bounceupForceSpeed: 50
 --- !u!54 &369969385887332737
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -232,5 +234,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 13.036991, y: 27.023832, z: 13.68486}
+  m_Size: {x: 26.07398, y: 27.023832, z: 27.36972}
   m_Center: {x: -0.19601989, y: 13.511916, z: 0.011134386}

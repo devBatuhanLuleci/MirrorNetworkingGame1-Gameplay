@@ -65,6 +65,7 @@ public class NetworkSpawnObjectInInterval : NetworkBehaviour
         Debug.Log($" dir: {randomDir}  range: {randomRange}");
         spawnedBullet.OnObjectSpawn();
         spawnedBullet.Throw(randomDir, randomRange);
+        spawnedBullet.InitInfo(randomDir);
     NetworkServer.Spawn(spawnedBullet.gameObject);
 
 
