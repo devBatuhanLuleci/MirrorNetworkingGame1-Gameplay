@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 1264678718499661845}
   - component: {fileID: 369969385887332737}
   - component: {fileID: 4021650150432749276}
-  - component: {fileID: 2070738412}
   - component: {fileID: 2070738413}
   m_Layer: 16
   m_Name: Crystal
@@ -193,63 +192,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 13.036991, y: 27.023832, z: 13.68486}
   m_Center: {x: -0.19601989, y: 13.511916, z: 0.011134386}
---- !u!114 &2070738412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1275126349886688}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e5ac92bc18f545cc84cd886ece82b4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  editorData:
-    _bezierPath:
-      points:
-      - {x: 3, y: 0, z: 0}
-      - {x: 4, y: 0, z: 0}
-      - {x: 2.5509925, y: 3.054022, z: -0.37748417}
-      - {x: 1.5, y: 3, z: 0}
-      - {x: -0.33551222, y: 2.9056528, z: 0.65925956}
-      - {x: 0.80184543, y: -0.13940321, z: 0.45580077}
-      - {x: 0, y: 0, z: 0}
-      isClosed: 0
-      space: 0
-      controlMode: 0
-      autoControlLength: 0.3
-      boundsUpToDate: 0
-      bounds:
-        m_Center: {x: 0, y: 0, z: 0}
-        m_Extent: {x: 0, y: 0, z: 0}
-      perAnchorNormalsAngle:
-      - 0
-      - 0
-      - 0
-      globalNormalsAngle: 0
-      flipNormals: 0
-    vertexPathUpToDate: 0
-    vertexPathMaxAngleError: 0.3
-    vertexPathMinVertexSpacing: 0
-    showTransformTool: 1
-    showPathBounds: 0
-    showPerSegmentBounds: 0
-    displayAnchorPoints: 1
-    displayControlPoints: 1
-    bezierHandleScale: 1
-    globalDisplaySettingsFoldout: 0
-    keepConstantHandleSize: 0
-    showNormalsInVertexMode: 0
-    showBezierPathInVertexMode: 0
-    showDisplayOptions: 1
-    showPathOptions: 1
-    showVertexPathDisplayOptions: 0
-    showVertexPathOptions: 1
-    showNormals: 1
-    showNormalsHelpInfo: 0
-    tabIndex: 0
-  initialized: 1
 --- !u!114 &2070738413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,10 +204,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556c631b4463ba54296cc5b5aa259790, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathCreator: {fileID: 2070738412}
+  pathPrefab: {fileID: 114462757500385858, guid: 52cf263f378ffbf40bc5449e7319aa50, type: 3}
+  currentpathCreator: {fileID: 0}
   endOfPathInstruction: 2
-  speed: 5
+  speed: 0.2
   waypoints: []
+  startPoint: {fileID: 0}
+  middlePoint: {fileID: 0}
+  endPoint: {fileID: 0}
 --- !u!1 &3374159289894763515
 GameObject:
   m_ObjectHideFlags: 0

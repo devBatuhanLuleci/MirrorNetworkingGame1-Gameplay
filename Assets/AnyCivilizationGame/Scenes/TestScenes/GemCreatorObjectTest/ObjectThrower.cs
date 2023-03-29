@@ -19,26 +19,28 @@ public class ObjectThrower : MonoBehaviour
     private bool isThrowed = false;
     void Start()
     {
-        if (pathCreator != null)
-        {
-            // Subscribed to the pathUpdated event so that we're notified if the path changes during the game
-            pathCreator.pathUpdated += OnPathChanged;
-
-            if (waypoints.Length > 0)
-            {
-                // Create a new bezier path from the waypoints.
-                BezierPath bezierPath = new BezierPath(waypoints, closedLoop, PathSpace.xyz);
-                pathCreator.bezierPath = bezierPath;
-                pathCreator.TriggerPathUpdate();
-            }
-
-        }
+      
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            if (pathCreator != null)
+            {
+                // Subscribed to the pathUpdated event so that we're notified if the path changes during the game
+                pathCreator.pathUpdated += OnPathChanged;
+
+                if (waypoints.Length > 0)
+                {
+                    // Create a new bezier path from the waypoints.
+                    BezierPath bezierPath = new BezierPath(waypoints, closedLoop, PathSpace.xyz);
+                    pathCreator.bezierPath = bezierPath;
+                    pathCreator.TriggerPathUpdate();
+                }
+
+            }
+
             ThrowThisObject();
 
         }

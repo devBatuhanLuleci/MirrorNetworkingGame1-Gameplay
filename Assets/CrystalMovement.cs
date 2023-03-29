@@ -7,13 +7,16 @@ public class CrystalMovement : MonoBehaviour
 {
     #region public variables
 
-    public PathCreator pathCreator;
+    public PathCreator pathPrefab;
+    public PathCreator currentpathCreator;
     public EndOfPathInstruction endOfPathInstruction;
    // public Transform[] waypoints;
     public float speed = 5;
-    public Vector3[] waypoints;
+    public Transform[] waypoints;
     #endregion
-
+    public Transform startPoint;
+    public Transform middlePoint;
+    public Transform endPoint;
 
     #region private variables
 
@@ -26,37 +29,40 @@ public class CrystalMovement : MonoBehaviour
     #endregion
 
 
-    public void HandleWayPoints(Vector3[] waypoints)
+    public void HandleWayPoints(Transform[] waypoints)
     {
         this.waypoints = waypoints;
     }
     void Start()
     {
-        if (pathCreator != null)
+        if (currentpathCreator != null)
         {
             // Subscribed to the pathUpdated event so that we're notified if the path changes during the game
-            pathCreator.pathUpdated += OnPathChanged;
+            currentpathCreator.pathUpdated += OnPathChanged;
 
-      
+
 
         }
+
     }
-    public void InitInfo(Vector3[] waypoints)
+    public void InitInfo(Transform[] waypoints)
     {
+        currentpathCreator = Instantiate(pathPrefab);
+       
         HandleWayPoints(waypoints);
         if (waypoints.Length > 0)
         {
             // Create a new bezier path from the waypoints.
             // BezierPath bezierPath = new BezierPath(waypoints, closedLoop, PathSpace.xyz);
-           // BezierPath bezierPath = new BezierPath(waypoints, closedLoop, PathSpace.xyz);
+           // BezierPath bezierPath = new BezierPath(,waypoints, closedLoop, PathSpace.xyz);
             BezierPath bezierPath = new BezierPath(waypoints, closedLoop, PathSpace.xyz);
 
-            pathCreator.bezierPath = bezierPath;
-            pathCreator.TriggerPathUpdate();
+            currentpathCreator.bezierPath = bezierPath;
+            currentpathCreator.TriggerPathUpdate();
             // pathCreator.bezierPath.NotifyPathModified();
         }
 
-      //  ThrowThisObject();
+       ThrowThisObject();
 
     }
 
@@ -64,7 +70,8 @@ public class CrystalMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ThrowThisObject();
+            //InitInfo(new Transform[] { startPoint/*, middlePoint*/, endPoint });
+        //   ThrowThisObject();
 
         }
 
@@ -73,19 +80,19 @@ public class CrystalMovement : MonoBehaviour
 
 
 
-            if (pathCreator != null)
+            if (currentpathCreator != null)
             {
 
                 if (waypoints.Length > 0)
                 {
                     // Create a new bezier path from the waypoints.
                     BezierPath bezierPath = new BezierPath(waypoints, closedLoop, PathSpace.xyz);
-                    pathCreator.bezierPath = bezierPath;
-                    pathCreator.TriggerPathUpdate();
+                    currentpathCreator.bezierPath = bezierPath;
+                    currentpathCreator.TriggerPathUpdate();
 
                 }
                 distanceTravelled += speed * Time.deltaTime;
-                transform.position = pathCreator.path.GetPointAtDistance(distanceTravelled, endOfPathInstruction);
+                transform.position = currentpathCreator.path.GetPointAtDistance(distanceTravelled, endOfPathInstruction);
 
 
                 //transform.rotation = pathCreator.path.GetRotationAtDistance(distanceTravelled, endOfPathInstruction);
@@ -93,12 +100,12 @@ public class CrystalMovement : MonoBehaviour
                 if (!isReached)
                 {
 
-                    if (pathCreator.path.GetPointAtDistance(distanceTravelled, endOfPathInstruction) == pathCreator.path.GetPoint(pathCreator.path.NumPoints - 1))
+                    if (currentpathCreator.path.GetPointAtDistance(distanceTravelled, endOfPathInstruction) == currentpathCreator.path.GetPoint(currentpathCreator.path.NumPoints - 1))
                     {
 
-                        isReached = true;
-                        isThrowed = false;
-                        Debug.Log("!REACHED");
+                        //isReached = true;
+                        //isThrowed = false;
+                        //Debug.Log("!REACHED");
 
                     }
                 }
@@ -113,7 +120,7 @@ public class CrystalMovement : MonoBehaviour
         isReached = false;
         active = true;
         distanceTravelled = 0;
-        transform.position = pathCreator.path.GetPoint(0);
+        transform.position = currentpathCreator.path.GetPoint(0);
         active = false;
     }
 
@@ -123,7 +130,7 @@ public class CrystalMovement : MonoBehaviour
     {
         //Debug.Log("changed");
         if (!active && isThrowed)
-            distanceTravelled = pathCreator.path.GetClosestDistanceAlongPath(transform.position);
+            distanceTravelled = currentpathCreator.path.GetClosestDistanceAlongPath(transform.position);
     }
 
 }
