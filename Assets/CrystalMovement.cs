@@ -48,6 +48,7 @@ public class CrystalMovement : MonoBehaviour
         {
             // Create a new bezier path from the waypoints.
             // BezierPath bezierPath = new BezierPath(waypoints, closedLoop, PathSpace.xyz);
+           // BezierPath bezierPath = new BezierPath(waypoints, closedLoop, PathSpace.xyz);
             BezierPath bezierPath = new BezierPath(waypoints, closedLoop, PathSpace.xyz);
 
             pathCreator.bezierPath = bezierPath;
@@ -55,7 +56,7 @@ public class CrystalMovement : MonoBehaviour
             // pathCreator.bezierPath.NotifyPathModified();
         }
 
-        ThrowThisObject();
+      //  ThrowThisObject();
 
     }
 

@@ -51,9 +51,15 @@ public class Crystal : Throwable , INetworkPooledObject
     public void MoveToPlayerPos(PlayerController otherPlayerController)
     {
         var startPos = transform.position;
-        var middlePos = (transform.position + otherPlayerController.transform.position) / 2f + (Vector3.up*2);
+        var middlePos = (transform.position + otherPlayerController.transform.position) / 2f /*+ (Vector3.up*2)*/;
         var endPos = otherPlayerController.transform.position;
         var points = new Vector3[] { startPos, middlePos, endPos };
+
+        //GameObject go=new GameObject();
+        // go.CreatePrimitiveObject(startPos, Color.black, .4f);
+        gameObject.CreatePrimitiveObject(startPos, Color.black, .4f);
+        gameObject.CreatePrimitiveObject(middlePos, Color.red, .4f);
+        gameObject.CreatePrimitiveObject(endPos, Color.green, .4f);
         crystalMovement.InitInfo(points);
 
     }

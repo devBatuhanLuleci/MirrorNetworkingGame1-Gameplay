@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathCreator: {fileID: 2070738412}
-  endOfPathInstruction: 0
+  endOfPathInstruction: 2
   speed: 5
   waypoints: []
 --- !u!1 &3374159289894763515
