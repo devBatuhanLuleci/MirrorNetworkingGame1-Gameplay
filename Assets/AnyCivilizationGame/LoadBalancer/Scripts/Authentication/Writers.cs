@@ -224,12 +224,13 @@ namespace ACGAuthentication
         {
             // write MyType data here
             writer.WriteArray<String>(req.ClanNames);
+            writer.WriteBool(req.IsNewClanNameCreate);
         }
 
         public static OnGetClanNames ReadOnGetClanNamesEvent(this NetworkReader reader)
         {
             // read MyType data here
-            return new OnGetClanNames(reader.ReadArray<string>()); 
+            return new OnGetClanNames(reader.ReadArray<string>(),reader.ReadBool()); 
         }
          public static void WriteGetClanNamesEvent(this NetworkWriter writer, GetClanNames req)
         {

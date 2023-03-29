@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class OnGetClanNames : IResponseEvent {
     public string[] ClanNames;
-
-    public OnGetClanNames (string[] clanNames) {
+    public bool IsNewClanNameCreate;
+    public OnGetClanNames (string[] clanNames, bool isNewClanNameCreate) {
         ClanNames = clanNames;
+        IsNewClanNameCreate = isNewClanNameCreate;
     }
 
-    public void Invoke (EventManagerBase eventManagerBase) 
-    {
-        MainPanelUIManager.Instance.GetPanel<ClanPanel> ().ClanNamesArrayRead (ClanNames);
-       
+    public void Invoke (EventManagerBase eventManagerBase) {
+        MainPanelUIManager.Instance.GetPanel<ClanPanel> ().ClanNamesArrayRead (ClanNames, IsNewClanNameCreate);
+
     }
 }
