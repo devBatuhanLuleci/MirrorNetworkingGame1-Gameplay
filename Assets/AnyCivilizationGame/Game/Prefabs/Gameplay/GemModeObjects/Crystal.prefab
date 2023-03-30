@@ -212,6 +212,10 @@ MonoBehaviour:
   startPoint: {fileID: 0}
   middlePoint: {fileID: 0}
   endPoint: {fileID: 0}
+  OnReachedTargetEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offSet: {x: 0, y: 0, z: 0}
 --- !u!1 &3374159289894763515
 GameObject:
   m_ObjectHideFlags: 0

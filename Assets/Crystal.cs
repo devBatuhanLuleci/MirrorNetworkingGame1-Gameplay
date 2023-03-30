@@ -13,12 +13,27 @@ public class Crystal : Throwable , INetworkPooledObject
     private Vector3 crystalForceDir;
     public float bounceForwardForceSpeed = 100f;
     public float bounceupForceSpeed = 100f;
+    private PlayerController ownerPlayerController;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         colls=gameObject.GetComponentsInChildren<Collider>();
-        crystalMovement=GetComponent<CrystalMovement>();    
+        crystalMovement=GetComponent<CrystalMovement>();
+        crystalMovement.OnReachedTargetEvent.AddListener(OnReachedTarget);
+
     }
+
+    private void OnReachedTarget()
+    {
+        GemModeNetworkedGameManager gemModeNetworkedGameManager = NetworkedGameManager.Instance as GemModeNetworkedGameManager;
+        gemModeNetworkedGameManager.OnGemCollected(ownerPlayerController.connectionToClient.connectionId);
+        ownerPlayerController = null;
+        NetworkServer.UnSpawn(gameObject);
+        ReturnHandler();
+    }
+
+
     private void OnTriggerEnter(Collider other)
     {
 
@@ -32,11 +47,7 @@ public class Crystal : Throwable , INetworkPooledObject
                 OnHitThisPlayer(transform.position,otherPlayerController);
                 Debug.Log(" hitted by this man " + OwnerName);
 
-                //GemModeNetworkedGameManager gemModeNetworkedGameManager = NetworkedGameManager.Instance as GemModeNetworkedGameManager;
-                //gemModeNetworkedGameManager.OnGemCollected(otherPlayerController.connectionToClient.connectionId);
-           
-                //NetworkServer.UnSpawn(gameObject);
-                //ReturnHandler();
+        
 
             }
 
@@ -50,25 +61,18 @@ public class Crystal : Throwable , INetworkPooledObject
     }
     public void MoveToPlayerPos(Vector3 crystalPos, PlayerController otherPlayerController)
     {
-        //var startPos = transform.position;
-        //var middlePos = (transform.position + otherPlayerController.transform.position) / 2f /*+ (Vector3.up*2)*/;
-        //var endPos = otherPlayerController.transform.position;
-        //var points = new Vector3[] { startPos, middlePos, endPos };
+
+        ownerPlayerController = otherPlayerController;
+  
         GameObject go = new GameObject();
         GameObject middleGo = new GameObject();
-        //   go.transform.position = GameObject.Find("StartPoint").transform.position;
-        Debug.Log("startPointPos:"+ GameObject.Find("StartPoint").transform.position);
-       
-        Debug.Log("crystalPos:" + crystalPos);
 
        go.transform.position = crystalPos;
-      
-      //  go.transform.position = GameObject.Find("StartPoint").transform.position;
+
         var startPos = transform;
-        var endPos = otherPlayerController.transform;
-        middleGo.transform.position = (go.transform.position + endPos.position) / 2f /*+ (Vector3.up*2)*/;
-        var points = new Transform[] { go.transform, middleGo.transform, endPos };
- 
+        var endPos = otherPlayerController.GemCollectPoint.transform;
+        middleGo.transform.position = (go.transform.position + endPos.transform.position) / 2f;
+        var points = new Transform[] { startPos, middleGo.transform, endPos.transform };
         crystalMovement.InitInfo(points);
 
     }

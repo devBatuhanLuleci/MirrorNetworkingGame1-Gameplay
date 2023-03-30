@@ -2,6 +2,7 @@ using PathCreation;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CrystalMovement : MonoBehaviour
 {
@@ -10,14 +11,15 @@ public class CrystalMovement : MonoBehaviour
     public PathCreator pathPrefab;
     public PathCreator currentpathCreator;
     public EndOfPathInstruction endOfPathInstruction;
-   // public Transform[] waypoints;
+    // public Transform[] waypoints;
     public float speed = 5;
     public Transform[] waypoints;
     #endregion
     public Transform startPoint;
     public Transform middlePoint;
     public Transform endPoint;
-
+    public UnityEvent OnReachedTargetEvent;
+    public Vector3 offSet;
     #region private variables
 
     float distanceTravelled;
@@ -32,6 +34,7 @@ public class CrystalMovement : MonoBehaviour
     public void HandleWayPoints(Transform[] waypoints)
     {
         this.waypoints = waypoints;
+
     }
     void Start()
     {
@@ -48,21 +51,19 @@ public class CrystalMovement : MonoBehaviour
     public void InitInfo(Transform[] waypoints)
     {
         currentpathCreator = Instantiate(pathPrefab);
-       
+
         HandleWayPoints(waypoints);
         if (waypoints.Length > 0)
         {
-            // Create a new bezier path from the waypoints.
-            // BezierPath bezierPath = new BezierPath(waypoints, closedLoop, PathSpace.xyz);
-           // BezierPath bezierPath = new BezierPath(,waypoints, closedLoop, PathSpace.xyz);
             BezierPath bezierPath = new BezierPath(waypoints, closedLoop, PathSpace.xyz);
 
             currentpathCreator.bezierPath = bezierPath;
+
             currentpathCreator.TriggerPathUpdate();
-            // pathCreator.bezierPath.NotifyPathModified();
+
         }
 
-       ThrowThisObject();
+        ThrowThisObject();
 
     }
 
@@ -71,7 +72,7 @@ public class CrystalMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             //InitInfo(new Transform[] { startPoint/*, middlePoint*/, endPoint });
-        //   ThrowThisObject();
+            //   ThrowThisObject();
 
         }
 
@@ -103,10 +104,9 @@ public class CrystalMovement : MonoBehaviour
 
                     if (currentpathCreator.path.GetPointAtDistance(distanceTravelled, endOfPathInstruction) == currentpathCreator.path.GetPoint(currentpathCreator.path.NumPoints - 1))
                     {
+                        OnReachedTarget();
 
-                        //isReached = true;
-                        //isThrowed = false;
-                        //Debug.Log("!REACHED");
+
 
                     }
                 }
@@ -115,6 +115,31 @@ public class CrystalMovement : MonoBehaviour
             }
         }
     }
+    public void OnReachedTarget()
+    {
+        if (OnReachedTargetEvent != null)
+        {
+            OnReachedTargetEvent.Invoke();
+
+        }
+
+
+
+
+        isReached = true;
+        isThrowed = false;
+        Debug.Log("!REACHED");
+
+        //GemModeNetworkedGameManager gemModeNetworkedGameManager = NetworkedGameManager.Instance as GemModeNetworkedGameManager;
+        //gemModeNetworkedGameManager.OnGemCollected(otherPlayerController.connectionToClient.connectionId);
+
+        //NetworkServer.UnSpawn(gameObject);
+        //ReturnHandler();
+
+
+    }
+
+
     private void ThrowThisObject()
     {
         isThrowed = true;
@@ -135,3 +160,6 @@ public class CrystalMovement : MonoBehaviour
     }
 
 }
+
+
+
