@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
@@ -21,10 +21,12 @@ public class assdd : MonoBehaviour
             go.transform.position = crystalPos;
 
             var startPos = transform;
-
-            var points = new Transform[] {CrystalMovement.startPoint /*go.transform*/, CrystalMovement.endPoint };
+            //CrystalMovement.startPoint.position = go.transform.position;
+            CrystalMovement.middlePoint.position = (CrystalMovement.startPoint.position + CrystalMovement.endPoint.position) / 2;
+            //TODO: start point'de sıkıntı vaqr endpoint'de bir sıkıntı yok.
+            var points = new Transform[] { CrystalMovement.startPoint,CrystalMovement.middlePoint /*go.transform*/, CrystalMovement.endPoint /*go.transform*/ };
     
             CrystalMovement.InitInfo(points);
         }
     }
-}
+}   

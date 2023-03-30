@@ -85,7 +85,8 @@ public class CrystalMovement : MonoBehaviour
 
                 if (waypoints.Length > 0)
                 {
-                    // Create a new bezier path from the waypoints.
+                    waypoints[1].position = (waypoints[0].position + waypoints[2].position) / 2;
+
                     BezierPath bezierPath = new BezierPath(waypoints, closedLoop, PathSpace.xyz);
                     currentpathCreator.bezierPath = bezierPath;
                     currentpathCreator.TriggerPathUpdate();
