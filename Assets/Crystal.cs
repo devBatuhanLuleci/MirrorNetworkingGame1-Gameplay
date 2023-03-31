@@ -64,15 +64,12 @@ public class Crystal : Throwable , INetworkPooledObject
 
         ownerPlayerController = otherPlayerController;
   
-        GameObject go = new GameObject();
-        GameObject middleGo = new GameObject();
-
-       go.transform.position = crystalPos;
+  
 
         var startPos = transform;
         var endPos = otherPlayerController.GemCollectPoint.transform;
-        middleGo.transform.position = (go.transform.position + endPos.transform.position) / 2f;
-        var points = new Transform[] { startPos, middleGo.transform, endPos.transform };
+     //   middleGo.transform.position = (startPos.position + endPos.transform.position) / 2f;
+        var points = new List<Transform> { startPos, /*middleGo.transform,*/ endPos };
         crystalMovement.InitInfo(points);
 
     }

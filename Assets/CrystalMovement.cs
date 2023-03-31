@@ -13,7 +13,7 @@ public class CrystalMovement : MonoBehaviour
     public EndOfPathInstruction endOfPathInstruction;
     // public Transform[] waypoints;
     public float speed = 5;
-    public Transform[] waypoints;
+    public List<Transform> waypoints;
     #endregion
     public Transform startPoint;
     public Transform middlePoint;
@@ -31,10 +31,14 @@ public class CrystalMovement : MonoBehaviour
     #endregion
 
 
-    public void HandleWayPoints(Transform[] waypoints)
+    public void HandleWayPoints(List<Transform> waypoints)
     {
+        var MidPos= (waypoints[0].position + waypoints[1].position) / 2f;
+        var MidPoint = gameObject.CreateEmptyGameObject(MidPos).transform;
+        
+        waypoints.Insert(1, MidPoint);
         this.waypoints = waypoints;
-
+        
     }
     void Start()
     {
@@ -48,12 +52,12 @@ public class CrystalMovement : MonoBehaviour
         }
 
     }
-    public void InitInfo(Transform[] waypoints)
+    public void InitInfo(List<Transform> waypoints)
     {
         currentpathCreator = Instantiate(pathPrefab);
 
         HandleWayPoints(waypoints);
-        if (waypoints.Length > 0)
+        if (waypoints.Count > 0)
         {
             BezierPath bezierPath = new BezierPath(waypoints, closedLoop, PathSpace.xyz);
 
@@ -84,7 +88,7 @@ public class CrystalMovement : MonoBehaviour
             if (currentpathCreator != null)
             {
 
-                if (waypoints.Length > 0)
+                if (waypoints.Count > 0)
                 {
                     waypoints[1].position = (waypoints[0].position + waypoints[2].position) / 2;
 

@@ -17,6 +17,18 @@ public static class GameObjectExtentions
 
 
     }
+    public static GameObject CreateEmptyGameObject(this GameObject instance, Vector3 pos)
+    {
 
+
+        GameObject go = new GameObject();
+        
+        go.transform.position = pos;
+        instance = go;
+        return instance;
+
+
+
+    }
 
 }

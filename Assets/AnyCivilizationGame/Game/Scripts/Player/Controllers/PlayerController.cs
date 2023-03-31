@@ -25,8 +25,8 @@ public class PlayerController : ObjectController
     private InfoPopup infoPopup;
     #endregion
 
-  
 
+    public Transform GemCollectPoint;
     public Transform SpineRotator;
     [HideInInspector]
     public PlayerUIHandler playerUIHandler;
