@@ -36,7 +36,7 @@ public class Health : NetworkBehaviour
         if (currentHealht <= 0) return true;
         return false;
     }
-    public void ResetValues()
+    public virtual void ResetValues()
     {
         currentHealht = MaxHealth;
         HealthRate = 1;

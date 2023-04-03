@@ -4,9 +4,9 @@
         "Ellen": {
             "Name": "Ellen",
             "Attributes": {               
-                "Energy":1,
-                "Health":1,
-                "TurretHealth":1
+                "Energy":0,
+                "Health":0,
+                "TurretHealth":0
             }
         }
     }

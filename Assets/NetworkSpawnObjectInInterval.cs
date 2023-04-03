@@ -34,7 +34,7 @@ public class NetworkSpawnObjectInInterval : NetworkBehaviour
     {
         while (true)
         {
-            SpawnObjectWithDiffrentForce();
+            SpawnObjectWithDiffrentForce(transform.position);
             yield return new WaitForSeconds(spawnInterval);
         }
     }
@@ -52,12 +52,12 @@ public class NetworkSpawnObjectInInterval : NetworkBehaviour
 
         //  Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
     }
-    public void SpawnObjectWithDiffrentForce()
+    public void SpawnObjectWithDiffrentForce(Vector3 spawnPos)
     {
 
 
         var name = prefabToSpawn.transform.name;
-        Vector3 spawnPosition = transform.position;
+        Vector3 spawnPosition = spawnPos;
         var spawnedBullet = ObjectPooler.Instance.Get(name, spawnPosition, Quaternion.identity).GetComponent<Throwable>();
         Vector3 randomDir = Vector3.zero.RandomDirection();
         float randomRange = 0;

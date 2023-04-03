@@ -378,7 +378,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CrystalAmountText: {fileID: 5526684433594542646}
-  CrystalBars: {fileID: 6192550634198524570}
+  CrystalBarParent: {fileID: 6192550634198524570}
+  maxCrystalAmount: 10
 --- !u!1 &1156454047098536189
 GameObject:
   m_ObjectHideFlags: 0
@@ -1800,7 +1801,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CrystalAmountText: {fileID: 6220731113915689270}
-  CrystalBars: {fileID: 8818051825989252745}
+  CrystalBarParent: {fileID: 8818051825989252745}
+  maxCrystalAmount: 10
 --- !u!1 &6706361375571233447
 GameObject:
   m_ObjectHideFlags: 0

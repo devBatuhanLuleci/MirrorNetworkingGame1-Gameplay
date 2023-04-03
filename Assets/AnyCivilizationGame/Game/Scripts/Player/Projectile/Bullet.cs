@@ -45,7 +45,7 @@ public class Bullet : Throwable, INetworkPooledObject
                 otherPlayerController.TakeDamage(damage, otherPlayerController.netIdentity.connectionToClient);
 
                 OurPlayer.ultimateSkill.IncreaseCurrentUltimateFillAmount(OurPlayer.netIdentity.connectionToClient, damage * 4);
-                Debug.Log("some one hited by " + OwnerName);
+             
                 NetworkServer.UnSpawn(gameObject);
                 ReturnHandler();
 

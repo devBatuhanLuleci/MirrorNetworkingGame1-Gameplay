@@ -48,10 +48,11 @@ public class PlayerHealth : Health
             HealthRate = currentHealht / (float)MaxHealth;
             playerController.OnTakeDamage_DoSomething_Only_On_Other_Client(netIdentity.connectionToClient);
             playerController.OnTakeDamage_DoSomething_On_Clients();
+
             if (currentHealht == MaxHealth)
             {
                 playerController.ChangeDamageTakenStatus(PlayerController.DamageTakenStatus.Idle);
-                
+                playerController.OnCurrentHealthReachedMaxHealth(netIdentity.connectionToClient);
             }
 
             //    ChangeHealth(Value, true);
@@ -73,6 +74,13 @@ public class PlayerHealth : Health
 
 
     }
+    public override void ResetValues()
+    {
+        base.ResetValues();
+        playerController.OnRevive_DoSomething_Only_On_This_Client(netIdentity.connectionToClient);
+
+    }
+
 
     public override void RefreshCurrentHealth(int oldValue, int newValue)
     {

@@ -33,12 +33,12 @@ public class CrystalMovement : MonoBehaviour
 
     public void HandleWayPoints(List<Transform> waypoints)
     {
-        var MidPos= (waypoints[0].position + waypoints[1].position) / 2f;
+        var MidPos = (waypoints[0].position + waypoints[1].position) / 2f;
         var MidPoint = gameObject.CreateEmptyGameObject(MidPos).transform;
-        
+
         waypoints.Insert(1, MidPoint);
         this.waypoints = waypoints;
-        
+
     }
     void Start()
     {
@@ -83,38 +83,42 @@ public class CrystalMovement : MonoBehaviour
         if (isThrowed)
         {
 
-
-
-            if (currentpathCreator != null)
+            if (waypoints.Count > 0)
             {
-
-                if (waypoints.Count > 0)
-                {
-                    waypoints[1].position = (waypoints[0].position + waypoints[2].position) / 2;
-
-                    BezierPath bezierPath = new BezierPath(waypoints, closedLoop, PathSpace.xyz);
-                    currentpathCreator.bezierPath = bezierPath;
-                    currentpathCreator.TriggerPathUpdate();
-
-                }
-                distanceTravelled += speed * Time.deltaTime;
-                transform.position = currentpathCreator.path.GetPointAtDistance(distanceTravelled, endOfPathInstruction);
-
-
-                //transform.rotation = pathCreator.path.GetRotationAtDistance(distanceTravelled, endOfPathInstruction);
-
-                if (!isReached)
+                if (waypoints[2] != null)
                 {
 
-                    if (currentpathCreator.path.GetPointAtDistance(distanceTravelled, endOfPathInstruction) == currentpathCreator.path.GetPoint(currentpathCreator.path.NumPoints - 1))
+
+                    if (currentpathCreator != null)
                     {
-                        OnReachedTarget();
+
+
+                        waypoints[1].position = (waypoints[0].position + waypoints[2].position) / 2;
+
+                        BezierPath bezierPath = new BezierPath(waypoints, closedLoop, PathSpace.xyz);
+                        currentpathCreator.bezierPath = bezierPath;
+                        currentpathCreator.TriggerPathUpdate();
+
+
+                        distanceTravelled += speed * Time.deltaTime;
+                        transform.position = currentpathCreator.path.GetPointAtDistance(distanceTravelled, endOfPathInstruction);
+
+
+                        //transform.rotation = pathCreator.path.GetRotationAtDistance(distanceTravelled, endOfPathInstruction);
+
+                        if (!isReached)
+                        {
+
+                            if (currentpathCreator.path.GetPointAtDistance(distanceTravelled, endOfPathInstruction) == currentpathCreator.path.GetPoint(currentpathCreator.path.NumPoints - 1))
+                            {
+                                OnReachedTarget();
 
 
 
+                            }
+                        }
                     }
                 }
-
 
             }
         }

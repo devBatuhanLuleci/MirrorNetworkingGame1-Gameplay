@@ -59,46 +59,45 @@ public class GemModeNetworkedGameManager : NetworkedGameManager
     public void OnGemCollected(int connectionID)
     {
         AddToCollectedCrystalList(connectionID);
-        ShowTeamGemValuesInInspector();
-       
         var teamType = GetMyTeam(connectionID);
-
 
         OnGemModeCrystalValueChanged(teamType, collectedCrystalDictionary[teamType].Count);
 
         PlayerController player = MatchNetworkManager.Instance.GetPlayerByConnectionID(connectionID);
-        player.OnCrystalCollectedUpdatePlayer(AddGemDataToPlayers().GetValueOrDefault(connectionID));
+        player.OnCrystalCollected_UpdatePlayer(AddGemDataToPlayers().GetValueOrDefault(connectionID));
+        ShowPlayerGemsLog();
 
     }
-    void SetMyTeam()
+    public void OnGemDroppedByThisPlayer(int connectionID)
     {
+  
+        PlayerController player = MatchNetworkManager.Instance.GetPlayerByConnectionID(connectionID);
+        var teamType = GetMyTeam(connectionID);
 
-        myTeam = GetMyTeam(NetworkClient.localPlayer);
-        CmdGetTeamInfo();
-    }
-
-    [Command(requiresAuthority = false)]
-    public void CmdGetTeamInfo()
-    {
-
-        foreach (var item in collectedCrystalDictionary)
+        var TotalCrystalToDrop = playerGems[connectionID];
+        Debug.Log($"totalDroppableGems of this player :  {TotalCrystalToDrop}");
+        for (int i = 0; i < TotalCrystalToDrop; i++)
         {
-            OnGemModeCrystalValueChanged(item.Key, collectedCrystalDictionary[item.Key].Count);
-
-       
-
-        }
-        foreach (var item in playerGems)
-        {
-            PlayerController player = MatchNetworkManager.Instance.GetPlayerByConnectionID(item.Key);
-            player.OnCrystalCollectedUpdatePlayer(AddGemDataToPlayers().GetValueOrDefault(item.Key));
+            NetworkSpawnObjectInInterval.SpawnObjectWithDiffrentForce(player.transform.position);
 
         }
 
+        RemoveFromCollectCrystalList(connectionID, teamType);
+
+        OnGemModeCrystalValueChanged(teamType, collectedCrystalDictionary[teamType].Count);
+
+
+        var RemainedAmountCrystalOfPlayer = AddGemDataToPlayers().GetValueOrDefault(connectionID);
+
+
+
+        player.OnCrystalRemoved_UpdatePlayer(RemainedAmountCrystalOfPlayer);
+
+
+        ShowPlayerGemsLog();
 
     }
-
-
+ 
 
 
     public void AddToCollectedCrystalList(int connectionID)
@@ -117,47 +116,35 @@ public class GemModeNetworkedGameManager : NetworkedGameManager
             collectedCrystalDictionary.Add(gemData.teamTypes, new List<GemData>() { gemData });
         }
 
-
-
-        //if (collectedCrystalDictionary.TryGetValue(gemData.teamTypes, out var gemDatas))
-        //{
-        //    // teamList2.Add(gemData);
-        //    foreach (var gemdata in gemDatas)
-        //    {
-        //        playerGems.TryAdd(gemdata.connID, playerGems.GetValueOrDefault(gemdata.connID) + 1);
-        //    }
-
-        //}
-        //foreach (var player in playerGems)
-        //{
-        //    Debug.Log($"playerID: {player.Key}  gemAmount: {player.Value} ");
-        //}
     }
-
-    public void ShowTeamGemValuesInInspector()
+    public void RemoveFromCollectCrystalList(int connectionID, TeamTypes MyTeamType)
     {
-        //teams = "";
-        //foreach (var team in collectedCrystalDictionary)
-        //{
-        //    var message = $"{team.Key} : {team.Value.Count} ";
-        //    teams += message + "\n";
 
-        //}
 
+        foreach (var item in collectedCrystalDictionary[MyTeamType].ToArray())
+        {
+            if (item.connID.Equals(connectionID))
+            {
+
+                collectedCrystalDictionary[MyTeamType].Remove(item);
+            }
+        }
+  
     }
+
+
+
     public Dictionary<int, int> AddGemDataToPlayers()
     {
         playerGems = new Dictionary<int, int>();
 
 
-        teams = "";
-
         foreach (var team in collectedCrystalDictionary)
         {
             foreach (var data in team.Value)
             {
-           
-                if(playerGems.ContainsKey(data.connID))
+
+                if (playerGems.ContainsKey(data.connID))
                 {
                     playerGems[data.connID]++;
                 }
@@ -170,13 +157,31 @@ public class GemModeNetworkedGameManager : NetworkedGameManager
 
 
         }
+
+        return playerGems;
+
+    }
+
+    public void ShowPlayerGemsLog()
+    {
+
+        teams = "";
         foreach (var player in playerGems)
         {
             var message = $"{GetMyTeam(player.Key)} : playerID: {player.Key} gemAmount : {player.Value} ";
             teams += message + "\n";
 
         }
-        return playerGems;
+
+    }
+
+    public void RemoveGemFromPlayer()
+    {
+        //if (collectedCrystalDictionary.TryGetValue(gemData.teamTypes, out var teamList))
+        //{
+        //    collectedCrystalDictionary.(gemData.teamTypes, new List<GemData>() { gemData });
+
+        //}
 
     }
 

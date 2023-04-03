@@ -83,7 +83,7 @@ public class PlayerController : ObjectController
 
     private float TrailDistance;
 
- 
+
     public override void Awake()
     {
         base.Awake();
@@ -93,7 +93,7 @@ public class PlayerController : ObjectController
         playerUIHandler = GetComponent<PlayerUIHandler>();
         ultimateSkill = GetComponent<UltimateSkill>();
 
-        
+
 
     }
     private void Start()
@@ -193,15 +193,27 @@ public class PlayerController : ObjectController
         }
 
         yield return new WaitForSeconds(4f);
-        ChangeDamageTakenStatus(DamageTakenStatus.Healing);
+
+        if (IsLive)
+        {
+            ChangeDamageTakenStatus(DamageTakenStatus.Healing);
+
+        }
+        //else
+        //{
+        //    ChangeDamageTakenStatus(DamageTakenStatus.Idle);
+
+        //}
 
     }
 
 
     public override void TakeDamage(int damage, NetworkConnection target)
     {
+
+
         base.TakeDamage(damage, target);
-       OnTakeDamage_DoSomething_Only_On_Other_Client(target);
+        OnTakeDamage_DoSomething_Only_On_Other_Client(target);
         OnTakeDamage_DoSomething_On_Clients();
     }
 
@@ -209,17 +221,32 @@ public class PlayerController : ObjectController
     public void OnTakeDamage_DoSomething_On_Clients()
     {
         playerUIHandler.AnimateOtherHealthBarEffects();
-      //  playerUIHandler.Color_Switch_On_Health_Change(health.HealthRate);
+        //  playerUIHandler.Color_Switch_On_Health_Change(health.HealthRate);
 
     }
     [TargetRpc]
     public void OnTakeDamage_DoSomething_Only_On_Other_Client(NetworkConnection target)
     {
-       // playerUIHandler.AnimateOtherHealthBarEffects();
+        // playerUIHandler.AnimateOtherHealthBarEffects();
         playerUIHandler.Color_Switch_On_Health_Change(health.HealthRate);
 
     }
 
+    [TargetRpc]
+    public void OnRevive_DoSomething_Only_On_This_Client(NetworkConnection target)
+    {
+     //   Debug.Log("SANA BİLGİ MESAJI VERDİM.");
+        // playerUIHandler.AnimateOtherHealthBarEffects();
+        playerUIHandler.Reset_HealthBar(true);
+      //  playerUIHandler
+    }
+    [TargetRpc]
+    public  void OnCurrentHealthReachedMaxHealth(NetworkConnection target)
+    {
+
+        playerUIHandler.Reset_HealthBar(false);
+
+    }
     [Command]
     public void SendAttackType(CurrentAttackType currentAttackType)
     {
@@ -265,13 +292,22 @@ public class PlayerController : ObjectController
 
     //}
     [ClientRpc]
-    public void OnCrystalCollectedUpdatePlayer(int crystalAmount)
+    public void OnCrystalCollected_UpdatePlayer(int crystalAmount)
     {
         playerUIHandler.ActivatePlayerCrystalPanel();
-        playerUIHandler.IncreasePlayerCrystalAmount(crystalAmount);
+        playerUIHandler.HandlePlayerCrystalAmountText(crystalAmount);
         //  playerUIHandler.Color_Switch_On_Health_Change(health.HealthRate);
 
     }
+    [ClientRpc]
+    public void OnCrystalRemoved_UpdatePlayer(int crystalAmount)
+    {
+        playerUIHandler.DisablePlayerCrystalPanel();
+        playerUIHandler.HandlePlayerCrystalAmountText(crystalAmount);
+        //  playerUIHandler.Color_Switch_On_Health_Change(health.HealthRate);
+
+    }
+
 
     public virtual void OnBulletObjectSpawned(Throwable obj)
     {
@@ -385,8 +421,8 @@ public class PlayerController : ObjectController
                         + dir * (spawnPoint[i % spawnPoint.Length].z);
                     // pos = transform.position + direction * spawnPoint[i % spawnPoint.Length].x + transform.up * spawnPoint[i % spawnPoint.Length].y + direction * (spawnPoint[i % spawnPoint.Length].z );
                 }
-             
-               
+
+
                 var spawnedBullet = ObjectPooler.Instance.Get(name, pos, Quaternion.Euler(0, CalculationManager.GetAngle(dir), 0)).GetComponent<Throwable>();
 
                 spawnedBullet.Init("Debug User " + netId, netId, netIdentity.connectionToClient.connectionId, 0, true);
@@ -491,10 +527,11 @@ public class PlayerController : ObjectController
     {
         IsLive = true;
         transform.position = Vector3.zero;
+       // OnRevive_DoSomething_Only_On_Other_Client(netIdentity.connectionToClient);
         health.ResetValues();
         RespawnRPC();
     }
-  
+
     public void OnCurrentUltimateFillRateChanged(float ultimateFillRate)
     {
         if (GameplayPanelUIManager.Instance.joystickCanvas.TryGetComponent(out JoystickCanvasUIController joystickCanvasUIController))
@@ -506,7 +543,7 @@ public class PlayerController : ObjectController
     }
 
 
-   
+
     public void EnergyChanged(float energyAmount)
     {
         playerUIHandler.ChangeEnergy(energyAmount);
@@ -635,10 +672,37 @@ public class PlayerController : ObjectController
     public override void Death()
     {
         base.Death();
+
+        DropGemsOnDeath();
+
+
+        StopHealthCoroutine();
+
+
+
         MatchNetworkManager.Instance.Respawn(this);
+
+
+
+    }
+    public void DropGemsOnDeath()
+    {
+        GemModeNetworkedGameManager gemModeNetworkedGameManager = NetworkedGameManager.Instance as GemModeNetworkedGameManager;
+        gemModeNetworkedGameManager.OnGemDroppedByThisPlayer(connectionToClient.connectionId);
+
+
+
+
+
 
     }
 
+    public void StopHealthCoroutine()
+    {
+        PlayerHealth myHealth = health as PlayerHealth;
+
+        myHealth.StopHealthIncreaseCoroutine();
+    }
 
     [ClientRpc]
     public override void DeathRPC()
@@ -675,7 +739,7 @@ public class PlayerController : ObjectController
     #region Health
     public void HealthRateChanged(float newValue)
     {
-  
+
         playerUIHandler.ChangeHealthRate(newValue);
 
     }

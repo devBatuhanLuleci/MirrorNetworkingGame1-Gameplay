@@ -19,7 +19,7 @@ public class PlayerUIHandler : ObjectUIHandler
 
 
 
-    
+
 
 
     [SerializeField]
@@ -29,7 +29,7 @@ public class PlayerUIHandler : ObjectUIHandler
     [SerializeField]
     private Gradient HealthBarFill_Gradient;
 
-   
+
 
 
 
@@ -136,7 +136,7 @@ public class PlayerUIHandler : ObjectUIHandler
 
         base.Awake();
         Fill_Name_Text();
-    
+
 
     }
     public void Fill_Name_Text()
@@ -145,8 +145,8 @@ public class PlayerUIHandler : ObjectUIHandler
         nameText.text = transform.name.ToString();
 
     }
- 
-   
+
+
 
     public override void DisablePanel()
     {
@@ -159,7 +159,7 @@ public class PlayerUIHandler : ObjectUIHandler
     {
         base.Update();
 
-        
+
 
 
     }
@@ -205,7 +205,18 @@ public class PlayerUIHandler : ObjectUIHandler
                                                 .SetLoops(-1, LoopType.Yoyo)
                                                 .SetEase(Ease.Linear)
                                                 .From(HealthBarFill_Gradient.Evaluate(healthRate));
+                                                
     }
+    public void Reset_HealthBar(bool isRevive=false)
+    {
+        tweenForSmoothColorSwitch?.Kill();
+        if (isRevive)
+        {
+        HealthBarFill_Front.color = HealthBarFill_Front_My_Color;
+
+        }
+    }
+
 
     public void Animate_HealthBarFill_Blur_Effect()
     {
@@ -394,17 +405,17 @@ public class PlayerUIHandler : ObjectUIHandler
         CalculateProjectile(targetPos);
 
 
-      //  CalculateProjectile2(targetPos2);
-      
+        //  CalculateProjectile2(targetPos2);
+
         tempDir = dir.normalized;
-    
+
         DrawPath(dir.normalized, player, v0, angle, timeNew, step);
 
 
 
 
 
-       // DrawPath2(dir.normalized, player, v02, angle2, timeNew2, step2);
+        // DrawPath2(dir.normalized, player, v02, angle2, timeNew2, step2);
 
 
 
@@ -820,19 +831,26 @@ public class PlayerUIHandler : ObjectUIHandler
 
     public void ActivatePlayerCrystalPanel()
     {
-        if(!PlayerCrystalUI.activeSelf)
-        PlayerCrystalUI.SetActive(true);
-        
+        if (!PlayerCrystalUI.activeSelf)
+            PlayerCrystalUI.SetActive(true);
+
 
     }
-    public void IncreasePlayerCrystalAmount(int amount)
+    public void DisablePlayerCrystalPanel()
     {
-        PlayerCrystalAmountText.text=amount.ToString();
+        if (PlayerCrystalUI.activeSelf)
+            PlayerCrystalUI.SetActive(false);
+
+
     }
-     public void DeactivatePlayerCrystalPanel()
+    public void HandlePlayerCrystalAmountText(int amount)
+    {
+        PlayerCrystalAmountText.text = amount.ToString();
+    }
+    public void DeactivatePlayerCrystalPanel()
     {
         PlayerCrystalUI.SetActive(false);
-        
+
 
     }
     #endregion
