@@ -30,9 +30,9 @@ namespace MK.Toon.Examples
 
         private void Update()
         {
-            Vector3 pos = new Vector3(transform.position.x, _startPos.y, transform.position.z);
-            pos.y += Mathf.Sin(Time.time * _bounceSpeed) * _bounceLimit;
-            transform.position = pos;
+            //Vector3 pos = new Vector3(transform.position.x, _startPos.y, transform.position.z);
+            //pos.y += Mathf.Sin(Time.time * _bounceSpeed) * _bounceLimit;
+            //transform.position = pos;
 
             transform.Rotate(new Vector3(0, _rotateSpeedY, 0) * Time.smoothDeltaTime, Space.World);
         }

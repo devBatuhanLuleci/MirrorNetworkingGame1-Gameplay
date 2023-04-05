@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1264678718499661845}
   - component: {fileID: 369969385887332737}
   - component: {fileID: 2070738413}
+  - component: {fileID: 895769120}
   m_Layer: 16
   m_Name: Crystal
   m_TagString: Untagged
@@ -151,6 +152,21 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   offSet: {x: 0, y: 0, z: 0}
+--- !u!114 &895769120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1275126349886688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa1860f0675c954fbb6ff3b724200b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rotateSpeedY: 80
+  _bounceSpeed: 0
+  _bounceLimit: 0
 --- !u!1 &3374159289894763515
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,6 +275,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 781da734cba64cc4b9b4a1708966c00f, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: dffd4a42dad779f4ebb3de3f8abe3e46, type: 2}
     - target: {fileID: 919132149155446097, guid: 781da734cba64cc4b9b4a1708966c00f, type: 3}
       propertyPath: m_Name
       value: Crystal
@@ -285,7 +305,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.4, y: 2.877228, z: 3.26}
+  m_Size: {x: 1.7320508, y: 2.877228, z: 1.67}
   m_Center: {x: -0.00000011920929, y: 1.438614, z: 0.000000074505806}
 --- !u!4 &3189528941118057448 stripped
 Transform:
