@@ -30,7 +30,7 @@ public class NetworkSpawnObjectInInterval : NetworkBehaviour
         StartCoroutine(SpawnLoop());
     }
 
-    private System.Collections.IEnumerator SpawnLoop()
+    private IEnumerator SpawnLoop()
     {
         while (true)
         {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,7 +41,19 @@ public class GameplayPanelUIManager : Panel
         Show(characterSelect);
         joystickCanvas.Close();
     }
+    public void AutoSelectCharacter()
+    {
+        var msg = new ReplanceCharacterMessage { name = "Ellen" };
+        NetworkClient.Send(msg);
 
+         Close(waitingPanel);
+        //  joystickCanvas.Close();
+
+        //joystickCanvas.Show();
+        //GemModeGameplayCanvas.Show();
+        Debug.Log($"gem mode canvas is null: {GemModeGameplayCanvas}");
+       // CharacterSlected();
+    }
     internal void CharacterSlected()
     {
         joystickCanvas.Show();

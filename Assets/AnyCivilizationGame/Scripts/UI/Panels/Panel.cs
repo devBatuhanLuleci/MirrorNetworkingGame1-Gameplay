@@ -18,23 +18,31 @@ public class Panel : MonoBehaviour, IPanel
     }
     public virtual void CloseSmoothly()
     {
-        // if panel already close dont make anything
-        if (!gameObject.activeSelf) return;
+        //   // if panel already close dont make anything
+        //   if (!gameObject.activeSelf) return;
 
-        var time = 0f;
-        while (time > 1)
+        //   var time = 0f;
+        //   while (time > 1)
+        //   {
+        //       time += Time.fixedDeltaTime;
+
+        //    //   Debug.Log("hmm");
+
+        //       break;
+        //   }
+        ////   Debug.Log("hello");
+
+
+        if (TryGetComponent(out CanvasGroup canvasGroup))
         {
-            time += Time.fixedDeltaTime;
 
-         //   Debug.Log("hmm");
-
-            break;
+            canvasGroup.DOFade(0, 1f).From(1).SetEase(Ease.Linear).OnComplete(()=> {
+                OnPanelClose();
+                gameObject.SetActive(false);
+            });
         }
-     //   Debug.Log("hello");
 
-
-        OnPanelClose();
-        gameObject.SetActive(false);
+        
 
 
     }

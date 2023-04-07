@@ -1,4 +1,4 @@
-using Mirror;
+﻿using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,14 +6,17 @@ using System.Linq;
 using UnityEngine;
 using static NetworkedGameManager;
 
-public class GemModeNetworkedGameManager : NetworkedGameManager
+public class CrystalModeNetworkedGameManager : NetworkedGameManager
 {
 
+    public CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController;
     private NetworkSpawnObjectInInterval NetworkSpawnObjectInInterval;
 
     private Dictionary<TeamTypes, List<GemData>> collectedCrystalDictionary;
 
     Dictionary<int, int> playerGems;
+
+
 
     //TODO: disable custom attribute 'unu yaz.  [Disable]  Unity Learn bak.
     [TextArea]
@@ -34,7 +37,7 @@ public class GemModeNetworkedGameManager : NetworkedGameManager
     public override void SetupClient()
     {
         base.SetupClient();
-        Invoke("SetMyTeam", 3);
+       // Invoke("SetMyTeam", 3);
 
     }
 
@@ -43,12 +46,25 @@ public class GemModeNetworkedGameManager : NetworkedGameManager
         base.ServerStarted(players);
         Invoke("StartSpawnLoop", 3);
 
-
         collectedCrystalDictionary = new Dictionary<TeamTypes, List<GemData>>();
         playerGems = new Dictionary<int, int>();
 
         //playerGems = new Dictionary<int, int>();
 
+    }
+    [ClientRpc]
+    public override void RpcStartGame()
+    {
+        CreateCrystalModeCanvas();
+        base.RpcStartGame();
+
+    }
+
+    public void CreateCrystalModeCanvas()
+    {
+     CrystalModeGamePlayCanvasUIController crystalModeCanvas=   Instantiate(crystalModeGamePlayCanvasUIController);
+        GameplayPanelUIManager.Instance.GemModeGameplayCanvas = crystalModeCanvas;
+       GameplayPanelUIManager.Instance.GemModeGameplayCanvas.Show();
     }
     public void StartSpawnLoop()
     {
@@ -188,16 +204,16 @@ public class GemModeNetworkedGameManager : NetworkedGameManager
     [ClientRpc]
     public void OnGemModeCrystalValueChanged(TeamTypes team, int gemCount)
     {
-
+        //:TODO  burayı getcompenenintchildren'dan kurtar.
 
         if (GetMyTeam() == team)
         {
-            GameplayPanelUIManager.Instance.GemModeGameplayCanvas.GetComponentInChildren<TeamUIPanelManager>().AllyTeamPanel.ChangeCrystalAmountUI(gemCount);
+            GameplayPanelUIManager.Instance.GemModeGameplayCanvas.GetComponentInChildren<CrystalStatsUIPanelManager>().AllyTeamPanel.ChangeCrystalAmountUI(gemCount);
 
         }
         else
         {
-            GameplayPanelUIManager.Instance.GemModeGameplayCanvas.GetComponentInChildren<TeamUIPanelManager>().EnemyTeamPanel.ChangeCrystalAmountUI(gemCount);
+            GameplayPanelUIManager.Instance.GemModeGameplayCanvas.GetComponentInChildren<CrystalStatsUIPanelManager>().EnemyTeamPanel.ChangeCrystalAmountUI(gemCount);
 
         }
 

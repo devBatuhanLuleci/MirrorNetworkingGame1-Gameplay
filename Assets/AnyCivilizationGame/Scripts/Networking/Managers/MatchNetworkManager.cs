@@ -195,7 +195,7 @@ public class MatchNetworkManager : NetworkManager
     {
        
 
-        var prefab = Resources.Load<GemModeNetworkedGameManager>(nameof(GemModeNetworkedGameManager));
+        var prefab = Resources.Load<CrystalModeNetworkedGameManager>(nameof(CrystalModeNetworkedGameManager));
         var networkedGameManager = Instantiate(prefab);
         NetworkServer.Spawn(networkedGameManager.gameObject);
         Debug.LogError("NetworkedGameManager spawned.");

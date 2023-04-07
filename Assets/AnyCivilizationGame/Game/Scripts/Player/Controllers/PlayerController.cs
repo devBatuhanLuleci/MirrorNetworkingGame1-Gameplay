@@ -687,7 +687,7 @@ public class PlayerController : ObjectController
     }
     public void DropGemsOnDeath()
     {
-        GemModeNetworkedGameManager gemModeNetworkedGameManager = NetworkedGameManager.Instance as GemModeNetworkedGameManager;
+        CrystalModeNetworkedGameManager gemModeNetworkedGameManager = NetworkedGameManager.Instance as CrystalModeNetworkedGameManager;
         gemModeNetworkedGameManager.OnGemDroppedByThisPlayer(connectionToClient.connectionId);
 
 

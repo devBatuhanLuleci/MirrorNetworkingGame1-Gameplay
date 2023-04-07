@@ -26,7 +26,7 @@ public class Crystal : Throwable , INetworkPooledObject
 
     private void OnReachedTarget()
     {
-        GemModeNetworkedGameManager gemModeNetworkedGameManager = NetworkedGameManager.Instance as GemModeNetworkedGameManager;
+        CrystalModeNetworkedGameManager gemModeNetworkedGameManager = NetworkedGameManager.Instance as CrystalModeNetworkedGameManager;
         gemModeNetworkedGameManager.OnGemCollected(ownerPlayerController.connectionToClient.connectionId);
         ownerPlayerController = null;
         NetworkServer.UnSpawn(gameObject);

@@ -83,9 +83,11 @@ public class NetworkedGameManager : NetworkBehaviour
 
     public virtual void SetupClient()
     {
-      
-        GameplayPanelUIManager.Instance.SelectCharacter();
+
+          GameplayPanelUIManager.Instance.AutoSelectCharacter();
+      //   GameplayPanelUIManager.Instance.SelectCharacter();
         ClientStarted();
+
         CmdReady();
         Info("awake: " + MatchNetworkManager.Instance.mode);
 
@@ -322,9 +324,10 @@ public class NetworkedGameManager : NetworkBehaviour
 
     #region RPCMethods
     [ClientRpc]
-    public void RpcStartGame()
+    public virtual void RpcStartGame()
     {
         Info("RpcStartGame");
+
         StartGame();
     }
     #endregion

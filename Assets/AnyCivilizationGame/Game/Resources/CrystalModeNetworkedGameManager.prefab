@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4621476746317117340}
   - component: {fileID: 5799349817508710478}
   m_Layer: 0
-  m_Name: GemModeNetworkedGameManager
+  m_Name: CrystalModeNetworkedGameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,6 +83,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  myTeam: 0
   Teams:
   - team: 0
     teamPlayers:
@@ -97,4 +98,5 @@ MonoBehaviour:
     - connectionId: 0
       netIdentity: {fileID: 0}
   playerCount: 0
+  crystalModeGamePlayCanvasUIController: {fileID: 119518473, guid: 23602f29f0c978d4194b8f062107f171, type: 3}
   teams: 
