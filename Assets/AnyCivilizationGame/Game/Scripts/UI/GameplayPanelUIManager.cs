@@ -48,9 +48,9 @@ public class GameplayPanelUIManager : Panel
         var msg = new ReplanceCharacterMessage { name = "Ellen" };
         NetworkClient.Send(msg);
 
-       // Close(waitingPanel);
-
-        Debug.Log($"gem mode canvas is null: {GemModeGameplayCanvas}");
+        waitingPanel.Close();
+        
+       
     }
     internal void CharacterSlected()
     {
@@ -59,13 +59,14 @@ public class GameplayPanelUIManager : Panel
         if (currentPanel != null)
             currentPanel.Close();
     }
+   
     public void Init_CrystalModeGameplayCanvas(NetworkedPanel GemModeGameplayCanvas)
     {
         EqulizeGamePlayCanvas(GemModeGameplayCanvas);
         ActivateGamePlayCanvas();
     }
 
- //   [ClientRpc(includeOwner =true)]
+    //   [ClientRpc(includeOwner =true)]
     public void EqulizeGamePlayCanvas(NetworkedPanel GemModeGameplayCanvas)
     {
         this.GemModeGameplayCanvas = GemModeGameplayCanvas;

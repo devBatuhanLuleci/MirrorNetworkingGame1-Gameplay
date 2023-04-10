@@ -46,7 +46,7 @@ public class Panel : MonoBehaviour, IPanel
 
 
     }
-    public virtual void Close(bool destroy)
+    public virtual void Close(bool destroy=false)
     {
         Close();
         if (destroy) Destroy(gameObject);

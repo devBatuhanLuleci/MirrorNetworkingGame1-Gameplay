@@ -10,7 +10,6 @@ public class CrystalStartInfoPanel : Panel
 {
     public GameObject CrystalInfoTexts;
 
-
     private RectTransform CrystalInfoRectTransform;
     public UnityAction animAction;
 
@@ -23,6 +22,12 @@ public class CrystalStartInfoPanel : Panel
         // m_MyFirstAction.AddListener(m_MyFirstAction);
         // CrystalInfoRectTransform.DOScale(1f, 1f).From(0f).SetLoops(2,LoopType.Yoyo).SetEase(Ease.OutQuad).SetDelay(2);
 
+        HandleScaleOfCrystalInfoRectTransform();
+    }
+    public void HandleScaleOfCrystalInfoRectTransform()
+    {
+
+
         Sequence s = DOTween.Sequence();
         s.Append(CrystalInfoRectTransform.DOScale(1f, 1.5f).From(0f).SetEase(Ease.OutBack));
         s.AppendInterval(1f);
@@ -30,10 +35,9 @@ public class CrystalStartInfoPanel : Panel
         s.SetDelay(2f);
 
         s.OnComplete(() => {
-           // Debug.Log("Animasyon tamamlandı.");
+            // Debug.Log("Animasyon tamamlandı.");
             OnAnimationFinished();
         });
-
     }
     private void OnAnimationFinished()
     {
