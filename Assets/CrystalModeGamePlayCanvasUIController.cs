@@ -2,10 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-public class CrystalModeGamePlayCanvasUIController : Panel
+using Mirror;
+
+public class CrystalModeGamePlayCanvasUIController : NetworkedPanel
 {
     public CrystalStatsUIPanelManager GemUIPanelManager;
+  
     private RectTransform GemRectTransform;
+
+  
+    public enum CanvasSequence {None,ModeInfo, InGame }
+
+    [SyncVar]
+    public CanvasSequence Info;
+
 
     public CrystalStartInfoPanel crystalStartInfoPanel;
     private void Awake()
@@ -29,8 +39,10 @@ public class CrystalModeGamePlayCanvasUIController : Panel
     }
     public override void Show()
     {
-        base.Show();
-        Activate();
+        // base.Show();
+        //Activate();
+        gameObject.SetActive(true);
+        StartCoroutine(Test());
 
     }
     private void OnDestroy()
@@ -45,6 +57,24 @@ public class CrystalModeGamePlayCanvasUIController : Panel
         Debug.Log("animation bitti!");
         
         OnStart_MoveDown_TeamUIPanel();
+    }
+    IEnumerator Test()
+    {
+        ChangeModeInfo(CanvasSequence.ModeInfo);
+          // GemRectTransform.gameObject.SetActive(true);
+          yield return new WaitForSeconds(5);
+
+        ChangeModeInfo(CanvasSequence.InGame);
+
+        //  GemRectTransform.gameObject.SetActive(false);
+
+    }
+
+    public void ChangeModeInfo(CanvasSequence mode)
+    {
+
+        Info = mode;
+
     }
 
     public void OnStart_MoveDown_TeamUIPanel()

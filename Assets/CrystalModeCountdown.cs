@@ -7,6 +7,6 @@ public class CrystalModeCountdown : NetworkBehaviour
 {
 
    // [SyncVar]
-    public enum CanvasSequence { ModeInfo,InGame }
+   // public enum CanvasSequence { ModeInfo,InGame }
 
 }

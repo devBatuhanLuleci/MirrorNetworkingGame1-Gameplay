@@ -44,8 +44,8 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
     public override void ServerStarted(Dictionary<int, NetworkConnectionToClient> players)
     {
         base.ServerStarted(players);
-        Invoke("StartSpawnLoop", 3);
-
+       // Invoke("StartSpawnLoop", 3);
+        CreateCrystalModeCanvas();
         collectedCrystalDictionary = new Dictionary<TeamTypes, List<GemData>>();
         playerGems = new Dictionary<int, int>();
 
@@ -55,15 +55,23 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
     [ClientRpc]
     public override void RpcStartGame()
     {
-        CreateCrystalModeCanvas();
+    //    CreateCrystalModeCanvas();
         base.RpcStartGame();
 
     }
 
     public void CreateCrystalModeCanvas()
     {
-     CrystalModeGamePlayCanvasUIController crystalModeCanvas=   Instantiate(crystalModeGamePlayCanvasUIController);
-       
+     //CrystalModeGamePlayCanvasUIController crystalModeCanvas=   Instantiate(crystalModeGamePlayCanvasUIController);
+     //   GameplayPanelUIManager.Instance.GemModeGameplayCanvas = crystalModeCanvas;
+     //  GameplayPanelUIManager.Instance.GemModeGameplayCanvas.Show();
+
+        var prefab = Resources.Load<CrystalModeGamePlayCanvasUIController>("CrystalModeGameplayCanvas"/*nameof(CrystalModeGamePlayCanvasUIController*/);
+        var crystalModeCanvas = Instantiate(prefab);
+        NetworkServer.Spawn(crystalModeCanvas.gameObject);
+        GameplayPanelUIManager.Instance.Init_CrystalModeGameplayCanvas(crystalModeCanvas);
+        Debug.LogError("CrystalModeGameplayCanvas spawned.");
+
     }
     public void StartSpawnLoop()
     {

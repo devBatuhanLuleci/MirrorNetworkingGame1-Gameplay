@@ -1539,6 +1539,7 @@ MonoBehaviour:
   - {fileID: 6595198472901467070, guid: 22275f988784ea94cba9042cfb3b1dac, type: 3}
   - {fileID: 5327921761441919906, guid: ee214b06c8deeea4795d9dc6a641bfbc, type: 3}
   - {fileID: 6551596581866087418, guid: df5005e092c495148a8287be8af81cd2, type: 3}
+  - {fileID: 3900569372171916160, guid: 23602f29f0c978d4194b8f062107f171, type: 3}
   OnPlayerListChanged:
     m_PersistentCalls:
       m_Calls: []

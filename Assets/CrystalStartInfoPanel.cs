@@ -4,10 +4,12 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Mirror;
 
 public class CrystalStartInfoPanel : Panel
 {
     public GameObject CrystalInfoTexts;
+
     private RectTransform CrystalInfoRectTransform;
     public UnityAction animAction;
 
