@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5983179819156135899}
   - component: {fileID: 4621476746317117340}
   - component: {fileID: 5799349817508710478}
+  - component: {fileID: -906108526276130252}
   m_Layer: 0
   m_Name: CrystalModeNetworkedGameManager
   m_TagString: Untagged
@@ -100,3 +101,15 @@ MonoBehaviour:
   playerCount: 0
   crystalModeGamePlayCanvasUIController: {fileID: 119518473, guid: 23602f29f0c978d4194b8f062107f171, type: 3}
   teams: 
+--- !u!114 &-906108526276130252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6551596581866087418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8421cad99e7dee94690e67605c8652ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

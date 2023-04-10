@@ -43,16 +43,14 @@ public class GameplayPanelUIManager : Panel
     }
     public void AutoSelectCharacter()
     {
+
+        //Auto select ellen 
         var msg = new ReplanceCharacterMessage { name = "Ellen" };
         NetworkClient.Send(msg);
 
-         Close(waitingPanel);
-        //  joystickCanvas.Close();
+        Close(waitingPanel);
 
-        //joystickCanvas.Show();
-        //GemModeGameplayCanvas.Show();
         Debug.Log($"gem mode canvas is null: {GemModeGameplayCanvas}");
-       // CharacterSlected();
     }
     internal void CharacterSlected()
     {
@@ -61,7 +59,13 @@ public class GameplayPanelUIManager : Panel
         if (currentPanel != null)
             currentPanel.Close();
     }
-   
+    public void Init_CrystalModeGameplayCanvas(Panel GemModeGameplayCanvas)
+    {
+        this.GemModeGameplayCanvas = GemModeGameplayCanvas;
+        GemModeGameplayCanvas.Show();
+
+    }
+
     public void DeactivateUltiButton()
     {
         if (joystickCanvas.TryGetComponent(out JoystickCanvasUIController joystickUIController))
@@ -76,7 +80,7 @@ public class GameplayPanelUIManager : Panel
         {
 
             joystickUIController.ActivateUlti();
-           
+
         }
 
     }

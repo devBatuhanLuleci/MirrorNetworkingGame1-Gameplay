@@ -63,8 +63,7 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
     public void CreateCrystalModeCanvas()
     {
      CrystalModeGamePlayCanvasUIController crystalModeCanvas=   Instantiate(crystalModeGamePlayCanvasUIController);
-        GameplayPanelUIManager.Instance.GemModeGameplayCanvas = crystalModeCanvas;
-       GameplayPanelUIManager.Instance.GemModeGameplayCanvas.Show();
+       
     }
     public void StartSpawnLoop()
     {
