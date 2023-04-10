@@ -48,7 +48,7 @@ public class GameplayPanelUIManager : Panel
         var msg = new ReplanceCharacterMessage { name = "Ellen" };
         NetworkClient.Send(msg);
 
-        Close(waitingPanel);
+       // Close(waitingPanel);
 
         Debug.Log($"gem mode canvas is null: {GemModeGameplayCanvas}");
     }

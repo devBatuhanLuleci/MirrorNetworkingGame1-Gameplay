@@ -10,6 +10,7 @@ public class CrystalStartInfoPanel : Panel
 {
     public GameObject CrystalInfoTexts;
 
+
     private RectTransform CrystalInfoRectTransform;
     public UnityAction animAction;
 
