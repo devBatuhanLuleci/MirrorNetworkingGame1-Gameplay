@@ -12,6 +12,7 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
     public CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController;
     private NetworkSpawnObjectInInterval NetworkSpawnObjectInInterval;
     private CrystalModeCountdown crystalModeCountdown;
+    private CrystalModeUIOpeningHandler cystalModeUIOpeningHandler;
     private Dictionary<TeamTypes, List<GemData>> collectedCrystalDictionary;
  
     Dictionary<int, int> playerGems;
@@ -38,6 +39,12 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
         {
 
             this.crystalModeCountdown = crystalModeCountdown;
+
+        }
+        if (TryGetComponent<CrystalModeUIOpeningHandler>(out CrystalModeUIOpeningHandler crystalModeUIOpeningHandler))
+        {
+
+            this.cystalModeUIOpeningHandler = crystalModeUIOpeningHandler;
 
         }
 

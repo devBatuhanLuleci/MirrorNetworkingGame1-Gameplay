@@ -38,6 +38,12 @@ public class CrystalModeGamePlayCanvasUIController : NetworkedPanel
 
 
     }
+    public void HandleCrystalInfoText(float value)
+    {
+
+        crystalStartInfoPanel.ChangeCrystalInfoRectTransformScale(value);
+    }
+
     public override void Show()
     {
         // base.Show();
@@ -60,19 +66,7 @@ public class CrystalModeGamePlayCanvasUIController : NetworkedPanel
         
         OnStart_MoveDown_TeamUIPanel();
     }
-    //IEnumerator Test()
-    //{
-    //    ChangeModeInfo(CanvasSequence.ModeInfo);
-    //    Activate();
-    //      // GemRectTransform.gameObject.SetActive(true);
-    //      yield return new WaitForSeconds(5);
-
-    //    ChangeModeInfo(CanvasSequence.InGame);
-
-    //    //  GemRectTransform.gameObject.SetActive(false);
-
-    //}
-
+   
 
     public void OnStart_MoveDown_TeamUIPanel()
     {

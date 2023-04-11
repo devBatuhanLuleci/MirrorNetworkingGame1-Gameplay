@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 4621476746317117340}
   - component: {fileID: 5799349817508710478}
   - component: {fileID: -906108526276130252}
+  - component: {fileID: 8499118674505168684}
+  - component: {fileID: 7167320814703143456}
   m_Layer: 0
   m_Name: CrystalModeNetworkedGameManager
   m_TagString: Untagged
@@ -100,6 +102,7 @@ MonoBehaviour:
       netIdentity: {fileID: 0}
   playerCount: 0
   crystalModeGamePlayCanvasUIController: {fileID: 119518473, guid: 23602f29f0c978d4194b8f062107f171, type: 3}
+  Info: 0
   teams: 
 --- !u!114 &-906108526276130252
 MonoBehaviour:
@@ -113,3 +116,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8421cad99e7dee94690e67605c8652ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  countdown: 10
+--- !u!114 &8499118674505168684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6551596581866087418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 645093ec0e0e83944989ebaa5498d9b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7167320814703143456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6551596581866087418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3ea55db56ac1f74dace3cbfdc3d0974, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 2
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  waitTime: 1
+  currentValue: 0

@@ -81,6 +81,15 @@ public class GameplayPanelUIManager : Panel
         GemModeGameplayCanvas.Show();
 
     }
+    public void SetCrystalInfoText(float value)
+    {
+        Debug.Log($"ezilip gelen : current value : {value}");
+        
+        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        crystalModeGamePlayCanvasUIController.HandleCrystalInfoText(value);
+
+
+    }
     public void DeactivateUltiButton()
     {
         if (joystickCanvas.TryGetComponent(out JoystickCanvasUIController joystickUIController))
