@@ -48,7 +48,25 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
 
         }
 
+
+
     }
+
+    //private void debugrepeat()
+    //{
+    //    Debug.Log("afasdasdasfsad");
+    //}
+
+    //private void Update()
+    //{
+    //    if (isServer)
+    //    {
+    //        debugrepeat();
+    //        gameObject.CreatePrimitiveObject(Vector3.zero,Color.black,1f);
+    //        //InvokeRepeating("debugrepeat", 1, .1f);
+
+    //    }
+    //}
     public override void SetupClient()
     {
         base.SetupClient();

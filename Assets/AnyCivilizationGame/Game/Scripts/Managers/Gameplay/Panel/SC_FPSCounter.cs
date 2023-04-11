@@ -17,9 +17,11 @@ public class SC_FPSCounter : MonoBehaviour
 
     private void Awake()
     {
+        Application.targetFrameRate = 100;
+#if !UNITY_EDITOR
         Application.targetFrameRate = 60;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        
+#endif
     }
     // Use this for initialization
     void Start()

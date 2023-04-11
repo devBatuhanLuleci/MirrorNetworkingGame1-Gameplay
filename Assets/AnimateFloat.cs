@@ -1,8 +1,8 @@
 ﻿using Mirror;
-using System;
+using System.Collections;
 using UnityEngine;
 
-public class AnimateFloat:NetworkBehaviour
+public class AnimateFloat : NetworkBehaviour
 {
     public float duration = 2f;
     public AnimationCurve curve;
@@ -21,33 +21,38 @@ public class AnimateFloat:NetworkBehaviour
 
     private bool hasAnimationStarted;
 
-    
+
     private void Update()
     {
         if (!isServer) { return; }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-
-            StartAnimation();
+            StartCoroutine(AnimateCoroutine());
         }
-
-        if (!isAnimating)
-        {
-            return;
-        }
-
-        // Animation is running, update currentValue
-        currentValue = GetCurrentAnimationValue();
-
-        if (hasAnimationStarted && currentValue == 0f)
-        {
-            OnAnimationFinished();
-            hasAnimationStarted = false;
-        }
-
     }
-    
+
+    private IEnumerator AnimateCoroutine()
+    {
+        time = 0f;
+        isAnimating = true;
+        hasAnimationStarted = false;
+
+        while (isAnimating)
+        {
+            // Animation is running, update currentValue
+            currentValue = GetCurrentAnimationValue();
+
+            if (hasAnimationStarted && currentValue == 0f)
+            {
+                OnAnimationFinished();
+                hasAnimationStarted = false;
+            }
+
+            yield return null;
+        }
+    }
+
     private float GetCurrentAnimationValue()
     {
         if (time < duration)
@@ -81,17 +86,10 @@ public class AnimateFloat:NetworkBehaviour
             return 0f;
         }
     }
+
     private void OnAnimationFinished()
     {
         // Animation is finished, do something here
         Debug.Log("Animation finished");
     }
-
-    public void StartAnimation()
-    {
-        time = 0f;
-        isAnimating = true;
-        hasAnimationStarted = false;
-    }
-
 }
