@@ -33,8 +33,15 @@ public class LobbyManager : EventManagerBase {
 
         responsesByType.Add ((byte) LobbyEvent.GetClanNames, typeof (GetClanNames));
         responsesByType.Add ((byte) LobbyEvent.OnGetClanNames, typeof (OnGetClanNames));
-         responsesByType.Add ((byte) LobbyEvent.SendClanName, typeof (SendClanName));
+        responsesByType.Add ((byte) LobbyEvent.SendClanName, typeof (SendClanName));
         responsesByType.Add ((byte) LobbyEvent.OnSendClanName, typeof (OnSendClanName));
+        responsesByType.Add ((byte) LobbyEvent.GetFriendNames, typeof (GetFriendNames));
+        responsesByType.Add ((byte) LobbyEvent.OnGetFriendNames, typeof (OnGetFriendNames));
+        responsesByType.Add ((byte) LobbyEvent.SendFriendName, typeof (SendFriendName));
+        responsesByType.Add ((byte) LobbyEvent.OnSendFriendName, typeof (OnSendFriendName));
+
+        responsesByType.Add ((byte) LobbyEvent.SendNotificationInfo, typeof (SendNotificationInfo));
+        responsesByType.Add ((byte) LobbyEvent.OnSendNotificationInfo, typeof (OnSendNotificationInfo));
 
         return responsesByType;
     }

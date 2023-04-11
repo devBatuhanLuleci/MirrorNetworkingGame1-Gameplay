@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using ACGAuthentication;
-using Mirror;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 
 public class ClanPanel : Panel {
     [Header ("Buttons")]
@@ -40,19 +40,13 @@ public class ClanPanel : Panel {
 
         AddListenerCall ();
         GetClans ();
+
+        NotificationManager.SendInfo("ClanPanel acildi.",NotificationManager.InfoType.InfoServer);
     }
     private void OnDisable () {
         RemoveListenerCall ();
     }
-    public void ClanNamesArrayRead (string[] ClanNames, bool isNewClanNameCreate) {
 
-        clanNames = ClanNames;
-        Debug.Log (isNewClanNameCreate);        
-        ClansCreator (isNewClanNameCreate);
-    }
-    private void Awake () {
-
-    }
     #region Listeners
     void AddListenerCall () {
         BackButton.onClick.AddListener (OnClick_BackButton);
@@ -88,7 +82,12 @@ public class ClanPanel : Panel {
         var ev = new SendClanName (clanName);
         SendClientRequestToServer (ev);
     }
+    public void ClanNamesArrayRead (string[] ClanNames, bool isNewClanNameCreate) {
 
+        clanNames = ClanNames;
+
+        ClansCreator (isNewClanNameCreate);
+    }
     #region Buttons
     public void OnClick_BackButton () {
         if (isDirectMainMenu) {
@@ -139,7 +138,7 @@ public class ClanPanel : Panel {
         if (string.IsNullOrEmpty (ClanNameText))
             return;
 
-        SendClan (CreateClanInputField.text.Trim ());
+        SendClan (ClanNameText);
 
     }
     public void OnClick_ClanJoinButton () {
@@ -173,19 +172,18 @@ public class ClanPanel : Panel {
             }
         }
 
-        if (_isNewClanNameCreate) {
+        if (!_isNewClanNameCreate)
+            return;
 
-            ClearInputField ();
+        ClearInputField ();
 
-            BackButton.gameObject.SetActive (false);
-            CreateClanProfile_BackButton.gameObject.SetActive (true);
-            List.SetActive (false);
-            MainFeatureViews_Panel.SetActive (false);
-            CreateClanProfile_Panel.SetActive (true);
+        BackButton.gameObject.SetActive (false);
+        CreateClanProfile_BackButton.gameObject.SetActive (true);
+        List.SetActive (false);
+        MainFeatureViews_Panel.SetActive (false);
+        CreateClanProfile_Panel.SetActive (true);
 
-            Debug.Log ("Yeni Clan olusturuldu.");
-
-        }
+        Debug.Log ("Yeni Clan olusturuldu.");
 
     }
     void ClanCreate (string _clanName, int i) {

@@ -18,6 +18,13 @@ public enum LobbyEvent : byte {
     StartLobbyRoom = 0xD,
     GetClanNames = 0xE, //clan panel icin eklendi
     OnGetClanNames = 0xF,
-    SendClanName = 0x10,
-    OnSendClanName = 0x11
+    SendClanName =0x10,
+    OnSendClanName =0x11,
+    GetFriendNames = 0x12,
+    OnGetFriendNames = 0x13,
+    SendFriendName = 0x14,
+    OnSendFriendName = 0x15,
+    SendNotificationInfo = 0x16,
+    OnSendNotificationInfo = 0x17
+
 }
