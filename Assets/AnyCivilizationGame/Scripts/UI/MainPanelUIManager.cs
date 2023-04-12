@@ -12,10 +12,36 @@ class MainPanelUIManager : Panel
     public Panel PickCharacterPanel;
     public Panel CharacterNFTMintPanel;
     public Panel lobbyPanel;
+    public Panel joinLoginPanel;
+    public Panel joinPanel;
     public Panel mainMenuPanel;
+    public Panel droidsPanel;
+    public Panel droidProfilePanel;
+    public Panel shopPanel;
+    public Panel shopDroidBuyPanel;
+    public Panel updatePanel;
+    public Panel clanPanel;
+    public Panel clanProfilePanel;
+    public Panel settingMenuPanel;
+    public Panel settingsPanel;
+    public Panel languagePanel;
+    public Panel myProfilePanel;
+    public Panel myProfilePhotoPanel;
+    public Panel roomCodePanel;
+    public Panel lastMatchPanel;
+    public Panel roomCodeDroidChoosePanel;
+    public Panel roomCodeOnlineFriendsPanel;
+    public Panel friendsPanel;
+    public Panel friendProfilePanel;
+    public Panel friendLastMatchPanel;
+    public Panel leaderBoardPanel;
+    public Panel mailBoxPanel;
+
     [Space]
     [SerializeField]
     public Panel startPanel = null;
+
+    
 
     public static MainPanelUIManager Instance
     {
@@ -43,12 +69,11 @@ class MainPanelUIManager : Panel
 
     private void Initialize()
     {
-        AddListeners();
         // if statPnael not null set startpanel else set LadingPanel
         var currentPanel = startPanel ?? loadingPanel;
         Show(currentPanel);
-       
-    }   
+       // AddListeners();
+    }
 
 
 
@@ -62,6 +87,140 @@ class MainPanelUIManager : Panel
         Show(PickCharacterPanel);
     }
 
+    #region UI Panel and Button Methods
+    public void BackButton(Panel panel)
+    {
+        Show(panel);
+    }
+    /* public void ClanSearchButton()
+     {
+
+     }
+     public void ClanCreateButton()
+     {
+
+     }
+     public void FriendAddButton()
+     {
+
+     }
+     public void GlobalButton()
+     {
+
+     }
+     public void LocalButton()
+     {
+
+     }
+     public void ClanButton()
+     {
+
+     }
+      public void ChatSendButton()
+     {
+
+     }
+      public void InviteButton()
+     {
+
+     }
+     */
+
+    public void JoinPanelShow()
+    {
+        Show(joinPanel);
+    }
+    public void LoginPanelShow()
+    {
+        Show(loginPanel);
+    }
+    public void DroidsPanelShow()
+    {
+        Show(droidsPanel);
+    }
+    public void ShopPanelShow()
+    {
+        Show(shopPanel);
+    }
+    public void ShopDroidBuyPanelShow()
+    {
+        Show(shopDroidBuyPanel);
+    }
+    public void UpdatePanelShow()
+    {
+        Show(updatePanel);
+    }
+    public void ClanPanelShow()
+    {
+        Show(clanPanel);
+    }
+    /* public void GamePlayPanelShow()
+     {
+         //gameplay panel gelince eklenecek
+     }*/
+    public void SettingsMenuPanelShow()
+    {
+        Show(settingMenuPanel);
+    }
+    public void DroidProfilePanelShow()
+    {
+        Show(droidProfilePanel);
+    }
+
+    public void MyProfilePanelShow()
+    {
+        Show(myProfilePanel);
+    }
+    public void SettingsPanelShow()
+    {
+        Show(settingsPanel);
+    }
+    public void FriendsPanelShow()
+    {
+        Show(friendsPanel);
+    }
+    public void MailBoxPanelShow()
+    {
+        Show(mailBoxPanel);
+    }
+    public void LeaderBoardPanelShow()
+    {
+        Show(leaderBoardPanel);
+    }
+    public void MyProfilePhotoPanelShow()
+    {
+        Show(myProfilePhotoPanel);
+    }
+    public void LastMatchPanelShow()
+    {
+        Show(lastMatchPanel);
+    }
+    public void FriendProfilePanelShow()
+    {
+        Show(friendProfilePanel);
+    }
+    public void FriendLastMatchPanelShow()
+    {
+        Show(friendLastMatchPanel);
+    }
+    public void ClanProfilePanelShow()
+    {
+        Show(clanProfilePanel);
+    }
+    public void RoomCodeOnlineFriendsPanel()
+    {
+        Show(roomCodeOnlineFriendsPanel);
+    }
+    public void RoomCodeDroidChoosePanel()
+    {
+        Show(roomCodeDroidChoosePanel);
+    }
+    public void LanguagePanel()
+    {
+        Show(languagePanel);
+    }
+
+    #endregion
 
     /// <summary>
     /// Check Server update

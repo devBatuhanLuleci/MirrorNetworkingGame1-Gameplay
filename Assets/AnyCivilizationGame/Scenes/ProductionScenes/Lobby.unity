@@ -826,6 +826,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4b099289ee2ccc44b9ef76c98cbde20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DroidsButton: {fileID: 0}
+  ShopButton: {fileID: 0}
+  UpdateButton: {fileID: 0}
+  ClanButton: {fileID: 0}
+  PlayButton: {fileID: 0}
+  SettingsMenuButton: {fileID: 0}
+  ProfileButton: {fileID: 0}
+  MyNickName: {fileID: 0}
+  MainDroid: {fileID: 0}
 --- !u!1 &103654752
 GameObject:
   m_ObjectHideFlags: 0
@@ -2991,6 +3000,18 @@ PrefabInstance:
     - target: {fileID: 8200581967269342878, guid: e4380d1be34c1cd45904714a8a63c937, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8200581967326120127, guid: e4380d1be34c1cd45904714a8a63c937, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.95089287
+      objectReference: {fileID: 0}
+    - target: {fileID: 8200581967326120127, guid: e4380d1be34c1cd45904714a8a63c937, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.04910714
+      objectReference: {fileID: 0}
+    - target: {fileID: 8200581967326120127, guid: e4380d1be34c1cd45904714a8a63c937, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.050724637
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e4380d1be34c1cd45904714a8a63c937, type: 3}
@@ -6340,7 +6361,30 @@ MonoBehaviour:
   PickCharacterPanel: {fileID: 1686338241}
   CharacterNFTMintPanel: {fileID: 989407036}
   lobbyPanel: {fileID: 539645179}
+  joinLoginPanel: {fileID: 0}
+  joinPanel: {fileID: 0}
   mainMenuPanel: {fileID: 81330678}
+  droidsPanel: {fileID: 0}
+  droidProfilePanel: {fileID: 0}
+  shopPanel: {fileID: 0}
+  shopDroidBuyPanel: {fileID: 0}
+  updatePanel: {fileID: 0}
+  clanPanel: {fileID: 0}
+  clanProfilePanel: {fileID: 0}
+  settingMenuPanel: {fileID: 0}
+  settingsPanel: {fileID: 0}
+  languagePanel: {fileID: 0}
+  myProfilePanel: {fileID: 0}
+  myProfilePhotoPanel: {fileID: 0}
+  roomCodePanel: {fileID: 0}
+  lastMatchPanel: {fileID: 0}
+  roomCodeDroidChoosePanel: {fileID: 0}
+  roomCodeOnlineFriendsPanel: {fileID: 0}
+  friendsPanel: {fileID: 0}
+  friendProfilePanel: {fileID: 0}
+  friendLastMatchPanel: {fileID: 0}
+  leaderBoardPanel: {fileID: 0}
+  mailBoxPanel: {fileID: 0}
   startPanel: {fileID: 539645179}
 --- !u!1 &633572202
 GameObject:
@@ -20106,6 +20150,10 @@ PrefabInstance:
     - target: {fileID: 5472432523209748435, guid: 2b6b2f03839cb1a4dbf01b1d26693676, type: 3}
       propertyPath: m_Name
       value: LoadBalancer
+      objectReference: {fileID: 0}
+    - target: {fileID: 5472432523209748435, guid: 2b6b2f03839cb1a4dbf01b1d26693676, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5472432523209748463, guid: 2b6b2f03839cb1a4dbf01b1d26693676, type: 3}
       propertyPath: m_RootOrder
