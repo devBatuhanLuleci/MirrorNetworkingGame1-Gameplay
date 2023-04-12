@@ -83,7 +83,7 @@ public class GameplayPanelUIManager : Panel
     }
     public void SetCrystalInfoText(float value)
     {
-        Debug.Log($"ezilip gelen : current value : {value}");
+        //Debug.Log($"ezilip gelen : current value : {value}");
         
         CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
         crystalModeGamePlayCanvasUIController.HandleCrystalInfoText(value);
