@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Mirror;
+using System;
 
 public class CrystalModeGamePlayCanvasUIController : NetworkedPanel
 {
@@ -11,10 +12,9 @@ public class CrystalModeGamePlayCanvasUIController : NetworkedPanel
     private RectTransform GemRectTransform;
 
   
-    public enum CanvasSequence {None,ModeInfo, InGame }
+   
 
-    [SyncVar]
-    public CanvasSequence Info;
+  
 
 
     public CrystalStartInfoPanel crystalStartInfoPanel;
@@ -30,6 +30,7 @@ public class CrystalModeGamePlayCanvasUIController : NetworkedPanel
         }
     }
 
+    
     public void Activate () {
     
     
@@ -37,12 +38,19 @@ public class CrystalModeGamePlayCanvasUIController : NetworkedPanel
 
 
     }
+    public void HandleCrystalInfoText(float value)
+    {
+
+        crystalStartInfoPanel.ChangeCrystalInfoRectTransformScale(value);
+    }
+
     public override void Show()
     {
         // base.Show();
         //Activate();
         gameObject.SetActive(true);
-        StartCoroutine(Test());
+        Activate();
+        // StartCoroutine(Test());
 
     }
     private void OnDestroy()
@@ -58,24 +66,7 @@ public class CrystalModeGamePlayCanvasUIController : NetworkedPanel
         
         OnStart_MoveDown_TeamUIPanel();
     }
-    IEnumerator Test()
-    {
-        ChangeModeInfo(CanvasSequence.ModeInfo);
-          // GemRectTransform.gameObject.SetActive(true);
-          yield return new WaitForSeconds(5);
-
-        ChangeModeInfo(CanvasSequence.InGame);
-
-        //  GemRectTransform.gameObject.SetActive(false);
-
-    }
-
-    public void ChangeModeInfo(CanvasSequence mode)
-    {
-
-        Info = mode;
-
-    }
+   
 
     public void OnStart_MoveDown_TeamUIPanel()
     {

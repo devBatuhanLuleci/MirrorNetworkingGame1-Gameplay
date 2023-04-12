@@ -11,12 +11,15 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
 
     public CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController;
     private NetworkSpawnObjectInInterval NetworkSpawnObjectInInterval;
-
+    private CrystalModeCountdown crystalModeCountdown;
+    private CrystalModeUIOpeningHandler cystalModeUIOpeningHandler;
     private Dictionary<TeamTypes, List<GemData>> collectedCrystalDictionary;
-
+ 
     Dictionary<int, int> playerGems;
 
-
+    public enum CanvasSequence { None, ModeInfo, InGame }
+    [SyncVar]
+    public CanvasSequence Info;
 
     //TODO: disable custom attribute 'unu yaz.  [Disable]  Unity Learn bak.
     [TextArea]
@@ -32,8 +35,38 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
             NetworkSpawnObjectInInterval = networkSpawnObjectInInterval;
 
         }
+        if (TryGetComponent<CrystalModeCountdown>(out CrystalModeCountdown crystalModeCountdown))
+        {
+
+            this.crystalModeCountdown = crystalModeCountdown;
+
+        }
+        if (TryGetComponent<CrystalModeUIOpeningHandler>(out CrystalModeUIOpeningHandler crystalModeUIOpeningHandler))
+        {
+
+            this.cystalModeUIOpeningHandler = crystalModeUIOpeningHandler;
+
+        }
+
+
 
     }
+
+    //private void debugrepeat()
+    //{
+    //    Debug.Log("afasdasdasfsad");
+    //}
+
+    //private void Update()
+    //{
+    //    if (isServer)
+    //    {
+    //        debugrepeat();
+    //        gameObject.CreatePrimitiveObject(Vector3.zero,Color.black,1f);
+    //        //InvokeRepeating("debugrepeat", 1, .1f);
+
+    //    }
+    //}
     public override void SetupClient()
     {
         base.SetupClient();
@@ -69,10 +102,32 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
         var prefab = Resources.Load<CrystalModeGamePlayCanvasUIController>("CrystalModeGameplayCanvas"/*nameof(CrystalModeGamePlayCanvasUIController*/);
         var crystalModeCanvas = Instantiate(prefab);
         NetworkServer.Spawn(crystalModeCanvas.gameObject);
-        GameplayPanelUIManager.Instance.Init_CrystalModeGameplayCanvas(crystalModeCanvas);
+        InityCrystalCanvas(crystalModeCanvas);
+        //crystalModeCanvas.Init_CrystalModeGameplayCanvas(crystalModeCanvas);
+        //ActivateCanvas(crystalModeCanvas);
+        // crystalModeCountdown.StartCountDown();
         Debug.LogError("CrystalModeGameplayCanvas spawned.");
 
     }
+    [ClientRpc]
+    public void InityCrystalCanvas(CrystalModeGamePlayCanvasUIController crystalModeCanvas )
+    {
+        GameplayPanelUIManager.Instance.Init_CrystalModeGameplayCanvas(crystalModeCanvas);
+
+
+    }
+    public void ChangeModeInfo(CanvasSequence mode)
+    {
+
+        Info = mode;
+
+    }
+
+    //public void ActivateCanvas(NetworkedPanel crystalModeCanvas)
+    //{
+    //    GameplayPanelUIManager.Instance.Init_CrystalModeGameplayCanvas(crystalModeCanvas);
+
+    //}
     public void StartSpawnLoop()
     {
         NetworkSpawnObjectInInterval.StartSpawnLoop();
