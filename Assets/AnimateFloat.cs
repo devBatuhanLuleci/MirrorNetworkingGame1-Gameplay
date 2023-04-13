@@ -83,7 +83,7 @@ public class AnimateFloat : NetworkBehaviour
         }
     }
 
-    private void OnAnimationFinished()
+    public virtual void OnAnimationFinished()
     {
         // Animation is finished, do something here
         Debug.Log("Animation finished");

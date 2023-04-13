@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class GameplayPanelUIManager : Panel
 {
@@ -63,7 +64,7 @@ public class GameplayPanelUIManager : Panel
     public void Init_CrystalModeGameplayCanvas(Panel GemModeGameplayCanvas)
     {
         EqulizeGamePlayCanvas(GemModeGameplayCanvas);
-        ActivateGamePlayCanvas();
+       // ActivateGamePlayCanvasAnimation();
     }
 
     //   [ClientRpc(includeOwner =true)]
@@ -74,11 +75,19 @@ public class GameplayPanelUIManager : Panel
     }
 
 
-  //  [Command(requiresAuthority =false)]
-    public void ActivateGamePlayCanvas()
+
+    public void ActivateSequence(bool isActive)
     {
 
-        GemModeGameplayCanvas.Show();
+        Debug.Log("içeri bu şekilde girdim :" + isActive);
+
+        //TODO:  burada sıkıntı var GemModeGameplayCanvas boş geliyor.   çünkü tam yüklenmiyor.
+        Debug.Log(GemModeGameplayCanvas);
+        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        crystalModeGamePlayCanvasUIController.Activate(isActive);
+
+
+
 
     }
     public void SetCrystalInfoText(float value)
@@ -90,6 +99,18 @@ public class GameplayPanelUIManager : Panel
 
 
     }
+
+    public void SetCrystalInfoPanelPos(Vector2 value)
+    {
+        //Debug.Log($"ezilip gelen : current value : {value}");
+
+        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        crystalModeGamePlayCanvasUIController.HandleCrystalInfoPanelPos(value);
+
+
+    }
+
+
     public void DeactivateUltiButton()
     {
         if (joystickCanvas.TryGetComponent(out JoystickCanvasUIController joystickUIController))

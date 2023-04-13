@@ -19,4 +19,10 @@ public class GemModeAnimateFloatOnCrystalInfoRect : AnimateFloat
 
 
     }
+    public override void OnAnimationFinished()
+    {
+        base.OnAnimationFinished();
+        
+  
+    }
 }

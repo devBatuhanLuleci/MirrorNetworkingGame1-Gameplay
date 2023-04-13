@@ -17,33 +17,40 @@ public class CrystalStartInfoPanel : Panel
 
     private void Awake()
     {
-         CrystalInfoRectTransform = CrystalInfoTexts.GetComponent<RectTransform>();
+        CrystalInfoRectTransform = CrystalInfoTexts.GetComponent<RectTransform>();
 
     }
 
-    public void Animate_CrystalInfoText()
+    public void Animate_CrystalInfoText(bool isActive)
     {
 
-        HandleCrystalInfoPanel(true);
+        HandleCrystalInfoPanel(isActive);
 
     }
     public void Init()
     {
+        DeactivateOnInit();
+    }
+    public void DeactivateOnInit()
+    {
+        ChangeCrystalInfoRectTransformScale(0);
+
         HandleCrystalInfoPanel(false);
+
+
     }
     public void HandleCrystalInfoPanel(bool activate)
     {
-        if(activate)
-        {
-            CrystalInfoTexts.SetActive(activate);
-            CrystalStartInfoBG.SetActive(activate);
-        }
 
-    }   
+        CrystalInfoTexts.SetActive(activate);
+        CrystalStartInfoBG.SetActive(activate);
+
+
+    }
     public void ChangeCrystalInfoRectTransformScale(float scaleValue)
     {
 
-        CrystalInfoRectTransform.localScale=new Vector3(scaleValue,scaleValue,1f);
+        CrystalInfoRectTransform.localScale = new Vector3(scaleValue, scaleValue, 1f);
 
     }
 

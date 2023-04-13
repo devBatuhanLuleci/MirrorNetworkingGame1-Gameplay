@@ -7,7 +7,12 @@ using static UnityEngine.UI.CanvasScaler;
 public class CrystalModeUIOpeningHandler : NetworkBehaviour
 {
 
-    private  GemModeAnimateFloatOnCrystalInfoRect gemModeAnimateFloatOnCrystalInfoRect;
+    private GemModeAnimateFloatOnCrystalInfoRect gemModeAnimateFloatOnCrystalInfoRect;
+    private GemModeAnimateFloatOnCrystalStats gemModeAnimateFloatOnCrystalStats;
+
+    [SyncVar(hook = nameof(HandleOpeningPanel))]
+    public bool isPanelActive;
+
 
 
 
@@ -27,7 +32,12 @@ public class CrystalModeUIOpeningHandler : NetworkBehaviour
             this.gemModeAnimateFloatOnCrystalInfoRect = gemModeAnimateFloatOnCrystalInfoRect;
 
         }
+        if (TryGetComponent<GemModeAnimateFloatOnCrystalStats>(out GemModeAnimateFloatOnCrystalStats gemModeAnimateFloatOnCrystalStats))
+        {
 
+            this.gemModeAnimateFloatOnCrystalStats = gemModeAnimateFloatOnCrystalStats;
+
+        }
     }
 
     private void Update()
@@ -37,25 +47,49 @@ public class CrystalModeUIOpeningHandler : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            StartCoroutine(gemModeAnimateFloatOnCrystalInfoRect.AnimateCoroutine());
+        //    ActivateSequenceOnClients();
+            StartCoroutine(sequence());
+
+
         }
 
 
-      
+
     }
+
+    IEnumerator sequence()
+    {
+        isPanelActive = true;
+        yield return StartCoroutine(gemModeAnimateFloatOnCrystalInfoRect.AnimateCoroutine());
+        yield return StartCoroutine(gemModeAnimateFloatOnCrystalStats.AnimateCoroutine());
+
+
+
+    }
+    public void HandleOpeningPanel(bool oldValue, bool newValue)
+    {
+        GameplayPanelUIManager.Instance.ActivateSequence(newValue);
+
+    }
+    //[ClientRpc]
+    //public void ActivateSequenceOnClients()
+    //{
+
+    //    GameplayPanelUIManager.Instance.ActivateSequence();
+    //}
     public void CreateCrystalModeCanvas()
     {
-    
+
 
         var prefab = Resources.Load<CrystalModeGamePlayCanvasUIController>("CrystalModeGameplayCanvas"/*nameof(CrystalModeGamePlayCanvasUIController*/);
         var crystalModeCanvas = Instantiate(prefab);
-
         InitCrystalCanvas(crystalModeCanvas);
         Debug.LogError("CrystalModeGameplayCanvas spawned.");
 
     }
     public void InitCrystalCanvas(CrystalModeGamePlayCanvasUIController crystalModeCanvas)
     {
+        crystalModeCanvas.Init();
 
         GameplayPanelUIManager.Instance.Init_CrystalModeGameplayCanvas(crystalModeCanvas);
 

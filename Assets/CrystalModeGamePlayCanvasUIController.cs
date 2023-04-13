@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -8,7 +8,6 @@ using static UnityEngine.UI.CanvasScaler;
 
 public class CrystalModeGamePlayCanvasUIController : Panel
 {
-    public CrystalStatsUIPanelManager GemUIPanelManager;
   
     private RectTransform GemRectTransform;
 
@@ -17,13 +16,14 @@ public class CrystalModeGamePlayCanvasUIController : Panel
 
   
 
+    public CrystalStatsUIPanelManager crystalStatsUIPanel;
 
     public CrystalStartInfoPanel crystalStartInfoPanel;
     private void Awake()
     {
 
-       GemRectTransform = GemUIPanelManager.GetComponent<RectTransform>();
-        Init();
+       GemRectTransform = crystalStatsUIPanel.GetComponent<RectTransform>();
+     
         // OnStart_MoveDown_TeamUIPanel();
 
         if(crystalStartInfoPanel!=null)
@@ -33,11 +33,11 @@ public class CrystalModeGamePlayCanvasUIController : Panel
     }
 
     
-    public void Activate () {
+    public void Activate (bool isActive) {
     
     
-        crystalStartInfoPanel.Animate_CrystalInfoText();
-
+        crystalStartInfoPanel.Animate_CrystalInfoText(isActive);
+      //  OnStart_MoveDown_TeamUIPanel();
 
     }
     public void Init() {
@@ -52,14 +52,18 @@ public class CrystalModeGamePlayCanvasUIController : Panel
 
         crystalStartInfoPanel.ChangeCrystalInfoRectTransformScale(value);
     }
+    public void HandleCrystalInfoPanelPos(Vector2 value)
+    {
+        crystalStatsUIPanel.ChangeCrystalStatsRectTransformPos(value);
+     //   crystalStartInfoPanel.ChangeCrystalInfoRectTransformScale(value);
+    }
+
 
     public override void Show()
     {
-        // base.Show();
-        //Activate();
-        gameObject.SetActive(true);
-        Activate();
-        // StartCoroutine(Test());
+
+     //   Activate();
+    
 
     }
     private void OnDestroy()
@@ -72,19 +76,18 @@ public class CrystalModeGamePlayCanvasUIController : Panel
     public void OnAnimationFinished()
     {
         Debug.Log("animation bitti!");
-        
-        OnStart_MoveDown_TeamUIPanel();
+
     }
    
 
     public void OnStart_MoveDown_TeamUIPanel()
     {
         GemRectTransform.gameObject.SetActive(true);
-        GemRectTransform?.DOAnchorPos(new Vector3(0, -50, 0), 1f).SetEase(Ease.OutQuad);
 
 
 
 
     }
-    
+ 
+
 }
