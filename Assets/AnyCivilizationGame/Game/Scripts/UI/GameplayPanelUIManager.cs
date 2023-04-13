@@ -11,7 +11,7 @@ public class GameplayPanelUIManager : Panel
     public Panel characterSelect;
     public Panel waitingPanel;
     public Panel joystickCanvas;
-    public NetworkedPanel GemModeGameplayCanvas;
+    public Panel GemModeGameplayCanvas;
 
     [Space]
     [SerializeField]
@@ -60,14 +60,14 @@ public class GameplayPanelUIManager : Panel
             currentPanel.Close();
     }
    
-    public void Init_CrystalModeGameplayCanvas(NetworkedPanel GemModeGameplayCanvas)
+    public void Init_CrystalModeGameplayCanvas(Panel GemModeGameplayCanvas)
     {
         EqulizeGamePlayCanvas(GemModeGameplayCanvas);
         ActivateGamePlayCanvas();
     }
 
     //   [ClientRpc(includeOwner =true)]
-    public void EqulizeGamePlayCanvas(NetworkedPanel GemModeGameplayCanvas)
+    public void EqulizeGamePlayCanvas(Panel GemModeGameplayCanvas)
     {
         this.GemModeGameplayCanvas = GemModeGameplayCanvas;
 

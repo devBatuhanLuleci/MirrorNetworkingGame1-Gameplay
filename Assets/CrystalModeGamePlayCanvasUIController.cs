@@ -6,7 +6,7 @@ using Mirror;
 using System;
 using static UnityEngine.UI.CanvasScaler;
 
-public class CrystalModeGamePlayCanvasUIController : NetworkedPanel
+public class CrystalModeGamePlayCanvasUIController : Panel
 {
     public CrystalStatsUIPanelManager GemUIPanelManager;
   
