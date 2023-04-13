@@ -9,19 +9,37 @@ using Mirror;
 public class CrystalStartInfoPanel : Panel
 {
     public GameObject CrystalInfoTexts;
+    public GameObject CrystalStartInfoBG;
 
     private RectTransform CrystalInfoRectTransform;
     public UnityAction animAction;
 
 
-    public void Animate_CrystalInfoText()
+    private void Awake()
     {
-
-        CrystalInfoTexts.gameObject.SetActive(true);
-        CrystalInfoRectTransform= CrystalInfoTexts.GetComponent<RectTransform>();
+         CrystalInfoRectTransform = CrystalInfoTexts.GetComponent<RectTransform>();
 
     }
 
+    public void Animate_CrystalInfoText()
+    {
+
+        HandleCrystalInfoPanel(true);
+
+    }
+    public void Init()
+    {
+        HandleCrystalInfoPanel(false);
+    }
+    public void HandleCrystalInfoPanel(bool activate)
+    {
+        if(activate)
+        {
+            CrystalInfoTexts.SetActive(activate);
+            CrystalStartInfoBG.SetActive(activate);
+        }
+
+    }   
     public void ChangeCrystalInfoRectTransformScale(float scaleValue)
     {
 

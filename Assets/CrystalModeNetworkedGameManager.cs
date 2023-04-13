@@ -9,7 +9,7 @@ using static NetworkedGameManager;
 public class CrystalModeNetworkedGameManager : NetworkedGameManager
 {
 
-    public CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController;
+  
     private NetworkSpawnObjectInInterval NetworkSpawnObjectInInterval;
     private CrystalModeCountdown crystalModeCountdown;
     private CrystalModeUIOpeningHandler cystalModeUIOpeningHandler;
@@ -70,7 +70,9 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
     public override void SetupClient()
     {
         base.SetupClient();
-       // Invoke("SetMyTeam", 3);
+        cystalModeUIOpeningHandler.CreateCrystalModeCanvas();
+
+        // Invoke("SetMyTeam", 3);
 
     }
 
@@ -78,7 +80,7 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
     {
         base.ServerStarted(players);
        // Invoke("StartSpawnLoop", 3);
-        CreateCrystalModeCanvas();
+      // CreateCrystalModeCanvas();
         collectedCrystalDictionary = new Dictionary<TeamTypes, List<GemData>>();
         playerGems = new Dictionary<int, int>();
 
@@ -88,34 +90,13 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
     [ClientRpc]
     public override void RpcStartGame()
     {
-    //    CreateCrystalModeCanvas();
         base.RpcStartGame();
 
     }
 
-    public void CreateCrystalModeCanvas()
-    {
-     //CrystalModeGamePlayCanvasUIController crystalModeCanvas=   Instantiate(crystalModeGamePlayCanvasUIController);
-     //   GameplayPanelUIManager.Instance.GemModeGameplayCanvas = crystalModeCanvas;
-     //  GameplayPanelUIManager.Instance.GemModeGameplayCanvas.Show();
-
-        var prefab = Resources.Load<CrystalModeGamePlayCanvasUIController>("CrystalModeGameplayCanvas"/*nameof(CrystalModeGamePlayCanvasUIController*/);
-        var crystalModeCanvas = Instantiate(prefab);
-        NetworkServer.Spawn(crystalModeCanvas.gameObject);
-        InityCrystalCanvas(crystalModeCanvas);
-        //crystalModeCanvas.Init_CrystalModeGameplayCanvas(crystalModeCanvas);
-        //ActivateCanvas(crystalModeCanvas);
-        // crystalModeCountdown.StartCountDown();
-        Debug.LogError("CrystalModeGameplayCanvas spawned.");
-
-    }
-    [ClientRpc]
-    public void InityCrystalCanvas(CrystalModeGamePlayCanvasUIController crystalModeCanvas )
-    {
-        GameplayPanelUIManager.Instance.Init_CrystalModeGameplayCanvas(crystalModeCanvas);
-
-
-    }
+ 
+    //[ClientRpc]
+ 
     public void ChangeModeInfo(CanvasSequence mode)
     {
 

@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using Mirror;
 using System;
+using static UnityEngine.UI.CanvasScaler;
 
 public class CrystalModeGamePlayCanvasUIController : NetworkedPanel
 {
@@ -22,6 +23,7 @@ public class CrystalModeGamePlayCanvasUIController : NetworkedPanel
     {
 
        GemRectTransform = GemUIPanelManager.GetComponent<RectTransform>();
+        Init();
         // OnStart_MoveDown_TeamUIPanel();
 
         if(crystalStartInfoPanel!=null)
@@ -35,6 +37,13 @@ public class CrystalModeGamePlayCanvasUIController : NetworkedPanel
     
     
         crystalStartInfoPanel.Animate_CrystalInfoText();
+
+
+    }
+    public void Init() {
+
+        crystalStartInfoPanel.Init();
+
 
 
     }

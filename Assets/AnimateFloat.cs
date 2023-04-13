@@ -22,17 +22,13 @@ public class AnimateFloat : NetworkBehaviour
     private bool hasAnimationStarted;
 
 
-    private void Update()
+    public virtual void Update()
     {
         if (!isServer) { return; }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            StartCoroutine(AnimateCoroutine());
-        }
     }
 
-    private IEnumerator AnimateCoroutine()
+    public IEnumerator AnimateCoroutine()
     {
         time = 0f;
         isAnimating = true;
