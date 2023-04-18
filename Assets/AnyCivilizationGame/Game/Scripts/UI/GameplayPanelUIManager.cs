@@ -33,6 +33,8 @@ public class GameplayPanelUIManager : Panel
         Instance = this;
         var currentPanel = startPanel ?? waitingPanel;
         Show(currentPanel);
+        joystickCanvas.Close();
+
     }
     #endregion
 
@@ -79,23 +81,40 @@ public class GameplayPanelUIManager : Panel
     public void ActivateSequence(bool isActive)
     {
 
-        Debug.Log("içeri bu şekilde girdim :" + isActive);
-
-        //TODO:  burada sıkıntı var GemModeGameplayCanvas boş geliyor.   çünkü tam yüklenmiyor.
-        Debug.Log(GemModeGameplayCanvas);
+     
+     
         CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
-        crystalModeGamePlayCanvasUIController.Activate(isActive);
+        crystalModeGamePlayCanvasUIController.ActivateCrystalnfoPanel(isActive);
 
 
 
 
     }
+    public void ActivateCountDownTeamInfoTextPanel(bool newValue)
+    {
+        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        crystalModeGamePlayCanvasUIController.ActivateCountDownTeamInfoTextPanel(newValue);
+    }
+    public void ActivateCountDownTextPanel(bool newValue)
+    {
+        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        crystalModeGamePlayCanvasUIController.ActivateCountDownTextPanel(newValue);
+    }
+
     public void SetCrystalInfoText(float value)
     {
         //Debug.Log($"ezilip gelen : current value : {value}");
         
         CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
         crystalModeGamePlayCanvasUIController.HandleCrystalInfoText(value);
+
+
+    }
+    public void SetTimeValueOnPanel(int value)
+    {
+
+        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        crystalModeGamePlayCanvasUIController.HandleCrystalModeGameTime(value);
 
 
     }
@@ -109,7 +128,34 @@ public class GameplayPanelUIManager : Panel
 
 
     }
+    public void SetCrystalModeCountDownTeamInfoValue(int value)
+    {
+        //Debug.Log($"ezilip gelen : current value : {value}");
 
+        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        crystalModeGamePlayCanvasUIController.HandleCrystalModeGameTempCountdownValue(value);
+
+
+    }
+    public void SetCrystalModeCountDownTeamInfoPanelScaleValue(float value)
+    {
+        //Debug.Log($"ezilip gelen : current value : {value}");
+
+        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        crystalModeGamePlayCanvasUIController.HandleCrystalModeCountDownTeamInfoTextScale(value);
+
+
+    }
+
+    public void SetCrystalModeCountDownValue(int value)
+    {
+        //Debug.Log($"ezilip gelen : current value : {value}");
+
+        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        crystalModeGamePlayCanvasUIController.HandleCrystalModeGameCountdownValue(value);
+
+
+    }
 
     public void DeactivateUltiButton()
     {
@@ -129,4 +175,6 @@ public class GameplayPanelUIManager : Panel
         }
 
     }
+
+
 }

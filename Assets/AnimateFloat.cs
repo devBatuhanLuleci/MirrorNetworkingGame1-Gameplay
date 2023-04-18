@@ -1,6 +1,7 @@
 ﻿using Mirror;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class AnimateFloat : NetworkBehaviour
 {
@@ -11,7 +12,12 @@ public class AnimateFloat : NetworkBehaviour
     private float time = 0f;
     private bool isAnimating = false;
 
-    [SyncVar(hook = nameof(OnCurrentValueUpdated))]
+
+    public UnityEvent onCountdownTeamInfoPanelFinishedAction;
+
+
+
+   [SyncVar(hook = nameof(OnCurrentValueUpdated))]
     public float currentValue;
 
     public virtual void OnCurrentValueUpdated(float oldValue, float newValue)
@@ -87,5 +93,6 @@ public class AnimateFloat : NetworkBehaviour
     {
         // Animation is finished, do something here
         Debug.Log("Animation finished");
+        onCountdownTeamInfoPanelFinishedAction.Invoke();
     }
 }

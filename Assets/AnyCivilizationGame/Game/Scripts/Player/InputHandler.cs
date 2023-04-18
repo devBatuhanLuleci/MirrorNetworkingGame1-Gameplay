@@ -1,4 +1,4 @@
-using Mirror;
+﻿using Mirror;
 using SimpleInputNamespace;
 using System;
 using System.Collections;
@@ -21,8 +21,10 @@ public class InputHandler : Singleton<InputHandler>
     #endregion
 
     #region Private Fields
+    private bool isInitilized=false;
     [SerializeField]
     public PlayerController PlayerController;
+
     #endregion
 
 
@@ -33,9 +35,10 @@ public class InputHandler : Singleton<InputHandler>
         JoystickCanvas joystickCanvas = GameplayPanelUIManager.Instance.joystickCanvas.GetComponent<JoystickCanvas>();
 
         joystickCanvas.joystickCanvasUIController.DeactivateUlti();
-                MovementJoystick = joystickCanvas.MovementJoystick;
+        MovementJoystick = joystickCanvas.MovementJoystick;
         AttackBasicJoystick = joystickCanvas.AttackBasicJoystick;
         AttackUltiJoystick = joystickCanvas.AttackUltiJoystick;
+        isInitilized = true;
     }
 
     protected override void Awake()
@@ -56,82 +59,50 @@ public class InputHandler : Singleton<InputHandler>
     }
     private void Start()
     {
-        //if (attackType == AttackType.Basic)
-        //{
-        //    AttackUltiJoystick.Activate();
-        //}
+
     }
     private void Update()
     {
-        if (PlayerController == null || !PlayerController.IsLive) return;
-        Move();
+        //NetworkedGameManager.Instance.IsGameStarted();
+        //      NetworkedGameManager.Instance.IsClientConnected();
+        if (NetworkedGameManager.Instance == null) { return; }
+        if (!NetworkedGameManager.Instance.isClientConnected) { return; }
+        if (PlayerController == null || !PlayerController.IsLive || !NetworkedGameManager.Instance.isGameStarted || NetworkedGameManager.Instance.isGameFinished) return;
 
-        //if (ultiActive)
-        //{
-        //    ultiActive = false;
-        //    if (attackType == AttackType.Basic)
-        //    {
-        //        AttackUltiJoystick.Activate();
-        //    }
-        //}
-        //if (ultideActive)
-        //{
-        //    ultideActive = false;
-        //    if (attackType == AttackType.Basic)
-        //    {
-        //        AttackUltiJoystick.Deactivate();
-        //    }
-        //}
-        //  BasicAttack();
-        //   UltiAttack();
+        Move();
         Attack();
-    }
+
+    
+}
+
+
+
+       
+    
+
+
 
 
 
     public void AttackButtonUp(Joystick joystick)
-    {
-        if (joystick.joystickButtonType == Joystick.JoystickButtonType.ultiAttack || joystick.joystickButtonType == Joystick.JoystickButtonType.basicAttack)
-        {
+{
+        //if (NetworkedGameManager.Instance == null) { return; }
+        //if (!NetworkedGameManager.Instance.isClientConnected) { return; }
+        if (PlayerController == null || !PlayerController.IsLive || NetworkedGameManager.Instance.isGameFinished) return;
 
-            var targetingDirection = Vector2.zero;
-
-            if (joystick.joystickButtonType == Joystick.JoystickButtonType.basicAttack)
-            {
-
-                targetingDirection = AttackBasicJoystick.Value;
-
-
-            }
-            else if (joystick.joystickButtonType == Joystick.JoystickButtonType.ultiAttack)
-            {
-
-                targetingDirection = AttackUltiJoystick.Value;
-
-
-            }
-            else
-            {
-                targetingDirection = Vector2.zero;
-            }
-
-            PlayerController.attack.Shoot(targetingDirection);
-        }
-    }
-    private void Attack()
+    if (joystick.joystickButtonType == Joystick.JoystickButtonType.ultiAttack || joystick.joystickButtonType == Joystick.JoystickButtonType.basicAttack)
     {
 
-        var basicAttackHeld = AttackBasicJoystick.joystickHeld;
-        var ultiAttackHeld = AttackUltiJoystick.joystickHeld;
         var targetingDirection = Vector2.zero;
-        if (basicAttackHeld)
+
+        if (joystick.joystickButtonType == Joystick.JoystickButtonType.basicAttack)
         {
 
             targetingDirection = AttackBasicJoystick.Value;
 
 
         }
-        else if (ultiAttackHeld)
+        else if (joystick.joystickButtonType == Joystick.JoystickButtonType.ultiAttack)
         {
 
             targetingDirection = AttackUltiJoystick.Value;
@@ -143,33 +114,45 @@ public class InputHandler : Singleton<InputHandler>
             targetingDirection = Vector2.zero;
         }
 
-        //if ((ultiAttackHeld && AttackBasicJoystick.gameObject.activeSelf) || (!ultiAttackHeld && !AttackBasicJoystick.gameObject.activeSelf))
-        //    AttackBasicJoystick.gameObject.SetActive(!ultiAttackHeld);
-
-        PlayerController.Targeting(targetingDirection, basicAttackHeld, ultiAttackHeld);
-
+        PlayerController.attack.Shoot(targetingDirection);
     }
+}
+private void Attack()
+{
 
-
-    private void Move()
+    var basicAttackHeld = AttackBasicJoystick.joystickHeld;
+    var ultiAttackHeld = AttackUltiJoystick.joystickHeld;
+    var targetingDirection = Vector2.zero;
+    if (basicAttackHeld)
     {
-        var moveValue = MovementJoystick.Value;
-        PlayerController.Move(moveValue);
+
+        targetingDirection = AttackBasicJoystick.Value;
+
+
+    }
+    else if (ultiAttackHeld)
+    {
+
+        targetingDirection = AttackUltiJoystick.Value;
+
+
+    }
+    else
+    {
+        targetingDirection = Vector2.zero;
     }
 
-    //public void CalculateSomething()
-    //{
-    //    //   Debug.Log("moveDir " + MovementJoystick.Value);
-    //    //   Debug.Log("attackDir " + AttackJoystick.Value);
-    //    var direction = target.position - transform.position;
-    //    direction.Normalize();
+    PlayerController.Targeting(targetingDirection, basicAttackHeld, ultiAttackHeld);
 
-    //    var offsetVector = Vector3.Cross(Vector2.up, direction);
-    //    offsetVector.Normalize();
-    //    var startPosition = transform.position + offsetVector * localHorizontalOffset + direction * radialOffset;
+}
 
 
-    //}
+private void Move()
+{
+    var moveValue = MovementJoystick.Value;
+    PlayerController.Move(moveValue);
+}
+
 
 
 

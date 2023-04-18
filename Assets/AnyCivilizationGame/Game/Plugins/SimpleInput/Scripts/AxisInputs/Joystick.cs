@@ -236,6 +236,8 @@ namespace SimpleInputNamespace
 
         public virtual void OnPointerUp(PointerEventData eventData)
         {
+
+
             if (FindObjectOfType<InputHandler>() != null)
             {
                 FindObjectOfType<InputHandler>().AttackButtonUp(this);

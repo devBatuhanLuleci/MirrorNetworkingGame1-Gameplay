@@ -23,6 +23,10 @@ public class JoystickCanvasUIController : MonoBehaviour
 
 
     }
+    //public void ActivateThisCanvas()
+    //{
+    //    joystickCanvas.ShowSmoothly();
+    //}
    
 
     public void DeactivateButtons()

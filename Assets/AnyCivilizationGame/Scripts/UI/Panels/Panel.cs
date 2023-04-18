@@ -10,11 +10,15 @@ public class Panel : MonoBehaviour, IPanel
 
     public virtual void Close()
     {
-        // if panel already close dont make anything
+        // if panel already close dont do anything
         if (!gameObject.activeSelf) return;
 
         OnPanelClose();
         gameObject.SetActive(false);
+    }
+    public void DeActivate(GameObject go)
+    {
+        go.SetActive(false);
     }
     public virtual void CloseSmoothly()
     {
@@ -38,7 +42,7 @@ public class Panel : MonoBehaviour, IPanel
 
             canvasGroup.DOFade(0, 1f).From(1).SetEase(Ease.Linear).OnComplete(()=> {
                 OnPanelClose();
-                gameObject.SetActive(false);
+               // gameObject.SetActive(false);
             });
         }
 

@@ -7,4 +7,15 @@ public class TimePanelHandler : Panel
 {
     public TextMeshProUGUI timeText;
 
+
+
+    public void ChangeTimeText(int countDownTime)
+    {
+    
+        timeText.text = countDownTime.ConvertThisSecondToMinute();
+      
+
+    }
+
+  
 }

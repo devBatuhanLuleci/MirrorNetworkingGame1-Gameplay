@@ -8,42 +8,50 @@ using static UnityEngine.UI.CanvasScaler;
 
 public class CrystalModeGamePlayCanvasUIController : Panel
 {
-  
-    private RectTransform GemRectTransform;
 
-  
-   
+    //private RectTransform GemRectTransform;
 
-  
+
+
+
+
 
     public CrystalStatsUIPanelManager crystalStatsUIPanel;
 
-    public CrystalStartInfoPanel crystalStartInfoPanel;
-    private void Awake()
+    public CrystalModeOpeningStartInfoPanel crystalStartInfoPanel;
+
+    public CrystalModeCountDownPanel crystalCountDownPanel;
+
+    public void ActivateCrystalnfoPanel(bool isActive)
     {
 
-       GemRectTransform = crystalStatsUIPanel.GetComponent<RectTransform>();
-     
-        // OnStart_MoveDown_TeamUIPanel();
 
-        if(crystalStartInfoPanel!=null)
-        {
-            crystalStartInfoPanel.animAction += OnAnimationFinished;
-        }
-    }
+        crystalStartInfoPanel.Animate_CrystalInfoPanel(isActive);
 
-    
-    public void Activate (bool isActive) {
-    
-    
-        crystalStartInfoPanel.Animate_CrystalInfoText(isActive);
-      //  OnStart_MoveDown_TeamUIPanel();
 
     }
-    public void Init() {
+    public void ActivateCountDownTeamInfoTextPanel(bool isActive)
+    {
+
+
+        crystalCountDownPanel.HandleCountDownTeamInfoTextPanel(isActive);
+
+
+    }
+    public void ActivateCountDownTextPanel(bool isActive)
+    {
+
+
+        crystalCountDownPanel.ActivateCountDownTextObject(isActive);
+
+
+    }
+    public void Init()
+    {
 
         crystalStartInfoPanel.Init();
-
+        crystalStatsUIPanel.Init();
+        crystalCountDownPanel.Init();
 
 
     }
@@ -55,39 +63,39 @@ public class CrystalModeGamePlayCanvasUIController : Panel
     public void HandleCrystalInfoPanelPos(Vector2 value)
     {
         crystalStatsUIPanel.ChangeCrystalStatsRectTransformPos(value);
-     //   crystalStartInfoPanel.ChangeCrystalInfoRectTransformScale(value);
-    }
 
+    }
+    public void HandleCrystalModeGameCountdownValue(int value)
+    {
+        crystalCountDownPanel.ChangeCrystalModeCountDownText(value);
+
+    }
+    public void HandleCrystalModeGameTempCountdownValue(int value)
+    {
+        crystalCountDownPanel.ChangeCrystalModeCountDownText(value);
+
+    }
+    public void HandleCrystalModeCountDownTeamInfoTextScale(float value)
+    {
+        crystalCountDownPanel.ChangeCrystalModeCountDownTeamInfoTextScale(value);
+
+    }
+    public void HandleCrystalModeGameTime(int value)
+    {
+
+        crystalStatsUIPanel.ChangeTimeOnPanel(value);
+    }
 
     public override void Show()
     {
 
-     //   Activate();
-    
-
-    }
-    private void OnDestroy()
-    {
-        if (crystalStartInfoPanel != null)
-        {
-            crystalStartInfoPanel.animAction -= OnAnimationFinished;
-        }
-    }
-    public void OnAnimationFinished()
-    {
-        Debug.Log("animation bitti!");
-
-    }
-   
-
-    public void OnStart_MoveDown_TeamUIPanel()
-    {
-        GemRectTransform.gameObject.SetActive(true);
-
-
+        //   Activate();
 
 
     }
- 
+
+
+
+
 
 }

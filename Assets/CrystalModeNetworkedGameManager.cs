@@ -12,7 +12,8 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
   
     private NetworkSpawnObjectInInterval NetworkSpawnObjectInInterval;
     private CrystalModeCountdown crystalModeCountdown;
-    private CrystalModeUIOpeningHandler cystalModeUIOpeningHandler;
+    private CrystalModeGameTime crystalModeGameTime;
+    private CrystalModeGamePanelsHandler cystalModeGamePanelsHandler;
     private Dictionary<TeamTypes, List<GemData>> collectedCrystalDictionary;
  
     Dictionary<int, int> playerGems;
@@ -41,50 +42,112 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
             this.crystalModeCountdown = crystalModeCountdown;
 
         }
-        if (TryGetComponent<CrystalModeUIOpeningHandler>(out CrystalModeUIOpeningHandler crystalModeUIOpeningHandler))
+        if (TryGetComponent<CrystalModeGameTime>(out CrystalModeGameTime crystalModeGameTime))
         {
 
-            this.cystalModeUIOpeningHandler = crystalModeUIOpeningHandler;
+            this.crystalModeGameTime = crystalModeGameTime;
+
+        }
+        if (TryGetComponent<CrystalModeGamePanelsHandler>(out CrystalModeGamePanelsHandler crystalModeUIOpeningHandler))
+        {
+
+            this.cystalModeGamePanelsHandler = crystalModeUIOpeningHandler;
 
         }
 
+        cystalModeGamePanelsHandler.onHandleOpeningPanelReadyToSpawnCrystalAction.AddListener(OnSequenceIsReadyForSpawnCrystal);
+        cystalModeGamePanelsHandler.onHandleOpeningPanelReadyToPlayAction.AddListener(OnSequenceIsReadyForPlay);
+        cystalModeGamePanelsHandler.onCountDownPanelActivation.AddListener(OnCurrentTeamReachedMaxGemAmount);
+
+
+        cystalModeGamePanelsHandler.CreateCrystalModeCanvas();
 
 
     }
 
-    //private void debugrepeat()
+    public void OnSequenceIsReadyForSpawnCrystal()
+    {
+        StartSpawnLoop();
+    }
+    public void OnSequenceIsReadyForPlay()
+    {
+        crystalModeGameTime.StartCountDown();
+        isGameStarted = true;
+
+    }
+    public override void OnGameStarted(bool oldValue, bool newValue)
+    {
+        base.OnGameStarted(oldValue, newValue);
+
+        if(newValue==true) {
+        
+        ActivateJoystickOnClients();
+
+
+        }
+    }
+    public void OnCurrentTeamReachedMaxGemAmount()
+    {
+        //cystalModeGamePanelsHandler
+        // crystalModeCountdown.StartCountDown();
+        cystalModeGamePanelsHandler.StartToCountDownSequenceForATeam();
+    }
+    //public void Start_CountingDown_OnCurrentTeamReachedMaxGemAmount()
     //{
-    //    Debug.Log("afasdasdasfsad");
+    //    crystalModeCountdown.StartCountDown();
     //}
 
-    //private void Update()
-    //{
-    //    if (isServer)
-    //    {
-    //        debugrepeat();
-    //        gameObject.CreatePrimitiveObject(Vector3.zero,Color.black,1f);
-    //        //InvokeRepeating("debugrepeat", 1, .1f);
+    public void OnCountdownReached_FinishGame()
+    {
+        isGameFinished = true;
+        isGameStarted = false;
+    }
 
-    //    }
-    //}
+
+    public void ActivateJoystickOnClients()
+    {
+        //InputHandler.Instance.joystickCanvas
+        GameplayPanelUIManager.Instance.joystickCanvas.ShowSmoothly();
+    }
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+        cystalModeGamePanelsHandler.onHandleOpeningPanelReadyToSpawnCrystalAction.RemoveListener(OnSequenceIsReadyForSpawnCrystal);
+        cystalModeGamePanelsHandler.onHandleOpeningPanelReadyToPlayAction.RemoveListener(OnSequenceIsReadyForPlay);
+
+    }
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+
+    }
     public override void SetupClient()
     {
         base.SetupClient();
-        cystalModeUIOpeningHandler.CreateCrystalModeCanvas();
 
-        // Invoke("SetMyTeam", 3);
+   
 
+    }
+    public override void OnStartServer()
+    {
+
+        //Oluşturduğumuz gemmodegameplaycanvas varsa onu server'dan sildir.
+        if (GameplayPanelUIManager.Instance.GemModeGameplayCanvas != null)
+        {
+            Destroy(GameplayPanelUIManager.Instance.GemModeGameplayCanvas.gameObject);
+        }
+
+        base.OnStartServer();
     }
 
     public override void ServerStarted(Dictionary<int, NetworkConnectionToClient> players)
     {
         base.ServerStarted(players);
-       // Invoke("StartSpawnLoop", 3);
-      // CreateCrystalModeCanvas();
+
+ 
         collectedCrystalDictionary = new Dictionary<TeamTypes, List<GemData>>();
         playerGems = new Dictionary<int, int>();
 
-        //playerGems = new Dictionary<int, int>();
 
     }
     [ClientRpc]
@@ -95,7 +158,7 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
     }
 
  
-    //[ClientRpc]
+
  
     public void ChangeModeInfo(CanvasSequence mode)
     {
@@ -104,11 +167,6 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
 
     }
 
-    //public void ActivateCanvas(NetworkedPanel crystalModeCanvas)
-    //{
-    //    GameplayPanelUIManager.Instance.Init_CrystalModeGameplayCanvas(crystalModeCanvas);
-
-    //}
     public void StartSpawnLoop()
     {
         NetworkSpawnObjectInInterval.StartSpawnLoop();

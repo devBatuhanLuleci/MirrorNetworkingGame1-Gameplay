@@ -1,8 +1,9 @@
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CrystalStatsUIPanelManager : Panel
+public class CrystalStatsUIPanelManager : CrystalModePanel
 {
     public AllyTeamUIPanelHandler AllyTeamPanel;
     public EnemyTeamUIPanelHandler EnemyTeamPanel;
@@ -27,6 +28,24 @@ public class CrystalStatsUIPanelManager : Panel
 
     }
 
+    public void ChangeTimeOnPanel(int CountDownTime)
+    {
+        TimePanel.ChangeTimeText(CountDownTime);
+    }
+
+    public override void Init()
+    {
+       base.Init();
+    }
+    public  override void DeactivateOnInit()
+    {
+        base.DeactivateOnInit();
+
+        AllyTeamPanel.ResetCrystalAmountBar();
+        EnemyTeamPanel.ResetCrystalAmountBar();
+        ChangeCrystalStatsRectTransformPos(new Vector2(0, 50));
 
 
+
+    }
 }

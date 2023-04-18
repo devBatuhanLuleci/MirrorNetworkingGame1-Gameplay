@@ -1,4 +1,4 @@
-using kcp2k;
+﻿using kcp2k;
 using Mirror;
 using System;
 using System.Collections;
@@ -27,6 +27,24 @@ public class NetworkedGameManager : NetworkBehaviour
     #endregion
 
     private bool IsClient => ACGDataManager.Instance.GameData.TerminalType == TerminalType.Client;
+
+
+    [SyncVar(hook = nameof(OnGameStarted))]
+    [HideInInspector]
+    public bool isGameStarted;
+
+    [SyncVar]
+    public bool isGameFinished;
+
+    [HideInInspector] public bool isClientConnected = false;
+
+
+    //public bool IsGameStarted
+    //{
+    //    get { Debug.Log("değer" + isGameStarted); return isGameStarted; }
+    //    set { IsGameStartable(value); }
+    //}
+
     public TeamTypes myTeam;
 
     public enum TeamTypes { Team1, Team2 }
@@ -42,19 +60,26 @@ public class NetworkedGameManager : NetworkBehaviour
     }
     private void Start()
     {
-
+       
         Info("isClient: " + isClient);
-        if (IsClient) SetupClient();
+        if (IsClient)
+        {
+            SetupClient();
+            isClientConnected = true;
+        }
         if (isServer)
         {
             MatchNetworkManager.Instance.OnPlayerListChanged.AddListener(OnCharacterReplaced);
 
         }
     }
+    public virtual void OnGameStarted(bool oldValue, bool newValue)
+    {
+        Debug.Log("Boolean value changed from " + oldValue + " to " + newValue);
+    }
 
 
-
-    public void OnDestroy()
+    public virtual void OnDestroy()
     {
         if (isServer)
         {
@@ -79,32 +104,32 @@ public class NetworkedGameManager : NetworkBehaviour
     {
 
     }
-
+   
 
     public virtual void SetupClient()
     {
 
-          GameplayPanelUIManager.Instance.AutoSelectCharacter();
-      //   GameplayPanelUIManager.Instance.SelectCharacter();
+        GameplayPanelUIManager.Instance.AutoSelectCharacter();
+        //   GameplayPanelUIManager.Instance.SelectCharacter();
         ClientStarted();
 
         CmdReady();
         Info("awake: " + MatchNetworkManager.Instance.mode);
 
     }
-   
+
     public TeamTypes GetMyTeam(int connID)
     {
         TeamTypes teamType;
 
         var teamEnum = from personGroup in Teams
-                      from person in personGroup.teamPlayers
-                      where person.connectionId.Equals(connID)
-                      select personGroup;
+                       from person in personGroup.teamPlayers
+                       where person.connectionId.Equals(connID)
+                       select personGroup;
 
         teamType = teamEnum.First().team;
 
-      //  Debug.Log($" my team: {teamType}");
+        //  Debug.Log($" my team: {teamType}");
 
         return teamType;
     }
@@ -168,7 +193,7 @@ public class NetworkedGameManager : NetworkBehaviour
             );
 
             myTeam.teamPlayers.Add(teamPlayers);
-       
+
 
             isTeam1 = !isTeam1;
         }
@@ -185,9 +210,9 @@ public class NetworkedGameManager : NetworkBehaviour
     {
 
         var result3 = from personGroup in Teams
-                     from person in personGroup.teamPlayers
-                     where person.netIdentity.Equals(NetworkClient.localPlayer)
-                     select personGroup;
+                      from person in personGroup.teamPlayers
+                      where person.netIdentity.Equals(NetworkClient.localPlayer)
+                      select personGroup;
 
         var ourTeam = result3.First();
 
@@ -310,6 +335,7 @@ public class NetworkedGameManager : NetworkBehaviour
     }
     private void OnGameStarted()
     {
+       
         GameplayPanelUIManager.Instance.DeactivateUltiButton();
 
 
@@ -334,6 +360,7 @@ public class NetworkedGameManager : NetworkBehaviour
     #region Command Methods
 
     public int playerCount = 0;
+
     [Command(requiresAuthority = false)]
     public void CmdReady()
     {
@@ -356,6 +383,8 @@ public class NetworkedGameManager : NetworkBehaviour
     {
         this.playerCount = value;
     }
+
+
 
 
     #endregion
