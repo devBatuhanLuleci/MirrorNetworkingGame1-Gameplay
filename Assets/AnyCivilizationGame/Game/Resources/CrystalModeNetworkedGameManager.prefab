@@ -124,7 +124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0
-  countdown: 16
+  countdown: 15
   onTimeFinishedAction:
     m_PersistentCalls:
       m_Calls: []
@@ -211,10 +211,11 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  waitTime: 1
+  waitTime: 2
   onCountdownTeamInfoPanelFinishedAction:
     m_PersistentCalls:
       m_Calls: []
+  initialValue: 0.4
   currentValue: 0
 --- !u!114 &5189343259975179204
 MonoBehaviour:
@@ -271,7 +272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0
-  duration: 2
+  duration: 0.8
   curve:
     serializedVersion: 2
     m_Curve:
@@ -296,10 +297,11 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  waitTime: 1
+  waitTime: 2
   onCountdownTeamInfoPanelFinishedAction:
     m_PersistentCalls:
       m_Calls: []
+  initialValue: 0.4
   currentValue: 0
 --- !u!114 &730296296306421244
 MonoBehaviour:
@@ -344,4 +346,5 @@ MonoBehaviour:
   onCountdownTeamInfoPanelFinishedAction:
     m_PersistentCalls:
       m_Calls: []
+  initialValue: 0
   currentValue: 0

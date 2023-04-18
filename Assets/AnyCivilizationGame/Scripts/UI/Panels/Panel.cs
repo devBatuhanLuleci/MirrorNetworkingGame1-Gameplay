@@ -22,21 +22,7 @@ public class Panel : MonoBehaviour, IPanel
     }
     public virtual void CloseSmoothly()
     {
-        //   // if panel already close dont make anything
-        //   if (!gameObject.activeSelf) return;
-
-        //   var time = 0f;
-        //   while (time > 1)
-        //   {
-        //       time += Time.fixedDeltaTime;
-
-        //    //   Debug.Log("hmm");
-
-        //       break;
-        //   }
-        ////   Debug.Log("hello");
-
-
+    
         if (TryGetComponent(out CanvasGroup canvasGroup))
         {
 

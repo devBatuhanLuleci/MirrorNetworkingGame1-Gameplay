@@ -15,7 +15,7 @@ public class AnimateFloat : NetworkBehaviour
 
     public UnityEvent onCountdownTeamInfoPanelFinishedAction;
 
-
+    public float initialValue=0;
 
    [SyncVar(hook = nameof(OnCurrentValueUpdated))]
     public float currentValue;
@@ -43,7 +43,7 @@ public class AnimateFloat : NetworkBehaviour
         while (isAnimating)
         {
             // Animation is running, update currentValue
-            currentValue = GetCurrentAnimationValue();
+            currentValue = GetCurrentAnimationValue(initialValue);
 
             if (hasAnimationStarted && currentValue == 0f)
             {
@@ -55,13 +55,46 @@ public class AnimateFloat : NetworkBehaviour
         }
     }
 
-    private float GetCurrentAnimationValue()
+    //private float GetCurrentAnimationValue()
+    //{
+    //    if (time < duration)
+    //    {
+    //        // Ease.OutCircle from 0 to 1
+    //        float t = curve.Evaluate(time / duration);
+    //        float value = Mathf.Lerp(0f, 1f, t);
+    //        time += Time.deltaTime;
+    //        return value;
+    //    }
+    //    else if (time < duration + waitTime)
+    //    {
+    //        // Wait for waitTime seconds
+    //        time += Time.deltaTime;
+    //        return 1f;
+    //    }
+    //    else if (time < 2f * duration + waitTime)
+    //    {
+    //        // Ease.OutQuad from 1 to 0
+    //        float t = curve.Evaluate((time - duration - waitTime) / duration);
+    //        float value = Mathf.Lerp(1f, 0f, t);
+    //        time += Time.deltaTime;
+    //        hasAnimationStarted = true;
+    //        return value;
+    //    }
+    //    else
+    //    {
+    //        // Ensure the final value is exactly 0
+    //        time = 0f;
+    //        isAnimating = false;
+    //        return 0f;
+    //    }
+    //}
+    private float GetCurrentAnimationValue(float initialValue)
     {
         if (time < duration)
         {
             // Ease.OutCircle from 0 to 1
             float t = curve.Evaluate(time / duration);
-            float value = Mathf.Lerp(0f, 1f, t);
+            float value = Mathf.Lerp(initialValue, 1f, t);
             time += Time.deltaTime;
             return value;
         }
@@ -88,7 +121,6 @@ public class AnimateFloat : NetworkBehaviour
             return 0f;
         }
     }
-
     public virtual void OnAnimationFinished()
     {
         // Animation is finished, do something here
