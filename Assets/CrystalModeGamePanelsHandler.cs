@@ -68,7 +68,8 @@ public class CrystalModeGamePanelsHandler : NetworkBehaviour
 
 
 
-        this.gemModeAnimateFloatOnCountDownTeamInfoPanel.onCountdownTeamInfoPanelFinishedAction.AddListener(StartToCountDown);
+        this.gemModeAnimateFloatOnCountDownTeamInfoPanel.onCountdownFinishedAction.AddListener(StartToCountDown);
+        this.gemModeAnimateFloatOnCountDownTeamInfoPanel.onAnimationFinishedBeforeExtraTimeAction.AddListener(CloseUpTeamCountDownPanel);
 
 
     }
@@ -107,6 +108,8 @@ public class CrystalModeGamePanelsHandler : NetworkBehaviour
 
 
     }
+
+
     //public void Start_CountDown_OnCurrentTeamReachedMaxGemAmount()
     //{
     //    StartCoroutine(gemModeAnimateFloatOnCountDownTeamInfoPanel.AnimateCoroutine());
@@ -117,9 +120,15 @@ public class CrystalModeGamePanelsHandler : NetworkBehaviour
     }
     public void StartToCountDown()
     {
-        isCountDownTeamInfoTextPanelActive=false;
+      //  isCountDownTeamInfoTextPanelActive=false;
       isCountDownTextPanelActive = true;
         crystalModeCountDown.StartCountDown();
+    }
+    public void CloseUpTeamCountDownPanel()
+    {
+        isCountDownTeamInfoTextPanelActive = false;
+        //isCountDownTextPanelActive = true;
+        //crystalModeCountDown.StartCountDown();
     }
     public void HandleOpeningPanel(bool oldValue, bool newValue)
     {

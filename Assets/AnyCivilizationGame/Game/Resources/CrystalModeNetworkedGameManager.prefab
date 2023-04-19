@@ -216,6 +216,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   initialValue: 0.4
+  endValue: 1
+  extraWaitTimeAtTheEnd: 0
+  animationType: 1
   currentValue: 0
 --- !u!114 &5189343259975179204
 MonoBehaviour:
@@ -302,6 +305,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   initialValue: 0.4
+  endValue: 1
+  extraWaitTimeAtTheEnd: 3
+  animationType: 0
   currentValue: 0
 --- !u!114 &730296296306421244
 MonoBehaviour:
@@ -347,4 +353,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   initialValue: 0
+  endValue: 1
+  extraWaitTimeAtTheEnd: 0
+  animationType: 1
   currentValue: 0
