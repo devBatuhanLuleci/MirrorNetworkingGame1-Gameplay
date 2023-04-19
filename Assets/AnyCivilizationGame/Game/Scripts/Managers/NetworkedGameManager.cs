@@ -73,6 +73,10 @@ public class NetworkedGameManager : NetworkBehaviour
 
         }
     }
+    public virtual void Update()
+    {
+        if (!isServer) { return; }
+    }
     public virtual void OnGameStarted(bool oldValue, bool newValue)
     {
         Debug.Log("Boolean value changed from " + oldValue + " to " + newValue);

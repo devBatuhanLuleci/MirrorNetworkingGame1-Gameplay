@@ -108,7 +108,7 @@ MonoBehaviour:
     - connectionId: 0
       netIdentity: {fileID: 0}
   playerCount: 0
-  Info: 0
+  maxCrystalAmount: 1
   teams: 
 --- !u!114 &-906108526276130252
 MonoBehaviour:
@@ -125,6 +125,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   countdown: 15
+  initialCountDownValue: 15
   onTimeFinishedAction:
     m_PersistentCalls:
       m_Calls: []
@@ -143,6 +144,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   countdown: 180
+  initialCountDownValue: 180
   onTimeFinishedAction:
     m_PersistentCalls:
       m_Calls: []
@@ -163,13 +165,11 @@ MonoBehaviour:
   isOpeningPanelActive: 0
   isCountDownTeamInfoTextPanelActive: 0
   isCountDownTextPanelActive: 0
+  gamePanelStatus: 0
   onHandleOpeningPanelReadyToSpawnCrystalAction:
     m_PersistentCalls:
       m_Calls: []
   onHandleOpeningPanelReadyToPlayAction:
-    m_PersistentCalls:
-      m_Calls: []
-  onCountDownPanelActivation:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &7167320814703143456
@@ -212,7 +212,10 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   waitTime: 2
-  onCountdownTeamInfoPanelFinishedAction:
+  onCountdownFinishedAction:
+    m_PersistentCalls:
+      m_Calls: []
+  onAnimationFinishedBeforeExtraTimeAction:
     m_PersistentCalls:
       m_Calls: []
   initialValue: 0.4
@@ -301,7 +304,10 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   waitTime: 2
-  onCountdownTeamInfoPanelFinishedAction:
+  onCountdownFinishedAction:
+    m_PersistentCalls:
+      m_Calls: []
+  onAnimationFinishedBeforeExtraTimeAction:
     m_PersistentCalls:
       m_Calls: []
   initialValue: 0.4
@@ -349,7 +355,10 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   waitTime: 1
-  onCountdownTeamInfoPanelFinishedAction:
+  onCountdownFinishedAction:
+    m_PersistentCalls:
+      m_Calls: []
+  onAnimationFinishedBeforeExtraTimeAction:
     m_PersistentCalls:
       m_Calls: []
   initialValue: 0

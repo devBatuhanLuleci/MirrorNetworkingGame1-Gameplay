@@ -23,11 +23,15 @@ public class CrystalModeGamePanelsHandler : NetworkBehaviour
     [SyncVar(hook = nameof(HandleCountDownTextPanel))]
     public bool isCountDownTextPanelActive;
 
-   
+    public enum GamePanelStatus { None, CountDown }
+    [SyncVar]
+    public GamePanelStatus gamePanelStatus;
+
+    private Coroutine CountDownPanelAnimationCoroutine;
 
     public UnityEvent onHandleOpeningPanelReadyToSpawnCrystalAction;
     public UnityEvent onHandleOpeningPanelReadyToPlayAction;
-    public UnityEvent onCountDownPanelActivation;
+    //public UnityEvent onCountDownPanelActivation;
 
 
 
@@ -81,20 +85,16 @@ public class CrystalModeGamePanelsHandler : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-        //    ActivateSequenceOnClients();
+            //    ActivateSequenceOnClients();
             StartCoroutine(DoOpeninPanelSequence());
 
 
         }
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            isCountDownTeamInfoTextPanelActive=true;
-            onCountDownPanelActivation.Invoke();
-        }
+
 
 
     }
-    
+
 
     IEnumerator DoOpeninPanelSequence()
     {
@@ -110,19 +110,37 @@ public class CrystalModeGamePanelsHandler : NetworkBehaviour
     }
 
 
-    //public void Start_CountDown_OnCurrentTeamReachedMaxGemAmount()
-    //{
-    //    StartCoroutine(gemModeAnimateFloatOnCountDownTeamInfoPanel.AnimateCoroutine());
-    //}
     public void StartToCountDownSequenceForATeam()
     {
-        StartCoroutine(gemModeAnimateFloatOnCountDownTeamInfoPanel.AnimateCoroutine());
+        ChangeCurrentPanelStatusTo(GamePanelStatus.CountDown);
+        isCountDownTeamInfoTextPanelActive = true;
+
+        CountDownPanelAnimationCoroutine = StartCoroutine(gemModeAnimateFloatOnCountDownTeamInfoPanel.AnimateCoroutine());
     }
+
+    public void CancelCountDownPanel()
+    {
+        if (CountDownPanelAnimationCoroutine != null)
+        {
+            ChangeCurrentPanelStatusTo(GamePanelStatus.None);
+            isCountDownTeamInfoTextPanelActive = false;
+            isCountDownTextPanelActive = false;
+            StopCoroutine(CountDownPanelAnimationCoroutine);
+            CountDownPanelAnimationCoroutine = null;
+        }
+
+    }
+
+
     public void StartToCountDown()
     {
-      //  isCountDownTeamInfoTextPanelActive=false;
-      isCountDownTextPanelActive = true;
+        //  isCountDownTeamInfoTextPanelActive=false;
+        isCountDownTextPanelActive = true;
         crystalModeCountDown.StartCountDown();
+    }
+    public void ChangeCurrentPanelStatusTo(GamePanelStatus panel)
+    {
+        gamePanelStatus = panel;
     }
     public void CloseUpTeamCountDownPanel()
     {
@@ -135,7 +153,7 @@ public class CrystalModeGamePanelsHandler : NetworkBehaviour
         GameplayPanelUIManager.Instance.ActivateSequence(newValue);
 
     }
-    public void  HandleCountDownTeamInfoTextPanel(bool oldValue, bool newValue)
+    public void HandleCountDownTeamInfoTextPanel(bool oldValue, bool newValue)
     {
         GameplayPanelUIManager.Instance.ActivateCountDownTeamInfoTextPanel(newValue);
     }
@@ -168,4 +186,6 @@ public class CrystalModeGamePanelsHandler : NetworkBehaviour
 
 
     }
+
+
 }

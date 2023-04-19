@@ -7,7 +7,7 @@ public class NetworkedTimer:NetworkBehaviour
 
     [SerializeField, SyncVar(hook = nameof(OnCountdownChangedSync))]
     protected int countdown = 10; // başlangıç sayısı
-
+    public int initialCountDownValue=10;
     private float timer = 1f; // saniyede bir azaltmak için zamanlayıcı
 
     private bool isCountingDown = false;
@@ -21,6 +21,13 @@ public class NetworkedTimer:NetworkBehaviour
     //        isCountingDown = true;
     //    }
     //}
+    private void Awake()
+    {
+        if (!isServer) { return; }
+
+
+        countdown = initialCountDownValue;
+    }
 
     private void Update()
     {
@@ -38,7 +45,7 @@ public class NetworkedTimer:NetworkBehaviour
     {
         if (!isServer) return;
 
-
+        ResetTimer();
         isCountingDown = true;
     }
 
@@ -52,7 +59,12 @@ public class NetworkedTimer:NetworkBehaviour
 
         countdown--;
     }
+    public void ResetTimer()
+    {
+        countdown = initialCountDownValue;
+       
 
+    }
     public virtual void OnCountDownFinished()
     {
         
