@@ -15,6 +15,7 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
     private CrystalModeGameTime crystalModeGameTime;
     private CrystalModeGamePanelsHandler crystalModeGamePanelsHandler;
     private Dictionary<TeamTypes, List<GemData>> collectedCrystalDictionary;
+    public TeamTypes currentlyWinningTeam;
     public int maxCrystalAmount = 10;
     Dictionary<int, int> playerGems;
 
@@ -70,7 +71,7 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
     {
         if (!isServer) { return; }
         base.Update();
-        if (Input.GetKeyDown(KeyCode.N)&& crystalModeGamePanelsHandler.gamePanelStatus != CrystalModeGamePanelsHandler.GamePanelStatus.CountDown)
+        if (Input.GetKeyDown(KeyCode.N) && crystalModeGamePanelsHandler.gamePanelStatus != CrystalModeGamePanelsHandler.GamePanelStatus.CountDown)
         {
 
             OnCurrentTeamReachedMaxGemAmount();
@@ -157,7 +158,7 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
 
         collectedCrystalDictionary = new Dictionary<TeamTypes, List<GemData>>();
         playerGems = new Dictionary<int, int>();
-
+        currentlyWinningTeam = TeamTypes.None;
 
     }
     [ClientRpc]
@@ -170,7 +171,7 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
 
 
 
- 
+
 
     public void StartSpawnLoop()
     {
@@ -189,15 +190,27 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
         player.OnCrystalCollected_UpdatePlayer(AddGemDataToPlayers().GetValueOrDefault(connectionID));
         ShowPlayerGemsLog();
 
+        CheckTeamCrystalAmountReachedMax(teamType);
+        //if (CheckTeamCrystalAmountToReachMax(MyTeamCrystalScore(teamType)) && crystalModeGamePanelsHandler.gamePanelStatus != CrystalModeGamePanelsHandler.GamePanelStatus.CountDown)
+        //{
+        //    currentlyWinningTeam = teamType;
+        //    OnCurrentTeamReachedMaxGemAmount();
 
-        if (CheckTeamCrystalAmountToReachMax(MyTeamCrystalScore(teamType)) && crystalModeGamePanelsHandler.gamePanelStatus!=CrystalModeGamePanelsHandler.GamePanelStatus.CountDown)
+
+        //}
+
+    }
+    public void CheckTeamCrystalAmountReachedMax( TeamTypes teamType)
+    {
+
+        if (currentlyWinningTeam!= teamType && CheckTeamCrystalAmountToReachMax(MyTeamCrystalScore(teamType)) && crystalModeGamePanelsHandler.gamePanelStatus != CrystalModeGamePanelsHandler.GamePanelStatus.CountDown)
         {
-           
+            currentlyWinningTeam = teamType;
+            crystalModeGamePanelsHandler.MakeWinnerTeamCountDownText(currentlyWinningTeam.ToString());
             OnCurrentTeamReachedMaxGemAmount();
 
 
         }
-
     }
     public void OnGemDroppedByThisPlayer(int connectionID)
     {
@@ -212,18 +225,20 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
             var teamType = GetMyTeam(connectionID);
 
             var TotalCrystalToDrop = playerGems[connectionID];
-            Debug.Log("Total düşürülücek gem miktarı");
-            Debug.Log($"totalDroppableGems of this player :  {TotalCrystalToDrop}");
+            //Debug.Log("Total düşürülücek gem miktarı");
+            //Debug.Log($"totalDroppableGems of this player :  {TotalCrystalToDrop}");
             for (int i = 0; i < TotalCrystalToDrop; i++)
             {
                 NetworkSpawnObjectInInterval.SpawnObjectWithDiffrentForce(player.transform.position);
 
             }
 
-            if (CheckTeamCrystalAmountToReachMax(MyTeamCrystalScore(teamType)) && crystalModeGamePanelsHandler.gamePanelStatus == CrystalModeGamePanelsHandler.GamePanelStatus.CountDown)
+            if (currentlyWinningTeam.Equals(teamType) && CheckTeamCrystalAmountToReachMax(MyTeamCrystalScore(teamType)) && crystalModeGamePanelsHandler.gamePanelStatus == CrystalModeGamePanelsHandler.GamePanelStatus.CountDown)
             {
-                Debug.Log("cancelladım");
+               // Debug.Log("cancelladım");
                 CancelCountDown();
+                currentlyWinningTeam = TeamTypes.None;
+                CheckTeamCrystalAmountReachedMax(GetOtherTeam(teamType));
 
 
             }
@@ -251,18 +266,37 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
 
 
     }
+    public TeamTypes GetOtherTeam(TeamTypes myTeam)
+    {
+        TeamTypes otherTeam = TeamTypes.None;
 
+        if (myTeam.Equals(TeamTypes.Team1))
+        {
+            otherTeam = TeamTypes.Team2;
+        }
+        else if (myTeam.Equals(TeamTypes.Team2))
+        {
+            otherTeam = TeamTypes.Team1;
+
+        }
+        return otherTeam;
+    }
     public int MyTeamCrystalScore(TeamTypes teamType)
     {
-        int crystalScore = collectedCrystalDictionary[teamType].Count;
-        Debug.Log($" {teamType.ToString()} takımının crystalScore'u: {crystalScore} ");
-        return crystalScore;
+        if (collectedCrystalDictionary.ContainsKey(teamType))
+        {
+
+            int crystalScore = collectedCrystalDictionary[teamType].Count;
+            Debug.Log($" {teamType.ToString()} takımının crystalScore'u: {crystalScore} ");
+            return crystalScore;
+        }
+        else return 0;
     }
     public bool CheckTeamCrystalAmountToReachMax(int teamCrystalAmount)
     {
         bool isReached = false;
 
-        isReached = teamCrystalAmount>=maxCrystalAmount;
+        isReached = teamCrystalAmount >= maxCrystalAmount;
 
         return isReached/*= teamCrystalAmount.Equals(maxCrystalAmount)*/;
 

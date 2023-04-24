@@ -47,7 +47,9 @@ public class NetworkedGameManager : NetworkBehaviour
 
     public TeamTypes myTeam;
 
-    public enum TeamTypes { Team1, Team2 }
+    public enum TeamTypes { Team1, Team2,
+        None
+    }
     [SyncVar]
     public List<Team> Teams = new List<Team>();
 
