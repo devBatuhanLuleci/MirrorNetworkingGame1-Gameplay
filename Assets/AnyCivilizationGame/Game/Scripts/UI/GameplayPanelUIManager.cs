@@ -146,7 +146,15 @@ public class GameplayPanelUIManager : Panel
 
 
     }
+    public void SetWinnerTeamCountDownText_1(string TeamNameInfo)
+    {
+        //Debug.Log($"ezilip gelen : current value : {value}");
+        Debug.Log("TeamName: " + TeamNameInfo);
+        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        crystalModeGamePlayCanvasUIController.HandleWinnerTeamCountDownText(TeamNameInfo);
 
+
+    }
     public void SetCrystalModeCountDownValue(int value)
     {
         //Debug.Log($"ezilip gelen : current value : {value}");

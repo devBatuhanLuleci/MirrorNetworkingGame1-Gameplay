@@ -13,6 +13,7 @@ public class CrystalModeGamePanelsHandler : NetworkBehaviour
     private GemModeAnimateFloatOnCrystalStats gemModeAnimateFloatOnCrystalStats;
     private GemModeAnimateFloatOnCountDownTeamInfoPanel gemModeAnimateFloatOnCountDownTeamInfoPanel;
     private CrystalModeCountdown crystalModeCountDown;
+    private CrystalModeStringSync crystalModeStringSync;
     [SyncVar(hook = nameof(HandleOpeningPanel))]
     public bool isOpeningPanelActive;
 
@@ -67,6 +68,12 @@ public class CrystalModeGamePanelsHandler : NetworkBehaviour
         {
 
             this.crystalModeCountDown = crystalModeCountDown;
+
+        }
+        if (TryGetComponent<CrystalModeStringSync>(out CrystalModeStringSync crystalModeStringSync))
+        {
+
+            this.crystalModeStringSync = crystalModeStringSync;
 
         }
 
@@ -187,5 +194,8 @@ public class CrystalModeGamePanelsHandler : NetworkBehaviour
 
     }
 
-
+    public void MakeWinnerTeamCountDownText(string teamText)
+    {
+        crystalModeStringSync.ChangeWinnerTeamCountDownText(teamText);
+    }
 }

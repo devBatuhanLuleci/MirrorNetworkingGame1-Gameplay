@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 5189343259975179204}
   - component: {fileID: 2014279944830707847}
   - component: {fileID: 730296296306421244}
+  - component: {fileID: 574492573180928448}
   m_Layer: 0
   m_Name: CrystalModeNetworkedGameManager
   m_TagString: Untagged
@@ -109,6 +110,7 @@ MonoBehaviour:
       netIdentity: {fileID: 0}
   playerCount: 0
   maxCrystalAmount: 1
+  currentlyWinningTeam: 0
   teams: 
 --- !u!114 &-906108526276130252
 MonoBehaviour:
@@ -366,3 +368,18 @@ MonoBehaviour:
   extraWaitTimeAtTheEnd: 0
   animationType: 1
   currentValue: 0
+--- !u!114 &574492573180928448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6551596581866087418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fcbba234355ecd4bba3410f24fedaf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  WinnerTeamCountDownText: 

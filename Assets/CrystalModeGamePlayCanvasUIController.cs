@@ -80,6 +80,12 @@ public class CrystalModeGamePlayCanvasUIController : Panel
         crystalCountDownPanel.ChangeCrystalModeCountDownTeamInfoTextScale(value);
 
     }
+    public void HandleWinnerTeamCountDownText(string TeamNameInfo)
+    {
+        crystalCountDownPanel.HandleWinnerTeamCountDownText(TeamNameInfo);
+
+    }
+
     public void HandleCrystalModeGameTime(int value)
     {
 

@@ -11,7 +11,11 @@ public class PlayerSetup : ObjectSetup
 
     #region Public Fields
     public string SelectedCharacter = "Character1";
+
+    [SyncVar]
+    public NetworkedGameManager.TeamTypes Team;
     #endregion
+
 
     #region Private Fields
   
@@ -70,6 +74,12 @@ public class PlayerSetup : ObjectSetup
         {
             InitOtherPlayers();
         }
+
+    }
+    public void InitilizeTeamOfThisPlayer(NetworkedGameManager.TeamTypes team)
+    {
+
+        this.Team=team;
 
     }
 

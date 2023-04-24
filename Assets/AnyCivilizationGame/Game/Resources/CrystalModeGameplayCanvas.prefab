@@ -3391,6 +3391,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95830429c86dc4646b9b476799e68480, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WinnerTeamCountDownText_1: {fileID: 4763065541105383337}
+  WinnerTeamCountDownText_1_Team1_Color: {r: 0.12941177, g: 0.85490197, b: 0.9411765, a: 1}
+  WinnerTeamCountDownText_1_Team2_Color: {r: 1, g: 0, b: 0.03836775, a: 1}
 --- !u!1 &8559108116363543974
 GameObject:
   m_ObjectHideFlags: 0

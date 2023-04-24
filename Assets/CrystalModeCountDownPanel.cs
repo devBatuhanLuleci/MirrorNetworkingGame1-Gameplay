@@ -11,6 +11,7 @@ public class CrystalModeCountDownPanel : CrystalModePanel
 
     private TextMeshProUGUI CountDownText;
     private RectTransform CrystalInfoRectTransform;
+    private TeamCountDownTextHandler teamCountDownTextHandler;
     private void Awake()
     {
         CountDownText = CountDownTextObject.GetComponent<TextMeshProUGUI>();
@@ -23,6 +24,16 @@ public class CrystalModeCountDownPanel : CrystalModePanel
 
 
         }
+
+        if (TeamCountDownInfoText.TryGetComponent<TeamCountDownTextHandler>(out TeamCountDownTextHandler teamCountDownTextHandler))
+        {
+
+            this.teamCountDownTextHandler = teamCountDownTextHandler;
+
+
+
+        }
+
     }
     public override void DeactivateOnInit()
     {
@@ -37,7 +48,13 @@ public class CrystalModeCountDownPanel : CrystalModePanel
      //   Debug.Log($"Value: {value}");
         CountDownText.text=value.ToString();
     }
- 
+    public void HandleWinnerTeamCountDownText(string TeamNameInfo)
+    {
+        teamCountDownTextHandler.ChangeWinnerTeamCountDownText_1(TeamNameInfo);
+        //HandleCrystalInfoPanel(new GameObject[] { TeamCountDownInfoText/*, CountDownTextObject*/ }, isActive, false, false);
+
+    }
+
     public void HandleCountDownTeamInfoTextPanel(bool isActive)
     {
 
