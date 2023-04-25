@@ -27,7 +27,7 @@ public class TeamCountDownTextHandler : MonoBehaviour
 
         //}
 
-        WinnerTeamCountDownText_1_Color = TeamNameInfo == "Team1" ? 
+        WinnerTeamCountDownText_1_Color = TeamNameInfo ==NetworkedGameManager.TeamTypes.Blue.ToString() ? 
                                           WinnerTeamCountDownText_1_Team1_Color : WinnerTeamCountDownText_1_Team2_Color;
 
         WinnerTeamCountDownText_1.color = WinnerTeamCountDownText_1_Color;
@@ -35,7 +35,7 @@ public class TeamCountDownTextHandler : MonoBehaviour
     public void ChangeWinnerTeamCountDownText_1(string TeamNameInfo)
     {
         SetWinnerTeamCountDownTextColor(TeamNameInfo);
-        WinnerTeamCountDownText_1.text = TeamNameInfo /*+ " TEAM"*/;
+        WinnerTeamCountDownText_1.text = TeamNameInfo + " TEAM";
     }
 
 

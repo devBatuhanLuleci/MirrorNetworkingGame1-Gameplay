@@ -22,6 +22,9 @@ public class CrystalModeGamePlayCanvasUIController : Panel
 
     public CrystalModeCountDownPanel crystalCountDownPanel;
 
+
+    public CrystalModeFinishPanel crystalmodeFinishPanel;
+
     public void ActivateCrystalnfoPanel(bool isActive)
     {
 
@@ -38,6 +41,7 @@ public class CrystalModeGamePlayCanvasUIController : Panel
 
 
     }
+
     public void ActivateCountDownTextPanel(bool isActive)
     {
 
@@ -46,12 +50,23 @@ public class CrystalModeGamePlayCanvasUIController : Panel
 
 
     }
+
+    public void ActivateFinishPanel(bool isActive)
+    {
+
+
+        crystalmodeFinishPanel.ActivateCountDownTextObject(isActive);
+
+
+    }
+
     public void Init()
     {
 
         crystalStartInfoPanel.Init();
         crystalStatsUIPanel.Init();
         crystalCountDownPanel.Init();
+        crystalmodeFinishPanel.Init();
 
 
     }
@@ -80,12 +95,21 @@ public class CrystalModeGamePlayCanvasUIController : Panel
         crystalCountDownPanel.ChangeCrystalModeCountDownTeamInfoTextScale(value);
 
     }
-    public void HandleWinnerTeamCountDownText(string TeamNameInfo)
+    public void HandleWinnableTeamCountDownText(string TeamNameInfo)
     {
-        crystalCountDownPanel.HandleWinnerTeamCountDownText(TeamNameInfo);
+        crystalCountDownPanel.HandleWinnableTeamCountDownText(TeamNameInfo);
 
     }
+    public void HandleWinnerText(string TeamNameInfo)
+    {
+        crystalmodeFinishPanel.ChangeWinnerTeamText(TeamNameInfo);
 
+    }
+    //public void HandleWinnerTeamCountDownText(string TeamNameInfo)
+    //{
+    //    crystalCountDownPanel.HandleWinnerTeamCountDownText(TeamNameInfo);
+
+    //}
     public void HandleCrystalModeGameTime(int value)
     {
 

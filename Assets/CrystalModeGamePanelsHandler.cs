@@ -24,6 +24,10 @@ public class CrystalModeGamePanelsHandler : NetworkBehaviour
     [SyncVar(hook = nameof(HandleCountDownTextPanel))]
     public bool isCountDownTextPanelActive;
 
+
+    [SyncVar(hook = nameof(HandleFinishPanel))]
+    public bool isFinishPanelActive;
+
     public enum GamePanelStatus { None, CountDown }
     [SyncVar]
     public GamePanelStatus gamePanelStatus;
@@ -97,7 +101,7 @@ public class CrystalModeGamePanelsHandler : NetworkBehaviour
 
 
         }
-
+       
 
 
     }
@@ -168,6 +172,10 @@ public class CrystalModeGamePanelsHandler : NetworkBehaviour
     {
         GameplayPanelUIManager.Instance.ActivateCountDownTextPanel(newValue);
     }
+    public void HandleFinishPanel(bool oldValue, bool newValue)
+    {
+        GameplayPanelUIManager.Instance.ActivateFinishPanel(newValue);
+    }
 
     //[ClientRpc]
     //public void ActivateSequenceOnClients()
@@ -194,8 +202,12 @@ public class CrystalModeGamePanelsHandler : NetworkBehaviour
 
     }
 
-    public void MakeWinnerTeamCountDownText(string teamText)
+    public void DoWinnableTeamCountDownText(string teamText)
     {
-        crystalModeStringSync.ChangeWinnerTeamCountDownText(teamText);
+        crystalModeStringSync.ChangeWinnableTeamCountDownText(teamText);
+    }
+    public void DoWinnerTeamText(string teamText)
+    {
+        crystalModeStringSync.ChangeWinnerTeamText(teamText);
     }
 }

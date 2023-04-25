@@ -83,39 +83,54 @@ public class GameplayPanelUIManager : Panel
 
      
      
-        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
-        crystalModeGamePlayCanvasUIController.ActivateCrystalnfoPanel(isActive);
+        //CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        //crystalModeGamePlayCanvasUIController.ActivateCrystalnfoPanel(isActive);
 
 
+        (GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController)?.ActivateCrystalnfoPanel(isActive);
 
 
     }
     public void ActivateCountDownTeamInfoTextPanel(bool newValue)
     {
-        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
-        crystalModeGamePlayCanvasUIController.ActivateCountDownTeamInfoTextPanel(newValue);
+        //CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        //crystalModeGamePlayCanvasUIController.ActivateCountDownTeamInfoTextPanel(newValue);
+
+        (GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController)?.ActivateCountDownTeamInfoTextPanel(newValue);
+
     }
     public void ActivateCountDownTextPanel(bool newValue)
     {
-        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
-        crystalModeGamePlayCanvasUIController.ActivateCountDownTextPanel(newValue);
+        //CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        //crystalModeGamePlayCanvasUIController.ActivateCountDownTextPanel(newValue);
+
+        (GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController)?.ActivateCountDownTextPanel(newValue);
+    }
+    public void ActivateFinishPanel(bool newValue)
+    {
+        //CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        //crystalModeGamePlayCanvasUIController.ActivateCountDownTextPanel(newValue);
+
+        (GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController)?.ActivateFinishPanel(newValue);
     }
 
     public void SetCrystalInfoText(float value)
     {
         //Debug.Log($"ezilip gelen : current value : {value}");
         
-        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
-        crystalModeGamePlayCanvasUIController.HandleCrystalInfoText(value);
+        //CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        //crystalModeGamePlayCanvasUIController.HandleCrystalInfoText(value);
 
+        (GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController)?.HandleCrystalInfoText(value);
 
     }
     public void SetTimeValueOnPanel(int value)
     {
 
-        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
-        crystalModeGamePlayCanvasUIController.HandleCrystalModeGameTime(value);
+        //CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        //crystalModeGamePlayCanvasUIController.HandleCrystalModeGameTime(value);
 
+        (GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController)?.HandleCrystalModeGameTime(value);
 
     }
 
@@ -123,45 +138,63 @@ public class GameplayPanelUIManager : Panel
     {
         //Debug.Log($"ezilip gelen : current value : {value}");
 
-        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
-        crystalModeGamePlayCanvasUIController.HandleCrystalInfoPanelPos(value);
+        //CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        //crystalModeGamePlayCanvasUIController.HandleCrystalInfoPanelPos(value);
 
+        (GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController)?.HandleCrystalInfoPanelPos(value);
 
     }
     public void SetCrystalModeCountDownTeamInfoValue(int value)
     {
         //Debug.Log($"ezilip gelen : current value : {value}");
 
-        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
-        crystalModeGamePlayCanvasUIController.HandleCrystalModeGameTempCountdownValue(value);
+        //CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        //crystalModeGamePlayCanvasUIController.HandleCrystalModeGameTempCountdownValue(value);
 
+        (GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController)?.HandleCrystalModeGameTempCountdownValue(value);
 
     }
     public void SetCrystalModeCountDownTeamInfoPanelScaleValue(float value)
     {
         //Debug.Log($"ezilip gelen : current value : {value}");
 
-        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
-        crystalModeGamePlayCanvasUIController.HandleCrystalModeCountDownTeamInfoTextScale(value);
+        //CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        //crystalModeGamePlayCanvasUIController.HandleCrystalModeCountDownTeamInfoTextScale(value);
 
+        (GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController)?.HandleCrystalModeCountDownTeamInfoTextScale(value);
 
     }
-    public void SetWinnerTeamCountDownText_1(string TeamNameInfo)
+    public void SetWinnableTeamCountDownText_1(string TeamNameInfo)
     {
         //Debug.Log($"ezilip gelen : current value : {value}");
-        Debug.Log("TeamName: " + TeamNameInfo);
-        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
-        crystalModeGamePlayCanvasUIController.HandleWinnerTeamCountDownText(TeamNameInfo);
+        //Debug.Log("TeamName: " + TeamNameInfo);
+        //CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        //crystalModeGamePlayCanvasUIController.HandleWinnerTeamCountDownText(TeamNameInfo);
 
+        (GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController)?.HandleWinnableTeamCountDownText(TeamNameInfo);
 
     }
+
+    public void SetWinnerTeamText(string TeamNameInfo)
+    {
+        //Debug.Log($"ezilip gelen : current value : {value}");
+        //Debug.Log("TeamName: " + TeamNameInfo);
+        //CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        //crystalModeGamePlayCanvasUIController.HandleWinnerTeamCountDownText(TeamNameInfo);
+
+        (GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController)?.HandleWinnerText(TeamNameInfo);
+
+    }
+
+
     public void SetCrystalModeCountDownValue(int value)
     {
         //Debug.Log($"ezilip gelen : current value : {value}");
 
-        CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
-        crystalModeGamePlayCanvasUIController.HandleCrystalModeGameCountdownValue(value);
+        //CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController = GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController;
+        //crystalModeGamePlayCanvasUIController.HandleCrystalModeGameCountdownValue(value);
 
+        (GemModeGameplayCanvas as CrystalModeGamePlayCanvasUIController)?.HandleCrystalModeGameCountdownValue(value);
 
     }
 

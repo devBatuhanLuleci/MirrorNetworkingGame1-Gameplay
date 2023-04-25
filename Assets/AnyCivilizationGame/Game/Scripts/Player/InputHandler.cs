@@ -61,6 +61,7 @@ public class InputHandler : Singleton<InputHandler>
     {
 
     }
+
     private void Update()
     {
         //NetworkedGameManager.Instance.IsGameStarted();

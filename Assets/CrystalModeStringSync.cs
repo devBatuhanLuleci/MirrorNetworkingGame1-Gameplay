@@ -6,16 +6,33 @@ using UnityEngine;
 
 public class CrystalModeStringSync : NetworkBehaviour
 {
-    [SyncVar(hook = nameof(OnWinnerTeamCountDownTextChanged))]
-    public string WinnerTeamCountDownText;
+    [SyncVar(hook = nameof(OnWinnableTeamCountDownTextChanged))]
+    public string WinnableTeamCountDownText;
 
-    public void  OnWinnerTeamCountDownTextChanged(string oldValue,string newValue)
+    [SyncVar(hook = nameof(OnWinnerTeamTextChanged))]
+    public string WinnerTeamText;
+
+    public void  OnWinnableTeamCountDownTextChanged(string oldValue,string newValue)
     {
-        GameplayPanelUIManager.Instance.SetWinnerTeamCountDownText_1(newValue);
+        GameplayPanelUIManager.Instance.SetWinnableTeamCountDownText_1(newValue);
 
     }
-    public void ChangeWinnerTeamCountDownText(string text)
+    public void ChangeWinnableTeamCountDownText(string text)
     {
-        WinnerTeamCountDownText=text;
+        WinnableTeamCountDownText=text;
     }
+
+
+
+    public void OnWinnerTeamTextChanged(string oldValue, string newValue)
+    {
+        GameplayPanelUIManager.Instance.SetWinnerTeamText(newValue);
+
+    }
+    public void ChangeWinnerTeamText(string text)
+    {
+        WinnerTeamText = text;
+    }
+
+
 }

@@ -16,7 +16,7 @@ public class NetworkedGameManager : NetworkBehaviour
     #region 
 
     #region Singleton 
-    private static NetworkedGameManager instance;
+    protected static NetworkedGameManager instance;
     public static NetworkedGameManager Instance
     {
         get
@@ -45,9 +45,9 @@ public class NetworkedGameManager : NetworkBehaviour
     //    set { IsGameStartable(value); }
     //}
 
-    public TeamTypes myTeam;
+    public TeamTypes clientTeam;
 
-    public enum TeamTypes { Team1, Team2,
+    public enum TeamTypes { Blue, Red,
         None
     }
     [SyncVar]
@@ -123,6 +123,32 @@ public class NetworkedGameManager : NetworkBehaviour
         Info("awake: " + MatchNetworkManager.Instance.mode);
 
     }
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+     
+       // NetworkServer.RegisterHandler<NetworkIdentity>(OnNewPlayerJoined,false);
+
+    }
+
+    public void OnNewPlayerJoined(NetworkConnectionToClient conn, NetworkIdentity newPlayer)
+    {
+        if (newPlayer.hasAuthority)
+        {
+            // Resend the ClientRPC to all clients
+            RpcResendDataToClients();
+        }
+    }
+    [ClientRpc]
+    private void RpcResendDataToClients()
+    {
+        YourClientRpcMethodName();
+    }
+
+    private void YourClientRpcMethodName()
+    {
+        Debug.Log("My name is ahmet güntüran!!");
+    }
 
     public TeamTypes GetMyTeam(int connID)
     {
@@ -133,17 +159,21 @@ public class NetworkedGameManager : NetworkBehaviour
                        where person.connectionId.Equals(connID)
                        select personGroup;
 
-        teamType = teamEnum.First().team;
+        teamType = teamEnum.First().teamType;
 
         //  Debug.Log($" my team: {teamType}");
 
         return teamType;
     }
+    public void SetThisClientTeam(NetworkedGameManager.TeamTypes team)
+    {
+        clientTeam = team;
 
+    }
     public TeamTypes GetMyTeam()
     {
 
-        return myTeam;
+        return clientTeam;
     }
 
     public TeamTypes GetMyTeam(NetworkIdentity networkIdentity)
@@ -155,13 +185,12 @@ public class NetworkedGameManager : NetworkBehaviour
                        where person.netIdentity.Equals(networkIdentity)
                        select personGroup;
 
-        teamType = teamEnum.First().team;
+        teamType = teamEnum.First().teamType;
 
         //  Debug.Log($" my team: {teamType}");
 
         return teamType;
     }
-
 
     public void CreateTeam(Dictionary<int, NetworkConnectionToClient> players)
     {
@@ -169,11 +198,11 @@ public class NetworkedGameManager : NetworkBehaviour
 
         bool isTeam1 = true;
         Teams = new List<Team>() {
-            new Team(TeamTypes.Team1,new List<TeamPlayers>())
+            new Team(TeamTypes.Blue,new List<TeamPlayers>())
             {
 
             },
-            new Team(TeamTypes.Team2,new List<TeamPlayers>())
+            new Team(TeamTypes.Red,new List<TeamPlayers>())
             {
 
             }
@@ -183,11 +212,11 @@ public class NetworkedGameManager : NetworkBehaviour
 
         foreach (var item in players)
         {
-            var team = isTeam1 ? TeamTypes.Team1 : TeamTypes.Team2;
+            var team = isTeam1 ? TeamTypes.Blue : TeamTypes.Red;
 
-            var myTeam = Teams.Where(t => t.team == team).FirstOrDefault();
+            var myTeam = Teams.Where(t => t.teamType == team).FirstOrDefault();
 
-            TeamPlayers teamPlayers = new TeamPlayers(item.Value.connectionId, item.Value.identity
+            TeamPlayers teamPlayer = new TeamPlayers(item.Value.connectionId, item.Value.identity
             //{
             //    //new ItemTypes
             //    //    {
@@ -197,8 +226,13 @@ public class NetworkedGameManager : NetworkBehaviour
             //    //    }
             //}
             );
+            //if (teamPlayers.netIdentity.gameObject.TryGetComponent<PlayerSetup>(out PlayerSetup playerSetup))
+            //{
+            //    playerSetup.InitilizeTeamOfThisPlayer(team);
 
-            myTeam.teamPlayers.Add(teamPlayers);
+
+            //}
+            myTeam.teamPlayers.Add(teamPlayer);
 
 
             isTeam1 = !isTeam1;
@@ -209,7 +243,31 @@ public class NetworkedGameManager : NetworkBehaviour
 
 
     }
+    public void InitilizeTeamOfThePlayer()
+    {
+        //var myTeam = Teams.Where(t => t.team == team).FirstOrDefault();
+        foreach (var team in Teams)
+        {
+            foreach (var player in team.teamPlayers)
+            {
+                if (player.netIdentity.gameObject.TryGetComponent<PlayerSetup>(out PlayerSetup playerSetup))
+                {
+                    playerSetup.InitilizeTeamOfThisPlayer(team.teamType);
+                }
 
+            }
+            //foreach (var item in myTeam.teamPlayers)
+            //{
+
+            //}
+            //if (teamPlayers.netIdentity.gameObject.TryGetComponent<PlayerSetup>(out PlayerSetup playerSetup))
+            //{
+            //    playerSetup.InitilizeTeamOfThisPlayer(team);
+
+
+            //}
+        }
+    }
 
 
     public bool IsInMyTeam(NetworkIdentity otherPlayer)
@@ -228,7 +286,7 @@ public class NetworkedGameManager : NetworkBehaviour
                       select personGroup;
         var otherTeam = result4.First();
 
-        return ourTeam.team == otherTeam.team;
+        return ourTeam.teamType == otherTeam.teamType;
 
     }
     public bool IsInMyTeam(uint otherPlayerNetId)
@@ -248,8 +306,8 @@ public class NetworkedGameManager : NetworkBehaviour
 
         var otherTeam = result4.First();
 
-
-        return ourTeam.team == otherTeam.team;
+     
+        return ourTeam.teamType == otherTeam.teamType;
 
 
     }
@@ -280,10 +338,15 @@ public class NetworkedGameManager : NetworkBehaviour
 
 
 
-        return ourTeam.team == otherTeam.team;
+        return ourTeam.teamType == otherTeam.teamType;
 
 
     }
+  
+
+
+
+
 
     [Command/*(requiresAuthority =true)*/]
     public void GetLocalPlayer(/*NetworkConnectionToClient conn*/)
@@ -329,6 +392,7 @@ public class NetworkedGameManager : NetworkBehaviour
     {
         CreateTeam(players);
         // Setup();
+
         string msg = $" <color=green> Server listining on </color> localhost:{ACGDataManager.Instance.GameData.Port}";
         Info(msg);
     }

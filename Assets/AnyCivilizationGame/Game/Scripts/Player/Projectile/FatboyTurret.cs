@@ -92,7 +92,7 @@ public class FatboyTurret : Throwable,IDamagable
 
         while (true)
         {
-
+            if (NetworkedGameManager.Instance.isGameFinished) { break; }
             if (turretShootStatus == TurretShootStatus.Shootable && turretRotation == TurretRotation.Focused)
             {
                 if (CheckAnyEnemy())
@@ -210,7 +210,7 @@ public class FatboyTurret : Throwable,IDamagable
         }
 
 
-
+        if (NetworkedGameManager.Instance.isGameFinished) { return; }
         if (turretShootStatus == TurretShootStatus.Shootable || turretShootStatus == TurretShootStatus.Reloading)
             RotateToTarget(TurretRotatePivot, GetClosestEnemyObject(AllEnemiesInCircle()));
 

@@ -37,9 +37,11 @@ public class Crystal : Throwable , INetworkPooledObject
     private void OnTriggerEnter(Collider other)
     {
 
+        if(!isServer) return;
 
+        if (NetworkedGameManager.Instance.isGameFinished) { return; }
 
-        if (other.TryGetComponent<PlayerController>(out var otherPlayerController) && isServer )
+        if (other.TryGetComponent<PlayerController>(out var otherPlayerController) )
         {
             if (otherPlayerController.IsLive)
             {

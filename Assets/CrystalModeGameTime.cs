@@ -14,7 +14,7 @@ public class CrystalModeGameTime : NetworkedTimer
     public override void OnCountDownFinished()
     {
         base.OnCountDownFinished();
-       CrystalModeNetworkedGameManager crystalModeNetworkedGameManager =  (CrystalModeNetworkedGameManager)NetworkedGameManager.Instance;
-        crystalModeNetworkedGameManager.OnCountdownReached_FinishGame();
+       
+        (NetworkedGameManager.Instance as CrystalModeNetworkedGameManager)?.OnGameTimeFinished_FinishGame();
     }
 }

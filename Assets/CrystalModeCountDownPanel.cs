@@ -48,7 +48,7 @@ public class CrystalModeCountDownPanel : CrystalModePanel
      //   Debug.Log($"Value: {value}");
         CountDownText.text=value.ToString();
     }
-    public void HandleWinnerTeamCountDownText(string TeamNameInfo)
+    public void HandleWinnableTeamCountDownText(string TeamNameInfo)
     {
         teamCountDownTextHandler.ChangeWinnerTeamCountDownText_1(TeamNameInfo);
         //HandleCrystalInfoPanel(new GameObject[] { TeamCountDownInfoText/*, CountDownTextObject*/ }, isActive, false, false);

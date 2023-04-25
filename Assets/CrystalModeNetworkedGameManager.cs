@@ -82,6 +82,16 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
 
 
         }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            InitilizeTeamOfThePlayer();
+        }
+
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            OnGameFinished();
+        }
+
     }
     public void OnSequenceIsReadyForSpawnCrystal()
     {
@@ -106,12 +116,24 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
         }
     }
 
+    public void OnGameFinished()
+    {
+        OnFinishedDoSomeChanges();
+        crystalModeGamePanelsHandler.DoWinnerTeamText(currentlyWinningTeam.ToString());
+        crystalModeGamePanelsHandler.isCountDownTextPanelActive = false;
+        crystalModeGamePanelsHandler.isFinishPanelActive = true;
+    }
 
-
-    public void OnCountdownReached_FinishGame()
+    public void OnFinishedDoSomeChanges()
     {
         isGameFinished = true;
         isGameStarted = false;
+
+    }
+
+    public void OnGameTimeFinished_FinishGame()
+    {
+        OnFinishedDoSomeChanges();
     }
 
 
@@ -149,6 +171,7 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
         }
 
         base.OnStartServer();
+        
     }
 
     public override void ServerStarted(Dictionary<int, NetworkConnectionToClient> players)
@@ -206,7 +229,7 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
         if (currentlyWinningTeam!= teamType && CheckTeamCrystalAmountToReachMax(MyTeamCrystalScore(teamType)) && crystalModeGamePanelsHandler.gamePanelStatus != CrystalModeGamePanelsHandler.GamePanelStatus.CountDown)
         {
             currentlyWinningTeam = teamType;
-            crystalModeGamePanelsHandler.MakeWinnerTeamCountDownText(currentlyWinningTeam.ToString());
+            crystalModeGamePanelsHandler.DoWinnableTeamCountDownText(currentlyWinningTeam.ToString());
             OnCurrentTeamReachedMaxGemAmount();
 
 
@@ -270,13 +293,13 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
     {
         TeamTypes otherTeam = TeamTypes.None;
 
-        if (myTeam.Equals(TeamTypes.Team1))
+        if (myTeam.Equals(TeamTypes.Blue))
         {
-            otherTeam = TeamTypes.Team2;
+            otherTeam = TeamTypes.Red;
         }
-        else if (myTeam.Equals(TeamTypes.Team2))
+        else if (myTeam.Equals(TeamTypes.Red))
         {
-            otherTeam = TeamTypes.Team1;
+            otherTeam = TeamTypes.Blue;
 
         }
         return otherTeam;
