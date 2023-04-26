@@ -64,6 +64,13 @@ public class InputHandler : Singleton<InputHandler>
 
     private void Update()
     {
+
+        //if (Input.GetKeyDown(KeyCode.X))
+        //{
+        //    Debug.Log("bASTİM");
+        //    PlayerController.wow();
+        //}
+
         //NetworkedGameManager.Instance.IsGameStarted();
         //      NetworkedGameManager.Instance.IsClientConnected();
         if (NetworkedGameManager.Instance == null) { return; }
@@ -72,6 +79,7 @@ public class InputHandler : Singleton<InputHandler>
 
         Move();
         Attack();
+
 
     
 }
