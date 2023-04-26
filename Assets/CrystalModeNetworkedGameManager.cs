@@ -69,6 +69,19 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
     }
     public override void Update()
     {
+
+        if(isClient)
+        {
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                //OnGameFinished();
+                Debug.Log("ben client'ım .");
+
+                // call the SyncGameData method on the server
+                CmdCallSyncGameData();
+            }
+
+        }
         if (!isServer) { return; }
         base.Update();
         if (Input.GetKeyDown(KeyCode.N) && crystalModeGamePanelsHandler.gamePanelStatus != CrystalModeGamePanelsHandler.GamePanelStatus.CountDown)
@@ -87,10 +100,7 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
             InitilizeTeamOfThePlayer();
         }
 
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            OnGameFinished();
-        }
+   
 
     }
     public void OnSequenceIsReadyForSpawnCrystal()
@@ -149,17 +159,48 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
         crystalModeGamePanelsHandler.onHandleOpeningPanelReadyToPlayAction.RemoveListener(OnSequenceIsReadyForPlay);
 
     }
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
-
-    }
+  
     public override void SetupClient()
     {
         base.SetupClient();
 
 
 
+    }
+
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+
+ 
+    }
+
+    //[Command]
+    //private void CmdSyncGameData(bool isAutoattack)
+    //{
+    //    Debug.Log("aldım");
+
+    //    // Update the gem UI amounts for each team
+    //    //    RPC_OnGemModeCrystalValueChangedChangeGemUIAmount(TeamTypes.Blue, collectedCrystalDictionary[TeamTypes.Blue].Count);
+    //    //    RPC_OnGemModeCrystalValueChangedChangeGemUIAmount(TeamTypes.Red, collectedCrystalDictionary[TeamTypes.Red].Count);
+    //}
+
+    [ClientRpc]
+    private void RpcCallSyncGameData()
+    {
+        //if (hasAuthority)
+        //{
+        Debug.Log("arttık clientdayım");
+
+        //}
+    }
+
+    [Command]
+    private void CmdCallSyncGameData()
+    {
+        Debug.Log("arttık serverdayım");
+        RpcCallSyncGameData();
     }
     public override void OnStartServer()
     {
@@ -207,7 +248,7 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
         AddToCollectedCrystalList(connectionID);
         var teamType = GetMyTeam(connectionID);
 
-        OnGemModeCrystalValueChanged(teamType, collectedCrystalDictionary[teamType].Count);
+        RPC_OnGemModeCrystalValueChangedChangeGemUIAmount(teamType, collectedCrystalDictionary[teamType].Count);
 
         PlayerController player = MatchNetworkManager.Instance.GetPlayerByConnectionID(connectionID);
         player.OnCrystalCollected_UpdatePlayer(AddGemDataToPlayers().GetValueOrDefault(connectionID));
@@ -267,7 +308,7 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
             }
             RemoveFromCollectCrystalList(connectionID, teamType);
 
-            OnGemModeCrystalValueChanged(teamType, collectedCrystalDictionary[teamType].Count);
+            RPC_OnGemModeCrystalValueChangedChangeGemUIAmount(teamType, collectedCrystalDictionary[teamType].Count);
 
             var RemainedAmountCrystalOfPlayer = AddGemDataToPlayers().GetValueOrDefault(connectionID);
 
@@ -418,12 +459,12 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
         //}
 
     }
-
+   
     [ClientRpc]
-    public void OnGemModeCrystalValueChanged(TeamTypes team, int gemCount)
+    public void RPC_OnGemModeCrystalValueChangedChangeGemUIAmount(TeamTypes team, int gemCount)
     {
         //:TODO  burayı getcompenenintchildren'dan kurtar.
-
+        Debug.Log("buraya 2 kere girdim");
         if (GetMyTeam() == team)
         {
             GameplayPanelUIManager.Instance.GemModeGameplayCanvas.GetComponentInChildren<CrystalStatsUIPanelManager>().AllyTeamPanel.ChangeCrystalAmountUI(gemCount);

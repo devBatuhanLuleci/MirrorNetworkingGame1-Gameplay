@@ -127,28 +127,13 @@ public class NetworkedGameManager : NetworkBehaviour
     {
         base.OnStartServer();
      
-       // NetworkServer.RegisterHandler<NetworkIdentity>(OnNewPlayerJoined,false);
-
     }
-
-    public void OnNewPlayerJoined(NetworkConnectionToClient conn, NetworkIdentity newPlayer)
+    public override void OnStartClient()
     {
-        if (newPlayer.hasAuthority)
-        {
-            // Resend the ClientRPC to all clients
-            RpcResendDataToClients();
-        }
-    }
-    [ClientRpc]
-    private void RpcResendDataToClients()
-    {
-        YourClientRpcMethodName();
+        base.OnStartClient();
     }
 
-    private void YourClientRpcMethodName()
-    {
-        Debug.Log("My name is ahmet güntüran!!");
-    }
+
 
     public TeamTypes GetMyTeam(int connID)
     {
