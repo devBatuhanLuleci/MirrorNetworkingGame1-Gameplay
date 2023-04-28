@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: -1924195726710718835}
   - component: {fileID: 1264678718499661845}
   - component: {fileID: 369969385887332737}
-  - component: {fileID: 2070738413}
   - component: {fileID: 895769120}
+  - component: {fileID: 7976327352425498299}
   m_Layer: 16
   m_Name: Crystal
   m_TagString: Untagged
@@ -128,30 +128,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 2
---- !u!114 &2070738413
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1275126349886688}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 556c631b4463ba54296cc5b5aa259790, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pathPrefab: {fileID: 114462757500385858, guid: 52cf263f378ffbf40bc5449e7319aa50, type: 3}
-  currentpathCreator: {fileID: 0}
-  endOfPathInstruction: 2
-  speed: 0.2
-  waypoints: []
-  startPoint: {fileID: 0}
-  middlePoint: {fileID: 0}
-  endPoint: {fileID: 0}
-  OnReachedTargetEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  offSet: {x: 0, y: 0, z: 0}
 --- !u!114 &895769120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,9 +140,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faa1860f0675c954fbb6ff3b724200b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rotateSpeedY: 80
+  _rotateSpeedY: 120
   _bounceSpeed: 0
   _bounceLimit: 0
+--- !u!114 &7976327352425498299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1275126349886688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2681fd7b05373a9438b69ceba15700df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.5
+  jumpiness: 0.5
+  OnReachedTargetEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &3374159289894763515
 GameObject:
   m_ObjectHideFlags: 0

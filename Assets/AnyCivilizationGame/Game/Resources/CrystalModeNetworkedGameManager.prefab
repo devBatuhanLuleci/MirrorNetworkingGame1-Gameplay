@@ -94,23 +94,23 @@ MonoBehaviour:
   isGameStarted: 0
   isGameFinished: 0
   isClientConnected: 0
-  myTeam: 0
+  clientTeam: 0
   Teams:
-  - team: 0
+  - teamType: 0
     teamPlayers:
     - connectionId: 0
       netIdentity: {fileID: 0}
     - connectionId: 0
       netIdentity: {fileID: 0}
-  - team: 1
+  - teamType: 0
     teamPlayers:
     - connectionId: 0
       netIdentity: {fileID: 0}
     - connectionId: 0
       netIdentity: {fileID: 0}
   playerCount: 0
-  maxCrystalAmount: 1
   currentlyWinningTeam: 0
+  maxCrystalAmount: 10
   teams: 
 --- !u!114 &-906108526276130252
 MonoBehaviour:
@@ -167,6 +167,7 @@ MonoBehaviour:
   isOpeningPanelActive: 0
   isCountDownTeamInfoTextPanelActive: 0
   isCountDownTextPanelActive: 0
+  isFinishPanelActive: 0
   gamePanelStatus: 0
   onHandleOpeningPanelReadyToSpawnCrystalAction:
     m_PersistentCalls:
@@ -382,4 +383,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  WinnerTeamCountDownText: 
+  WinnableTeamCountDownText: 
+  WinnerTeamText: 

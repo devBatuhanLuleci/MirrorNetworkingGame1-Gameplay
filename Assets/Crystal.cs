@@ -8,7 +8,7 @@ public class Crystal : Throwable , INetworkPooledObject
 {
     public Action ReturnHandler { get ; set; }
     private Rigidbody rb;
-    private CrystalMovement crystalMovement;
+    private MoveAtoBTransformManager moveAtoBTransformManager;
     private Collider[] colls;
     private Vector3 crystalForceDir;
     public float bounceForwardForceSpeed = 100f;
@@ -19,8 +19,8 @@ public class Crystal : Throwable , INetworkPooledObject
     {
         rb = GetComponent<Rigidbody>();
         colls=gameObject.GetComponentsInChildren<Collider>();
-        crystalMovement=GetComponent<CrystalMovement>();
-        crystalMovement.OnReachedTargetEvent.AddListener(OnReachedTarget);
+        moveAtoBTransformManager = GetComponent<MoveAtoBTransformManager>();
+        moveAtoBTransformManager.OnReachedTargetEvent.AddListener(OnReachedTarget);
 
     }
 
@@ -70,9 +70,13 @@ public class Crystal : Throwable , INetworkPooledObject
 
         var startPos = transform;
         var endPos = otherPlayerController.GemCollectPoint.transform;
-     //   middleGo.transform.position = (startPos.position + endPos.transform.position) / 2f;
-        var points = new List<Transform> { startPos, /*middleGo.transform,*/ endPos };
-        crystalMovement.InitInfo(points);
+
+        moveAtoBTransformManager.InitMoveInfo(startPos,endPos);
+
+
+     ////   middleGo.transform.position = (startPos.position + endPos.transform.position) / 2f;
+     //   var points = new List<Transform> { startPos, /*middleGo.transform,*/ endPos };
+     //   crystalMovement.InitInfo(points);
 
     }
     public void HandleCollider(bool activate)
