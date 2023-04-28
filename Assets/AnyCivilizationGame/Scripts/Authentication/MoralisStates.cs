@@ -1,4 +1,4 @@
-using MoralisUnity.Kits.AuthenticationKit;
+//using MoralisUnity.Kits.AuthenticationKit;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,8 +14,8 @@ public class MoralisStates : MonoBehaviour
         AuthenticationManager.Instance.MoralisOnDisconnected();
 
     }
-    public void OnStateChanged(AuthenticationKitState state)
-    {
-        AuthenticationManager.Instance.MoralisOnStateChanged(state);
-    }
+    //public void OnStateChanged(AuthenticationKitState state)
+    //{
+    //    AuthenticationManager.Instance.MoralisOnStateChanged(state);
+    //}
 }

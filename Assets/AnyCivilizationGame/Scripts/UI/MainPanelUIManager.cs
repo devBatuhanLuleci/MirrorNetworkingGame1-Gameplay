@@ -1,4 +1,4 @@
-using MoralisUnity.Kits.AuthenticationKit;
+//using MoralisUnity.Kits.AuthenticationKit;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -236,14 +236,14 @@ class MainPanelUIManager : Panel
 
     private void AddListeners()
     {
-        AuthenticationKit.Instance.OnConnected.AddListener(OnConnected);
+        //AuthenticationKit.Instance.OnConnected.AddListener(OnConnected);
         AuthenticationManager.Instance.OnUserUnregister.AddListener(OnUserUnregister);
         AuthenticationManager.Instance.OnUserLogged.AddListener(OnUserLogged);
 
     }
     private void RemoveListeners()
     {
-        AuthenticationKit.Instance.OnConnected.RemoveListener(OnConnected);
+        //AuthenticationKit.Instance.OnConnected.RemoveListener(OnConnected);
         AuthenticationManager.Instance.OnUserUnregister.RemoveListener(OnUserUnregister);
         AuthenticationManager.Instance.OnUserLogged.RemoveListener(OnUserLogged);
     }

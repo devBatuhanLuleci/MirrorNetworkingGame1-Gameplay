@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Text.RegularExpressions;
-using MoralisUnity.Kits.AuthenticationKit;
+//using MoralisUnity.Kits.AuthenticationKit;
 using UnityEngine.UI;
 
 public class ACG_LoginPanelManager : Panel
@@ -146,12 +146,12 @@ public class ACG_LoginPanelManager : Panel
 
     private void Init_WalletAdress()
     {
-        walletAdressField.text = AuthenticationKit.Instance.walletAddr;
+        //walletAdressField.text = AuthenticationKit.Instance.walletAddr;
     }
 
     private void Init_MoralisID()
     {
-        moralisIDField.text = AuthenticationKit.Instance.moralisID;
+        //moralisIDField.text = AuthenticationKit.Instance.moralisID;
 
     }
 

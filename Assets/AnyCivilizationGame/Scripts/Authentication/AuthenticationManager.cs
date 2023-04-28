@@ -1,9 +1,9 @@
 
-using Cysharp.Threading.Tasks;
+//using Cysharp.Threading.Tasks;
 using kcp2k;
-using MoralisUnity;
-using MoralisUnity.Kits.AuthenticationKit;
-using MoralisUnity.Platform.Objects;
+//using MoralisUnity;
+//using MoralisUnity.Kits.AuthenticationKit;
+//using MoralisUnity.Platform.Objects;
 using Oddworm.Framework;
 using System;
 using System.Collections;
@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
-using WalletConnectSharp.Core.Models;
+//using WalletConnectSharp.Core.Models;
 
 public class AuthenticationManager : Singleton<AuthenticationManager>
 {
@@ -87,7 +87,7 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
         switch (loginType)
         {
             case LoginType.Moralis:
-                await AuthenticationKit.Instance.InitializeAsync();
+                //await AuthenticationKit.Instance.InitializeAsync();
                 break;
             case LoginType.User:
                 LoginWebAPI(userID);
@@ -107,9 +107,9 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
     }
     public async void CreateUserWithMoralis(string email)
     {
-        var moralisUser = await Moralis.GetUserAsync();
-        var createRequest = new CreateRequest(moralisUser.username, email, moralisUser.ethAddress);
-        HttpClient.Instance.Post<User>(createRequest, CreateUserSuccess, CreateUserFail);
+       // var moralisUser = await Moralis.GetUserAsync();
+      //  var createRequest = new CreateRequest(moralisUser.username, email, moralisUser.ethAddress);
+     //   HttpClient.Instance.Post<User>(createRequest, CreateUserSuccess, CreateUserFail);
 
     }
 
@@ -156,45 +156,45 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
         Debug.Log("AuthenticationManager moralis disconnected.");
 
     }
-    public async void MoralisOnStateChanged(AuthenticationKitState state)
-    {
-        Debug.Log($"AuthenticationManager moralis state changed. {state}");
-        switch (state)
-        {
-            case AuthenticationKitState.None:
-                break;
-            case AuthenticationKitState.PreInitialized:
-                break;
-            case AuthenticationKitState.Initializing:
-                break;
-            case AuthenticationKitState.Initialized:
-                // You have to wait or Unity will crash
-                //await UniTask.DelayFrame(1);
-                //AuthenticationKit.Instance.Connect();
-                break;
-            case AuthenticationKitState.WalletConnecting:
-                break;
-            case AuthenticationKitState.WalletConnected:
+    //public async void MoralisOnStateChanged(AuthenticationKitState state)
+    //{
+    //    Debug.Log($"AuthenticationManager moralis state changed. {state}");
+    //    switch (state)
+    //    {
+    //        case AuthenticationKitState.None:
+    //            break;
+    //        case AuthenticationKitState.PreInitialized:
+    //            break;
+    //        case AuthenticationKitState.Initializing:
+    //            break;
+    //        case AuthenticationKitState.Initialized:
+    //            // You have to wait or Unity will crash
+    //            //await UniTask.DelayFrame(1);
+    //            //AuthenticationKit.Instance.Connect();
+    //            break;
+    //        case AuthenticationKitState.WalletConnecting:
+    //            break;
+    //        case AuthenticationKitState.WalletConnected:
 
-                break;
-            case AuthenticationKitState.WalletSigning:
-                break;
-            case AuthenticationKitState.WalletSigned:
-                break;
-            case AuthenticationKitState.MoralisLoggingIn:
-                break;
-            case AuthenticationKitState.MoralisLoggedIn:
-                var moralisUser = await Moralis.GetUserAsync();
-                LoginWebAPI(moralisUser.username);
-                break;
-            case AuthenticationKitState.Disconnecting:
-                break;
-            case AuthenticationKitState.Disconnected:
-                break;
-            default:
-                break;
-        }
+    //            break;
+    //        case AuthenticationKitState.WalletSigning:
+    //            break;
+    //        case AuthenticationKitState.WalletSigned:
+    //            break;
+    //        case AuthenticationKitState.MoralisLoggingIn:
+    //            break;
+    //        case AuthenticationKitState.MoralisLoggedIn:
+    //            var moralisUser = await Moralis.GetUserAsync();
+    //            LoginWebAPI(moralisUser.username);
+    //            break;
+    //        case AuthenticationKitState.Disconnecting:
+    //            break;
+    //        case AuthenticationKitState.Disconnected:
+    //            break;
+    //        default:
+    //            break;
+    //    }
 
-    }
+    //}
     #endregion
 }
