@@ -9,17 +9,17 @@ using static NetworkedGameManager;
 public class CrystalModeNetworkedGameManager : NetworkedGameManager
 {
 
-    public CrystalModeGamePlayCanvasUIController crystalModeGamePlayCanvasUIController;
+
     private NetworkSpawnObjectInInterval NetworkSpawnObjectInInterval;
     private CrystalModeCountdown crystalModeCountdown;
-    private CrystalModeUIOpeningHandler cystalModeUIOpeningHandler;
+    private CrystalModeGameTime crystalModeGameTime;
+    private CrystalModeGamePanelsHandler crystalModeGamePanelsHandler;
     private Dictionary<TeamTypes, List<GemData>> collectedCrystalDictionary;
- 
+    public TeamTypes currentlyWinningTeam;
+    public int maxCrystalAmount = 10;
     Dictionary<int, int> playerGems;
 
-    public enum CanvasSequence { None, ModeInfo, InGame }
-    [SyncVar]
-    public CanvasSequence Info;
+
 
     //TODO: disable custom attribute 'unu yaz.  [Disable]  Unity Learn bak.
     [TextArea]
@@ -41,93 +41,208 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
             this.crystalModeCountdown = crystalModeCountdown;
 
         }
-        if (TryGetComponent<CrystalModeUIOpeningHandler>(out CrystalModeUIOpeningHandler crystalModeUIOpeningHandler))
+        if (TryGetComponent<CrystalModeGameTime>(out CrystalModeGameTime crystalModeGameTime))
         {
 
-            this.cystalModeUIOpeningHandler = crystalModeUIOpeningHandler;
+            this.crystalModeGameTime = crystalModeGameTime;
 
+        }
+        if (TryGetComponent<CrystalModeGamePanelsHandler>(out CrystalModeGamePanelsHandler crystalModeUIOpeningHandler))
+        {
+
+            this.crystalModeGamePanelsHandler = crystalModeUIOpeningHandler;
+
+        }
+
+        //if (isServer)
+        //{
+
+        crystalModeGamePanelsHandler.onHandleOpeningPanelReadyToSpawnCrystalAction.AddListener(OnSequenceIsReadyForSpawnCrystal);
+        crystalModeGamePanelsHandler.onHandleOpeningPanelReadyToPlayAction.AddListener(OnSequenceIsReadyForPlay);
+        // }
+        //cystalModeGamePanelsHandler.onCountDownPanelActivation.AddListener(OnCurrentTeamReachedMaxGemAmount);
+
+
+        crystalModeGamePanelsHandler.CreateCrystalModeCanvas();
+
+
+    }
+    public override void Update()
+    {
+
+        //if(isClient)
+        //{
+        //    if (Input.GetKeyDown(KeyCode.V))
+        //    {
+        //        //OnGameFinished();
+        //        Debug.Log("ben client'ım .");
+
+        //        // call the SyncGameData method on the server
+        //        CmdCallSyncGameData();
+        //    }
+
+        //}
+        //if (isClient)
+        //{
+
+        //    if (Input.GetKeyDown(KeyCode.X))
+        //    {
+        //        Debug.Log("bASTİM");
+        //        /* PlayerController.*/
+        //        CmdSyncGameData();
+        //    }
+        //}
+
+
+        if (!isServer) { return; }
+        base.Update();
+        if (Input.GetKeyDown(KeyCode.N) && crystalModeGamePanelsHandler.gamePanelStatus != CrystalModeGamePanelsHandler.GamePanelStatus.CountDown)
+        {
+
+            OnCurrentTeamReachedMaxGemAmount();
+        }
+        if (Input.GetKeyDown(KeyCode.B) && crystalModeGamePanelsHandler.gamePanelStatus == CrystalModeGamePanelsHandler.GamePanelStatus.CountDown)
+        {
+            CancelCountDown();
+
+
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            InitilizeTeamOfThePlayer();
         }
 
 
 
     }
+    public void OnSequenceIsReadyForSpawnCrystal()
+    {
+        StartSpawnLoop();
+    }
+    public void OnSequenceIsReadyForPlay()
+    {
+        crystalModeGameTime.StartCountDown();
+        isGameStarted = true;
 
-    //private void debugrepeat()
-    //{
-    //    Debug.Log("afasdasdasfsad");
-    //}
+    }
+    public override void OnGameStarted(bool oldValue, bool newValue)
+    {
+        base.OnGameStarted(oldValue, newValue);
 
-    //private void Update()
-    //{
-    //    if (isServer)
-    //    {
-    //        debugrepeat();
-    //        gameObject.CreatePrimitiveObject(Vector3.zero,Color.black,1f);
-    //        //InvokeRepeating("debugrepeat", 1, .1f);
+        if (newValue == true)
+        {
 
-    //    }
-    //}
+            ActivateJoystickOnClients();
+
+
+        }
+    }
+
+    public void OnGameFinished()
+    {
+        OnFinishedDoSomeChanges();
+        crystalModeGamePanelsHandler.DoWinnerTeamText(currentlyWinningTeam.ToString());
+        crystalModeGamePanelsHandler.isCountDownTextPanelActive = false;
+        crystalModeGamePanelsHandler.isFinishPanelActive = true;
+    }
+
+    public void OnFinishedDoSomeChanges()
+    {
+        isGameFinished = true;
+        isGameStarted = false;
+
+    }
+
+    public void OnGameTimeFinished_FinishGame()
+    {
+        OnFinishedDoSomeChanges();
+    }
+
+
+    public void ActivateJoystickOnClients()
+    {
+        //InputHandler.Instance.joystickCanvas
+        GameplayPanelUIManager.Instance.joystickCanvas.ShowSmoothly();
+    }
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+        crystalModeGamePanelsHandler.onHandleOpeningPanelReadyToSpawnCrystalAction.RemoveListener(OnSequenceIsReadyForSpawnCrystal);
+        crystalModeGamePanelsHandler.onHandleOpeningPanelReadyToPlayAction.RemoveListener(OnSequenceIsReadyForPlay);
+
+    }
+
     public override void SetupClient()
     {
         base.SetupClient();
-       // Invoke("SetMyTeam", 3);
+
+
+
+    }
+
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+
+        CmdSyncGameData();
+    }
+    [Command(requiresAuthority = false)]
+    public void CmdSyncGameData()
+    {
+        SyncCrystalValueFromServer();
+
+    }
+    public void SyncCrystalValueFromServer()
+    {
+
+        foreach (var crystalType in new[] { TeamTypes.Blue, TeamTypes.Red })
+        {
+            if (collectedCrystalDictionary.ContainsKey(crystalType))
+            {
+                RPC_OnGemModeCrystalValueChangedChangeGemUIAmount(crystalType, collectedCrystalDictionary[crystalType].Count);
+            }
+
+
+        }
+    }
+
+
+    public override void OnStartServer()
+    {
+
+        //Oluşturduğumuz gemmodegameplaycanvas varsa onu server'dan sildir.
+        if (GameplayPanelUIManager.Instance.GemModeGameplayCanvas != null)
+        {
+            Destroy(GameplayPanelUIManager.Instance.GemModeGameplayCanvas.gameObject);
+        }
+
+        base.OnStartServer();
 
     }
 
     public override void ServerStarted(Dictionary<int, NetworkConnectionToClient> players)
     {
         base.ServerStarted(players);
-       // Invoke("StartSpawnLoop", 3);
-        CreateCrystalModeCanvas();
+
+
         collectedCrystalDictionary = new Dictionary<TeamTypes, List<GemData>>();
         playerGems = new Dictionary<int, int>();
-
-        //playerGems = new Dictionary<int, int>();
+        currentlyWinningTeam = TeamTypes.None;
 
     }
     [ClientRpc]
     public override void RpcStartGame()
     {
-    //    CreateCrystalModeCanvas();
         base.RpcStartGame();
 
     }
 
-    public void CreateCrystalModeCanvas()
-    {
-     //CrystalModeGamePlayCanvasUIController crystalModeCanvas=   Instantiate(crystalModeGamePlayCanvasUIController);
-     //   GameplayPanelUIManager.Instance.GemModeGameplayCanvas = crystalModeCanvas;
-     //  GameplayPanelUIManager.Instance.GemModeGameplayCanvas.Show();
-
-        var prefab = Resources.Load<CrystalModeGamePlayCanvasUIController>("CrystalModeGameplayCanvas"/*nameof(CrystalModeGamePlayCanvasUIController*/);
-        var crystalModeCanvas = Instantiate(prefab);
-        NetworkServer.Spawn(crystalModeCanvas.gameObject);
-        InityCrystalCanvas(crystalModeCanvas);
-        //crystalModeCanvas.Init_CrystalModeGameplayCanvas(crystalModeCanvas);
-        //ActivateCanvas(crystalModeCanvas);
-        // crystalModeCountdown.StartCountDown();
-        Debug.LogError("CrystalModeGameplayCanvas spawned.");
-
-    }
-    [ClientRpc]
-    public void InityCrystalCanvas(CrystalModeGamePlayCanvasUIController crystalModeCanvas )
-    {
-        GameplayPanelUIManager.Instance.Init_CrystalModeGameplayCanvas(crystalModeCanvas);
 
 
-    }
-    public void ChangeModeInfo(CanvasSequence mode)
-    {
 
-        Info = mode;
 
-    }
 
-    //public void ActivateCanvas(NetworkedPanel crystalModeCanvas)
-    //{
-    //    GameplayPanelUIManager.Instance.Init_CrystalModeGameplayCanvas(crystalModeCanvas);
-
-    //}
     public void StartSpawnLoop()
     {
         NetworkSpawnObjectInInterval.StartSpawnLoop();
@@ -139,44 +254,123 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
         AddToCollectedCrystalList(connectionID);
         var teamType = GetMyTeam(connectionID);
 
-        OnGemModeCrystalValueChanged(teamType, collectedCrystalDictionary[teamType].Count);
+        RPC_OnGemModeCrystalValueChangedChangeGemUIAmount(teamType, collectedCrystalDictionary[teamType].Count);
 
         PlayerController player = MatchNetworkManager.Instance.GetPlayerByConnectionID(connectionID);
         player.OnCrystalCollected_UpdatePlayer(AddGemDataToPlayers().GetValueOrDefault(connectionID));
         ShowPlayerGemsLog();
 
+        CheckTeamCrystalAmountReachedMax(teamType);
+        //if (CheckTeamCrystalAmountToReachMax(MyTeamCrystalScore(teamType)) && crystalModeGamePanelsHandler.gamePanelStatus != CrystalModeGamePanelsHandler.GamePanelStatus.CountDown)
+        //{
+        //    currentlyWinningTeam = teamType;
+        //    OnCurrentTeamReachedMaxGemAmount();
+
+
+        //}
+
+    }
+    public void CheckTeamCrystalAmountReachedMax(TeamTypes teamType)
+    {
+
+        if (currentlyWinningTeam != teamType && CheckTeamCrystalAmountToReachMax(MyTeamCrystalScore(teamType)) && crystalModeGamePanelsHandler.gamePanelStatus != CrystalModeGamePanelsHandler.GamePanelStatus.CountDown)
+        {
+            currentlyWinningTeam = teamType;
+            crystalModeGamePanelsHandler.DoWinnableTeamCountDownText(currentlyWinningTeam.ToString());
+            OnCurrentTeamReachedMaxGemAmount();
+
+
+        }
     }
     public void OnGemDroppedByThisPlayer(int connectionID)
     {
-  
-        PlayerController player = MatchNetworkManager.Instance.GetPlayerByConnectionID(connectionID);
-        var teamType = GetMyTeam(connectionID);
 
-        var TotalCrystalToDrop = playerGems[connectionID];
-        Debug.Log($"totalDroppableGems of this player :  {TotalCrystalToDrop}");
-        for (int i = 0; i < TotalCrystalToDrop; i++)
+
+        if (playerGems.ContainsKey(connectionID))
         {
-            NetworkSpawnObjectInInterval.SpawnObjectWithDiffrentForce(player.transform.position);
+
+            // devam eden işlemler
+
+            PlayerController player = MatchNetworkManager.Instance.GetPlayerByConnectionID(connectionID);
+            var teamType = GetMyTeam(connectionID);
+
+            var TotalCrystalToDrop = playerGems[connectionID];
+            //Debug.Log("Total düşürülücek gem miktarı");
+            //Debug.Log($"totalDroppableGems of this player :  {TotalCrystalToDrop}");
+            for (int i = 0; i < TotalCrystalToDrop; i++)
+            {
+                NetworkSpawnObjectInInterval.SpawnObjectWithDiffrentForce(player.transform.position);
+
+            }
+
+            if (currentlyWinningTeam.Equals(teamType) && CheckTeamCrystalAmountToReachMax(MyTeamCrystalScore(teamType)) && crystalModeGamePanelsHandler.gamePanelStatus == CrystalModeGamePanelsHandler.GamePanelStatus.CountDown)
+            {
+                // Debug.Log("cancelladım");
+                CancelCountDown();
+                currentlyWinningTeam = TeamTypes.None;
+                CheckTeamCrystalAmountReachedMax(GetOtherTeam(teamType));
+
+
+            }
+            RemoveFromCollectCrystalList(connectionID, teamType);
+
+            RPC_OnGemModeCrystalValueChangedChangeGemUIAmount(teamType, collectedCrystalDictionary[teamType].Count);
+
+            var RemainedAmountCrystalOfPlayer = AddGemDataToPlayers().GetValueOrDefault(connectionID);
+
+
+
+            player.OnCrystalRemoved_UpdatePlayer(RemainedAmountCrystalOfPlayer);
+
+
+            ShowPlayerGemsLog();
 
         }
-
-        RemoveFromCollectCrystalList(connectionID, teamType);
-
-        OnGemModeCrystalValueChanged(teamType, collectedCrystalDictionary[teamType].Count);
-
-
-        var RemainedAmountCrystalOfPlayer = AddGemDataToPlayers().GetValueOrDefault(connectionID);
+        else
+        {
+            Debug.Log("hiç gemi yoktu.");
+            // anahtar yoksa yapılacak işlemler
+        }
 
 
 
-        player.OnCrystalRemoved_UpdatePlayer(RemainedAmountCrystalOfPlayer);
-
-
-        ShowPlayerGemsLog();
 
     }
- 
+    public TeamTypes GetOtherTeam(TeamTypes myTeam)
+    {
+        TeamTypes otherTeam = TeamTypes.None;
 
+        if (myTeam.Equals(TeamTypes.Blue))
+        {
+            otherTeam = TeamTypes.Red;
+        }
+        else if (myTeam.Equals(TeamTypes.Red))
+        {
+            otherTeam = TeamTypes.Blue;
+
+        }
+        return otherTeam;
+    }
+    public int MyTeamCrystalScore(TeamTypes teamType)
+    {
+        if (collectedCrystalDictionary.ContainsKey(teamType))
+        {
+
+            int crystalScore = collectedCrystalDictionary[teamType].Count;
+            Debug.Log($" {teamType.ToString()} takımının crystalScore'u: {crystalScore} ");
+            return crystalScore;
+        }
+        else return 0;
+    }
+    public bool CheckTeamCrystalAmountToReachMax(int teamCrystalAmount)
+    {
+        bool isReached = false;
+
+        isReached = teamCrystalAmount >= maxCrystalAmount;
+
+        return isReached/*= teamCrystalAmount.Equals(maxCrystalAmount)*/;
+
+    }
 
     public void AddToCollectedCrystalList(int connectionID)
     {
@@ -207,11 +401,20 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
                 collectedCrystalDictionary[MyTeamType].Remove(item);
             }
         }
-  
+
     }
 
+    public void OnCurrentTeamReachedMaxGemAmount()
+    {
+        //cystalModeGamePanelsHandler
+        // crystalModeCountdown.StartCountDown();
+        crystalModeGamePanelsHandler.StartToCountDownSequenceForATeam();
+    }
+    public void CancelCountDown()
+    {
+        crystalModeGamePanelsHandler.CancelCountDownPanel();
 
-
+    }
     public Dictionary<int, int> AddGemDataToPlayers()
     {
         playerGems = new Dictionary<int, int>();
@@ -264,10 +467,10 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
     }
 
     [ClientRpc]
-    public void OnGemModeCrystalValueChanged(TeamTypes team, int gemCount)
+    public void RPC_OnGemModeCrystalValueChangedChangeGemUIAmount(TeamTypes team, int gemCount)
     {
         //:TODO  burayı getcompenenintchildren'dan kurtar.
-
+        Debug.Log("buraya 2 kere girdim");
         if (GetMyTeam() == team)
         {
             GameplayPanelUIManager.Instance.GemModeGameplayCanvas.GetComponentInChildren<CrystalStatsUIPanelManager>().AllyTeamPanel.ChangeCrystalAmountUI(gemCount);

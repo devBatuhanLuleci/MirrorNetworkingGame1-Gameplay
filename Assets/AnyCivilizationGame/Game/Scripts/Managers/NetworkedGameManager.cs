@@ -1,4 +1,4 @@
-using kcp2k;
+﻿using kcp2k;
 using Mirror;
 using System;
 using System.Collections;
@@ -16,7 +16,7 @@ public class NetworkedGameManager : NetworkBehaviour
     #region 
 
     #region Singleton 
-    private static NetworkedGameManager instance;
+    protected static NetworkedGameManager instance;
     public static NetworkedGameManager Instance
     {
         get
@@ -27,9 +27,29 @@ public class NetworkedGameManager : NetworkBehaviour
     #endregion
 
     private bool IsClient => ACGDataManager.Instance.GameData.TerminalType == TerminalType.Client;
-    public TeamTypes myTeam;
 
-    public enum TeamTypes { Team1, Team2 }
+
+    [SyncVar(hook = nameof(OnGameStarted))]
+    [HideInInspector]
+    public bool isGameStarted;
+
+    [SyncVar]
+    public bool isGameFinished;
+
+    [HideInInspector] public bool isClientConnected = false;
+
+
+    //public bool IsGameStarted
+    //{
+    //    get { Debug.Log("değer" + isGameStarted); return isGameStarted; }
+    //    set { IsGameStartable(value); }
+    //}
+
+    public TeamTypes clientTeam;
+
+    public enum TeamTypes { Blue, Red,
+        None
+    }
     [SyncVar]
     public List<Team> Teams = new List<Team>();
 
@@ -42,19 +62,30 @@ public class NetworkedGameManager : NetworkBehaviour
     }
     private void Start()
     {
-
+       
         Info("isClient: " + isClient);
-        if (IsClient) SetupClient();
+        if (IsClient)
+        {
+            SetupClient();
+            isClientConnected = true;
+        }
         if (isServer)
         {
             MatchNetworkManager.Instance.OnPlayerListChanged.AddListener(OnCharacterReplaced);
 
         }
     }
+    public virtual void Update()
+    {
+        if (!isServer) { return; }
+    }
+    public virtual void OnGameStarted(bool oldValue, bool newValue)
+    {
+        Debug.Log("Boolean value changed from " + oldValue + " to " + newValue);
+    }
 
 
-
-    public void OnDestroy()
+    public virtual void OnDestroy()
     {
         if (isServer)
         {
@@ -79,40 +110,55 @@ public class NetworkedGameManager : NetworkBehaviour
     {
 
     }
-
+   
 
     public virtual void SetupClient()
     {
 
-          GameplayPanelUIManager.Instance.AutoSelectCharacter();
-      //   GameplayPanelUIManager.Instance.SelectCharacter();
+        GameplayPanelUIManager.Instance.AutoSelectCharacter();
+        //   GameplayPanelUIManager.Instance.SelectCharacter();
         ClientStarted();
 
         CmdReady();
         Info("awake: " + MatchNetworkManager.Instance.mode);
 
     }
-   
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+     
+    }
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+    }
+
+
+
     public TeamTypes GetMyTeam(int connID)
     {
         TeamTypes teamType;
 
         var teamEnum = from personGroup in Teams
-                      from person in personGroup.teamPlayers
-                      where person.connectionId.Equals(connID)
-                      select personGroup;
+                       from person in personGroup.teamPlayers
+                       where person.connectionId.Equals(connID)
+                       select personGroup;
 
-        teamType = teamEnum.First().team;
+        teamType = teamEnum.First().teamType;
 
-      //  Debug.Log($" my team: {teamType}");
+        //  Debug.Log($" my team: {teamType}");
 
         return teamType;
     }
+    public void SetThisClientTeam(NetworkedGameManager.TeamTypes team)
+    {
+        clientTeam = team;
 
+    }
     public TeamTypes GetMyTeam()
     {
 
-        return myTeam;
+        return clientTeam;
     }
 
     public TeamTypes GetMyTeam(NetworkIdentity networkIdentity)
@@ -124,13 +170,12 @@ public class NetworkedGameManager : NetworkBehaviour
                        where person.netIdentity.Equals(networkIdentity)
                        select personGroup;
 
-        teamType = teamEnum.First().team;
+        teamType = teamEnum.First().teamType;
 
         //  Debug.Log($" my team: {teamType}");
 
         return teamType;
     }
-
 
     public void CreateTeam(Dictionary<int, NetworkConnectionToClient> players)
     {
@@ -138,11 +183,11 @@ public class NetworkedGameManager : NetworkBehaviour
 
         bool isTeam1 = true;
         Teams = new List<Team>() {
-            new Team(TeamTypes.Team1,new List<TeamPlayers>())
+            new Team(TeamTypes.Blue,new List<TeamPlayers>())
             {
 
             },
-            new Team(TeamTypes.Team2,new List<TeamPlayers>())
+            new Team(TeamTypes.Red,new List<TeamPlayers>())
             {
 
             }
@@ -152,11 +197,11 @@ public class NetworkedGameManager : NetworkBehaviour
 
         foreach (var item in players)
         {
-            var team = isTeam1 ? TeamTypes.Team1 : TeamTypes.Team2;
+            var team = isTeam1 ? TeamTypes.Blue : TeamTypes.Red;
 
-            var myTeam = Teams.Where(t => t.team == team).FirstOrDefault();
+            var myTeam = Teams.Where(t => t.teamType == team).FirstOrDefault();
 
-            TeamPlayers teamPlayers = new TeamPlayers(item.Value.connectionId, item.Value.identity
+            TeamPlayers teamPlayer = new TeamPlayers(item.Value.connectionId, item.Value.identity
             //{
             //    //new ItemTypes
             //    //    {
@@ -166,9 +211,14 @@ public class NetworkedGameManager : NetworkBehaviour
             //    //    }
             //}
             );
+            //if (teamPlayers.netIdentity.gameObject.TryGetComponent<PlayerSetup>(out PlayerSetup playerSetup))
+            //{
+            //    playerSetup.InitilizeTeamOfThisPlayer(team);
 
-            myTeam.teamPlayers.Add(teamPlayers);
-       
+
+            //}
+            myTeam.teamPlayers.Add(teamPlayer);
+
 
             isTeam1 = !isTeam1;
         }
@@ -178,16 +228,40 @@ public class NetworkedGameManager : NetworkBehaviour
 
 
     }
+    public void InitilizeTeamOfThePlayer()
+    {
+        //var myTeam = Teams.Where(t => t.team == team).FirstOrDefault();
+        foreach (var team in Teams)
+        {
+            foreach (var player in team.teamPlayers)
+            {
+                if (player.netIdentity.gameObject.TryGetComponent<PlayerSetup>(out PlayerSetup playerSetup))
+                {
+                    playerSetup.InitilizeTeamOfThisPlayer(team.teamType);
+                }
 
+            }
+            //foreach (var item in myTeam.teamPlayers)
+            //{
+
+            //}
+            //if (teamPlayers.netIdentity.gameObject.TryGetComponent<PlayerSetup>(out PlayerSetup playerSetup))
+            //{
+            //    playerSetup.InitilizeTeamOfThisPlayer(team);
+
+
+            //}
+        }
+    }
 
 
     public bool IsInMyTeam(NetworkIdentity otherPlayer)
     {
 
         var result3 = from personGroup in Teams
-                     from person in personGroup.teamPlayers
-                     where person.netIdentity.Equals(NetworkClient.localPlayer)
-                     select personGroup;
+                      from person in personGroup.teamPlayers
+                      where person.netIdentity.Equals(NetworkClient.localPlayer)
+                      select personGroup;
 
         var ourTeam = result3.First();
 
@@ -197,7 +271,7 @@ public class NetworkedGameManager : NetworkBehaviour
                       select personGroup;
         var otherTeam = result4.First();
 
-        return ourTeam.team == otherTeam.team;
+        return ourTeam.teamType == otherTeam.teamType;
 
     }
     public bool IsInMyTeam(uint otherPlayerNetId)
@@ -217,8 +291,8 @@ public class NetworkedGameManager : NetworkBehaviour
 
         var otherTeam = result4.First();
 
-
-        return ourTeam.team == otherTeam.team;
+     
+        return ourTeam.teamType == otherTeam.teamType;
 
 
     }
@@ -249,10 +323,15 @@ public class NetworkedGameManager : NetworkBehaviour
 
 
 
-        return ourTeam.team == otherTeam.team;
+        return ourTeam.teamType == otherTeam.teamType;
 
 
     }
+  
+
+
+
+
 
     [Command/*(requiresAuthority =true)*/]
     public void GetLocalPlayer(/*NetworkConnectionToClient conn*/)
@@ -298,6 +377,7 @@ public class NetworkedGameManager : NetworkBehaviour
     {
         CreateTeam(players);
         // Setup();
+
         string msg = $" <color=green> Server listining on </color> localhost:{ACGDataManager.Instance.GameData.Port}";
         Info(msg);
     }
@@ -310,6 +390,7 @@ public class NetworkedGameManager : NetworkBehaviour
     }
     private void OnGameStarted()
     {
+       
         GameplayPanelUIManager.Instance.DeactivateUltiButton();
 
 
@@ -334,6 +415,7 @@ public class NetworkedGameManager : NetworkBehaviour
     #region Command Methods
 
     public int playerCount = 0;
+
     [Command(requiresAuthority = false)]
     public void CmdReady()
     {
@@ -356,6 +438,8 @@ public class NetworkedGameManager : NetworkBehaviour
     {
         this.playerCount = value;
     }
+
+
 
 
     #endregion

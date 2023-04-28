@@ -5,12 +5,12 @@ using Mirror;
 [System.Serializable]
 public struct Team
 {
-    public NetworkedGameManager.TeamTypes team;
+    public NetworkedGameManager.TeamTypes teamType;
     public List<TeamPlayers> teamPlayers;
 
     public Team(NetworkedGameManager.TeamTypes team, List<TeamPlayers> teamPlayers)
     {
-        this.team = team;
+        this.teamType = team;
         this.teamPlayers=teamPlayers;
 
     }

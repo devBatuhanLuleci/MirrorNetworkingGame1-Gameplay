@@ -11,7 +11,11 @@ public class PlayerSetup : ObjectSetup
 
     #region Public Fields
     public string SelectedCharacter = "Character1";
+
+    [SyncVar(hook = nameof(SetClientTeam))]
+    public NetworkedGameManager.TeamTypes Team;
     #endregion
+
 
     #region Private Fields
   
@@ -72,7 +76,29 @@ public class PlayerSetup : ObjectSetup
         }
 
     }
+    public void InitilizeTeamOfThisPlayer(NetworkedGameManager.TeamTypes team)
+    {
 
+        this.Team=team;
+
+       
+
+    }
+ 
+    public void SetClientTeam(NetworkedGameManager.TeamTypes oldTeam, NetworkedGameManager.TeamTypes newTeam)
+    {
+
+
+        if (isLocalPlayer)
+        {
+            Debug.Log("I am local");
+            NetworkedGameManager.Instance.SetThisClientTeam(newTeam);
+
+        }
+
+
+    }
+    
 
     private void SetPlayerDataForAllClient()
     {

@@ -1,40 +1,72 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Mirror;
 using System;
+using static UnityEngine.UI.CanvasScaler;
 
-public class CrystalModeGamePlayCanvasUIController : NetworkedPanel
+public class CrystalModeGamePlayCanvasUIController : Panel
 {
-    public CrystalStatsUIPanelManager GemUIPanelManager;
-  
-    private RectTransform GemRectTransform;
 
-  
-   
-
-  
+    //private RectTransform GemRectTransform;
 
 
-    public CrystalStartInfoPanel crystalStartInfoPanel;
-    private void Awake()
+
+
+
+
+    public CrystalStatsUIPanelManager crystalStatsUIPanel;
+
+    public CrystalModeOpeningStartInfoPanel crystalStartInfoPanel;
+
+    public CrystalModeCountDownPanel crystalCountDownPanel;
+
+
+    public CrystalModeFinishPanel crystalmodeFinishPanel;
+
+    public void ActivateCrystalnfoPanel(bool isActive)
     {
 
-       GemRectTransform = GemUIPanelManager.GetComponent<RectTransform>();
-        // OnStart_MoveDown_TeamUIPanel();
 
-        if(crystalStartInfoPanel!=null)
-        {
-            crystalStartInfoPanel.animAction += OnAnimationFinished;
-        }
+        crystalStartInfoPanel.Animate_CrystalInfoPanel(isActive);
+
+
+    }
+    public void ActivateCountDownTeamInfoTextPanel(bool isActive)
+    {
+
+
+        crystalCountDownPanel.HandleCountDownTeamInfoTextPanel(isActive);
+
+
     }
 
-    
-    public void Activate () {
-    
-    
-        crystalStartInfoPanel.Animate_CrystalInfoText();
+    public void ActivateCountDownTextPanel(bool isActive)
+    {
+
+
+        crystalCountDownPanel.ActivateCountDownTextObject(isActive);
+
+
+    }
+
+    public void ActivateFinishPanel(bool isActive)
+    {
+
+
+        crystalmodeFinishPanel.ActivateCountDownTextObject(isActive);
+
+
+    }
+
+    public void Init()
+    {
+
+        crystalStartInfoPanel.Init();
+        crystalStatsUIPanel.Init();
+        crystalCountDownPanel.Init();
+        crystalmodeFinishPanel.Init();
 
 
     }
@@ -43,39 +75,57 @@ public class CrystalModeGamePlayCanvasUIController : NetworkedPanel
 
         crystalStartInfoPanel.ChangeCrystalInfoRectTransformScale(value);
     }
+    public void HandleCrystalInfoPanelPos(Vector2 value)
+    {
+        crystalStatsUIPanel.ChangeCrystalStatsRectTransformPos(value);
+
+    }
+    public void HandleCrystalModeGameCountdownValue(int value)
+    {
+        crystalCountDownPanel.ChangeCrystalModeCountDownText(value);
+
+    }
+    public void HandleCrystalModeGameTempCountdownValue(int value)
+    {
+        crystalCountDownPanel.ChangeCrystalModeCountDownText(value);
+
+    }
+    public void HandleCrystalModeCountDownTeamInfoTextScale(float value)
+    {
+        crystalCountDownPanel.ChangeCrystalModeCountDownTeamInfoTextScale(value);
+
+    }
+    public void HandleWinnableTeamCountDownText(string TeamNameInfo)
+    {
+        crystalCountDownPanel.HandleWinnableTeamCountDownText(TeamNameInfo);
+
+    }
+    public void HandleWinnerText(string TeamNameInfo)
+    {
+        crystalmodeFinishPanel.ChangeWinnerTeamText(TeamNameInfo);
+
+    }
+    //public void HandleWinnerTeamCountDownText(string TeamNameInfo)
+    //{
+    //    crystalCountDownPanel.HandleWinnerTeamCountDownText(TeamNameInfo);
+
+    //}
+    public void HandleCrystalModeGameTime(int value)
+    {
+
+        crystalStatsUIPanel.ChangeTimeOnPanel(value);
+    }
 
     public override void Show()
     {
-        // base.Show();
-        //Activate();
-        gameObject.SetActive(true);
-        Activate();
-        // StartCoroutine(Test());
 
-    }
-    private void OnDestroy()
-    {
-        if (crystalStartInfoPanel != null)
-        {
-            crystalStartInfoPanel.animAction -= OnAnimationFinished;
-        }
-    }
-    public void OnAnimationFinished()
-    {
-        Debug.Log("animation bitti!");
-        
-        OnStart_MoveDown_TeamUIPanel();
-    }
-   
-
-    public void OnStart_MoveDown_TeamUIPanel()
-    {
-        GemRectTransform.gameObject.SetActive(true);
-        GemRectTransform?.DOAnchorPos(new Vector3(0, -50, 0), 1f).SetEase(Ease.OutQuad);
-
-
+        //   Activate();
 
 
     }
-    
+
+
+
+
+
 }

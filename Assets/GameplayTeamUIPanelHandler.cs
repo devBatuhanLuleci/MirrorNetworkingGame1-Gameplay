@@ -92,7 +92,7 @@ public class GameplayTeamUIPanelHandler : Panel
 
         }
     }
-    void ResetCrystalAmountBar()
+    public void ResetCrystalAmountBar()
     {
         for (int i = 0; i < CrystalBarParent.childCount; i++)
         {

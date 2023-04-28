@@ -3,75 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CrystalModeCountdown : NetworkBehaviour
+public class CrystalModeCountdown : NetworkedTimer
 {
 
-    [SerializeField, SyncVar(hook = nameof(OnCountdownChangedSync))]
-    private int countdown = 10; // başlangıç sayısı
-
-    private float timer = 1f; // saniyede bir azaltmak için zamanlayıcı
-
-    private bool isCountingDown = false;
- 
-
-
-    //private void Start()
-    //{
-    //    if (isServer)
-    //    {
-    //        isCountingDown = true;
-    //    }
-    //}
-
-    private void Update()
+    public override void OnCountdownChangedSync(int oldCountdown, int newCountdown)
     {
-        if (!isServer || !isCountingDown) return;
+        base.OnCountdownChangedSync(oldCountdown, newCountdown);
+        GameplayPanelUIManager.Instance.SetCrystalModeCountDownValue(newCountdown);
 
-        timer += Time.deltaTime;
-        if (timer > 1f)
-        {
-            timer -= 1f;
-            DecreaseCountdown();
-        }
     }
-
-    public void StartCountDown()
+    public override void OnCountDownFinished()
     {
-        if (!isServer) return;
+        base.OnCountDownFinished();
 
-       
-        isCountingDown = true;
-    }
-
-    private void DecreaseCountdown()
-    {
-        if (countdown <= 0)
-        {
-            Debug.Log("Countdown finished");
-            isCountingDown = false;
-            return;
-        }
-
-        countdown--;
-    }
-
-    private void OnCountdownChangedSync(int oldCountdown, int newCountdown)
-    {
-        Debug.Log($"Countdown changed from {oldCountdown} to {newCountdown}");
-
-        if (newCountdown <= 0)
-        {
-            Debug.Log("Countdown finished");
-            isCountingDown = false;
-            return;
-        }
-
-        countdown = newCountdown;
-
-        if (isServer)
-        {
-            isCountingDown = true;
-        }
+         (NetworkedGameManager.Instance as CrystalModeNetworkedGameManager)?.OnGameFinished();
     }
 
 }

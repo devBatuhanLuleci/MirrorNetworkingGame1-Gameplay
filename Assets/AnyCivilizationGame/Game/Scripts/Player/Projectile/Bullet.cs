@@ -34,8 +34,11 @@ public class Bullet : Throwable, INetworkPooledObject
 
     private void OnTriggerEnter(Collider other)
     {
+      
+
         if (other.TryGetComponent<PlayerController>(out var otherPlayerController) && CanAttackToThisPlayer(otherPlayerController))
         {
+            if (NetworkedGameManager.Instance.isGameFinished) { return; }
             if (otherPlayerController.IsLive)
             {
 
@@ -56,7 +59,7 @@ public class Bullet : Throwable, INetworkPooledObject
         if (other.TryGetComponent<IDamagable>(out IDamagable damagableObject)/* && CanAttack(damagableObject.)*/)
         {
 
-
+            if (NetworkedGameManager.Instance.isGameFinished) { return; }
             if (other.TryGetComponent<FatboyTurret>(out FatboyTurret fatboyTurret))
             {
 

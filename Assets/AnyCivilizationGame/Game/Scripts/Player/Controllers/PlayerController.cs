@@ -216,6 +216,19 @@ public class PlayerController : ObjectController
         OnTakeDamage_DoSomething_Only_On_Other_Client(target);
         OnTakeDamage_DoSomething_On_Clients();
     }
+    //[Command(requiresAuthority =false)]
+    //public void wow()
+    //{
+    //    Debug.Log("server'da çalıştım");
+    //    CallPlease();
+    //}
+
+    //[ClientRpc]
+    //public void CallPlease()
+    //{
+    //    Debug.Log("client'a mesaj verdim.");
+    //}
+
 
     [ClientRpc]
     public void OnTakeDamage_DoSomething_On_Clients()

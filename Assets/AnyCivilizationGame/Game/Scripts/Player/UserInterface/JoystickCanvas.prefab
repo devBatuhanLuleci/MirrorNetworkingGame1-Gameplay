@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3572110114122833814}
   - component: {fileID: 3572110114825653329}
   - component: {fileID: 3572110114825653334}
+  - component: {fileID: 6632765425112195270}
   m_Layer: 5
   m_Name: JoystickCanvas
   m_TagString: Untagged
@@ -82,9 +83,9 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1080, y: 1920}
+  m_ReferenceResolution: {x: 1440, y: 2560}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -135,6 +136,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab38e6d15abbc24087d28b997b0a90a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &6632765425112195270
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3572110114122833815}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &3572110114327950828
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,8 +183,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -270, y: 0}
-  m_SizeDelta: {x: -540, y: 0}
+  m_AnchoredPosition: {x: -640, y: 0}
+  m_SizeDelta: {x: -1280, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3572110114327950825
 CanvasRenderer:
@@ -246,8 +259,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 270, y: 0}
-  m_SizeDelta: {x: -540, y: 0}
+  m_AnchoredPosition: {x: 640, y: 0}
+  m_SizeDelta: {x: -1280, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3572110115262460413
 CanvasRenderer:
@@ -324,11 +337,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 406887036028890929, guid: bd8c05067c48fbb43baa6d0982f496aa, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 150
+      value: 301
       objectReference: {fileID: 0}
     - target: {fileID: 406887036028890929, guid: bd8c05067c48fbb43baa6d0982f496aa, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 150
+      value: 301
       objectReference: {fileID: 0}
     - target: {fileID: 406887036028890929, guid: bd8c05067c48fbb43baa6d0982f496aa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -360,11 +373,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 406887036028890929, guid: bd8c05067c48fbb43baa6d0982f496aa, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 130
+      value: 350
       objectReference: {fileID: 0}
     - target: {fileID: 406887036028890929, guid: bd8c05067c48fbb43baa6d0982f496aa, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 120
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 406887036028890929, guid: bd8c05067c48fbb43baa6d0982f496aa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -381,14 +394,6 @@ PrefabInstance:
     - target: {fileID: 486306560917957469, guid: bd8c05067c48fbb43baa6d0982f496aa, type: 3}
       propertyPath: m_Name
       value: MovementJoystick
-      objectReference: {fileID: 0}
-    - target: {fileID: 517006851171625029, guid: bd8c05067c48fbb43baa6d0982f496aa, type: 3}
-      propertyPath: canFollowPointer
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 517006851171625029, guid: bd8c05067c48fbb43baa6d0982f496aa, type: 3}
-      propertyPath: isDynamicJoystick
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 517006851171625029, guid: bd8c05067c48fbb43baa6d0982f496aa, type: 3}
       propertyPath: dynamicJoystickMovementArea

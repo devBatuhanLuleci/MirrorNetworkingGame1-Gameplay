@@ -55,9 +55,13 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (netIdentity.isServer)
         {
+            //if (NetworkedGameManager.Instance.isGameStarted)
+            //{
+
             MovementStateHandler();
             SetPlayerPosition();
             SetPlayerRotation();
+           // }
 
         }
         else

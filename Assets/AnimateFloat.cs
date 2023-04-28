@@ -1,6 +1,13 @@
 ﻿using Mirror;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
+
+public enum AnimationType
+{
+    ForwardOnly,
+    ForwardAndBackward
+}
 
 public class AnimateFloat : NetworkBehaviour
 {
@@ -10,6 +17,14 @@ public class AnimateFloat : NetworkBehaviour
 
     private float time = 0f;
     private bool isAnimating = false;
+
+    public UnityEvent onCountdownFinishedAction;
+    public UnityEvent onAnimationFinishedBeforeExtraTimeAction;
+
+    public float initialValue = 0;
+    public float endValue = 1;
+    public float extraWaitTimeAtTheEnd = 0f;
+    public AnimationType animationType = AnimationType.ForwardAndBackward;
 
     [SyncVar(hook = nameof(OnCurrentValueUpdated))]
     public float currentValue;
@@ -21,45 +36,41 @@ public class AnimateFloat : NetworkBehaviour
 
     private bool hasAnimationStarted;
 
-
-    private void Update()
+    public virtual void Update()
     {
         if (!isServer) { return; }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            StartCoroutine(AnimateCoroutine());
-        }
     }
 
-    private IEnumerator AnimateCoroutine()
+    public IEnumerator AnimateCoroutine()
     {
         time = 0f;
         isAnimating = true;
         hasAnimationStarted = false;
 
+        float currentStartValue = initialValue;
+        float currentEndValue = endValue;
+
         while (isAnimating)
         {
             // Animation is running, update currentValue
-            currentValue = GetCurrentAnimationValue();
-
-            if (hasAnimationStarted && currentValue == 0f)
-            {
-                OnAnimationFinished();
-                hasAnimationStarted = false;
-            }
+            currentValue = GetCurrentAnimationValue(currentStartValue, currentEndValue);
 
             yield return null;
         }
+        OnAnimationFinishedBeforeExtraTime();
+        yield return new WaitForSeconds(extraWaitTimeAtTheEnd);
+
+        OnAnimationFinished();
+
     }
 
-    private float GetCurrentAnimationValue()
+    private float GetCurrentAnimationValue(float startValue, float endValue)
     {
         if (time < duration)
         {
             // Ease.OutCircle from 0 to 1
             float t = curve.Evaluate(time / duration);
-            float value = Mathf.Lerp(0f, 1f, t);
+            float value = Mathf.Lerp(startValue, endValue, t);
             time += Time.deltaTime;
             return value;
         }
@@ -67,29 +78,46 @@ public class AnimateFloat : NetworkBehaviour
         {
             // Wait for waitTime seconds
             time += Time.deltaTime;
-            return 1f;
+            return endValue;
         }
-        else if (time < 2f * duration + waitTime)
+        else if (animationType == AnimationType.ForwardAndBackward && time < 2f * duration + waitTime)
         {
             // Ease.OutQuad from 1 to 0
             float t = curve.Evaluate((time - duration - waitTime) / duration);
-            float value = Mathf.Lerp(1f, 0f, t);
+            float value = Mathf.Lerp(endValue, startValue, t);
             time += Time.deltaTime;
             hasAnimationStarted = true;
             return value;
         }
         else
         {
-            // Ensure the final value is exactly 0
+            // Ensure the final value is exactly startValue
             time = 0f;
             isAnimating = false;
-            return 0f;
+
+            if (animationType == AnimationType.ForwardAndBackward)
+            {
+                return startValue;
+            }
+            else
+            {
+                return endValue;
+            }
         }
     }
 
-    private void OnAnimationFinished()
+    public virtual void OnAnimationFinished()
     {
-        // Animation is finished, do something here
         Debug.Log("Animation finished");
+
+        // Animation is finished, do something here
+        onCountdownFinishedAction.Invoke();
+    }
+    public virtual void OnAnimationFinishedBeforeExtraTime()
+    {
+        Debug.Log("AnimationBefore finished");
+
+        // Animation is finished, do something here
+        onAnimationFinishedBeforeExtraTimeAction.Invoke();
     }
 }
