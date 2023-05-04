@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using DG.Tweening;
-using UnityEditorInternal;
+//using UnityEditorInternal;
 using Mirror;
 
 public class PlayerUIHandler : ObjectUIHandler

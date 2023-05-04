@@ -92,39 +92,6 @@ class MainPanelUIManager : Panel
     {
         Show(panel);
     }
-    /* public void ClanSearchButton()
-     {
-
-     }
-     public void ClanCreateButton()
-     {
-
-     }
-     public void FriendAddButton()
-     {
-
-     }
-     public void GlobalButton()
-     {
-
-     }
-     public void LocalButton()
-     {
-
-     }
-     public void ClanButton()
-     {
-
-     }
-      public void ChatSendButton()
-     {
-
-     }
-      public void InviteButton()
-     {
-
-     }
-     */
 
     public void JoinPanelShow()
     {
@@ -133,6 +100,10 @@ class MainPanelUIManager : Panel
     public void LoginPanelShow()
     {
         Show(loginPanel);
+    }
+    public void MainMenuPanelShow()
+    {
+        Show(mainMenuPanel);
     }
     public void DroidsPanelShow()
     {
