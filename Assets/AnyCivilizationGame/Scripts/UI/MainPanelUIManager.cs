@@ -41,7 +41,7 @@ class MainPanelUIManager : Panel
     [SerializeField]
     public Panel startPanel = null;
 
-    
+    [HideInInspector]public int WalletKey;
 
     public static MainPanelUIManager Instance
     {

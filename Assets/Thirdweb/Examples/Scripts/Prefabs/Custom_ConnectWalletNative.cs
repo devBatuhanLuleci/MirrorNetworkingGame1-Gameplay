@@ -18,7 +18,7 @@ public class Custom_ConnectWalletNative : Prefab_ConnectWalletNative {
         connectButton.SetActive (false);
         AccountText.gameObject.SetActive (true);
         AccountText.text = address;
-
+        
         MainPanelUIManager.Instance.loginPanel.GetComponent<LoginPanel> ().LoginControl (address);
 
         /*  var loginReq = new LoginRequest(address);

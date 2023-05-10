@@ -19,6 +19,8 @@ public class JoinPanel : Panel {
 
     private void OnEnable () {
         AddListenerCall ();
+
+        WalletId.text = MainPanelUIManager.Instance.WalletKey.ToString ();
     }
     private void OnDisable () {
         RemoveListenerCall ();
@@ -36,15 +38,17 @@ public class JoinPanel : Panel {
     #region Buttons
     public void OnClick_Register () {
         // var createReq= new CreateRequest(m_MoralisIdInput.text, m_EmailInput.text,"admin-wallet");
-        var createReq = new CreateRequest (WalletId.text,UserNameInput.text,EmailInput.text);
-        HttpClient.Instance.Post<User> (createReq, OnCreateSuccess,OnCreateFail);
+
+        var createReq = new CreateRequest (WalletId.text, EmailInput.text, WalletId.text);
+        HttpClient.Instance.Post<User> (createReq, OnCreateSuccess, OnCreateFail);
 
     }
     #endregion
     public void OnCreateSuccess (User user) {
-        
-        MainPanelUIManager.Instance.MainMenuPanelShow();
-     /*   m_EmailTmp.text = user.email;
+
+        MainPanelUIManager.Instance.MainMenuPanelShow ();
+
+        /*   m_EmailTmp.text = user.email;
         Debug.Log ("OnCreateSuccess: " + user.email);
 
         m_EmailTmp.gameObject.SetActive (true);
@@ -55,7 +59,7 @@ public class JoinPanel : Panel {
     */
     }
     private void OnCreateFail (UnityWebRequest errorResponse) {
-        
-        
+
+        Debug.LogError ("User not created..");
     }
 }
