@@ -19,28 +19,29 @@ public class Custom_ConnectWalletNative : Prefab_ConnectWalletNative {
         AccountText.gameObject.SetActive (true);
         AccountText.text = address;
 
-        var loginReq = new LoginRequest(address);
-        HttpClient.Instance.Get<User>(loginReq, OnLoginSuccess, OnLoginFail);
+        MainPanelUIManager.Instance.loginPanel.GetComponent<LoginPanel> ().LoginControl (address);
 
+        /*  var loginReq = new LoginRequest(address);
+          HttpClient.Instance.Get<User>(loginReq, OnLoginSuccess, OnLoginFail);
+          */
 
-       
     }
 
-    private void OnLoginFail(UnityWebRequest errorResponse)
-    {
+  /*  private void OnLoginFail (UnityWebRequest errorResponse) {
         if (errorResponse.responseCode == 404) // User not found.
         {
             // go Register
-            Debug.Log("Register olmaya git.");
+            Debug.Log ("Register olmaya git.");
+            MainPanelUIManager.Instance.JoinPanelShow ();
         }
 
     }
 
-    private void OnLoginSuccess(User obj)
-    {
+    private void OnLoginSuccess (User obj) {
 
-        Debug.Log($"OnLoginSuccess: {obj.moralisId} exists." );
-        MainPanelUIManager.Instance.MainMenuPanelShow();
+        Debug.Log ($"OnLoginSuccess: {obj.moralisId} exists.");
+        MainPanelUIManager.Instance.MainMenuPanelShow ();
 
     }
+    */
 }

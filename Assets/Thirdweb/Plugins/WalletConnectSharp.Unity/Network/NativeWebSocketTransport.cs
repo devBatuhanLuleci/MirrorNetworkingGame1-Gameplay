@@ -24,7 +24,7 @@ namespace WalletConnectSharp.Unity.Network {
         private string currentUrl;
         private List<string> subscribedTopics = new List<string> ();
         private Queue<NetworkMessage> _queuedMessages = new Queue<NetworkMessage> ();
-        public GameObject ButtonTest;
+        public GameObject LoginButton;  //thirdweb metamask kontrolu hazır oldugunda aktiflestirilen buton
         public bool Connected {
             get {
                 return client != null && (client.State == WebSocketState.Open || client.State == WebSocketState.Closing) && opened;
@@ -100,7 +100,12 @@ namespace WalletConnectSharp.Unity.Network {
             Debug.Log ("[WebSocket] Waiting for Open " + url);
             await eventCompleted.Task;
             Debug.Log ("[WebSocket] Open Completed");
-            ButtonTest.SetActive(true);
+            if(LoginButton is null)
+            {
+                Debug.LogError("UICanvas icindeki loginbutton WalletConnect de atalı degil");
+                return;
+            }
+            LoginButton.SetActive(true);
         }
 
         private void HandleError (Exception e) {

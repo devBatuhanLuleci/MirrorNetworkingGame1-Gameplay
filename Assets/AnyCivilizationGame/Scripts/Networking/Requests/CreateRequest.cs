@@ -13,11 +13,11 @@ public class CreateRequest : PostRequest
 
     #region FormFields
     [FormField]
-    public string MoralisId;
+    public string WalletId;  //MoralisId
     [FormField]
-    public string Email;
+    public string UserName;  //Email
     [FormField]
-    public string WalletId;
+    public string Email; //WalletId
     #endregion
 
 
@@ -25,11 +25,20 @@ public class CreateRequest : PostRequest
     public string Yeni = "test";
     #endregion
 
-    public CreateRequest(string moralisId, string email, string walletId)
+    public CreateRequest(string walletId, string userName, string email)
+    {
+        this.WalletId = walletId;
+        this.UserName = userName;
+        this.Email = email;
+            
+    }
+
+   /* public CreateRequest(string moralisId, string email, string walletId)
     {
         this.MoralisId = moralisId;
         this.Email = email;
         WalletId = walletId;    
     }
+    */
 }
 
