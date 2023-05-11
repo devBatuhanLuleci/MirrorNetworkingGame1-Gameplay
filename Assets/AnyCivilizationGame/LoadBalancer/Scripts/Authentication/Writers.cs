@@ -344,5 +344,32 @@ namespace ACGAuthentication {
         }
 
         #endregion
+
+        #region AccessTokenRequest
+        /// <summary>
+        /// Send AccessToken 
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="req"></param>
+        public static void WriteOnSendAccessTokenEvent (this NetworkWriter writer, OnSendAccessTokenKey req) {
+            // write MyType data here
+            // writer.WriteString(req.AccessTokenKey);
+        }
+
+        public static OnSendAccessTokenKey ReadOnSendAccessTokenKeyEvent (this NetworkReader reader) {
+            // read MyType data here
+            return new OnSendAccessTokenKey (reader.ReadBool());
+        }
+        public static void WriteSendAccessTokenKeyEvent (this NetworkWriter writer, SendAccessTokenKey req) {
+            // write MyType data here
+            writer.WriteString (req.AccessTokenKey);
+        }
+
+        public static SendAccessTokenKey ReadSendAccessTokenKeyEvent (this NetworkReader reader) {
+            // read MyType data here
+            return new SendAccessTokenKey (reader.ReadString ());
+        }
+        #endregion
+        
     }
 }

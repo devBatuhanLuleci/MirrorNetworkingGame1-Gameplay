@@ -31,6 +31,7 @@ public class LobbyManager : EventManagerBase {
         responsesByType.Add ((byte) LobbyEvent.ThereIsNoRoom, typeof (ThereIsNoRoom));
         responsesByType.Add ((byte) LobbyEvent.StartLobbyRoom, typeof (StartLobbyRoom));
 
+        //Panel
         responsesByType.Add ((byte) LobbyEvent.GetClanNames, typeof (GetClanNames));
         responsesByType.Add ((byte) LobbyEvent.OnGetClanNames, typeof (OnGetClanNames));
         responsesByType.Add ((byte) LobbyEvent.SendClanName, typeof (SendClanName));
@@ -40,8 +41,13 @@ public class LobbyManager : EventManagerBase {
         responsesByType.Add ((byte) LobbyEvent.SendFriendName, typeof (SendFriendName));
         responsesByType.Add ((byte) LobbyEvent.OnSendFriendName, typeof (OnSendFriendName));
 
+        //Notification
         responsesByType.Add ((byte) LobbyEvent.SendNotificationInfo, typeof (SendNotificationInfo));
         responsesByType.Add ((byte) LobbyEvent.OnSendNotificationInfo, typeof (OnSendNotificationInfo));
+
+         //AccessToken
+        responsesByType.Add ((byte) LobbyEvent.SendAccessTokenKey, typeof (SendAccessTokenKey));
+        responsesByType.Add ((byte) LobbyEvent.OnSendAccessTokenKey, typeof (OnSendAccessTokenKey));
 
         return responsesByType;
     }

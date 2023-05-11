@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using WalletConnectSharp.Unity;
+using ACGAuthentication;
 public class LoginPanel : Panel {
     /*  public TMP_Text m_EmailTmp;
       public TMP_InputField m_MoralisIdInput;
@@ -17,6 +18,9 @@ public class LoginPanel : Panel {
       */
     public Button LoginButton;
     public WalletConnect walletConnect;
+
+    public Button AccessTokenTestButton;
+    
     private void OnEnable () {
         AddListenerCall ();
     }
@@ -27,23 +31,24 @@ public class LoginPanel : Panel {
     #region Listeners
     void AddListenerCall () {
         LoginButton.onClick.AddListener (OnClick_Login);
+        AccessTokenTestButton.onClick.AddListener (OnClick_AccessTokenTestButton);
     }
     void RemoveListenerCall () {
         LoginButton.onClick.RemoveListener (OnClick_Login);
+        AccessTokenTestButton.onClick.RemoveListener (OnClick_AccessTokenTestButton);
     }
 
     #endregion
     #region Buttons
 
     public void OnClick_Login () {
-        if(walletConnect is null)
-        {
-            Debug.LogError("Login panelin icine WalletConnect i at");
+        if (walletConnect is null) {
+            Debug.LogError ("Login panelin icine WalletConnect i at");
         }
-        walletConnect.OpenDeepLink();
-       /* var loginReq = new LoginRequest (m_MoralisIdInput.text);
-        HttpClient.Instance.Get<User> (loginReq, OnLoginSuccess, OnLoginFail);
-        */
+        walletConnect.OpenDeepLink ();
+        /* var loginReq = new LoginRequest (m_MoralisIdInput.text);
+         HttpClient.Instance.Get<User> (loginReq, OnLoginSuccess, OnLoginFail);
+         */
     }
     /*   public void OnClickRegister()
        {
@@ -51,6 +56,27 @@ public class LoginPanel : Panel {
            HttpClient.Instance.Post<User>(createReq, OnCreateSuccess);
 
        } */
+    private void SendClientRequestToServer (IEvent ev) {
+        if (LoadBalancer.Instance == null) Debug.LogError ("LoadBalancer is null!");
+        if (LoadBalancer.Instance.LobbyManager == null) Debug.LogError ("LobbyManager is null!");
+        LoadBalancer.Instance.LobbyManager.SendClientRequestToServer (ev);
+    }
+    public void OnClick_AccessTokenTestButton () {
+        string accessTokenKey="ACCESTOKENKEY";
+        var ev = new SendAccessTokenKey (accessTokenKey);
+        SendClientRequestToServer (ev);
+    }
+    public void AccessTokenResponse(bool isAccessTokenKey)
+    {
+        if(isAccessTokenKey)
+        {
+            Debug.Log(isAccessTokenKey+":donduuu");
+        }
+        else
+        {
+            Debug.Log(isAccessTokenKey+":donduuu");
+        }
+    }
     #endregion
     public void LoginControl (string address) {
         var loginReq = new LoginRequest (address);

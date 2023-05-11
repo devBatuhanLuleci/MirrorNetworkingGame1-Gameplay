@@ -25,6 +25,8 @@ public enum LobbyEvent : byte {
     SendFriendName = 0x14,
     OnSendFriendName = 0x15,
     SendNotificationInfo = 0x16,
-    OnSendNotificationInfo = 0x17
+    OnSendNotificationInfo = 0x17,
+    SendAccessTokenKey=0x18,
+    OnSendAccessTokenKey=0x19
 
 }

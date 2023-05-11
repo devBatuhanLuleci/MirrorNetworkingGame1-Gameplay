@@ -53,7 +53,7 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
     public void StartAuth()
     {
         var gameData = ACGDataManager.Instance.GameData;
-        MainPanelUIManager.Instance.GetPanel<LoadingPanel>().Info("Connecting to master server...");
+    //    MainPanelUIManager.Instance.GetPanel<LoadingPanel>().Info("Connecting to master server...");  //Yeni Loading Panelimiz olmadıgı icin kapattım
         if (gameData.TerminalType == TerminalType.Client)
         {
             if (gameData.Port != 0) ClientReady();
