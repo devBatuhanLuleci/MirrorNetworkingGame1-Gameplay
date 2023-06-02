@@ -33,6 +33,22 @@ namespace ACGAuthentication {
             // read MyType data here
             return new OnReadyEvent (reader.ReadInt ());
         }
+        public static void WriteRoomInfoEvent(this NetworkWriter writer, RoomInfoEvent req)
+        {
+            // write MyType data here
+            writer.WriteArray<string>(req.teamA);
+            writer.WriteArray<string>(req.teamB);
+        }
+
+        public static RoomInfoEvent ReadRoomInfoEvent(this NetworkReader reader)
+        {
+            // read MyType data here
+            return new RoomInfoEvent
+            {
+                teamA = reader.ReadArray<string>(),
+                teamB = reader.ReadArray<string>()
+            };
+        }
         #endregion
         #region Lobby Writers
         public static void WriteStartLobbyRoomEvent (this NetworkWriter writer, StartLobbyRoom req) {
@@ -316,13 +332,26 @@ namespace ACGAuthentication {
         #region LoginRequest
         public static void WriteLoginRequest (this NetworkWriter writer, LoginEvent req) {
             // write MyType data here
-            writer.WriteString (req.MoralisId);
-            writer.WriteString (req.UserName);
+            writer.WriteString (req.AccessToken);
         }
 
         public static LoginEvent ReadLoginRequest (this NetworkReader reader) {
             // read MyType data here
-            return new LoginEvent (reader.ReadString (), reader.ReadString ());
+            return new LoginEvent (reader.ReadString ());
+
+        }
+        #endregion
+        #region LoginResultEvent
+        public static void WriteLoginResultEvent(this NetworkWriter writer, LoginResultEvent req)
+        {
+            // write MyType data here
+            writer.WriteBool(req.IsSuccess);
+        }
+
+        public static LoginResultEvent ReadLoginResultEvent(this NetworkReader reader)
+        {
+            // read MyType data here
+            return new LoginResultEvent(reader.ReadBool());
 
         }
         #endregion

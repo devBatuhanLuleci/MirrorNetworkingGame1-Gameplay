@@ -1,7 +1,6 @@
 public enum LoginType
 {
-    Moralis,
-    User,
+    WalledId,
     Admin,
     None
 }

@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class LoginPanel : Panel
 {
     public TMP_Text m_EmailTmp;
-    public TMP_InputField m_MoralisIdInput;
+    public TMP_InputField m_WalledIdInput;
     public TMP_InputField m_EmailInput;
 
     public Button loginButton;
@@ -20,14 +20,14 @@ public class LoginPanel : Panel
 
     public void OnClickLogin()
     {
-        var loginReq = new LoginRequest(m_MoralisIdInput.text);
+        var loginReq = new LoginRequest(m_WalledIdInput.text);
         HttpClient.Instance.Get<User>(loginReq, OnLoginSuccess, OnLoginFail);
     }
 
 
     public void OnClickRegister()
     {
-        var createReq= new CreateRequest(m_MoralisIdInput.text, m_EmailInput.text,"admin-wallet");
+        var createReq = new CreateRequest(m_EmailInput.text, m_WalledIdInput.text);
         HttpClient.Instance.Post<User>(createReq, OnCreateSuccess);
 
     }

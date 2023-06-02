@@ -36,6 +36,7 @@ class MainPanelUIManager : Panel
     public Panel friendLastMatchPanel;
     public Panel leaderBoardPanel;
     public Panel mailBoxPanel;
+    public Panel loginWalletIdPanel;
 
     [Space]
     [SerializeField]
@@ -77,7 +78,7 @@ class MainPanelUIManager : Panel
 
 
 
-    public void MoralisLogin()
+    public void WalletLogin()
     {
         Show(loginPanel);
     }
@@ -209,14 +210,14 @@ class MainPanelUIManager : Panel
     {
         //AuthenticationKit.Instance.OnConnected.AddListener(OnConnected);
         AuthenticationManager.Instance.OnUserUnregister.AddListener(OnUserUnregister);
-        AuthenticationManager.Instance.OnUserLogged.AddListener(OnUserLogged);
+        //AuthenticationManager.Instance.OnUserLogged.AddListener(OnUserLogged);
 
     }
     private void RemoveListeners()
     {
         //AuthenticationKit.Instance.OnConnected.RemoveListener(OnConnected);
         AuthenticationManager.Instance.OnUserUnregister.RemoveListener(OnUserUnregister);
-        AuthenticationManager.Instance.OnUserLogged.RemoveListener(OnUserLogged);
+        //AuthenticationManager.Instance.OnUserLogged.RemoveListener(OnUserLogged);
     }
 
     #endregion
@@ -231,7 +232,7 @@ class MainPanelUIManager : Panel
 
     #region Authentication Event Handler
 
-    private void OnUserLogged()
+    public void OnUserLogged()
     {
         // TODO check user have any nft character 
         // ?f not  open Nft buy panel
@@ -246,17 +247,14 @@ class MainPanelUIManager : Panel
     internal void Login()
     {
 
-        var loginType = AuthenticationManager.Instance.LoginType;
         var isServer = AuthenticationManager.Instance.IsServer;
         if (isServer) return;
+        var loginType = AuthenticationManager.Instance.LoginType;
         switch (loginType)
         {
-            case LoginType.Moralis:
-                MoralisLogin();
-                break;
-            case LoginType.User:
-                Debug.Log("login with custom user");
-                break;
+            case LoginType.WalledId:
+                WalletLogin();
+                break;        
             case LoginType.Admin:
                 Debug.Log("login with Admin");
                 break;

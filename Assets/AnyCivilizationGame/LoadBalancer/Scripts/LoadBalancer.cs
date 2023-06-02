@@ -1,4 +1,5 @@
 using ACGAuthentication;
+using log4net;
 using Mirror;
 using System;
 using System.Collections;
@@ -20,11 +21,12 @@ public class LoadBalancer : Singleton<LoadBalancer>
     private bool isClient = false;
     // store all users of connected to lobby
     private Dictionary<byte, EventManagerBase> eventHandlers = new Dictionary<byte, EventManagerBase>();
+    private static readonly ILog log = LogManager.GetLogger(typeof(LoadBalancer));
 
     public Host Host => host;
 
     #region Managers
-    public ACGAuthenticationManager AuthenticationManager { get; private set; }
+    public ACGAuthenticationManager ACGAuthenticationManager { get; private set; }
     public SpawnServer SpawnServer { get; private set; }
     public LobbyManager LobbyManager { get; private set; }
     #endregion
@@ -35,6 +37,7 @@ public class LoadBalancer : Singleton<LoadBalancer>
 
     private void Start()
     {
+        log.Debug($"Loadbalancer Started");
 
         Application.runInBackground = true;
         SetupManagers();
@@ -75,7 +78,7 @@ public class LoadBalancer : Singleton<LoadBalancer>
 
     private void SetupManagers()
     {
-        AuthenticationManager = new ACGAuthenticationManager(this);
+        ACGAuthenticationManager = new ACGAuthenticationManager(this);
         SpawnServer = new SpawnServer(this);
         LobbyManager = new LobbyManager(this);
     }
@@ -190,8 +193,11 @@ public class LoadBalancer : Singleton<LoadBalancer>
     {
         Debug.Log("loadbalancer connected to " + host.GetStringValue() + ":" + transport.ServerUri().Port);
 
-        if (ACGDataManager.Instance != null)
-            ACGDataManager.Instance.OnConnectedToMasterServer();
+        if (AuthenticationManager.Instance != null)
+        {
+            var ev = new LoginEvent(AuthenticationManager.Instance.User.accessToken);
+            ACGAuthenticationManager.SendClientRequestToServer(ev);
+        }
     }
     #endregion
 

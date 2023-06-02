@@ -22,21 +22,22 @@ public class Panel : MonoBehaviour, IPanel
     }
     public virtual void CloseSmoothly()
     {
-    
+
         if (TryGetComponent(out CanvasGroup canvasGroup))
         {
 
-            canvasGroup.DOFade(0, 1f).From(1).SetEase(Ease.Linear).OnComplete(()=> {
+            canvasGroup.DOFade(0, 1f).From(1).SetEase(Ease.Linear).OnComplete(() =>
+            {
                 OnPanelClose();
-               // gameObject.SetActive(false);
+                // gameObject.SetActive(false);
             });
         }
 
-        
+
 
 
     }
-    public virtual void Close(bool destroy=false)
+    public virtual void Close(bool destroy = false)
     {
         Close();
         if (destroy) Destroy(gameObject);
@@ -49,8 +50,9 @@ public class Panel : MonoBehaviour, IPanel
     }
     public virtual void ShowSmoothly()
     {
-     
-      if( TryGetComponent(out CanvasGroup canvasGroup)){
+
+        if (TryGetComponent(out CanvasGroup canvasGroup))
+        {
 
             canvasGroup.DOFade(1, .5f).From(0).SetEase(Ease.Linear);
         }
@@ -88,6 +90,11 @@ public class Panel : MonoBehaviour, IPanel
         currentPanel?.Close();
         panel.Show();
         currentPanel = panel;
+    }
+    protected void Show<T>() where T : Panel
+    {
+        T panel = GetPanel<T>();
+        if (panel != null) { Show(panel); }
     }
     protected bool IsChild(Panel panel)
     {

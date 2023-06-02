@@ -9,8 +9,8 @@ public class Client : MonoBehaviour
   public void SendHello()
     {
 
-        var req = new LoginEvent("admin", "admin");
-        LoadBalancer.Instance.AuthenticationManager.SendClientRequestToServer(req);
+        var req = new LoginEvent("admin");
+        LoadBalancer.Instance.ACGAuthenticationManager.SendClientRequestToServer(req);
 
     }
 
