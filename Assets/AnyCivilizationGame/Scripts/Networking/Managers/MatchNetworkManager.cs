@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
-
+using DG.Tweening;
 public class MatchNetworkManager : NetworkManager
 {
 
@@ -212,11 +212,11 @@ public class MatchNetworkManager : NetworkManager
         OnPlayerListChanged.Invoke(players);
 
         Debug.LogError("OnServerConnect players count:" + players.Count);
-        if (players.Count >= ACGDataManager.Instance.GameData.MaxPlayerCount && NetworkedGameManager.Instance == null)
+        if (players.Count == ACGDataManager.Instance.GameData.MaxPlayerCount && NetworkedGameManager.Instance == null)
         {
             //Invoke("StartGame", 1);
          Invoke("CreateGameManager",2f);
-
+       
         }
     }
   
