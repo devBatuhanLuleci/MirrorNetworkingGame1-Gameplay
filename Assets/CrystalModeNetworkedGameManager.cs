@@ -67,6 +67,14 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
 
 
     }
+    public override void Start()
+    {
+        base.Start();
+        if (isServer)
+        {
+            crystalModeGamePanelsHandler.OnStartGame_Do_UIPanelSequence();
+        }
+    }
     public override void Update()
     {
 

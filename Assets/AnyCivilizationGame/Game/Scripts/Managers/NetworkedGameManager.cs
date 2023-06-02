@@ -60,7 +60,7 @@ public class NetworkedGameManager : NetworkBehaviour
         InitAssigments();
         Info("awake: " + MatchNetworkManager.Instance.mode);
     }
-    private void Start()
+    public virtual void Start()
     {
        
         Info("isClient: " + isClient);

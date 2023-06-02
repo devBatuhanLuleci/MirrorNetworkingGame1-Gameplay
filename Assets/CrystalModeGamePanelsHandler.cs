@@ -94,20 +94,20 @@ public class CrystalModeGamePanelsHandler : NetworkBehaviour
         if (!isServer) { return; }
 
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            //    ActivateSequenceOnClients();
-            StartCoroutine(DoOpeninPanelSequence());
 
 
-        }
-       
+
+    }
+    public void OnStartGame_Do_UIPanelSequence()
+    {
+
+        StartCoroutine(DoOpeninPanelSequence());
+
 
 
     }
 
-
-    IEnumerator DoOpeninPanelSequence()
+    private IEnumerator DoOpeninPanelSequence()
     {
         isOpeningPanelActive = true;
         yield return StartCoroutine(gemModeAnimateFloatOnCrystalInfoRect.AnimateCoroutine());
