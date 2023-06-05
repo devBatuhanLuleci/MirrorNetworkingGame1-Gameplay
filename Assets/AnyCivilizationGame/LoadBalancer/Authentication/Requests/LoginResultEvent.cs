@@ -33,6 +33,7 @@ namespace ACGAuthentication
             {
                 Debug.Log("Loggin fail!");
                 acgAuth.Debug("Loggin fail!");
+                // TODO: retry
             }
 
         }

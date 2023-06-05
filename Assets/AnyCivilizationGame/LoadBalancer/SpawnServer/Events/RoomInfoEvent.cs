@@ -12,7 +12,11 @@ public class RoomInfoEvent : IResponseEvent
         var spawnServer = eventManagerBase as SpawnServer;
         Debug.Log("RoomInfoEvent recived!");
         spawnServer.Debug("RoomInfoEvent recived!");
-
+        if (teamA == null || teamB == null)
+        {
+            spawnServer.Debug("A teams is null!");
+            return;
+        }
         foreach (var team in teamA)
         {
             spawnServer.Debug("Team A member:" + team);
@@ -22,6 +26,12 @@ public class RoomInfoEvent : IResponseEvent
         {
             spawnServer.Debug("Team B member:" + team);
         }
+
+        LoadBalancer.Instance.LobbyManager.roomData = new LobbyManager.RoomData
+        {
+            teamA = teamA,
+            teamB = teamB,
+        };
     }
 }
 

@@ -12,23 +12,33 @@ using UnityEngine.Events;
 
 public class MatchNetworkManager : NetworkManager
 {
+    public class MatchPeer
+    {
+        public NetworkConnectionToClient Connection { get; }
+        public string AccessToken = string.Empty;
+        public bool IsReady = false;
+        public MatchPeer(NetworkConnectionToClient connection)
+        {
+            Connection = connection;
+        }
 
+    }
     #region Fields
     public static MatchNetworkManager Instance { get { return instance; } }
-        
+
     public OnCharacterReplacedEvent OnPlayerListChanged = new OnCharacterReplacedEvent();
-   
+
 
     #endregion
 
     #region Private Fields
 
     private static MatchNetworkManager instance;
-    private Dictionary<int, NetworkConnectionToClient> players;
+    private Dictionary<int, MatchPeer> Players;
 
 
-   
-   
+
+
 
     #endregion
     public override void Awake()
@@ -82,35 +92,30 @@ public class MatchNetworkManager : NetworkManager
     #region  Server Logich
     #region Character creating
 
-    public override void OnStartServer()
-    {
-        base.OnStartServer();
-        RegisterNetworkMessages();
-    }
-
-    public override void OnServerDisconnect(NetworkConnectionToClient conn)
-    {
-
-        players.Remove(conn.connectionId);
-        OnPlayerListChanged.Invoke(players);
-        base.OnServerDisconnect(conn);
-    }
 
 
     private void RegisterNetworkMessages()
     {
         NetworkServer.RegisterHandler<CharacterCreateMessage>(OnCreateCharacter);
         NetworkServer.RegisterHandler<ReplanceCharacterMessage>(OnReplacePlayer);
+        NetworkServer.RegisterHandler<JoinToGameNetworkMessage>(JoinedToGame);
     }
 
-    public override void OnClientConnect()
+    protected virtual void JoinedToGame(NetworkConnectionToClient conn, JoinToGameNetworkMessage message)
     {
+        Debug.Log("JoinedToGame:" + message.AccesToken);
+        if (Players.TryGetValue(conn.connectionId, out var player))
+        {
+            player.AccessToken = message.AccesToken;
+            player.IsReady = true;
+        }
 
-
-        base.OnClientConnect();
-        // you can send the message here, or wherever else you want
-        var defaultCharacter = CharacterCreateMessage.Default;
-        NetworkClient.Send(defaultCharacter);
+        if (Players.Count >= ACGDataManager.Instance.GameData.MaxPlayerCount
+            && NetworkedGameManager.Instance == null
+            && !Players.Any(it => !it.Value.IsReady))
+        {
+            CreateGameManager();
+        }
     }
 
     void OnCreateCharacter(NetworkConnectionToClient conn, CharacterCreateMessage message)
@@ -123,9 +128,6 @@ public class MatchNetworkManager : NetworkManager
         GameObject go = Instantiate(characterPrefab);
 
 
-    //    GetIntoTeam(go, players.Count % 2);
-
-
         // Apply data from the message however appropriate for your game
         // Typically Player would be a component you write with syncvars or properties
         PlayerController player = go.GetComponent<PlayerController>();
@@ -133,7 +135,7 @@ public class MatchNetworkManager : NetworkManager
 
         // call this to use this gameobject as the primary controller
         NetworkServer.AddPlayerForConnection(conn, go);
-        this.OnPlayerListChanged.Invoke(players);
+        this.OnPlayerListChanged.Invoke(Players);
 
     }
     public void OnReplacePlayer(NetworkConnectionToClient conn, ReplanceCharacterMessage message)
@@ -144,7 +146,7 @@ public class MatchNetworkManager : NetworkManager
         // Cache a reference to the current player object
         GameObject oldPlayer = conn.identity.gameObject;
 
-    
+
 
         Debug.LogError("ReplacePlayer message:" + message.ToString());
 
@@ -158,7 +160,7 @@ public class MatchNetworkManager : NetworkManager
         // Instantiate the new player object and broadcast to clients
         // Include true for keepAuthority paramater to prevent ownership change
         NetworkServer.ReplacePlayerForConnection(conn, go, true);
-        this.OnPlayerListChanged.Invoke( players);
+        this.OnPlayerListChanged.Invoke(Players);
 
         // Remove the previous player object that's now been replaced
         // Delay is required to allow replacement to complete.
@@ -183,52 +185,37 @@ public class MatchNetworkManager : NetworkManager
         transport.Port = ACGDataManager.Instance.GameData.Port;
         StartServer();
 
-        players = new Dictionary<int, NetworkConnectionToClient>();
+        Players = new Dictionary<int, MatchPeer>();
 
 
-       // CreateTeam();
+        // CreateTeam();
         LoadBalancer.Instance.SpawnServer.SendClientRequestToServer(new OnReadyEvent(ACGDataManager.Instance.GameData.Port));
         Debug.LogError("OnReadyEvent msg sended to master server.");
     }
 
     private void CreateGameManager()
     {
-       
 
+        // TODO: type must be generic
         var prefab = Resources.Load<CrystalModeNetworkedGameManager>(nameof(CrystalModeNetworkedGameManager));
         var networkedGameManager = Instantiate(prefab);
         NetworkServer.Spawn(networkedGameManager.gameObject);
         Debug.LogError("NetworkedGameManager spawned.");
 
-        NetworkedGameManager.Instance.ServerStarted(players);
+        NetworkedGameManager.Instance.ServerStarted(Players);
 
     }
 
-    public override void OnServerConnect(NetworkConnectionToClient conn)
-    {
 
-        base.OnServerConnect(conn);
-        players.Add(conn.connectionId, conn);
-        OnPlayerListChanged.Invoke(players);
-
-        Debug.LogError("OnServerConnect players count:" + players.Count);
-        if (players.Count >= ACGDataManager.Instance.GameData.MaxPlayerCount && NetworkedGameManager.Instance == null)
-        {
-            //Invoke("StartGame", 1);
-         Invoke("CreateGameManager",2f);
-
-        }
-    }
-  
     public PlayerController GetPlayerByNetID(uint netID)
     {
 
-        foreach (var item in players.Values)
+        foreach (var item in Players.Values)
         {
-            if (item.identity.netId == netID)
+            if (item.Connection.identity.netId == netID)
             {
-                 Debug.Log($"isim: { item.identity.name}  id:     {item.identity.netId}");
-                return item.identity.GetComponent<PlayerController>();
+                Debug.Log($"isim: {item.Connection.identity.name}  id:     {item.Connection.identity.netId}");
+                return item.Connection.identity.GetComponent<PlayerController>();
             }
         }
         return null;
@@ -237,10 +224,10 @@ public class MatchNetworkManager : NetworkManager
     public PlayerController GetPlayerByConnectionID(int connectionId)
     {
 
-        if (players.TryGetValue(connectionId, out var item))
+        if (Players.TryGetValue(connectionId, out var item))
         {
-           
-            return item.identity.GetComponent<PlayerController>();
+
+            return item.Connection.identity.GetComponent<PlayerController>();
 
         }
 
@@ -267,18 +254,50 @@ public class MatchNetworkManager : NetworkManager
 
         return null;
     }
- 
+
 
     #endregion
 
 
     #region Mirror Overrides
 
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+        RegisterNetworkMessages();
+    }
 
+    public override void OnServerDisconnect(NetworkConnectionToClient conn)
+    {
+
+        Players.Remove(conn.connectionId);
+        OnPlayerListChanged.Invoke(Players);
+        base.OnServerDisconnect(conn);
+    }
+
+    public override void OnClientConnect()
+    {
+
+
+        base.OnClientConnect();
+        // you can send the message here, or wherever else you want
+        var defaultCharacter = CharacterCreateMessage.Default;
+        var joinMsg = new JoinToGameNetworkMessage { AccesToken = AuthenticationManager.Instance.User.accessToken };
+        NetworkClient.Send(joinMsg);
+        NetworkClient.Send(defaultCharacter);
+    }
+    public override void OnServerConnect(NetworkConnectionToClient conn)
+    {
+
+        base.OnServerConnect(conn);
+        var playerPeer = new MatchPeer(conn);
+        Players.Add(conn.connectionId, playerPeer);
+        OnPlayerListChanged.Invoke(Players);
+    }
     #endregion
 }
 [System.Serializable]
-public class OnCharacterReplacedEvent : UnityEvent< Dictionary<int, NetworkConnectionToClient>>
+public class OnCharacterReplacedEvent : UnityEvent<Dictionary<int, MatchNetworkManager.MatchPeer>>
 {
 
 }

@@ -9,7 +9,8 @@
 
 
   <root>
-    <level value="DEBUG" />
+	  <level value="DEBUG" />
+	  <level value="ERROR" />
     <appender-ref ref="UnityAppender" />
   </root>
 </log4net>
