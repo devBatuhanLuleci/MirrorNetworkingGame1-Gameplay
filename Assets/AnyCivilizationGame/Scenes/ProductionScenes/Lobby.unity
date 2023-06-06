@@ -19211,14 +19211,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7931173257796277121, guid: 7c72a0259f788ae47918b885e540c397, type: 3}
-      propertyPath: walletId
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7931173257796277121, guid: 7c72a0259f788ae47918b885e540c397, type: 3}
-      propertyPath: loginType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7931173257796277121, guid: 7c72a0259f788ae47918b885e540c397, type: 3}
       propertyPath: OnUserLogged.m_PersistentCalls.m_Calls.Array.size
       value: 2
       objectReference: {fileID: 0}

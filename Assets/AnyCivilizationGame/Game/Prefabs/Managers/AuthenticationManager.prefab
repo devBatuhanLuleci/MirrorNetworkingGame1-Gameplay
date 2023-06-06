@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loginType: 2
-  walletId: 1
+  walletId: 
   _user:
     id: 0
     walletId: 
