@@ -58,15 +58,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0324d6a1cb639a4f897ea7ce66db971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loginType: 3
-  userID: admin
+  loginType: 2
+  walletId: 1
   _user:
-    moralisId: 
-    email: 
+    id: 0
     walletId: 
+    email: 
+    userName: 
+    accessToken: 
   OnUserUnregister:
     m_PersistentCalls:
       m_Calls: []
   OnUserLogged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: LoadBalancer, Assembly-CSharp
+        m_MethodName: StartClient
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: ACGDataManager, Assembly-CSharp
+        m_MethodName: GetData
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
