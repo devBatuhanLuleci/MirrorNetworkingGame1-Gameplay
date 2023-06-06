@@ -84,6 +84,7 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
         switch (loginType)
         {
             case LoginType.WalledId:
+                LoginWebAPI(walletId);
                 break;        
             case LoginType.Admin:
                 LoginWebAPI("admin-wallet");

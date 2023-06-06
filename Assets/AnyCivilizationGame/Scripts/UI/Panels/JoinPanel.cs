@@ -39,7 +39,7 @@ public class JoinPanel : Panel {
     public void OnClick_Register () {
         // var createReq= new CreateRequest(m_MoralisIdInput.text, m_EmailInput.text,"admin-wallet");
 
-        var createReq = new CreateRequest (WalletId.text, EmailInput.text, WalletId.text);
+        var createReq = new CreateRequest (EmailInput.text, WalletId.text);
         HttpClient.Instance.Post<User> (createReq, OnCreateSuccess, OnCreateFail);
 
     }

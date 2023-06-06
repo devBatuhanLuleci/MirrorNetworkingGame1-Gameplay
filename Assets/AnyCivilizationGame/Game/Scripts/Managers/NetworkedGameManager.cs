@@ -1,14 +1,8 @@
-﻿using kcp2k;
-using Mirror;
-using System;
-using System.Collections;
+﻿using Mirror;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using static MatchNetworkManager;
-using static NetworkedGameManager;
-using static UnityEditor.Progress;
 
 public class NetworkedGameManager : NetworkBehaviour
 {

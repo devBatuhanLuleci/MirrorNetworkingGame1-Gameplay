@@ -6683,6 +6683,7 @@ MonoBehaviour:
   mailBoxPanel: {fileID: 0}
   loginWalletIdPanel: {fileID: 1029670222}
   startPanel: {fileID: 1029670222}
+  WalletKey: 0
 --- !u!1 &633572202
 GameObject:
   m_ObjectHideFlags: 0
@@ -19211,7 +19212,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7931173257796277121, guid: 7c72a0259f788ae47918b885e540c397, type: 3}
       propertyPath: walletId
-      value: 
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7931173257796277121, guid: 7c72a0259f788ae47918b885e540c397, type: 3}
       propertyPath: loginType
