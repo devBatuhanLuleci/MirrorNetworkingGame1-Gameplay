@@ -26,7 +26,7 @@ public class LobbyPanel : Panel
     private Dictionary<string, UserButton> users = new Dictionary<string, UserButton>();
     public void SendHello()
     {
-        var req = new ACGAuthentication.LoginEvent("admin", "admin");
+        var req = new ACGAuthentication.LoginEvent("admin");
         SendClientRequestToServer(req);
     }
 

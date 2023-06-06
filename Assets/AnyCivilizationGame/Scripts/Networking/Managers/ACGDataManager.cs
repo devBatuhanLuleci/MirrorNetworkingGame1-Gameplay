@@ -25,7 +25,7 @@ public class ACGDataManager : MonoBehaviour
     [Space]
     public DataAdaptorType AdapterType;
     [SerializeField]
-    private string gameSceneName = "GameScene";
+    public string GameSceneName = "GameScene";
 
     public GameData GameData;
     public LobbyPlayer LobbyPlayer { get; set; }
@@ -43,14 +43,13 @@ public class ACGDataManager : MonoBehaviour
         DataAdaptor = DataAdaptorFactory.Get(AdapterType);
 
         Setup();
-        GetData();
     }
     public CharacterData GetCharacterData()
     {
         var characterProfileData = profile.Characters.ElementAt(0).Value;
         return Characters[characterProfileData.Name];
     }
-    private async void GetData()
+    public async void GetData()
     {
         try
         {
@@ -64,8 +63,8 @@ public class ACGDataManager : MonoBehaviour
         }
 
         // logs.  
-        Debug.Log("--------------------Start------------------------------");
-        Debug.Log("UserName:" + profile.UserName);
+        //Debug.Log("--------------------Start------------------------------");
+        //Debug.Log("UserName:" + profile.UserName);
         foreach (var charcter in profile.Characters)
         {
             foreach (var attribute in charcter.Value.Attributes)
@@ -76,8 +75,8 @@ public class ACGDataManager : MonoBehaviour
             }
         }
         var charcterData = GetCharacterData();
-        Debug.LogError($"charcterData name: {charcterData.Name}");
-        Debug.Log("--------------------End------------------------------");
+        //Debug.LogError($"charcterData name: {charcterData.Name}");
+        //Debug.Log("--------------------End------------------------------");
 
     }
     private void Setup()
@@ -85,14 +84,9 @@ public class ACGDataManager : MonoBehaviour
         InitSingleton();
         InitDatas();
         HandleCommands();
-        ConnectToTheMaster();
-    }
-
-    public void OnConnectedToMasterServer()
-    {
-        // TODO: Get Game Data from master
         StartAuth();
     }
+
     public void StartAuth()
     {
         AuthenticationManager.Instance.StartAuth();
@@ -131,18 +125,19 @@ public class ACGDataManager : MonoBehaviour
     // TODO: this will be moved to its new location at a later date.
     public void StartServer()
     {
-        SceneManager.LoadScene(gameSceneName);
+        AuthenticationManager.Instance.User.accessToken = "game-server";
+        LoadBalancer.Instance.StartClient();
     }
     // TODO: this will be moved to its new location at a later date.
     public void StartClient(string gameServerAddress, ushort port)
     {
         GameData.Port = port;
         GameData.GameServerAddress = gameServerAddress;
-        SceneManager.LoadScene(gameSceneName);
+        SceneManager.LoadScene(GameSceneName);
     }
     public void StartClient()
     {
-        SceneManager.LoadScene(gameSceneName);
+        SceneManager.LoadScene(GameSceneName);
     }
 
     #region HandleCommands

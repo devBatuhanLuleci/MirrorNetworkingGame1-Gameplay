@@ -1,7 +1,7 @@
 using Oddworm.Framework;
 using UnityEngine;
 
-public class CommandLineInitializer : MonoBehaviour
+public class CommandLineInitializer : Singleton<CommandLineInitializer>
 {
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]

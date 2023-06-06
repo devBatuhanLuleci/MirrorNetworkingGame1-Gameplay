@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using ACGAuthentication;
 
 public class MainMenuPanel : Panel
 {
@@ -69,6 +70,11 @@ public class MainMenuPanel : Panel
     #endregion
 
     #region Buttons
+
+    public void OnClick_PlayButton()
+    {
+
+    }
     public void OnClick_DroidsButton()
     {
         MainPanelUIManager.Instance.DroidsPanelShow();
@@ -100,4 +106,11 @@ public class MainMenuPanel : Panel
         MainPanelUIManager.Instance.myProfilePanel.GetComponent<MyProfilePanel>().isDirectMyProfilePanel = true;
     }
     #endregion
+
+    private void SendClientRequestToServer(IEvent ev)
+    {
+        if (LoadBalancer.Instance == null) Debug.LogError("LoadBalancer is null!");
+        if (LoadBalancer.Instance.LobbyManager == null) Debug.LogError("LobbyManager is null!");
+        LoadBalancer.Instance.LobbyManager.SendClientRequestToServer(ev);
+    }
 }

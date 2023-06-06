@@ -17,10 +17,10 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
 {
     #region Configurations
     [SerializeField]
-    private LoginType loginType = LoginType.Moralis;
+    private LoginType loginType = LoginType.WalledId;
 
 
-    [SerializeField] private string userID = "admin";
+    [SerializeField] private string walletId = "admin";
     #endregion
     #region Public Variables
     [SerializeField]
@@ -42,10 +42,7 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
     #endregion
 
     #region MonoBehaviour Call  Back
-    private void Start()
-    {
-        //StartAuth();
-    }
+ 
     #endregion
     #region Public Methods
 
@@ -81,28 +78,24 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
     #endregion
     #region Login Methods
 
-    public async void Login()
+    public void Login()
     {
         Debug.Log($"Login Type: {loginType}");
         switch (loginType)
         {
-            case LoginType.Moralis:
-                //await AuthenticationKit.Instance.InitializeAsync();
-                break;
-            case LoginType.User:
-                LoginWebAPI(userID);
-                break;
+            case LoginType.WalledId:
+                break;        
             case LoginType.Admin:
-                LoginWebAPI("admin");
+                LoginWebAPI("admin-wallet");
                 break;
             case LoginType.None:
                 OnUserLogged.Invoke();
                 break;
         }
     }
-    public void LoginWebAPI(string moralisId = "")
+    public void LoginWebAPI(string walletId = "")
     {
-        var loginRequest = new LoginRequest(moralisId);
+        var loginRequest = new LoginRequest(walletId);
         HttpClient.Instance.Get<User>(loginRequest, LoginSuccess, LoginFail);
     }
     public async void CreateUserWithMoralis(string email)

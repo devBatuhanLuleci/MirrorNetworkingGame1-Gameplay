@@ -11,25 +11,23 @@ public struct Team
     public Team(NetworkedGameManager.TeamTypes team, List<TeamPlayers> teamPlayers)
     {
         this.teamType = team;
-        this.teamPlayers=teamPlayers;
-
+        this.teamPlayers = teamPlayers;
     }
- 
+
 }
 [System.Serializable]
 public struct TeamPlayers
 {
-
-   
-
-  
+    public string AccessToken;
     public int connectionId;
     public NetworkIdentity netIdentity;
 
-    public TeamPlayers(int connID,NetworkIdentity netIdentity)
+
+    public TeamPlayers(int connID, NetworkIdentity netIdentity, string accessToken)
     {
+        AccessToken = accessToken;
         connectionId = connID;
         this.netIdentity = netIdentity;
-    }   
+    }
 }
 

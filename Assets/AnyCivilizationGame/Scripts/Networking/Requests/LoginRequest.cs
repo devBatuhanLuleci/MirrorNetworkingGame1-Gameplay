@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
     public class LoginRequest : IGetRequest
     {
-        public string Url => $"Auth/login/{moralisId}";
+        public string Url => $"Auth/login/{walletId}";
 
-        public string moralisId;
+        public string walletId;
         public LoginRequest(string moralisID)
         {
-            moralisId = moralisID;
+            walletId = moralisID;
         }
     }
 

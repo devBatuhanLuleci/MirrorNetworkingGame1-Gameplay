@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static MatchNetworkManager;
 using static NetworkedGameManager;
 
 public class CrystalModeNetworkedGameManager : NetworkedGameManager
@@ -183,9 +184,6 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
     public override void SetupClient()
     {
         base.SetupClient();
-
-
-
     }
 
 
@@ -229,7 +227,7 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
 
     }
 
-    public override void ServerStarted(Dictionary<int, NetworkConnectionToClient> players)
+    public override void ServerStarted(Dictionary<int, MatchPeer> players)
     {
         base.ServerStarted(players);
 

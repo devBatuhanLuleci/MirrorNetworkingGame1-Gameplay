@@ -1,7 +1,9 @@
 ﻿[System.Serializable]
 public class User
 {
-    public string moralisId;
-    public string email;
+    public int id;
     public string walletId;
+    public string email;
+    public string userName;
+    public string accessToken;
 }
