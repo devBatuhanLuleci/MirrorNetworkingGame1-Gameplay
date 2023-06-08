@@ -161,7 +161,7 @@ public class NetworkedGameManager : NetworkBehaviour
             var player = players.First(el => el.Value.AccessToken == token).Value;
             if (player != null) TeamRed.teamPlayers.Add(new TeamPlayers(player.Connection.connectionId, player.Connection.identity, player.AccessToken));
         }
-
+        Teams = new List<Team> { TeamBlue, TeamRed };
         //foreach (var item in players)
         //{
         //    var team = isTeam1 ? TeamTypes.Blue : TeamTypes.Red;

@@ -110,7 +110,7 @@ public class MatchNetworkManager : NetworkManager
             player.IsReady = true;
         }
 
-        if (Players.Count == ACGDataManager.Instance.GameData.MaxPlayerCount
+        if (Players.Count >= ACGDataManager.Instance.GameData.MaxPlayerCount
             && NetworkedGameManager.Instance == null
             && !Players.Any(it => !it.Value.IsReady))
         {
