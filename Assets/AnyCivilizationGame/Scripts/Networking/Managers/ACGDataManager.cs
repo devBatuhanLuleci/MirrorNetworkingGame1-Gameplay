@@ -41,6 +41,7 @@ public class ACGDataManager : MonoBehaviour
     public void Start()
     {
         DataAdaptor = DataAdaptorFactory.Get(AdapterType);
+        GetData();
 
         Setup();
     }
