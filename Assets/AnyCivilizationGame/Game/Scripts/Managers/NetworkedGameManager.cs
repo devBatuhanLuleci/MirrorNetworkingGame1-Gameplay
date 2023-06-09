@@ -114,7 +114,7 @@ public class NetworkedGameManager : NetworkBehaviour
                        where person.connectionId.Equals(connID)
                        select personGroup;
 
-        teamType = teamEnum.First().teamType;
+        teamType = teamEnum.FirstOrDefault().teamType;
 
         //  Debug.Log($" my team: {teamType}");
 
@@ -137,7 +137,7 @@ public class NetworkedGameManager : NetworkBehaviour
                        from person in personGroup.teamPlayers
                        where person.netIdentity.Equals(networkIdentity)
                        select personGroup;
-        teamType = teamEnum.First().teamType;
+        teamType = teamEnum.FirstOrDefault().teamType;
         return teamType;
     }
 
@@ -195,13 +195,13 @@ public class NetworkedGameManager : NetworkBehaviour
                       where person.netIdentity.Equals(NetworkClient.localPlayer)
                       select personGroup;
 
-        var ourTeam = result3.First();
+        var ourTeam = result3.FirstOrDefault();
 
         var result4 = from personGroup in Teams
                       from person in personGroup.teamPlayers
                       where person.netIdentity.Equals(otherPlayer)
                       select personGroup;
-        var otherTeam = result4.First();
+        var otherTeam = result4.FirstOrDefault();
 
         return ourTeam.teamType == otherTeam.teamType;
 
@@ -213,7 +213,7 @@ public class NetworkedGameManager : NetworkBehaviour
                       where person.netIdentity.netId.Equals(NetworkClient.localPlayer.netId)
                       select personGroup;
 
-        var ourTeam = result3.First();
+        var ourTeam = result3.FirstOrDefault();
 
 
         var result4 = from personGroup in Teams
@@ -221,7 +221,7 @@ public class NetworkedGameManager : NetworkBehaviour
                       where person.netIdentity.netId.Equals(otherPlayerNetId)
                       select personGroup;
 
-        var otherTeam = result4.First();
+        var otherTeam = result4.FirstOrDefault();
 
 
         return ourTeam.teamType == otherTeam.teamType;
@@ -231,21 +231,30 @@ public class NetworkedGameManager : NetworkBehaviour
 
     public bool IsInMyTeam(uint ownerNetID, uint otherPlayerNetID)
     {
+        var myTeam = Teams.Where(_team => _team.teamPlayers.Any(_teamPlayer => _teamPlayer.netIdentity.netId == ownerNetID)).FirstOrDefault();
+        var res = myTeam.teamPlayers.Where(_teamPlayer => _teamPlayer.netIdentity.netId == otherPlayerNetID);
+        return res.Count() > 0;
 
         var result3 = from personGroup in Teams
                       from person in personGroup.teamPlayers
                       where person.netIdentity.netId.Equals(ownerNetID)
                       select personGroup;
-
-        var ourTeam = result3.First();
+        //if (result3.ToArray().Length <=0)
+        //{
+        //    return false;
+        //}
+        var ourTeam = result3.FirstOrDefault();
 
         var result2 = from personGroup in Teams
                       from person in personGroup.teamPlayers
                       where person.netIdentity.netId.Equals(otherPlayerNetID)
                       select personGroup;
-        var otherTeam = result2.First();
+        var otherTeam = result2.FirstOrDefault();
 
-
+        //if (result3.ToArray().Length <= 0)
+        //{
+        //    return false;
+        //}
 
         return ourTeam.teamType == otherTeam.teamType;
 
