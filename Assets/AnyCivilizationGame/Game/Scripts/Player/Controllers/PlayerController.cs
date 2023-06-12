@@ -103,6 +103,7 @@ public class PlayerController : ObjectController
             spawnPoint.BulletInitPos = spawnPoint.spawnPoint;
         }
 
+     
     }
 
     public virtual void DetectJoystickButton(SimpleInputNamespace.Joystick.JoystickButtonType joystickButtonType)
@@ -724,11 +725,11 @@ public class PlayerController : ObjectController
         base.DeathRPC();
 
         // TODO: show death panel if localplayer
-        //if (netIdentity.isLocalPlayer)
-        //{
-        //    infoPopup = InfoPopup.Show("Loser! You will respawn in 3 second.");
+        if (netIdentity.isLocalPlayer)
+        {
+            infoPopup = InfoPopup.Show("Loser! You will respawn in 3 second.");
 
-        //}
+        }
     }
     [ClientRpc]
     public void RespawnRPC()

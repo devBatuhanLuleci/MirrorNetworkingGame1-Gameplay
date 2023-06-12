@@ -10,7 +10,9 @@ public class PopupManager : Singleton<PopupManager>
     {
         var newPath = path + typeof(T);
         var panel = Resources.Load<T>(newPath);
-        var panelTransform = MainPanelUIManager.Instance;
+        //var panelTransform = MainPanelUIManager.Instance;
+        var panelTransform = FindObjectOfType<PaneUIManager>(true);
+
         if (panelTransform == null)
         {
             Debug.LogError("UI_Canvas is not found!");

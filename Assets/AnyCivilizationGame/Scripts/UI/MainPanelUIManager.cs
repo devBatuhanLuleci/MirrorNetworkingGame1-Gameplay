@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-class MainPanelUIManager : Panel
+class MainPanelUIManager : PaneUIManager
 {
     [Header("Setup")]
     public Panel loadingPanel;

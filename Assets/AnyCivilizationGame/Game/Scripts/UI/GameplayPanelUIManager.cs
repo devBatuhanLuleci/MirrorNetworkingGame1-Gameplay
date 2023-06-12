@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
-public class GameplayPanelUIManager : Panel
+public class GameplayPanelUIManager : PaneUIManager
 {
     #region Child panels
     [Header("Setup")]
