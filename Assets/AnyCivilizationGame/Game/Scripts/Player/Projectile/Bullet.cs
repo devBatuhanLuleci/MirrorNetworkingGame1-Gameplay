@@ -31,28 +31,25 @@ public class Bullet : Throwable, INetworkPooledObject
     /// </summary>
     /// <param name="rotAngle"></param>
 
-
+    [Server]
     private void OnTriggerEnter(Collider other)
     {
-      
 
-        if (other.TryGetComponent<PlayerController>(out var otherPlayerController) && CanAttackToThisPlayer(otherPlayerController))
+        if (other.TryGetComponent<PlayerController>(out var otherPlayerController)
+            && CanAttackToThisPlayer(otherPlayerController)
+            && !NetworkedGameManager.Instance.isGameFinished
+            && otherPlayerController.IsLive)
         {
-            if (NetworkedGameManager.Instance.isGameFinished) { return; }
-            if (otherPlayerController.IsLive)
-            {
 
-                PlayerController OurPlayer = MatchNetworkManager.Instance.GetPlayerByConnectionID(OwnerConnectionId);
+            PlayerController OurPlayer = MatchNetworkManager.Instance.GetPlayerByConnectionID(OwnerConnectionId);
+            otherPlayerController.ChangeDamageTakenStatus(PlayerController.DamageTakenStatus.IsTakenDamage);
+            otherPlayerController.TakeDamage(damage, otherPlayerController.netIdentity.connectionToClient);
 
-                otherPlayerController.ChangeDamageTakenStatus(PlayerController.DamageTakenStatus.IsTakenDamage);
-                otherPlayerController.TakeDamage(damage, otherPlayerController.netIdentity.connectionToClient);
+            OurPlayer.ultimateSkill.IncreaseCurrentUltimateFillAmount(OurPlayer.netIdentity.connectionToClient, damage * 4);
+            NetworkServer.UnSpawn(gameObject);
+            ReturnHandler();
 
-                OurPlayer.ultimateSkill.IncreaseCurrentUltimateFillAmount(OurPlayer.netIdentity.connectionToClient, damage * 4);
-             
-                NetworkServer.UnSpawn(gameObject);
-                ReturnHandler();
 
-            }
 
         }
 
@@ -88,7 +85,7 @@ public class Bullet : Throwable, INetworkPooledObject
     {
         var isEnemy = false;
 
-        isEnemy = OwnerNetId != 0 && RootNetId != fatboyTurret.RootNetId/* bullet kendi turret'ına mı değdi  */&& !NetworkedGameManager.Instance.IsInMyTeam(RootNetId, fatboyTurret.RootNetId) && netIdentity.isServer;
+        isEnemy = OwnerNetId != 0 && RootNetId != fatboyTurret.RootNetId/* bullet kendi turret'ına mı değdi  */&& !NetworkedGameManager.Instance.IsInMyTeam(RootNetId, fatboyTurret.RootNetId) ;
 
 
 
@@ -98,7 +95,7 @@ public class Bullet : Throwable, INetworkPooledObject
     private bool CanAttackToThisPlayer(PlayerController player)
     {
         // return OwnerNetId != 0 && playerController.netIdentity.netId != OwnerNetId && RootNetId != playerController.netIdentity.netId && netIdentity.isServer;
-        return isNotMe(player) && !NetworkedGameManager.Instance.IsInMyTeam(RootNetId, player.netIdentity.netId) && netIdentity.isServer;
+        return isNotMe(player) && !NetworkedGameManager.Instance.IsInMyTeam(RootNetId, player.netIdentity.netId) ;
     }
     private bool isNotMe(PlayerController player)
     {

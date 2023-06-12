@@ -34,10 +34,11 @@ public class Crystal : Throwable , INetworkPooledObject
     }
 
 
+    [Server]
     private void OnTriggerEnter(Collider other)
     {
 
-        if(!isServer) return;
+       
 
         if (NetworkedGameManager.Instance.isGameFinished) { return; }
 
