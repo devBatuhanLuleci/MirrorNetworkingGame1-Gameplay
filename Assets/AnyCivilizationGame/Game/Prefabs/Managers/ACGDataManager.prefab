@@ -45,7 +45,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355093f864150d14082ac1df4820fb18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameSceneName: GameScene
+  BootArgs: 
+  AdapterType: 0
+  GameSceneName: GameScene
+  GameData:
+    Port: 0
+    GameServerAddress: localhost
+    HostAddress: 
+    TerminalType: 1
+    MaxPlayerCount: 2
 --- !u!114 &8584755591091565461
 MonoBehaviour:
   m_ObjectHideFlags: 0

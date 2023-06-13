@@ -48,10 +48,10 @@ public class LoadBalancer : Singleton<LoadBalancer>
         }
         // setup client and server listeners callbacks
         SetupLinstener();
-        if (startClientOnStart)
-        {
-            StartClient();
-        }
+        //if (startClientOnStart)
+        //{
+        //    StartClient();
+        //}
 
     }
 

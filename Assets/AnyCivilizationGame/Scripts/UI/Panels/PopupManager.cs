@@ -8,6 +8,10 @@ public class PopupManager : Singleton<PopupManager>
 
     public static T Show<T>(IPopupValue popupValue) where T : PopupPanel
     {
+        //TODO: If Canvas is not exist, then create one. The If Statement in below.
+
+
+
         var newPath = path + typeof(T);
         var panel = Resources.Load<T>(newPath);
         //var panelTransform = MainPanelUIManager.Instance;

@@ -57,4 +57,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 870d9e85eb8111145ada40d978db9519, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: 
+  parent: Command Line

@@ -41,7 +41,7 @@ public class ACGDataManager : MonoBehaviour
     public void Start()
     {
         DataAdaptor = DataAdaptorFactory.Get(AdapterType);
-        GetData();
+        //GetData();
 
         Setup();
     }
@@ -85,7 +85,7 @@ public class ACGDataManager : MonoBehaviour
         InitSingleton();
         InitDatas();
         HandleCommands();
-        StartAuth();
+     //   StartAuth();
     }
 
     public void StartAuth()
