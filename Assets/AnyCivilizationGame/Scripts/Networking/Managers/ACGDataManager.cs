@@ -175,6 +175,12 @@ public class ACGDataManager : MonoBehaviour
             Debug.LogErrorFormat("Host: {0}", Host);
         }
 
+        if (CommandLine.HasKey("-walletId"))
+        {
+            var walletId = CommandLine.GetString("-walletId", GameData.GameServerAddress);
+            AuthenticationManager.Instance.LoginWebAPI(walletId);
+            Debug.LogError("login wallet ID " + walletId);
+        }
     }
 
 
