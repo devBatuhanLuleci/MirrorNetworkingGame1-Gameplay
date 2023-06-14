@@ -85,7 +85,7 @@ public class ACGDataManager : MonoBehaviour
         InitSingleton();
         InitDatas();
         HandleCommands();
-     //   StartAuth();
+        StartAuth();
     }
 
     public void StartAuth()
