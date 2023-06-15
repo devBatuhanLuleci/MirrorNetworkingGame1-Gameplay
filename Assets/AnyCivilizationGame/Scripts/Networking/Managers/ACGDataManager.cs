@@ -34,8 +34,8 @@ public class ACGDataManager : MonoBehaviour
     public Dictionary<string, CharacterData> Characters;
     [SerializeField]
     public Profile profile;
-
     private DataAdaptor DataAdaptor;
+    bool playerJoined = false;
     public void Start()
     {
         DataAdaptor = DataAdaptorFactory.Get(AdapterType);
@@ -206,7 +206,7 @@ public class ACGDataManager : MonoBehaviour
         IEnumerator WaitForPlayerLogin()
         {
             Debug.Log("**** WaitForPlayerLogin 1");
-            bool isRoomCreator = (walletIdInt == 1 || walletIdInt == 2);
+            bool isRoomCreator = (walletIdInt + 1) % 2 == 0;
             yield return new WaitUntil(() => MainPanelUIManager.Instance != null);
             Debug.Log("**** WaitForPlayerLogin 2");
             var mainPannelUIManager = MainPanelUIManager.Instance;
@@ -215,18 +215,30 @@ public class ACGDataManager : MonoBehaviour
             var mainPanelUIManager = mainPannelUIManager.GetPanel<MainPanelUIManager>();
             yield return new WaitUntil(() => mainPannelUIManager.RoomLobbyUIOpened == true);
             Debug.Log("**** room lobby oppened");
-            int roomId = walletIdInt - 1;
-            yield return new WaitForSeconds(walletIdInt);
+            int roomId = (walletIdInt / 2) - 1;
             if (isRoomCreator)
             {
                 lobbyPanel.StartMatch();
+                yield return new WaitUntil(() => playerJoined = true && lobbyPanel.PlayersCount >= 2);
+                yield return new WaitForSeconds(UnityEngine.Random.Range(0.0f, 2.0f));
+                Debug.Log("**** StartRoom");
+                lobbyPanel.StartRoom();
             }
             else
             {
+                yield return new WaitForSeconds(.5f);
+                Debug.Log("**** try join room " + roomId);
                 lobbyPanel.JoinRoom(roomId);
+                Debug.Log("**** StateChange");
+                lobbyPanel.StateChange();
             }
             Debug.Log($"**** Login with wallet ID {walletIdStr} " + (isRoomCreator ? "creating room " + roomId : "joining room " + (roomId).ToString()));
         }
+    }
+
+    internal void PlayerJoined()
+    {
+        playerJoined = true;
     }
     #endregion
 }

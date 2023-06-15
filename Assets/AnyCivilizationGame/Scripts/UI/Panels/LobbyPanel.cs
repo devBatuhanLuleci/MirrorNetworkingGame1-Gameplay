@@ -24,6 +24,7 @@ public class LobbyPanel : Panel
     public GameObject StartGameButton;
 
     private Dictionary<string, UserButton> users = new Dictionary<string, UserButton>();
+    public int PlayersCount => users.Count;
     public void SendHello()
     {
         var req = new ACGAuthentication.LoginEvent("admin");
