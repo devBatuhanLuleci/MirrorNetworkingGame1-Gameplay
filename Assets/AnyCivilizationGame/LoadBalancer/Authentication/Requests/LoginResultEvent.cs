@@ -18,7 +18,7 @@ namespace ACGAuthentication
             if (IsSuccess)
             {
                 acgAuth.Debug("Loggin successfully!");
-                Debug.Log("Loggin successfully!");
+                Debug.Log("Loggin successfully! "+ ACGDataManager.Instance.GameData.TerminalType);
                 if (ACGDataManager.Instance.GameData.TerminalType == TerminalType.Client)
                 {
                     MainPanelUIManager.Instance.OnUserLogged();

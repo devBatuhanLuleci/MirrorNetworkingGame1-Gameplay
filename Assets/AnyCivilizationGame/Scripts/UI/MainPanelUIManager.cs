@@ -1,4 +1,5 @@
 //using MoralisUnity.Kits.AuthenticationKit;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -41,8 +42,8 @@ class MainPanelUIManager : PaneUIManager
     [Space]
     [SerializeField]
     public Panel startPanel = null;
-
     [HideInInspector]public int WalletKey;
+    public bool RoomLobbyUIOpened { get; private set; }
 
     public static MainPanelUIManager Instance
     {
@@ -237,7 +238,8 @@ class MainPanelUIManager : PaneUIManager
         // TODO check user have any nft character 
         // ?f not  open Nft buy panel
         Show(lobbyPanel);
-
+        Debug.Log("on loggin ****");
+        RoomLobbyUIOpened = true;
     }
     private void OnUserUnregister()
     {

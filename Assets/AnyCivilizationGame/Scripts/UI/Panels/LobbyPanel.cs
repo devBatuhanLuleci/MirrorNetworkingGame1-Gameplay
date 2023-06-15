@@ -45,6 +45,12 @@ public class LobbyPanel : Panel
         var ev = new JoinLobbyRoom(int.Parse(roomCodeInput.text));
         SendClientRequestToServer(ev);
     }
+    public void JoinRoom(int roomID)
+    {
+        Debug.Log("JoinRoom *****");
+        var ev = new JoinLobbyRoom(roomID);
+        SendClientRequestToServer(ev);
+    }
     public void StateChange()
     {
         Debug.Log("StateChange");
