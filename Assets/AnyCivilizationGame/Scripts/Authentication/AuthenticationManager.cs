@@ -53,8 +53,8 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
     //    MainPanelUIManager.Instance.GetPanel<LoadingPanel>().Info("Connecting to master server...");  //Yeni Loading Panelimiz olmadıgı icin kapattım
         if (gameData.TerminalType == TerminalType.Client)
         {
-            //if (gameData.Port != 0) ClientReady();
-            //else Login();
+            if (gameData.Port != 0) ClientReady();
+            else Login();
         }
 
         else
