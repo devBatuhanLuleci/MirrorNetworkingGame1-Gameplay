@@ -42,25 +42,23 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
     #endregion
 
     #region MonoBehaviour Call  Back
- 
+
     #endregion
     #region Public Methods
 
     #region CommandLine
     public void StartAuth()
     {
-        var gameData = ACGDataManager.Instance.GameData;
-    //    MainPanelUIManager.Instance.GetPanel<LoadingPanel>().Info("Connecting to master server...");  //Yeni Loading Panelimiz olmadıgı icin kapattım
-        if (gameData.TerminalType == TerminalType.Client)
-        {
-            if (gameData.Port != 0) ClientReady();
-            else Login();
-        }
 
-        else
+
+
+
+
+        var gameData = ACGDataManager.Instance.GameData;
+        //    MainPanelUIManager.Instance.GetPanel<LoadingPanel>().Info("Connecting to master server...");  //Yeni Loading Panelimiz olmadıgı icin kapattım
+        if (gameData.TerminalType == TerminalType.Server)
         {
-            // TODO:
-            // Setup server.
+            ACGDataManager.Instance.GetData();
             MainPanelUIManager.Instance.GetPanel<LoadingPanel>().Info($"listining on {ACGDataManager.Instance.GameData.Port}");
             ServerReady();
         }
@@ -85,7 +83,7 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
         {
             case LoginType.WalledId:
                 LoginWebAPI(walletId);
-                break;        
+                break;
             case LoginType.Admin:
                 LoginWebAPI("admin-wallet");
                 break;
@@ -101,9 +99,9 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
     }
     public async void CreateUserWithMoralis(string email)
     {
-       // var moralisUser = await Moralis.GetUserAsync();
-      //  var createRequest = new CreateRequest(moralisUser.username, email, moralisUser.ethAddress);
-     //   HttpClient.Instance.Post<User>(createRequest, CreateUserSuccess, CreateUserFail);
+        // var moralisUser = await Moralis.GetUserAsync();
+        //  var createRequest = new CreateRequest(moralisUser.username, email, moralisUser.ethAddress);
+        //   HttpClient.Instance.Post<User>(createRequest, CreateUserSuccess, CreateUserFail);
 
     }
 
