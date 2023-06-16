@@ -24,6 +24,7 @@ public class LobbyPanel : Panel
     public GameObject StartGameButton;
 
     private Dictionary<string, UserButton> users = new Dictionary<string, UserButton>();
+    public int PlayersCount => users.Count;
     public void SendHello()
     {
         var req = new ACGAuthentication.LoginEvent("admin");
@@ -43,6 +44,12 @@ public class LobbyPanel : Panel
     public void JoinRoom()
     {
         var ev = new JoinLobbyRoom(int.Parse(roomCodeInput.text));
+        SendClientRequestToServer(ev);
+    }
+    public void JoinRoom(int roomID)
+    {
+        Debug.Log("JoinRoom *****");
+        var ev = new JoinLobbyRoom(roomID);
         SendClientRequestToServer(ev);
     }
     public void StateChange()

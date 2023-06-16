@@ -1,3 +1,4 @@
+using DG.Tweening;
 using kcp2k;
 using Mirror;
 using Newtonsoft.Json;
@@ -33,11 +34,8 @@ public class ACGDataManager : MonoBehaviour
     public Dictionary<string, CharacterData> Characters;
     [SerializeField]
     public Profile profile;
-
     private DataAdaptor DataAdaptor;
-
-
-
+    bool playerJoined = false;
     public void Start()
     {
         DataAdaptor = DataAdaptorFactory.Get(AdapterType);
@@ -175,8 +173,72 @@ public class ACGDataManager : MonoBehaviour
             Debug.LogErrorFormat("Host: {0}", Host);
         }
 
+        if (CommandLine.HasKey("-walletId"))
+        {
+            try
+            {
+                var walletIdStr = CommandLine.GetString("-walletId", "");
+                if (int.TryParse(walletIdStr, out int walletIdInt))
+                {
+                    LoginWithWalletId(walletIdStr, walletIdInt);
+                }
+                else
+                {
+                    Debug.Log("*** wallet id not integer !! its " + $"->{walletIdStr}<-");
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                Debug.LogError(ex.Message);
+                throw;
+            }
+
+
+        }
     }
 
+    private void LoginWithWalletId(string walletIdStr, int walletIdInt)
+    {
+        Debug.Log("*** wallet id's integer is " + $"->{walletIdInt}<-");
+        StartCoroutine(WaitForPlayerLogin());
+        IEnumerator WaitForPlayerLogin()
+        {
+            Debug.Log("**** WaitForPlayerLogin 1");
+            bool isRoomCreator = (walletIdInt + 1) % 2 == 0;
+            yield return new WaitUntil(() => MainPanelUIManager.Instance != null);
+            Debug.Log("**** WaitForPlayerLogin 2");
+            var mainPannelUIManager = MainPanelUIManager.Instance;
+            var lobbyPanel = mainPannelUIManager.GetPanel<LobbyPanel>();
+            AuthenticationManager.Instance.LoginWebAPI(walletIdStr);
+            var mainPanelUIManager = mainPannelUIManager.GetPanel<MainPanelUIManager>();
+            yield return new WaitUntil(() => mainPannelUIManager.RoomLobbyUIOpened == true);
+            Debug.Log("**** room lobby oppened");
+            int roomId = (walletIdInt / 2) - 1;
+            if (isRoomCreator)
+            {
+                lobbyPanel.StartMatch();
+                yield return new WaitUntil(() => playerJoined = true && lobbyPanel.PlayersCount >= 2);
+                yield return new WaitForSeconds(UnityEngine.Random.Range(0.0f, 2.0f));
+                Debug.Log("**** StartRoom");
+                lobbyPanel.StartRoom();
+            }
+            else
+            {
+                yield return new WaitForSeconds(.5f);
+                Debug.Log("**** try join room " + roomId);
+                lobbyPanel.JoinRoom(roomId);
+                Debug.Log("**** StateChange");
+                lobbyPanel.StateChange();
+            }
+            Debug.Log($"**** Login with wallet ID {walletIdStr} " + (isRoomCreator ? "creating room " + roomId : "joining room " + (roomId).ToString()));
+        }
+    }
 
+    internal void PlayerJoined()
+    {
+        playerJoined = true;
+    }
     #endregion
 }

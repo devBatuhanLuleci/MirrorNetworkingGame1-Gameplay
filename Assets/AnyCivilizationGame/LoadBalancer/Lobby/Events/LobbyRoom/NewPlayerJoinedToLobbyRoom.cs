@@ -16,5 +16,6 @@ public class NewPlayerJoinedToLobbyRoom : IResponseEvent
     {
         Debug.Log($"{Player.UserName} has been joined");
         MainPanelUIManager.Instance.GetPanel<LobbyPanel>().JoinRoom(Player.UserName);
+        ACGDataManager.Instance.PlayerJoined();
     }
 }
