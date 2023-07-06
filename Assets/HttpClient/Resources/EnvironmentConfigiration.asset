@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: EnvironmentConfigiration
   m_EditorClassIdentifier: 
   Log: 1
-  IsProduction: 0
+  IsProduction: 1

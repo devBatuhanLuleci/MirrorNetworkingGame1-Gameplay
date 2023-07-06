@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Production
   m_EditorClassIdentifier: 
   info: "Web sunucusuan istek atmak i\xE7in kullan\u0131lacak ayaralr\u0131 i\xE7erir."
-  api: https://localhost:7098/api/
-  Log: 0
+  api: http://40.117.113.124:7098/api/
+  Log: 1

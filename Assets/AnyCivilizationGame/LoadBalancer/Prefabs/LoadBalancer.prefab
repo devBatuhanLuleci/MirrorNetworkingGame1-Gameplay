@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e38b4c5fbc97f9144ae755c56e2ab713, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  host: localhost
+  host: 0
   startClientOnStart: 1
   transport: {fileID: 5054325042896838334}
 --- !u!114 &5054325042896838334
@@ -65,7 +65,7 @@ MonoBehaviour:
   DualMode: 1
   NoDelay: 1
   Interval: 10
-  Timeout: 10000
+  Timeout: 100000
   FastResend: 2
   CongestionWindow: 0
   SendWindowSize: 4096
