@@ -125,7 +125,7 @@ public class ACGDataManager : MonoBehaviour
     public void StartServer()
     {
         AuthenticationManager.Instance.User.accessToken = "game-server";
-        LoadBalancer.Instance.StartClient();
+        LoadBalancer.Instance.StartClient("localhost");
     }
     // TODO: this will be moved to its new location at a later date.
     public void StartClient(string gameServerAddress, ushort port)

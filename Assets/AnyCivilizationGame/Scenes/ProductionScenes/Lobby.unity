@@ -21135,6 +21135,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ACGDataManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8584755591091565463, guid: e1a76f0932568484986c45dd6c651c35, type: 3}
+      propertyPath: GameData.MaxPlayerCount
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1a76f0932568484986c45dd6c651c35, type: 3}
 --- !u!114 &8584755590788904583 stripped
