@@ -87,7 +87,7 @@ public class ACG_LoginPanelManager : Panel
         LoginPanel.SetActive(true);
         current_Panel = Panels.Login;
     }
-
+#if UNITY_EDITOR
     private void Update()
     {
         if (current_Panel == Panels.Login)
@@ -122,6 +122,7 @@ public class ACG_LoginPanelManager : Panel
             }
         }
     }
+#endif
 
     public void Switch_To_PickCharacter_Panel()
     {

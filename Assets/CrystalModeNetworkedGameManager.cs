@@ -105,6 +105,8 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
 
         if (!isServer) { return; }
         base.Update();
+#if UNITY_EDITOR
+
         if (Input.GetKeyDown(KeyCode.N) && crystalModeGamePanelsHandler.gamePanelStatus != CrystalModeGamePanelsHandler.GamePanelStatus.CountDown)
         {
 
@@ -120,8 +122,7 @@ public class CrystalModeNetworkedGameManager : NetworkedGameManager
         {
             InitilizeTeamOfThePlayer();
         }
-
-
+#endif
 
     }
     public void OnSequenceIsReadyForSpawnCrystal()

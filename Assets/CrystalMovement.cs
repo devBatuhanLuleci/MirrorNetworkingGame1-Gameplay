@@ -73,12 +73,15 @@ public class CrystalMovement : MonoBehaviour
 
     void Update()
     {
+#if UNITY_EDITOR
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             //InitInfo(new Transform[] { startPoint/*, middlePoint*/, endPoint });
             //   ThrowThisObject();
 
         }
+#endif
 
         if (isThrowed)
         {
