@@ -1,4 +1,3 @@
-using DG.Tweening.Plugins.Core.PathCore;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -109,9 +108,6 @@ public class BuildScript
 
 
         EditorUtility.RevealInFinder(parentFolder);
-        Caching.ClearCache();
-
-
     }
 
     [MenuItem("Build/Build GameServer and GameClient (Windows) and APK")]
@@ -213,9 +209,6 @@ public class BuildScript
         UnityEngine.Debug.Log("Builded Succesfully GameClient (Android).");
 
         EditorUtility.RevealInFinder(parentFolder);
-        Caching.ClearCache();
-
-
     }
 
     //[MenuItem("Build/GameClient(Windows)")]

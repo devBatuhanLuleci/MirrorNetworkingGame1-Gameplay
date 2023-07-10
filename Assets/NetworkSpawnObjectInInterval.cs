@@ -11,8 +11,10 @@ public class NetworkSpawnObjectInInterval : NetworkBehaviour
     public GameObject prefabToSpawn;
     public float maxDistance = 5f;
     public float spawnInterval = 1f;
+    public bool StopSpawningOnGameFinish = true;
     private float lastSpawnTime = 0f;
     private NetworkIdentity networkIdentity;
+    Coroutine spawningCoroutine;
     private void Awake()
     {
         networkIdentity=GetComponent<NetworkIdentity>();
@@ -27,7 +29,29 @@ public class NetworkSpawnObjectInInterval : NetworkBehaviour
     public void StartSpawnLoop()
     {
         // Start an infinite loop that spawns objects with the specified interval time
-        StartCoroutine(SpawnLoop());
+        spawningCoroutine = StartCoroutine(SpawnLoop());
+    }
+    private void OnEnable()
+    {
+        NetworkedTimer.OnTimeFinished += OnGameFinished;
+    }
+    private void OnDisable()
+    {
+        NetworkedTimer.OnTimeFinished -= OnGameFinished;
+
+    }
+
+    private void OnGameFinished()
+    {
+        if (StopSpawningOnGameFinish)
+        {
+
+            if (spawningCoroutine != null)
+            {
+                StopCoroutine(spawningCoroutine);
+                Debug.Log("spawning stoped");
+            }
+        }
     }
 
     private IEnumerator SpawnLoop()
@@ -46,8 +70,8 @@ public class NetworkSpawnObjectInInterval : NetworkBehaviour
         var name = prefabToSpawn.transform.name;
         Vector3 spawnPosition = GetRandomPointNearTransform(spawnPoint.position, maxDistance);
         var spawnedBullet = ObjectPooler.Instance.Get(name, spawnPosition, Quaternion.identity).GetComponent<Throwable>();
-      
-    NetworkServer.Spawn(spawnedBullet.gameObject);
+
+        NetworkServer.Spawn(spawnedBullet.gameObject);
 
 
         //  Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
@@ -66,7 +90,7 @@ public class NetworkSpawnObjectInInterval : NetworkBehaviour
         spawnedBullet.OnObjectSpawn();
         spawnedBullet.Throw(randomDir, randomRange);
         spawnedBullet.InitInfo(randomDir);
-    NetworkServer.Spawn(spawnedBullet.gameObject);
+        NetworkServer.Spawn(spawnedBullet.gameObject);
 
 
         //  Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);

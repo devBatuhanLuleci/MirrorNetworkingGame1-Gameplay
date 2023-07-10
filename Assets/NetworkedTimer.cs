@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,6 +15,7 @@ public class NetworkedTimer:NetworkBehaviour
 
 
     public UnityEvent onTimeFinishedAction;
+    public static Action OnTimeFinished;
     //private void Start()
     //{
     //    if (isServer)
@@ -70,6 +72,7 @@ public class NetworkedTimer:NetworkBehaviour
         
         isCountingDown = false;
         onTimeFinishedAction.Invoke();
+        OnTimeFinished?.Invoke();
     }
 
     public virtual void OnCountdownChangedSync(int oldCountdown, int newCountdown)

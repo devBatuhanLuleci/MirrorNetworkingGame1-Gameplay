@@ -150,27 +150,27 @@ public class ACGDataManager : MonoBehaviour
 
         if (CommandLine.HasKey("-server"))
         {
-            Debug.LogError("Starting as Server");
+            Debug.Log("Starting as Server");
             GameData.TerminalType = TerminalType.Server;
         }
 
         if (CommandLine.HasKey("-client"))
         {
             GameData.GameServerAddress = CommandLine.GetString("-client", GameData.GameServerAddress);
-            Debug.LogError("starting as Client");
+            Debug.Log("starting as Client");
         }
 
         if (CommandLine.HasKey("-port"))
         {
             var Port = CommandLine.GetInt("-port", -1);
-            Debug.LogErrorFormat("Port: {0}", Port);
+            Debug.LogFormat("Port: {0}", Port);
             GameData.Port = (ushort)Port;
         }
         if (CommandLine.HasKey("-host"))
         {
             var Host = CommandLine.GetString("-host", "");
             GameData.HostAddress = Host;
-            Debug.LogErrorFormat("Host: {0}", Host);
+            Debug.LogFormat("Host: {0}", Host);
         }
 
         if (CommandLine.HasKey("-walletId"))

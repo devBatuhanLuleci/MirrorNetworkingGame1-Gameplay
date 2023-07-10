@@ -34,7 +34,7 @@ public class LoadBalancer : Singleton<LoadBalancer>
 
 
     #region MonoBehavior Callcks
-
+    Coroutine closingAppCoroutine;
     private void Start()
     {
         log.Debug($"Loadbalancer Started");
@@ -65,7 +65,7 @@ public class LoadBalancer : Singleton<LoadBalancer>
         }
         isClient = true;
         transport.ClientConnect(hostAddress);
-        Debug.LogError("Host address:" + hostAddress + " Port: " + transport.ServerUri().Port);
+        Debug.Log("Host address:" + hostAddress + " Port: " + transport.ServerUri().Port);
     }
     public void StartClient(Host host)
     {
@@ -232,5 +232,25 @@ public class LoadBalancer : Singleton<LoadBalancer>
             eventHandlers.Remove((byte)eventKey);
         }
     }
+    public  void CloseAPP(float delay = 0)
+    {
+        if (closingAppCoroutine != null)
+        {
+            StopCoroutine(closingAppCoroutine);
+        }
+        closingAppCoroutine = StartCoroutine(Closing());
+        IEnumerator Closing()
+        {
+            Debug.Log($"closing app after {delay} s");
+            yield return new WaitForSecondsRealtime(delay);
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+        }
+    }
     #endregion
+
+
 }
