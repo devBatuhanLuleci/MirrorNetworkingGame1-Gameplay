@@ -416,7 +416,7 @@ public class Reporter : MonoBehaviour
 
 
 		currentView = (ReportView)PlayerPrefs.GetInt("Reporter_currentView", 1);
-		show = (PlayerPrefs.GetInt("Reporter_show") == 1) ? true : false;
+	//	show = (PlayerPrefs.GetInt("Reporter_show") == 1) ? true : false;
 		collapse = (PlayerPrefs.GetInt("Reporter_collapse") == 1) ? true : false;
 		clearOnNewSceneLoaded = (PlayerPrefs.GetInt("Reporter_clearOnNewSceneLoaded") == 1) ? true : false;
 		showTime = (PlayerPrefs.GetInt("Reporter_showTime") == 1) ? true : false;
@@ -456,7 +456,8 @@ public class Reporter : MonoBehaviour
 		maxTextureSize = SystemInfo.maxTextureSize.ToString();
 #endif
 		systemMemorySize = SystemInfo.systemMemorySize.ToString();
-
+		DontDestroyOnLoad(transform.parent.gameObject);
+		gameObject.SetActive(false);
 	}
 
 	void initializeStyle()

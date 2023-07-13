@@ -77,7 +77,7 @@ public class InputHandler : Singleton<InputHandler>
         if (!NetworkedGameManager.Instance.isClientConnected) { return; }
         if (PlayerController == null || !PlayerController.IsLive || !NetworkedGameManager.Instance.isGameStarted || NetworkedGameManager.Instance.isGameFinished) return;
 
-        Move();
+        Movement();
         Attack();
 
 
@@ -156,10 +156,10 @@ private void Attack()
 }
 
 
-private void Move()
+private void Movement()
 {
-    var moveValue = MovementJoystick.Value;
-    PlayerController.Move(moveValue);
+    var joysticDirection = MovementJoystick.Value;
+    PlayerController.MoveToDirection(joysticDirection);
 }
 
 

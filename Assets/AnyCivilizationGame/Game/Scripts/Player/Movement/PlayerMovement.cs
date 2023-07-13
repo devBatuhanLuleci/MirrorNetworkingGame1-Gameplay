@@ -36,12 +36,14 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField]
     private float movementSpeed = 5f;
 
+    public float MovmentSpeed => movementSpeed;
 
     [SerializeField]
     private float DirectionSpriteScale = 2f;
 
     private PlayerController PlayerController;
-
+    Rigidbody rb;
+    public Vector3 rb_Pos => rb.position;
     private void Awake()
     {
         PlayerController = GetComponent<PlayerController>();
@@ -49,7 +51,7 @@ public class PlayerMovement : NetworkBehaviour
     private void Start()
     {
         SetSpriteVisibility(false);
-
+        rb = GetComponent<Rigidbody>();
     }
     private void Update()
     {
@@ -141,8 +143,8 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (movementState == MovementState.Moving)
         {
-            Vector3 dir = new Vector3(moveDirection.x, 0, moveDirection.y).normalized;
-            transform.Translate(dir * movementSpeed, Space.World);
+            //Vector3 dir = new Vector3(moveDirection.x, 0, moveDirection.y).normalized;
+            //rb.MovePosition(rb.position + dir * movementSpeed);
 
         }
     }
@@ -157,7 +159,8 @@ public class PlayerMovement : NetworkBehaviour
 
         var lookPos = new Vector3(moveDirection.x, 0f, moveDirection.y).normalized;
         var rotation = Quaternion.LookRotation(lookPos);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
+        
+        rb.rotation = Quaternion.Slerp(rb.rotation, rotation, Time.deltaTime * rotationSpeed);
     }
     public Tween SetPlayerRotationToTargetDirection(float targetPos)
     {
@@ -211,12 +214,9 @@ public class PlayerMovement : NetworkBehaviour
         moveDirection = moveInput;
     }
 
-  
-
-
-
-
-
-
+    internal void SetNewPos(Vector3 newPos)
+    {
+        rb.position = newPos;
+    }
 }
 

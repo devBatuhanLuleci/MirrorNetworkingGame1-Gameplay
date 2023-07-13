@@ -1,0 +1,322 @@
+fileFormatVersion: 2
+guid: 868198c68a2849848b1cff70a3ed632f
+ModelImporter:
+  serializedVersion: 21300
+  internalIDToNameTable:
+  - first:
+      74: -6131354611780490727
+    second: Sphere004|Cylinder003|Cylinder003|Cylinder002|Take 001|BaseLayer
+  - first:
+      74: -926494310812743241
+    second: Sphere004|Cylinder003|Cylinder003|Cylinder002|Take 001|BaseLayer.001
+  - first:
+      74: -7107317700771843893
+    second: Sphere004|Cylinder003|Cylinder003|Cylinder003|Take 001|BaseLayer
+  - first:
+      74: -4483777535943252771
+    second: Sphere004|Cylinder003|Cylinder003|Cylinder003|Take 001|BaseLayer.001
+  - first:
+      74: -1935677905660339417
+    second: Sphere004|Cylinder003|Cylinder003|Sphere004|Take 001|BaseLayer
+  - first:
+      74: -5403741503017013516
+    second: Sphere004|Cylinder003|Cylinder003|Sphere004|Take 001|BaseLayer.001
+  - first:
+      74: -8190680431309384024
+    second: Sphere004|Cylinder003|Cylinder003|Sphere005|Take 001|BaseLayer
+  - first:
+      74: 8348941975009967867
+    second: Sphere004|Cylinder003|Cylinder003|Sphere005|Take 001|BaseLayer.001
+  - first:
+      74: 1973738004819561138
+    second: Sphere004|Sphere004|Sphere004|Cylinder002|Take 001|BaseLayer
+  - first:
+      74: 7510356689651551558
+    second: Sphere004|Sphere004|Sphere004|Cylinder002|Take 001|BaseLayer.001
+  - first:
+      74: 7040277002640601644
+    second: Sphere004|Sphere004|Sphere004|Cylinder003|Take 001|BaseLayer
+  - first:
+      74: 6152605650917639279
+    second: Sphere004|Sphere004|Sphere004|Cylinder003|Take 001|BaseLayer.001
+  - first:
+      74: 374201144254100176
+    second: Sphere004|Sphere004|Sphere004|Sphere004|Take 001|BaseLayer
+  - first:
+      74: 3778692581944524205
+    second: Sphere004|Sphere004|Sphere004|Sphere004|Take 001|BaseLayer.001
+  - first:
+      74: -5368493396080294210
+    second: Sphere004|Sphere004|Sphere004|Sphere005|Take 001|BaseLayer
+  - first:
+      74: -1796831523409008196
+    second: Sphere004|Sphere004|Sphere004|Sphere005|Take 001|BaseLayer.001
+  - first:
+      74: 5771508970802186957
+    second: Sphere004|Sphere005|Sphere005|Cylinder002|Take 001|BaseLayer
+  - first:
+      74: 6143893577026823468
+    second: Sphere004|Sphere005|Sphere005|Cylinder002|Take 001|BaseLayer.001
+  - first:
+      74: 2181637528984946404
+    second: Sphere004|Sphere005|Sphere005|Cylinder003|Take 001|BaseLayer
+  - first:
+      74: 6713907204552230957
+    second: Sphere004|Sphere005|Sphere005|Cylinder003|Take 001|BaseLayer.001
+  - first:
+      74: -5650132895538414296
+    second: Sphere004|Sphere005|Sphere005|Sphere004|Take 001|BaseLayer
+  - first:
+      74: -1084795146222332350
+    second: Sphere004|Sphere005|Sphere005|Sphere004|Take 001|BaseLayer.001
+  - first:
+      74: 339467356566802178
+    second: Sphere004|Sphere005|Sphere005|Sphere005|Take 001|BaseLayer
+  - first:
+      74: -5776328668435090653
+    second: Sphere004|Sphere005|Sphere005|Sphere005|Take 001|BaseLayer.001
+  - first:
+      74: -121094169820273976
+    second: Sphere005|Cylinder003|Cylinder003|Cylinder002|Take 001|BaseLayer
+  - first:
+      74: -4834739830833234582
+    second: Sphere005|Cylinder003|Cylinder003|Cylinder002|Take 001|BaseLayer.001
+  - first:
+      74: -5791456024915626144
+    second: Sphere005|Cylinder003|Cylinder003|Cylinder003|Take 001|BaseLayer
+  - first:
+      74: 7672674217371769560
+    second: Sphere005|Cylinder003|Cylinder003|Cylinder003|Take 001|BaseLayer.001
+  - first:
+      74: -7890624358091029613
+    second: Sphere005|Cylinder003|Cylinder003|Sphere004|Take 001|BaseLayer
+  - first:
+      74: -7556233594425605943
+    second: Sphere005|Cylinder003|Cylinder003|Sphere004|Take 001|BaseLayer.001
+  - first:
+      74: -8119415314351180097
+    second: Sphere005|Cylinder003|Cylinder003|Sphere005|Take 001|BaseLayer
+  - first:
+      74: -7534188888510738112
+    second: Sphere005|Cylinder003|Cylinder003|Sphere005|Take 001|BaseLayer.001
+  - first:
+      74: -1837710776210255057
+    second: Sphere005|Sphere004|Sphere004|Cylinder002|Take 001|BaseLayer
+  - first:
+      74: 6813475757216155421
+    second: Sphere005|Sphere004|Sphere004|Cylinder002|Take 001|BaseLayer.001
+  - first:
+      74: -4028639547869925697
+    second: Sphere005|Sphere004|Sphere004|Cylinder003|Take 001|BaseLayer
+  - first:
+      74: -7869137173557364841
+    second: Sphere005|Sphere004|Sphere004|Cylinder003|Take 001|BaseLayer.001
+  - first:
+      74: -2502109692121524902
+    second: Sphere005|Sphere004|Sphere004|Sphere004|Take 001|BaseLayer
+  - first:
+      74: -7455628532087078400
+    second: Sphere005|Sphere004|Sphere004|Sphere004|Take 001|BaseLayer.001
+  - first:
+      74: -5728488207297755865
+    second: Sphere005|Sphere004|Sphere004|Sphere005|Take 001|BaseLayer
+  - first:
+      74: -1918341873186947087
+    second: Sphere005|Sphere004|Sphere004|Sphere005|Take 001|BaseLayer.001
+  - first:
+      74: 4021996342072827666
+    second: Sphere005|Sphere005|Sphere005|Cylinder002|Take 001|BaseLayer
+  - first:
+      74: 5783372842006846968
+    second: Sphere005|Sphere005|Sphere005|Cylinder002|Take 001|BaseLayer.001
+  - first:
+      74: -8593105634061260539
+    second: Sphere005|Sphere005|Sphere005|Cylinder003|Take 001|BaseLayer
+  - first:
+      74: 4672455020257460820
+    second: Sphere005|Sphere005|Sphere005|Cylinder003|Take 001|BaseLayer.001
+  - first:
+      74: -5759792109024622797
+    second: Sphere005|Sphere005|Sphere005|Sphere004|Take 001|BaseLayer
+  - first:
+      74: 5429308218020400124
+    second: Sphere005|Sphere005|Sphere005|Sphere004|Take 001|BaseLayer.001
+  - first:
+      74: -2597962754260622933
+    second: Sphere005|Sphere005|Sphere005|Sphere005|Take 001|BaseLayer
+  - first:
+      74: 4384914643734819381
+    second: Sphere005|Sphere005|Sphere005|Sphere005|Take 001|BaseLayer.001
+  - first:
+      74: 1200601728130718006
+    second: Cylinder003|Cylinder003|Cylinder003|Cylinder002|Take 001|BaseLayer
+  - first:
+      74: -2903172279384454234
+    second: Cylinder003|Cylinder003|Cylinder003|Cylinder002|Take 001|BaseLayer.001
+  - first:
+      74: -512683610184656747
+    second: Cylinder003|Cylinder003|Cylinder003|Cylinder003|Take 001|BaseLayer
+  - first:
+      74: -5461603398049118854
+    second: Cylinder003|Cylinder003|Cylinder003|Cylinder003|Take 001|BaseLayer.001
+  - first:
+      74: 2786752309594614404
+    second: Cylinder003|Cylinder003|Cylinder003|Sphere004|Take 001|BaseLayer
+  - first:
+      74: -8568861646624089215
+    second: Cylinder003|Cylinder003|Cylinder003|Sphere004|Take 001|BaseLayer.001
+  - first:
+      74: -423842230830552302
+    second: Cylinder003|Cylinder003|Cylinder003|Sphere005|Take 001|BaseLayer
+  - first:
+      74: -3870765107267304524
+    second: Cylinder003|Cylinder003|Cylinder003|Sphere005|Take 001|BaseLayer.001
+  - first:
+      74: -8708613650151515235
+    second: Cylinder003|Sphere004|Sphere004|Cylinder002|Take 001|BaseLayer
+  - first:
+      74: 6961910902771499557
+    second: Cylinder003|Sphere004|Sphere004|Cylinder002|Take 001|BaseLayer.001
+  - first:
+      74: -935457134132701359
+    second: Cylinder003|Sphere004|Sphere004|Cylinder003|Take 001|BaseLayer
+  - first:
+      74: 8542903139910741087
+    second: Cylinder003|Sphere004|Sphere004|Cylinder003|Take 001|BaseLayer.001
+  - first:
+      74: -3238412935360443567
+    second: Cylinder003|Sphere004|Sphere004|Sphere004|Take 001|BaseLayer
+  - first:
+      74: 8050613202662770449
+    second: Cylinder003|Sphere004|Sphere004|Sphere004|Take 001|BaseLayer.001
+  - first:
+      74: -2053329672527183078
+    second: Cylinder003|Sphere004|Sphere004|Sphere005|Take 001|BaseLayer
+  - first:
+      74: 7221452489723088097
+    second: Cylinder003|Sphere004|Sphere004|Sphere005|Take 001|BaseLayer.001
+  - first:
+      74: -5254155228045115952
+    second: Cylinder003|Sphere005|Sphere005|Cylinder002|Take 001|BaseLayer
+  - first:
+      74: 6077293460247722679
+    second: Cylinder003|Sphere005|Sphere005|Cylinder002|Take 001|BaseLayer.001
+  - first:
+      74: -9219486515900640039
+    second: Cylinder003|Sphere005|Sphere005|Cylinder003|Take 001|BaseLayer
+  - first:
+      74: -1926774230430980022
+    second: Cylinder003|Sphere005|Sphere005|Cylinder003|Take 001|BaseLayer.001
+  - first:
+      74: 6660465521248094544
+    second: Cylinder003|Sphere005|Sphere005|Sphere004|Take 001|BaseLayer
+  - first:
+      74: 5026905384441271858
+    second: Cylinder003|Sphere005|Sphere005|Sphere004|Take 001|BaseLayer.001
+  - first:
+      74: 3212328143211071128
+    second: Cylinder003|Sphere005|Sphere005|Sphere005|Take 001|BaseLayer
+  - first:
+      74: -1585309512659843514
+    second: Cylinder003|Sphere005|Sphere005|Sphere005|Take 001|BaseLayer.001
+  externalObjects: {}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 1
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -75,7 +75,6 @@ public class PlayerController : ObjectController
 
     public CurrentAttackType currentAttackType;
 
-
     #endregion
 
 
@@ -661,12 +660,12 @@ public class PlayerController : ObjectController
         playerUIHandler.ShakeEnergyBar();
 
     }
-    public virtual void Move(Vector2 move)
+    public virtual void MoveToDirection(Vector2 dir)
     {
-        movement.MovementSpriteHandler(move);
-        if (move.sqrMagnitude > 0f)
+        movement.MovementSpriteHandler(dir);
+        if (dir.sqrMagnitude > 0f)
         {
-            MoveCmd(move);
+            CMD_MoveToDireciotn(dir);
         }
         //Debug.Log($"<b> sqrM: {move.sqrMagnitude} </b> move:" + move);
     }
@@ -678,10 +677,24 @@ public class PlayerController : ObjectController
     #endregion
 
     #region RPC Methods
+    Coroutine movingCo;
     [Command]
-    public virtual void MoveCmd(Vector2 move)
+    public virtual void CMD_MoveToDireciotn(Vector2 movingDir)
     {
-        movement.Move(move);
+        if (movingCo != null)
+        {
+            StopCoroutine(movingCo);
+        }
+        movingCo = StartCoroutine(Moving());
+        IEnumerator Moving()
+        {
+            yield return new WaitForFixedUpdate();
+            Vector3 v3Dir = new Vector3(movingDir.x, 0, movingDir.y).normalized * Time.deltaTime;
+            Vector3 newPos = new Vector3(movement.rb_Pos.x + v3Dir.x, 0, movement.rb_Pos.z + v3Dir.z);
+            movement.SetNewPos(newPos);
+            movement.Move(movingDir);
+        }
+
     }
     public override void Death()
     {
