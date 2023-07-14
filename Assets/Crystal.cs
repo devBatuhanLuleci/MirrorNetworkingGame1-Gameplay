@@ -112,8 +112,9 @@ public class Crystal : Throwable , INetworkPooledObject
     private void OnArrived_AddForce()
     {
         HandleKinematic(false);
+        rb.Sleep();
         rb.velocity = Vector3.zero;
-        rb?.AddForce(crystalForceDir * bounceForwardForceSpeed + Vector3.up * bounceupForceSpeed, ForceMode.Force);
+       // rb?.AddForce(crystalForceDir * bounceForwardForceSpeed + Vector3.up * bounceupForceSpeed, ForceMode.Force);
     }
    
     public override void InitInfo(Vector3 dir)
