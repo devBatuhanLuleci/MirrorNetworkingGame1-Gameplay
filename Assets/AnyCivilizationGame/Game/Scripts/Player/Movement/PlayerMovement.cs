@@ -43,6 +43,7 @@ public class PlayerMovement : NetworkBehaviour
 
     private PlayerController PlayerController;
     Rigidbody rb;
+    Coroutine movingCoroutine;
     public Vector3 rb_Pos => rb.position;
     private void Awake()
     {
@@ -63,12 +64,12 @@ public class PlayerMovement : NetworkBehaviour
             MovementStateHandler();
             SetPlayerPosition();
             SetPlayerRotation();
-           // }
+            // }
 
         }
         else
         {
-            
+
             SetCurrentAnimation();
         }
         ResetMovementInput();
@@ -121,7 +122,12 @@ public class PlayerMovement : NetworkBehaviour
         {
             if (movementState != MovementState.Idle)
             {
+                if (movingCoroutine != null)
+                {
+                    StopCoroutine(movingCoroutine);
+                }
                 movementState = MovementState.Idle;
+
             }
         }
         else
@@ -159,7 +165,7 @@ public class PlayerMovement : NetworkBehaviour
 
         var lookPos = new Vector3(moveDirection.x, 0f, moveDirection.y).normalized;
         var rotation = Quaternion.LookRotation(lookPos);
-        
+
         rb.rotation = Quaternion.Slerp(rb.rotation, rotation, Time.deltaTime * rotationSpeed);
     }
     public Tween SetPlayerRotationToTargetDirection(float targetPos)
@@ -171,7 +177,7 @@ public class PlayerMovement : NetworkBehaviour
 
     public void RotateSpine(float oldAngle, float newAngle)
     {
-       // Debug.Log("newAngle : " + newAngle) ;
+        // Debug.Log("newAngle : " + newAngle) ;
         //   PlayerController.SpineRotator.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(newAngle, newAngle, newAngle)), .1f).SetEase(Ease.InOutQuad);
         var LocalAngle = transform.rotation.eulerAngles.y + PlayerController.SpineRotator.rotation.eulerAngles.x - newAngle;
 
@@ -179,7 +185,7 @@ public class PlayerMovement : NetworkBehaviour
     }
     public void GetCurrentRotateSpine(float angle)
     {
-    
+
         //   PlayerController.SpineRotator.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(newAngle, newAngle, newAngle)), .1f).SetEase(Ease.InOutQuad);
         var LocalAngle = transform.rotation.eulerAngles.y + PlayerController.SpineRotator.rotation.eulerAngles.x - angle;
 
@@ -187,7 +193,7 @@ public class PlayerMovement : NetworkBehaviour
     }
     public void RotateSpineReset()
     {
-       
+
         PlayerController.SpineRotator.DOLocalRotateQuaternion(Quaternion.Euler(Vector3.zero), PlayerController.AttackTurnSpeed).SetEase(Ease.InOutQuad);
 
     }
@@ -214,9 +220,24 @@ public class PlayerMovement : NetworkBehaviour
         moveDirection = moveInput;
     }
 
-    internal void SetNewPos(Vector3 newPos)
+    internal void SetNewPos(Vector3 targetPos)
     {
-        rb.position = newPos;
+        if (movingCoroutine != null)
+        {
+            StopCoroutine(movingCoroutine);
+        }
+        movingCoroutine = StartCoroutine(Moving());
+        IEnumerator Moving()
+        {
+            while (true)
+            {
+                var newPos = Vector3.MoveTowards(transform.position, targetPos, 5 * Time.deltaTime);
+                rb.MovePosition(newPos);
+                yield return new WaitForFixedUpdate();
+            }
+
+        }
+
     }
 }
 

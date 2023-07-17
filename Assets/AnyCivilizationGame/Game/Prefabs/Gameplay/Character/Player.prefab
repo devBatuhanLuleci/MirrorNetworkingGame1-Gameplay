@@ -819,7 +819,7 @@ MonoBehaviour:
   playerDirSprite: {fileID: 6626824535787233144}
   rotationSpeed: 14
   rotationTurnSpeed: 0.5
-  movementSpeed: 2
+  movementSpeed: 6
   DirectionSpriteScale: 2
 --- !u!114 &6626824536947155894
 MonoBehaviour:
