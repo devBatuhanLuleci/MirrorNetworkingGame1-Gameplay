@@ -677,24 +677,10 @@ public class PlayerController : ObjectController
     #endregion
 
     #region RPC Methods
-    Coroutine movingCo;
     [Command]
     public virtual void CMD_MoveToDireciotn(Vector2 movingDir)
     {
-        if (movingCo != null)
-        {
-            StopCoroutine(movingCo);
-        }
-        movingCo = StartCoroutine(Moving());
-        IEnumerator Moving()
-        {
-            yield return new WaitForFixedUpdate();
-            Vector3 v3Dir = new Vector3(movingDir.x, 0, movingDir.y).normalized * Time.deltaTime;
-            Vector3 newPos = new Vector3(movement.rb_Pos.x + v3Dir.x, 0, movement.rb_Pos.z + v3Dir.z);
-            movement.SetNewPos(newPos);
-            movement.Move(movingDir);
-        }
-
+        movement.Move(movingDir);
     }
     public override void Death()
     {

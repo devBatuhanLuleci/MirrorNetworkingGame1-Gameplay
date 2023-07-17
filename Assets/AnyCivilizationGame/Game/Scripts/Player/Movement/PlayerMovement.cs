@@ -152,6 +152,11 @@ public class PlayerMovement : NetworkBehaviour
             //Vector3 dir = new Vector3(moveDirection.x, 0, moveDirection.y).normalized;
             //rb.MovePosition(rb.position + dir * movementSpeed);
 
+
+            Vector3 v3Dir = new Vector3(moveDirection.x, 0, moveDirection.y).normalized * Time.deltaTime;
+            Vector3 newPos = new Vector3(rb_Pos.x + v3Dir.x, 0, rb_Pos.z + v3Dir.z);
+            rb.MovePosition(newPos);
+
         }
     }
 
@@ -218,26 +223,6 @@ public class PlayerMovement : NetworkBehaviour
     public void Move(Vector2 moveInput)
     {
         moveDirection = moveInput;
-    }
-
-    internal void SetNewPos(Vector3 targetPos)
-    {
-        if (movingCoroutine != null)
-        {
-            StopCoroutine(movingCoroutine);
-        }
-        movingCoroutine = StartCoroutine(Moving());
-        IEnumerator Moving()
-        {
-            while (true)
-            {
-                var newPos = Vector3.MoveTowards(transform.position, targetPos, 5 * Time.deltaTime);
-                rb.MovePosition(newPos);
-                yield return new WaitForFixedUpdate();
-            }
-
-        }
-
     }
 }
 
