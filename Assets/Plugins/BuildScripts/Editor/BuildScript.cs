@@ -88,7 +88,7 @@ public class BuildScript
             locationPathName = serverPath + "/GameServer.exe",
             target = BuildTarget.StandaloneWindows64,
             subtarget = (int)StandaloneBuildSubtarget.Server,
-            //options = BuildOptions.CompressWithLz4HC | BuildOptions.EnableHeadlessMode | BuildOptions.Development
+            options = BuildOptions.CompressWithLz4HC | BuildOptions.EnableHeadlessMode | BuildOptions.Development
         };
 
         UnityEngine.Debug.Log("Build Windows GameServer (Windows)...");

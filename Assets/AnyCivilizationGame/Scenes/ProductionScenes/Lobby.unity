@@ -20771,6 +20771,14 @@ PrefabInstance:
       propertyPath: host
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5472432523209748433, guid: 2b6b2f03839cb1a4dbf01b1d26693676, type: 3}
+      propertyPath: Timeout
+      value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 5472432523209748433, guid: 2b6b2f03839cb1a4dbf01b1d26693676, type: 3}
+      propertyPath: Interval
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5472432523209748435, guid: 2b6b2f03839cb1a4dbf01b1d26693676, type: 3}
       propertyPath: m_Name
       value: LoadBalancer
