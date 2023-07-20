@@ -23,33 +23,59 @@ namespace ACGAuthentication
         #endregion
         internal virtual void HandleServerEvents(NetworkReader reader)
         {
-            // read message type sequens
-            var requestType = reader.ReadByte();
-            // get reader by requestType
-            Type type = responsesByType[requestType];
-            // Invoke generic method for type
-            reader.ReadIEvent(type)?.Invoke(this);
+            try
+            {
+                // read message type sequens
+                var requestType = reader.ReadByte();
+                // get reader by requestType
+                Type type = responsesByType[requestType];
+                // Invoke generic method for type
+                IResponseEvent responseEvent = reader.ReadIEvent(type);
+                if (responseEvent != null)
+                {
+
+                    responseEvent.Invoke(this);
+                }
+                else
+                {
+                    Debug.LogError($"response of type {type.GetType()} not found");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
 
         }
         public virtual void SendClientRequestToServer(IEvent request)
         {
-            Type type = request.GetType();
-            var writer = new NetworkWriter();
-            writer.WriteByte((byte)loadBalancerEvent);
-            if (responsesByType.TryGetKey(request.GetType(), out var key))
+
+
+            try
             {
-                writer.WriteByte((byte)key);
-                writer.WriteIEvent(type, request);
-                loadBalancer.ClientSend(writer.ToArraySegment());
+                Type type = request.GetType();
+                var writer = new NetworkWriter();
+                writer.WriteByte((byte)loadBalancerEvent);
+                if (responsesByType.TryGetKey(request.GetType(), out var key))
+                {
+                    writer.WriteByte((byte)key);
+                    writer.WriteIEvent(type, request);
+                    loadBalancer.ClientSend(writer.ToArraySegment());
+                }
+                else
+                {
+                    throw new Exception("Request type is not found!");
+                }
+                //writer.WriteByte((byte)request.requestType);
+                //request.Write(writer);
+                //writer.WriteLoginRequest(request);
+                //loadBalancer.ClientSend(writer.ToArraySegment());
             }
-            else
+            catch (Exception ex)
             {
-                throw new Exception("Request type is not found!");
+                throw new Exception(ex.Message);
             }
-            //writer.WriteByte((byte)request.requestType);
-            //request.Write(writer);
-            //writer.WriteLoginRequest(request);
-            //loadBalancer.ClientSend(writer.ToArraySegment());
         }
 
 
