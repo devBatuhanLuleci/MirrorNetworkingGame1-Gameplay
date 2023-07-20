@@ -11,13 +11,12 @@ public class PlayerMovement : NetworkBehaviour
 {
     #region MovementState
     public enum MovementState { Idle, Moving }
-    [SyncVar]
-    public MovementState movementState;
+    public MovementState movementState => MoveToDirection != Vector3.zero ? MovementState.Moving : MovementState.Idle;
     #endregion
 
 
     [SyncVar]
-    public Vector2 moveDirection;
+    public Vector3 MoveToDirection;
 
     [SyncVar(hook = nameof(RotateSpine))]
     public float angle = 0;
@@ -36,60 +35,38 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField]
     private float movementSpeed = 5f;
 
-    public float MovmentSpeed => movementSpeed;
 
     [SerializeField]
     private float DirectionSpriteScale = 2f;
 
     private PlayerController PlayerController;
-    Rigidbody rb;
-    Coroutine movingCoroutine;
-    public Vector3 rb_Pos => rb.position;
+    private Rigidbody rb;
+
     private void Awake()
     {
         PlayerController = GetComponent<PlayerController>();
+        rb = GetComponent<Rigidbody>();
     }
     private void Start()
     {
         SetSpriteVisibility(false);
-        rb = GetComponent<Rigidbody>();
+
     }
     private void Update()
     {
         if (netIdentity.isServer)
         {
-            //if (NetworkedGameManager.Instance.isGameStarted)
-            //{
-
-            MovementStateHandler();
             SetPlayerPosition();
             SetPlayerRotation();
-            // }
 
         }
         else
         {
-
             SetCurrentAnimation();
         }
-        ResetMovementInput();
     }
 
-    /// <summary>
-    /// Reset movement input if player not send input on the network
-    /// </summary>
-    private void ResetMovementInput()
-    {
-        if (moveDirection.sqrMagnitude > 0)
-        {
-            moveDirection = moveDirection * 0.5f;
-        }
-        else
-        {
-            moveDirection = Vector2.zero;
-        }
 
-    }
 
     public void MovementSpriteHandler(Vector2 moveInput)
     {
@@ -113,31 +90,6 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
-    /// <summary>
-    /// This function setting the movement state, setting sprite visibility and set current animation.
-    /// </summary>
-    public void MovementStateHandler()
-    {
-        if (moveDirection.sqrMagnitude < 0.1f)
-        {
-            if (movementState != MovementState.Idle)
-            {
-                if (movingCoroutine != null)
-                {
-                    StopCoroutine(movingCoroutine);
-                }
-                movementState = MovementState.Idle;
-
-            }
-        }
-        else
-        {
-            if (movementState != MovementState.Moving)
-            {
-                movementState = MovementState.Moving;
-            }
-        }
-    }
 
 
 
@@ -149,14 +101,13 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (movementState == MovementState.Moving)
         {
-            //Vector3 dir = new Vector3(moveDirection.x, 0, moveDirection.y).normalized;
-            //rb.MovePosition(rb.position + dir * movementSpeed);
-
-
-            Vector3 v3Dir = new Vector3(moveDirection.x, 0, moveDirection.y).normalized * Time.deltaTime;
-            Vector3 newPos = new Vector3(rb_Pos.x + v3Dir.x, 0, rb_Pos.z + v3Dir.z);
-            rb.MovePosition(newPos);
-
+            var newPos = transform.position + movementSpeed * Time.deltaTime * MoveToDirection;
+            rb.position = newPos;
+        }
+        else
+        {
+            rb.velocity = Vector3.zero;
+            rb.Sleep();
         }
     }
 
@@ -167,11 +118,8 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (movementState == MovementState.Idle /*|| PlayerController.attack.isShooting*/)
             return;
-
-        var lookPos = new Vector3(moveDirection.x, 0f, moveDirection.y).normalized;
-        var rotation = Quaternion.LookRotation(lookPos);
-
-        rb.rotation = Quaternion.Slerp(rb.rotation, rotation, Time.deltaTime * rotationSpeed);
+        var rotation = Quaternion.LookRotation(MoveToDirection);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
     }
     public Tween SetPlayerRotationToTargetDirection(float targetPos)
     {
@@ -218,11 +166,6 @@ public class PlayerMovement : NetworkBehaviour
     public void SetSpriteVisibility(bool visiblityState)
     {
         playerDirSprite.gameObject.SetActive(visiblityState);
-    }
-
-    public void Move(Vector2 moveInput)
-    {
-        moveDirection = moveInput;
     }
 }
 

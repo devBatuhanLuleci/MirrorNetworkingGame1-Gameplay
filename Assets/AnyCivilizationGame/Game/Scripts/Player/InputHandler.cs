@@ -159,7 +159,7 @@ private void Attack()
 private void Movement()
 {
     var joysticDirection = MovementJoystick.Value;
-    PlayerController.MoveToDirection(joysticDirection);
+    PlayerController.Move(joysticDirection);
 }
 
 

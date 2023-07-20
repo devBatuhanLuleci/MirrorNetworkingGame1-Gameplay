@@ -34,7 +34,7 @@ public class Crystal : Throwable , INetworkPooledObject
     }
 
 
-    [Server]
+    [ServerCallback]
     private void OnTriggerEnter(Collider other)
     {
 

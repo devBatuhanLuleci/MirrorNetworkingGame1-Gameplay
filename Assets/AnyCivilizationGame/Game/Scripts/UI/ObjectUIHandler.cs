@@ -193,7 +193,7 @@ public class ObjectUIHandler : MonoBehaviour
     {
 
     }
-    public virtual void Update()
+    public virtual void LateUpdate()
     {
         //if (Input.GetKeyDown(KeyCode.Space))
         //{

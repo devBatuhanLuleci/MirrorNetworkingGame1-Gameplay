@@ -31,7 +31,7 @@ public class Bullet : Throwable, INetworkPooledObject
     /// </summary>
     /// <param name="rotAngle"></param>
 
-    [Server]
+    [ServerCallback]
     private void OnTriggerEnter(Collider other)
     {
 
