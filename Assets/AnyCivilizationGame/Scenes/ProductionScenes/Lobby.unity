@@ -18615,7 +18615,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6644555309946798840, guid: 86f2611eadf5e114495a9c6d9f54df1a, type: 3}
   m_PrefabInstance: {fileID: 998073810}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2096907883
+--- !u!114 &2096907888
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -18627,6 +18627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e85f26fa289f254c8d52578b69e4cca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetFrameRate: 60
 --- !u!1 &2127734831
 GameObject:
   m_ObjectHideFlags: 0
@@ -20745,7 +20746,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5472432523209748432, guid: 2b6b2f03839cb1a4dbf01b1d26693676, type: 3}
       propertyPath: host
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5472432523209748433, guid: 2b6b2f03839cb1a4dbf01b1d26693676, type: 3}
       propertyPath: Timeout
