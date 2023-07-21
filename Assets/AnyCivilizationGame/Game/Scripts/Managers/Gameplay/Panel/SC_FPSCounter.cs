@@ -15,14 +15,14 @@ public class SC_FPSCounter : MonoBehaviour
 
     GUIStyle textStyle = new GUIStyle();
 
-    private void Awake()
-    {
-        Application.targetFrameRate = 100;
-#if !UNITY_EDITOR
-        Application.targetFrameRate = 60;
-        Screen.sleepTimeout = SleepTimeout.NeverSleep;
-#endif
-    }
+//    private void Awake()
+//    {
+//        Application.targetFrameRate = 100;
+//#if !UNITY_EDITOR
+//        Application.targetFrameRate = 60;
+//        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+//#endif
+//    }
     // Use this for initialization
     void Start()
     {

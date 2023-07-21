@@ -109,6 +109,15 @@ public class MatchNetworkManager : NetworkManager
             player.AccessToken = message.AccesToken;
             player.IsReady = true;
         }
+        else
+        {
+            Debug.LogError($"Player with access token {message.AccesToken} not found ! \nregistered players lsit is ");
+            foreach (var p  in Players)
+            {
+                Debug.LogError($"\n{p.Value}");
+            }
+            return;
+        }
 
         if (Players.Count >= ACGDataManager.Instance.GameData.MaxPlayerCount
             && NetworkedGameManager.Instance == null
@@ -120,7 +129,7 @@ public class MatchNetworkManager : NetworkManager
 
     void OnCreateCharacter(NetworkConnectionToClient conn, CharacterCreateMessage message)
     {
-        Debug.LogError("OnCreateCharacter message:" + message.ToString());
+        Debug.Log("OnCreateCharacter message:" + message.ToString());
 
         var characterPrefab = spawnPrefabs.Find(el => el.name == message.name);
         // playerPrefab is the one assigned in the inspector in Network
@@ -148,7 +157,7 @@ public class MatchNetworkManager : NetworkManager
 
 
 
-        Debug.LogError("ReplacePlayer message:" + message.ToString());
+        Debug.Log("ReplacePlayer message:" + message.ToString());
 
         var characterPrefab = spawnPrefabs.Find(el => el.name == message.name);
         // playerPrefab is the one assigned in the inspector in Network
@@ -190,7 +199,7 @@ public class MatchNetworkManager : NetworkManager
 
         // CreateTeam();
         LoadBalancer.Instance.SpawnServer.SendClientRequestToServer(new OnReadyEvent(ACGDataManager.Instance.GameData.Port));
-        Debug.LogError("OnReadyEvent msg sended to master server.");
+        Debug.Log("OnReadyEvent msg sended to master server.");
     }
 
     private void CreateGameManager()
@@ -277,14 +286,13 @@ public class MatchNetworkManager : NetworkManager
 
     public override void OnClientConnect()
     {
-
-
         base.OnClientConnect();
         // you can send the message here, or wherever else you want
         var defaultCharacter = CharacterCreateMessage.Default;
         var joinMsg = new JoinToGameNetworkMessage { AccesToken = AuthenticationManager.Instance.User.accessToken };
         NetworkClient.Send(joinMsg);
         NetworkClient.Send(defaultCharacter);
+
     }
     public override void OnServerConnect(NetworkConnectionToClient conn)
     {

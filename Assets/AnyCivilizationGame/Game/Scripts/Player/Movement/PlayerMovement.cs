@@ -11,13 +11,12 @@ public class PlayerMovement : NetworkBehaviour
 {
     #region MovementState
     public enum MovementState { Idle, Moving }
-    [SyncVar]
-    public MovementState movementState;
+    public MovementState movementState => MoveToDirection != Vector3.zero ? MovementState.Moving : MovementState.Idle;
     #endregion
 
 
     [SyncVar]
-    public Vector2 moveDirection;
+    public Vector3 MoveToDirection;
 
     [SyncVar(hook = nameof(RotateSpine))]
     public float angle = 0;
@@ -41,10 +40,12 @@ public class PlayerMovement : NetworkBehaviour
     private float DirectionSpriteScale = 2f;
 
     private PlayerController PlayerController;
+    private Rigidbody rb;
 
     private void Awake()
     {
         PlayerController = GetComponent<PlayerController>();
+        rb = GetComponent<Rigidbody>();
     }
     private void Start()
     {
@@ -55,38 +56,17 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (netIdentity.isServer)
         {
-            //if (NetworkedGameManager.Instance.isGameStarted)
-            //{
-
-            MovementStateHandler();
             SetPlayerPosition();
             SetPlayerRotation();
-           // }
 
         }
         else
         {
-            
             SetCurrentAnimation();
         }
-        ResetMovementInput();
     }
 
-    /// <summary>
-    /// Reset movement input if player not send input on the network
-    /// </summary>
-    private void ResetMovementInput()
-    {
-        if (moveDirection.sqrMagnitude > 0)
-        {
-            moveDirection = moveDirection * 0.5f;
-        }
-        else
-        {
-            moveDirection = Vector2.zero;
-        }
 
-    }
 
     public void MovementSpriteHandler(Vector2 moveInput)
     {
@@ -110,26 +90,6 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
-    /// <summary>
-    /// This function setting the movement state, setting sprite visibility and set current animation.
-    /// </summary>
-    public void MovementStateHandler()
-    {
-        if (moveDirection.sqrMagnitude < 0.1f)
-        {
-            if (movementState != MovementState.Idle)
-            {
-                movementState = MovementState.Idle;
-            }
-        }
-        else
-        {
-            if (movementState != MovementState.Moving)
-            {
-                movementState = MovementState.Moving;
-            }
-        }
-    }
 
 
 
@@ -141,9 +101,13 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (movementState == MovementState.Moving)
         {
-            Vector3 dir = new Vector3(moveDirection.x, 0, moveDirection.y).normalized;
-            transform.Translate(dir * movementSpeed, Space.World);
-
+            var newPos = transform.position + movementSpeed * Time.deltaTime * MoveToDirection;
+            rb.position = newPos;
+        }
+        else
+        {
+            rb.velocity = Vector3.zero;
+            rb.Sleep();
         }
     }
 
@@ -154,9 +118,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (movementState == MovementState.Idle /*|| PlayerController.attack.isShooting*/)
             return;
-
-        var lookPos = new Vector3(moveDirection.x, 0f, moveDirection.y).normalized;
-        var rotation = Quaternion.LookRotation(lookPos);
+        var rotation = Quaternion.LookRotation(MoveToDirection);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
     }
     public Tween SetPlayerRotationToTargetDirection(float targetPos)
@@ -168,7 +130,7 @@ public class PlayerMovement : NetworkBehaviour
 
     public void RotateSpine(float oldAngle, float newAngle)
     {
-       // Debug.Log("newAngle : " + newAngle) ;
+        // Debug.Log("newAngle : " + newAngle) ;
         //   PlayerController.SpineRotator.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(newAngle, newAngle, newAngle)), .1f).SetEase(Ease.InOutQuad);
         var LocalAngle = transform.rotation.eulerAngles.y + PlayerController.SpineRotator.rotation.eulerAngles.x - newAngle;
 
@@ -176,7 +138,7 @@ public class PlayerMovement : NetworkBehaviour
     }
     public void GetCurrentRotateSpine(float angle)
     {
-    
+
         //   PlayerController.SpineRotator.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(newAngle, newAngle, newAngle)), .1f).SetEase(Ease.InOutQuad);
         var LocalAngle = transform.rotation.eulerAngles.y + PlayerController.SpineRotator.rotation.eulerAngles.x - angle;
 
@@ -184,7 +146,7 @@ public class PlayerMovement : NetworkBehaviour
     }
     public void RotateSpineReset()
     {
-       
+
         PlayerController.SpineRotator.DOLocalRotateQuaternion(Quaternion.Euler(Vector3.zero), PlayerController.AttackTurnSpeed).SetEase(Ease.InOutQuad);
 
     }
@@ -205,18 +167,5 @@ public class PlayerMovement : NetworkBehaviour
     {
         playerDirSprite.gameObject.SetActive(visiblityState);
     }
-
-    public void Move(Vector2 moveInput)
-    {
-        moveDirection = moveInput;
-    }
-
-  
-
-
-
-
-
-
 }
 

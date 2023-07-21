@@ -24,7 +24,7 @@ public class CameraController : Singleton<CameraController>
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         if (!isInitialized || transform == null || Target == null) return;
         transform.position = new Vector3(Mathf.Lerp(transform.position.x, Target.position.x + offSetX, Time.deltaTime * CameraFollowXSpeed), transform.position.y, Mathf.Lerp(transform.position.z, Target.position.z + offSetZ, Time.deltaTime * CameraFollowZSpeed));

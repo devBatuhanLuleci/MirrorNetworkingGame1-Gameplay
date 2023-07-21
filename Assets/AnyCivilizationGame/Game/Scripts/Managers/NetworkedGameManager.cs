@@ -1,6 +1,7 @@
 ﻿using Mirror;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using static MatchNetworkManager;
 
@@ -36,7 +37,7 @@ public class NetworkedGameManager : NetworkBehaviour
     public enum TeamTypes { Blue, Red, None }
     [SyncVar]
     public List<Team> Teams = new List<Team>();
-
+    bool isInit = false;
     #region MonoBehaviour Methods
     public virtual void Awake()
     {
@@ -45,6 +46,16 @@ public class NetworkedGameManager : NetworkBehaviour
     }
     public virtual void Start()
     {
+        if (!isInit)
+        {
+            isInit = true;
+            Init();
+        }
+    }
+
+    private async void Init()
+    {
+        await Task.Delay(1000);
         Info("isClient: " + isClient);
         if (IsClient)
         {
@@ -56,6 +67,7 @@ public class NetworkedGameManager : NetworkBehaviour
             MatchNetworkManager.Instance.OnPlayerListChanged.AddListener(OnCharacterReplaced);
         }
     }
+
     public virtual void Update()
     {
         if (!isServer) { return; }

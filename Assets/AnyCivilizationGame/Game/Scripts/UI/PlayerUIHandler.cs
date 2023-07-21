@@ -155,9 +155,9 @@ public class PlayerUIHandler : ObjectUIHandler
     }
 
     Quaternion look;
-    public override void Update()
+    public override void LateUpdate()
     {
-        base.Update();
+        base.LateUpdate();
 
 
 

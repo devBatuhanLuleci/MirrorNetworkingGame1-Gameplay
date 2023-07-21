@@ -15,12 +15,11 @@ public class PlayerController : ObjectController
     public PlayerAttack attack;
 
 
-    [HideInInspector]
-    public Energy energy;
+    
+    internal Energy energy;
 
 
-    [HideInInspector]
-    public UltimateSkill ultimateSkill;
+    internal UltimateSkill ultimateSkill;
 
     private InfoPopup infoPopup;
     #endregion
@@ -28,10 +27,8 @@ public class PlayerController : ObjectController
 
     public Transform GemCollectPoint;
     public Transform SpineRotator;
-    [HideInInspector]
-    public PlayerUIHandler playerUIHandler;
-    [HideInInspector]
-    public Animator PlayerAnimatorController;
+    internal PlayerUIHandler playerUIHandler;
+    internal Animator PlayerAnimatorController;
     public CharacterSpecificStats CharacterSpecificStats;
 
     public bool isUltiThrowable = false;
@@ -103,7 +100,7 @@ public class PlayerController : ObjectController
             spawnPoint.BulletInitPos = spawnPoint.spawnPoint;
         }
 
-     
+
     }
 
     public virtual void DetectJoystickButton(SimpleInputNamespace.Joystick.JoystickButtonType joystickButtonType)
@@ -249,13 +246,13 @@ public class PlayerController : ObjectController
     [TargetRpc]
     public void OnRevive_DoSomething_Only_On_This_Client(NetworkConnection target)
     {
-     //   Debug.Log("SANA BİLGİ MESAJI VERDİM.");
+        //   Debug.Log("SANA BİLGİ MESAJI VERDİM.");
         // playerUIHandler.AnimateOtherHealthBarEffects();
         playerUIHandler.Reset_HealthBar(true);
-      //  playerUIHandler
+        //  playerUIHandler
     }
     [TargetRpc]
-    public  void OnCurrentHealthReachedMaxHealth(NetworkConnection target)
+    public void OnCurrentHealthReachedMaxHealth(NetworkConnection target)
     {
 
         playerUIHandler.Reset_HealthBar(false);
@@ -541,7 +538,7 @@ public class PlayerController : ObjectController
     {
         IsLive = true;
         transform.position = Vector3.zero;
-       // OnRevive_DoSomething_Only_On_Other_Client(netIdentity.connectionToClient);
+        // OnRevive_DoSomething_Only_On_Other_Client(netIdentity.connectionToClient);
         health.ResetValues();
         RespawnRPC();
     }
@@ -661,12 +658,15 @@ public class PlayerController : ObjectController
         playerUIHandler.ShakeEnergyBar();
 
     }
-    public virtual void Move(Vector2 move)
+    Vector2 lastJoystickDirection = -Vector2.one;
+    public virtual void Move(Vector2 jostickDirection)
     {
-        movement.MovementSpriteHandler(move);
-        if (move.sqrMagnitude > 0f)
+        if (jostickDirection != lastJoystickDirection)
         {
-            MoveCmd(move);
+            lastJoystickDirection = jostickDirection;
+            var moveDirection = new Vector3(jostickDirection.x, 0f, jostickDirection.y).normalized;
+            movement.MovementSpriteHandler(jostickDirection);
+            Cmd_MoveToDirection(moveDirection);
         }
         //Debug.Log($"<b> sqrM: {move.sqrMagnitude} </b> move:" + move);
     }
@@ -679,9 +679,9 @@ public class PlayerController : ObjectController
 
     #region RPC Methods
     [Command]
-    public virtual void MoveCmd(Vector2 move)
+    public virtual void Cmd_MoveToDirection(Vector3 moveDirection)
     {
-        movement.Move(move);
+        movement.MoveToDirection = moveDirection.normalized;
     }
     public override void Death()
     {

@@ -12,8 +12,16 @@ public class LoadBalancer : Singleton<LoadBalancer>
     [Header("Listener Setup")]
     [SerializeField] private Host host = Host.LocalHost;
     [SerializeField] private bool startClientOnStart = true;
-    [Space]
-    [SerializeField] private Transport transport;
+    private Transport _transport;
+    public Transport Transport { get 
+        {
+            if (_transport ==null)
+            {
+                _transport = FindObjectOfType<Transport>();
+            }
+            return _transport;
+        }
+    }
 
 
 
@@ -41,7 +49,7 @@ public class LoadBalancer : Singleton<LoadBalancer>
 
         Application.runInBackground = true;
         SetupManagers();
-        if (transport == null)
+        if (Transport == null)
         {
             Debug.LogError("Transport not found!");
             return;
@@ -61,11 +69,11 @@ public class LoadBalancer : Singleton<LoadBalancer>
         // disconnect if already connected.
         if (isClient)
         {
-            transport.ClientDisconnect();
+            Transport.ClientDisconnect();
         }
         isClient = true;
-        transport.ClientConnect(hostAddress);
-        Debug.Log("Host address:" + hostAddress + " Port: " + transport.ServerUri().Port);
+        Transport.ClientConnect(hostAddress);
+        Debug.Log("Host address:" + hostAddress + " Port: " + Transport.ServerUri().Port);
     }
     public void StartClient(Host host)
     {
@@ -87,23 +95,23 @@ public class LoadBalancer : Singleton<LoadBalancer>
     {
         if (isServer)
         {
-            transport.ServerEarlyUpdate();
+            Transport.ServerEarlyUpdate();
         }
         if (isClient)
         {
-            transport.ClientEarlyUpdate();
+            Transport.ClientEarlyUpdate();
         }
     }
     private void LateUpdate()
     {
         if (isServer)
         {
-            transport.ServerLateUpdate();
+            Transport.ServerLateUpdate();
         }
         if (isClient)
         {
             //Application.runInBackground = true;
-            transport.ClientLateUpdate();
+            Transport.ClientLateUpdate();
         }
     }
 
@@ -122,7 +130,7 @@ public class LoadBalancer : Singleton<LoadBalancer>
         //  for a timeout)
         if (isServer)
         {
-            transport.ServerStop();
+            Transport.ServerStop();
         }
     }
 
@@ -138,11 +146,11 @@ public class LoadBalancer : Singleton<LoadBalancer>
 
     private void RemoveClientListeners()
     {
-        transport.OnClientConnected -= OnClientConnected;
-        transport.OnClientDataReceived -= OnClientDataReceived;
-        transport.OnClientDataSent -= OnClientDataSent;
-        transport.OnClientDisconnected -= OnClientDisconnected;
-        transport.OnClientError -= OnClientError;
+        Transport.OnClientConnected -= OnClientConnected;
+        Transport.OnClientDataReceived -= OnClientDataReceived;
+        Transport.OnClientDataSent -= OnClientDataSent;
+        Transport.OnClientDisconnected -= OnClientDisconnected;
+        Transport.OnClientError -= OnClientError;
     }
     #endregion
     private void SetupLinstener()
@@ -152,11 +160,11 @@ public class LoadBalancer : Singleton<LoadBalancer>
 
     private void AddClientListeners()
     {
-        transport.OnClientConnected += OnClientConnected;
-        transport.OnClientDataReceived += OnClientDataReceived;
-        transport.OnClientDataSent += OnClientDataSent;
-        transport.OnClientDisconnected += OnClientDisconnected;
-        transport.OnClientError += OnClientError;
+        Transport.OnClientConnected += OnClientConnected;
+        Transport.OnClientDataReceived += OnClientDataReceived;
+        Transport.OnClientDataSent += OnClientDataSent;
+        Transport.OnClientDisconnected += OnClientDisconnected;
+        Transport.OnClientError += OnClientError;
     }
 
 
@@ -167,7 +175,7 @@ public class LoadBalancer : Singleton<LoadBalancer>
 
     private void OnClientDisconnected()
     {
-        Debug.LogError("loadbalancer disconnect to " + transport.ServerUri().Host + ":" + transport.ServerUri().Port);
+        Debug.LogError("loadbalancer disconnect to " + Transport.ServerUri().Host + ":" + Transport.ServerUri().Port);
     }
 
     private void OnClientDataSent(ArraySegment<byte> data, int arg2)
@@ -191,7 +199,7 @@ public class LoadBalancer : Singleton<LoadBalancer>
 
     private void OnClientConnected()
     {
-        Debug.Log("loadbalancer connected to " + host.GetStringValue() + ":" + transport.ServerUri().Port);
+        Debug.Log("loadbalancer connected to " + host.GetStringValue() + ":" + Transport.ServerUri().Port);
 
         if (AuthenticationManager.Instance != null)
         {
@@ -204,12 +212,12 @@ public class LoadBalancer : Singleton<LoadBalancer>
     #region Public Methods
     public void ClientSend(ArraySegment<byte> segment, int channelId = Channels.Reliable)
     {
-        transport.ClientSend(segment, channelId);
+        Transport.ClientSend(segment, channelId);
     }
 
     public void ServerDisconnect(int connectionId)
     {
-        transport.ServerDisconnect(connectionId);
+        Transport.ServerDisconnect(connectionId);
     }
     #endregion
 

@@ -1,5 +1,6 @@
 ﻿using Mirror;
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -73,6 +74,18 @@ public class NetworkedTimer:NetworkBehaviour
         isCountingDown = false;
         onTimeFinishedAction.Invoke();
         OnTimeFinished?.Invoke();
+        CloseApplication();
+    }
+
+    private async void CloseApplication()
+    {
+        await Task.Delay(3000);
+#if UNITY_STANDALONE
+        Application.Quit();
+#endif
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 
     public virtual void OnCountdownChangedSync(int oldCountdown, int newCountdown)
